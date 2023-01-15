@@ -1,7 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
+import { Amplify, API, graphqlOperation } from 'aws-amplify'
+import awsconfig from './aws-exports'
+import { getTeam, listTeams } from './graphql/queries'
+
+
+Amplify.configure(awsconfig)
 
 function App() {
+  API.graphql(graphqlOperation(getTeam, {
+
+  }))
   return (
     <div className="App">
       <header className="App-header">
