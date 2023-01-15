@@ -4,8 +4,7 @@
     "apiName": "scoutingapp2023",
     "serviceName": "AppSync",
     "defaultAuthType": {
-      "mode": "AMAZON_COGNITO_USER_POOLS",
-      "cognitoUserPoolId": "authscoutingapp202345f469a1"
+      "mode": "AWS_IAM"
     },
     "additionalAuthTypes": [
       {
@@ -14,6 +13,7 @@
         "apiKeyExpirationDate": "2023-07-14T20:46:57.646Z",
         "keyDescription": "main api key"
       }
-    ]
+    ],
+    "conflictResolution": {}
   }
 }

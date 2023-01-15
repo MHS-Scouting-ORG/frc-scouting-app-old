@@ -1,6 +1,6 @@
 projects:
   scoutingapp2023:
-    schemaPath: src/graphql/schema.json
+    schemaPath: amplify/backend/api/scoutingapp2023/build/schema.graphql
     includes:
       - src/graphql/**/*.js
     excludes:

@@ -1,15 +1,7 @@
 {
   "api": {
     "scoutingapp2023": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "scoutingapp202345f469a1"
-        }
-      ],
+      "dependsOn": [],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
@@ -23,10 +15,7 @@
             }
           ],
           "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authscoutingapp202345f469a1"
-            }
+            "authenticationType": "AWS_IAM"
           }
         }
       },
