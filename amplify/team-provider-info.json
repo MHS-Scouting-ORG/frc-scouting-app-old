@@ -13,10 +13,29 @@
     },
     "categories": {
       "auth": {
-        "scoutingapp2023706a70d4": {}
+        "scoutingapp2023706a70d4": {},
+        "scoutingapp202345f469a1": {}
       },
       "api": {
         "scoutingapp2023": {}
+      }
+    }
+  },
+  "main": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-scoutingapp2023-main-102414-authRole",
+      "UnauthRoleArn": "arn:aws:iam::187619627858:role/amplify-scoutingapp2023-main-102414-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::187619627858:role/amplify-scoutingapp2023-main-102414-authRole",
+      "Region": "us-west-1",
+      "DeploymentBucketName": "amplify-scoutingapp2023-main-102414-deployment",
+      "UnauthRoleName": "amplify-scoutingapp2023-main-102414-unauthRole",
+      "StackName": "amplify-scoutingapp2023-main-102414",
+      "StackId": "arn:aws:cloudformation:us-west-1:187619627858:stack/amplify-scoutingapp2023-main-102414/95e81bc0-9512-11ed-9390-06bb1c3251a3",
+      "AmplifyAppId": "d2jzt2b643fy9d"
+    },
+    "categories": {
+      "auth": {
+        "scoutingapp2023706a70d4": {}
       }
     }
   }

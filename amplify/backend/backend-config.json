@@ -7,25 +7,16 @@
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "scoutingapp2023706a70d4"
+          "resourceName": "scoutingapp202345f469a1"
         }
       ],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [
-            {
-              "apiKeyConfig": {
-                "apiKeyExpirationDate": "2023-07-14T03:55:43.346Z",
-                "apiKeyExpirationDays": 180,
-                "description": ""
-              },
-              "authenticationType": "API_KEY"
-            }
-          ],
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authscoutingapp2023706a70d4"
+              "userPoolId": "authscoutingapp202345f469a1"
             }
           }
         }
@@ -35,7 +26,7 @@
     }
   },
   "auth": {
-    "scoutingapp2023706a70d4": {
+    "scoutingapp202345f469a1": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {

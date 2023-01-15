@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "scoutingapp2023706a70d4_identitypool_706a70d4",
+    "identityPoolName": "scoutingapp202345f469a1_identitypool_45f469a1",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "scouti706a70d4",
-    "userPoolName": "scoutingapp2023706a70d4_userpool_706a70d4",
+    "resourceNameTruncated": "scouti45f469a1",
+    "userPoolName": "scoutingapp202345f469a1_userpool_45f469a1",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,10 +31,10 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "scouti706a70d4_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "scouti45f469a1_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "706a70d4",
-    "resourceName": "scoutingapp2023706a70d4",
+    "sharedId": "45f469a1",
+    "resourceName": "scoutingapp202345f469a1",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "defaultSocial",
     "hostedUI": true,
@@ -42,7 +42,7 @@
       "email"
     ],
     "triggers": {},
-    "hostedUIDomainName": "scoutingapp2023706a70d4-706a70d4",
+    "hostedUIDomainName": "scoutingapp202345f469a1-45f469a1",
     "authProvidersUserPool": [
       "Google"
     ],
