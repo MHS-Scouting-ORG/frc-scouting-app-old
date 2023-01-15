@@ -35,7 +35,11 @@
     },
     "categories": {
       "auth": {
-        "scoutingapp2023706a70d4": {}
+        "scoutingapp2023706a70d4": {},
+        "scoutingapp202345f469a1": {}
+      },
+      "api": {
+        "scoutingapp2023": {}
       }
     }
   }
