@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "scoutingapp2023",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authscoutingapp2023706a70d4",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
