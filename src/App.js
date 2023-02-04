@@ -6,12 +6,16 @@ import awsconfig from './aws-exports'
 import { getTeam, listTeams } from './graphql/queries'
 import { useEffect, useState } from 'react'
 
+const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
+awsconfig.oauth.redirectSignIn = redirectSignInUri[parseInt(process.env.REACT_APP_REDIRECT_INDEX)]
+const redirectSignOutUri = awsconfig.oauth.redirectSignOut.split(',')
+awsconfig.oauth.redirectSignIn = redirectSignOutUri[parseInt(process.env.REACT_APP_REDIRECT_INDEX)]
 
 Amplify.configure(awsconfig)
 
 
 function AuthenticatedUI ({user}) {
-  console.log(user)
+  //console.log(user)
   useEffect(() => {
 
   }, [])  
@@ -59,15 +63,15 @@ function App() {
     (async () => {
       console.log(`async run`)
       if(!user) {
-        if(process.env.NODE_ENV !== 'production') {
-          Auth.Credentials.configure({
-            accessKeyId: "ASIAVJKIAM-AuthRole",
-            secretKey: "fake",
-            region: "us-west-1"
-          })
-          setUser({})
-        }
-        else
+       // if(process.env.NODE_ENV !== 'production') {
+       //   Auth.Credentials.configure({
+       //     accessKeyId: "ASIAVJKIAM-AuthRole",
+       //     secretKey: "fake",
+       //     region: "us-west-1"
+       //   })
+       //   setUser({})
+       // }
+       // else
           setUser(await Auth.currentAuthenticatedUser())
       }
       else {
@@ -83,7 +87,9 @@ function App() {
     <div className="App">
       <header className="App-header">
         {(_ => {
+
             if(user) {
+              console.log(`${JSON.stringify(user)} logged in`)
               return ( <AuthenticatedUI user={user}/> )
             } 
             return ( <LoginUI/> )
