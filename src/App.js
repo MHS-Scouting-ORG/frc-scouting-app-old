@@ -56,20 +56,27 @@ function App() {
   const [teams, setTeams] = useState([])
 
   useEffect(() => {
-    Auth.currentAuthenticatedUser()
-        .then(currentUser => setUser(currentUser))
-        .catch(() => console.log("Not signed in"));
-    API.graphql(graphqlOperation(listTeams, {
-    
-    }))
-      .then(data => {
-        console.log(data)
-      })
-      .catch(err => {
-        console.error(err)
-      })
-
-  }, [])
+    (async () => {
+      console.log(`async run`)
+      if(!user) {
+        if(process.env.NODE_ENV !== 'production') {
+          Auth.Credentials.configure({
+            accessKeyId: "ASIAVJKIAM-AuthRole",
+            secretKey: "fake",
+            region: "us-west-1"
+          })
+          setUser({})
+        }
+        else
+          setUser(await Auth.currentAuthenticatedUser())
+      }
+      else {
+        return API.graphql(graphqlOperation(listTeams, {}))
+      }
+    })()
+    .then(console.log.bind(console))
+    .catch(console.error.bind(console))
+  }, [user])
 
       
   return (
