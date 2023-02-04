@@ -9,8 +9,9 @@ type Team @model @auth(rules : [{ allow: private, provider: iam}]) {
 }
 
 type TeamMatch @model @auth(rules : [{ allow: private, provider: iam}]) {
-  id: ID! @primaryKey
+  id: ID! @primaryKey(sortKeyFields: ["Regional","Team"])
   name: String!
   description: String
-  Team: Team @hasOne
+  Team: ID! @index
+  Regional: String! @index
 }

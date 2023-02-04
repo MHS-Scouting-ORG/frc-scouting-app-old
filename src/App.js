@@ -6,6 +6,8 @@ import awsconfig from './aws-exports'
 import { getTeam, listTeams } from './graphql/queries'
 import { useEffect, useState } from 'react'
 
+import { getTeamInfo } from './api/index'
+
 const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
 awsconfig.oauth.redirectSignIn = redirectSignInUri[parseInt(process.env.REACT_APP_REDIRECT_INDEX)]
 const redirectSignOutUri = awsconfig.oauth.redirectSignOut.split(',')
@@ -16,8 +18,18 @@ Amplify.configure(awsconfig)
 
 function AuthenticatedUI ({user}) {
   //console.log(user)
-  useEffect(() => {
 
+  const [teamInfo, setTeamInfo] = useState({})
+
+
+  useEffect(() => {
+    getTeamInfo()
+      .then(data => {
+        setTeamInfo(data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }, [])  
   return (
           <div>
@@ -36,7 +48,8 @@ function AuthenticatedUI ({user}) {
           </a>
           <div>
           {user.username}
-
+          <br/>
+          {JSON.stringify(teamInfo)}
           </div>
           </div>)
 
