@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
 awsconfig.oauth.redirectSignIn = redirectSignInUri[parseInt(process.env.REACT_APP_REDIRECT_INDEX)]
 const redirectSignOutUri = awsconfig.oauth.redirectSignOut.split(',')
-awsconfig.oauth.redirectSignIn = redirectSignOutUri[parseInt(process.env.REACT_APP_REDIRECT_INDEX)]
+awsconfig.oauth.redirectSignOut = redirectSignOutUri[parseInt(process.env.REACT_APP_REDIRECT_INDEX)]
 
 Amplify.configure(awsconfig)
 
