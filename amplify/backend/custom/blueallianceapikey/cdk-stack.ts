@@ -37,6 +37,7 @@ export class cdkStack extends cdk.Stack {
     const secret = new secretsmanager.Secret(this, 'blueallianceapi', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       secretName: `bluealliance-apikey-${cdk.Fn.ref('env')}`
+      
     }) 
     secret.grantRead(authRole)
 
