@@ -52,5 +52,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
     }
+  },
+  "custom": {
+    "blueallianceapikey": {
+      "providerPlugin": "awscloudformation",
+      "service": "customCDK"
+    }
   }
 }
