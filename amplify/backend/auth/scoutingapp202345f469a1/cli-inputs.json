@@ -65,10 +65,10 @@
     },
     "breakCircularDependency": true,
     "dependsOn": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}",
     "parentStack": {
       "Ref": "AWS::StackId"
     },
-    "permissions": []
+    "permissions": [],
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://scouting-dev.bluethunder2443.com/\",\"https://scouting-table.bluethunder2443.com/\",\"https://scouting-form.bluethunder2443.com/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://scouting-dev.bluethunder2443.com/\",\"https://scouting-table.bluethunder2443.com/\",\"https://scouting-form.bluethunder2443.com/\"]}"
   }
 }
