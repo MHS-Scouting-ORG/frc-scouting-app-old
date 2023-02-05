@@ -10,6 +10,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 # Dallies ( or things to do every day )
 ## Before You Start the day
 Do these things before you start writing code
+
 ```git pull``` - pull down changes made by either you or your partner the previous day;  resolve any conflicts between your current code and any pulls, but there should be non intially as long as your following the instructions
 
 ```git merge dev``` - pull down any new things that I changed; there maybe conflicts here;  message/talk to me if there are any
