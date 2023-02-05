@@ -13,7 +13,7 @@ class StationTimer extends React.Component{
         console.log("starting")
         if (!this.state.startTime) {
             setInterval(function() {
-                let currCount = this.state.count; //ERROR: Uncaught TypeError: Cannot read properties of undefined (reading 'count')
+                let currCount = this.state.counter; //ERROR: Uncaught TypeError: Cannot read properties of undefined (reading 'count')
                 this.setState({
                     counter: currCount + .1,
                 });
