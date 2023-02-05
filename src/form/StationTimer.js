@@ -31,7 +31,7 @@ class StationTimer extends React.Component{
     render(){
         return(
             <div>
-                <input value={this.state.ms}/>
+                <input value={this.state.counter}/>
                 <button onClick={() => (!this.state.startTime) ? this.startTimer() : this.endTimer()}>Start/Stop</button>
             </div>
         )
