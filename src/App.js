@@ -6,6 +6,7 @@ import awsconfig from './aws-exports'
 import { useEffect, useState } from 'react'
 import ExampleUI from './example'
 import { getTeamInfo } from './api/bluealliance'
+import Form from './form/Form';
 
 
 const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
@@ -50,6 +51,7 @@ function AuthenticatedUI({ user }) {
         <br />
         {JSON.stringify(teamInfo)}
       </div>
+      <Form/>
       <ExampleUI/>
 
     </div>)

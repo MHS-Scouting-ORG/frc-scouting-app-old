@@ -10,10 +10,12 @@ class CheckBox extends React.Component{
         this.props.changeCheckBoxState(this.props.place)
     }
 
-    render(){   
-        <div>
-            <input type="checkbox" checked={this.props.checked} onChange={this.changeCheckBoxState}></input>
-        </div>
+    render(){
+        return(   
+            <div>
+                <input type="checkbox" checked={this.props.checked} onChange={this.changeCheckBoxState}></input>
+            </div>
+        )
     }
 }
 
