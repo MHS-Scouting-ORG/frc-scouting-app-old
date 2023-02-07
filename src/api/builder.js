@@ -72,4 +72,10 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
     
 }
 
+/*
+ * exported methods
+ * buildMatchEntry - returns an object initialized with match entries
+ * ChargeStationType - enum of valid charge stations types
+ * IntakeType - enum of valid intake types
+ */
 export { ChargeStationType, IntakeType, buildMatchEntry as default }
