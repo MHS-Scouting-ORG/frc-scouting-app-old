@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react"
 import { useTable } from "react-table"
 
 const dummy = [
-  {TeamNumber: "Examples: "},
-  {TeamNumber: 2443, Matches: "Q2", TeamAutoPoints: 2.5, TeamTeleOpPoints: 16, GoodTeamRating: [true, " yes "]}, // every different object is specific to a row
-  {TeamNumber: 2044, Matches: "Q3", TeamAutoPoints: 2, TeamTeleOpPoints: 1, GoodTeamRating: false }
+  {TeamNumber: 2443, Matches: "Q2",  }, // every different object is specific to a row
+  {TeamNumber: 2044, Matches: "Q3",  }
 ]
 
 function DummyTable() {
@@ -23,25 +22,41 @@ function DummyTable() {
   const columns = React.useMemo(
     () => [
       {
-        Header: "| Team # |",
+        Header: " Team # ",
         accessor: "TeamNumber"
         
       },
       {
-        Header: "| Matches |",
+        Header: " Matches ",
         accessor: "Matches"
       },
       {
-        Header: "| Team Auto Pts |",
-        accessor: "TeamAutoPoints"
+        Header: " priorities ",
+        accessor: "priorities"
       },
       {
-        Header: "| Team TeleOp Pts |",
-        accessor: "TeamTeleOpPoints"
+        Header: " avg points ",
+        accessor: "AvgPoints"
       },
       {
-        Header: "| Good Team? |",
-        accessor: "GoodTeamRating"
+        Header: "avg grid points",
+        accessor: "avgGridPoints"
+      },
+      {
+        Header: "avg accuracy",
+        accessor: "avgAccuracy"
+      },
+      {
+        Header: "avg charge station points",
+        accessor: "avgChargeStation"
+      },
+      {
+        Header: "defense",
+        accessor: "defense"
+      },
+      {
+        Header: "penalties",
+        accessor: "penalties"
       },
     ], []
   )
@@ -65,7 +80,6 @@ function DummyTable() {
               <th
                 {...column.getHeaderProps()}
                 style={{
-                  borderBottom: 'solid 3px red',
                   background: 'aliceblue',
                   color: 'black',
                   fontWeight: 'bold',
@@ -106,4 +120,4 @@ function DummyTable() {
 
 
 
-export default DummyTable;
+export default DummyTable; 

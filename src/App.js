@@ -4,6 +4,9 @@ import { Amplify, Auth } from 'aws-amplify'
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import awsconfig from './aws-exports'
 import DummyTable from './components/DummyTable';
+import Summary from './components/Summary';
+import InnerTable from './components/InnerTable';
+import CommentsOnly from './components/CommentsOnly';
 
 
 import { useEffect, useState } from 'react'
@@ -53,8 +56,13 @@ function AuthenticatedUI({ user }) {
         <br />
         {JSON.stringify(teamInfo)}
       </div>
-      <DummyTable/>
-    </div>)
+      
+      <Summary />
+      <InnerTable />
+      <CommentsOnly />
+
+    </div>
+    )
 
 }
 
