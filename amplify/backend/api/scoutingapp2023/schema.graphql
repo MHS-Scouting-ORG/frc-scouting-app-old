@@ -54,7 +54,7 @@ type PenaltiesType {
 
 type TeleopType {
   Scored: Scoring!
-  Attemped: Scoring!
+  Attempted: Scoring!
   Accuracy: Int
   RankingPts: Int
   ChargeStation: ChargeStationType
