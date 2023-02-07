@@ -7,6 +7,7 @@ export const onCreateTeam = /* GraphQL */ `
       id
       name
       description
+      Comment
       createdAt
       updatedAt
     }
@@ -18,6 +19,7 @@ export const onUpdateTeam = /* GraphQL */ `
       id
       name
       description
+      Comment
       createdAt
       updatedAt
     }
@@ -29,6 +31,7 @@ export const onDeleteTeam = /* GraphQL */ `
       id
       name
       description
+      Comment
       createdAt
       updatedAt
     }
@@ -44,6 +47,27 @@ export const onCreateTeamMatch = /* GraphQL */ `
       description
       Team
       Regional
+      Autonomous {
+        LeftCommunity
+        ChargeStation
+      }
+      Teleop {
+        Accuracy
+        RankingPts
+        ChargeStation
+        Penalties {
+          Fouls
+          Tech
+          Yellow
+          Red
+          Disabled
+          DQ
+          BrokenBot
+        }
+      }
+      SmartPlacement
+      Comments
+      IntakeFrom
       createdAt
       updatedAt
     }
@@ -59,6 +83,27 @@ export const onUpdateTeamMatch = /* GraphQL */ `
       description
       Team
       Regional
+      Autonomous {
+        LeftCommunity
+        ChargeStation
+      }
+      Teleop {
+        Accuracy
+        RankingPts
+        ChargeStation
+        Penalties {
+          Fouls
+          Tech
+          Yellow
+          Red
+          Disabled
+          DQ
+          BrokenBot
+        }
+      }
+      SmartPlacement
+      Comments
+      IntakeFrom
       createdAt
       updatedAt
     }
@@ -74,6 +119,27 @@ export const onDeleteTeamMatch = /* GraphQL */ `
       description
       Team
       Regional
+      Autonomous {
+        LeftCommunity
+        ChargeStation
+      }
+      Teleop {
+        Accuracy
+        RankingPts
+        ChargeStation
+        Penalties {
+          Fouls
+          Tech
+          Yellow
+          Red
+          Disabled
+          DQ
+          BrokenBot
+        }
+      }
+      SmartPlacement
+      Comments
+      IntakeFrom
       createdAt
       updatedAt
     }
