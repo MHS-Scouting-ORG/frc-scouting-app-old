@@ -1,49 +1,72 @@
 import React, { useEffect, useState } from "react"
 import { useTable } from "react-table"
+//import { apiListTeams, apiAddTeam, apiGetTeam, getMatchesForRegional, apiCreateTeamMatchEntry } from './api/index'
 
-const dummy = [
+
+/*const dummy = [
   {TeamNumber: "Examples: "},
   {TeamNumber: 2443, Matches: "Q2", TeamAutoPoints: 2.5, TeamTeleOpPoints: 16, GoodTeamRating: [true, " yes "]}, // every different object is specific to a row
   {TeamNumber: 2044, Matches: "Q3", TeamAutoPoints: 2, TeamTeleOpPoints: 1, GoodTeamRating: false }
-]
+] */
 
-function DummyTable() {
+function DummyTableDG() {
 
-  const [dummyData,setDummyData] = useState(["", "", "", ""]);
-  const [autoPoints,setAutoPoints] = useState([])
+  const [tableData,setTableData] = useState([]);
+  const [teamNumber,setTeamNumber] = useState([]) 
 
-  useEffect(() => console.log(data)) //debug purposes
+  //useEffect(() => console.log(data)) //debug purposes
+
+  /*useEffect(() => { //trying to set team number of each row
+    apiGetTeam()
+      .then(data => {
+        setTeamNumber(data); //"data" defined as the team numbers within the data         //"injecting" data 
+      })
+  },[]) 
+
+  useEffect(() => {
+
+  }) */
 
   const data = React.useMemo(
+    () => tableData.map(team => {
+      return {
+        TeamNumber: team.TeamNumber,
+        Priorities: team.Priorities,
+        AvgPoints: team.AvgPoints,
+        AvgCharge: team.AvgCharge,
+        Comments: team.Commentss
+      }
+    }),[tableData]
+  )
+
+  /*const data = React.useMemo(
     () => {
       return dummy;
     }
-  )
+  ) */
 
   const columns = React.useMemo(
     () => [
       {
-        Header: "| Team # |",
+        Header: " Team Number ",
         accessor: "TeamNumber"
-        
       },
       {
-        Header: "| Matches |",
-        accessor: "Matches"
+        Header: " Priorities/Strategies ",
+        accessor: "Priorities"
       },
       {
-        Header: "| Team Auto Pts |",
-        accessor: "TeamAutoPoints"
+        Header: " Average Points ",
+        accessor: "AvgPoints"
       },
       {
-        Header: "| Team TeleOp Pts |",
-        accessor: "TeamTeleOpPoints"
+        Header: " Avg Charge ",
+        accessor: "AvgChargeStation"
       },
       {
-        Header: "| Good Team? |",
-        accessor: "GoodTeamRating"
-      },
-    ], []
+        Header: " Comments ",
+        accessor: "Comments"
+      },], []
   )
 
   const tableInstance = useTable({ columns, data});
@@ -106,4 +129,4 @@ function DummyTable() {
 
 
 
-export default DummyTable;
+export default DummyTableDG;
