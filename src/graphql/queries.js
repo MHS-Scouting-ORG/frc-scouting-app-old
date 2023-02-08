@@ -7,6 +7,7 @@ export const getTeam = /* GraphQL */ `
       id
       name
       description
+      Comment
       createdAt
       updatedAt
     }
@@ -31,6 +32,7 @@ export const listTeams = /* GraphQL */ `
         id
         name
         description
+        Comment
         createdAt
         updatedAt
       }
@@ -46,6 +48,27 @@ export const getTeamMatch = /* GraphQL */ `
       description
       Team
       Regional
+      Autonomous {
+        LeftCommunity
+        ChargeStation
+      }
+      Teleop {
+        Accuracy
+        RankingPts
+        ChargeStation
+        Penalties {
+          Fouls
+          Tech
+          Yellow
+          Red
+          Disabled
+          DQ
+          BrokenBot
+        }
+      }
+      SmartPlacement
+      Comments
+      IntakeFrom
       createdAt
       updatedAt
     }
@@ -74,6 +97,18 @@ export const listTeamMatches = /* GraphQL */ `
         description
         Team
         Regional
+        Autonomous {
+          LeftCommunity
+          ChargeStation
+        }
+        Teleop {
+          Accuracy
+          RankingPts
+          ChargeStation
+        }
+        SmartPlacement
+        Comments
+        IntakeFrom
         createdAt
         updatedAt
       }
@@ -102,6 +137,18 @@ export const teamMatchesByTeam = /* GraphQL */ `
         description
         Team
         Regional
+        Autonomous {
+          LeftCommunity
+          ChargeStation
+        }
+        Teleop {
+          Accuracy
+          RankingPts
+          ChargeStation
+        }
+        SmartPlacement
+        Comments
+        IntakeFrom
         createdAt
         updatedAt
       }
@@ -130,6 +177,18 @@ export const teamMatchesByRegional = /* GraphQL */ `
         description
         Team
         Regional
+        Autonomous {
+          LeftCommunity
+          ChargeStation
+        }
+        Teleop {
+          Accuracy
+          RankingPts
+          ChargeStation
+        }
+        SmartPlacement
+        Comments
+        IntakeFrom
         createdAt
         updatedAt
       }
