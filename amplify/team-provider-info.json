@@ -18,6 +18,9 @@
       },
       "api": {
         "scoutingapp2023": {}
+      },
+      "custom": {
+        "blueallianceapikey": {}
       }
     }
   },

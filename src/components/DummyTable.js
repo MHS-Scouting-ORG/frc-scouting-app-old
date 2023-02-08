@@ -1,114 +1,123 @@
-import React, {useState, useEffect } from "react";
-import { useTable } from 'react-table';
+import React, { useEffect, useState } from "react"
+import { useTable } from "react-table"
 
-function DummyTable(){
-    const [dummyVals, dummySet] = useState([]);
+const dummy = [
+  {TeamNumber: 2443, Matches: "Q2",  }, // every different object is specific to a row
+  {TeamNumber: 2044, Matches: "Q3",  }
+]
 
-    const dummyInput = {
-        teamNumber: 2443,
-        points: 1000,
-        winner: true,
+function DummyTable() {
+
+  const [dummyData,setDummyData] = useState(["", "", "", ""]);
+  const [autoPoints,setAutoPoints] = useState([])
+
+  useEffect(() => console.log(data)) //debug purposes
+
+  const data = React.useMemo(
+    () => {
+      return dummy;
     }
+  )
 
-    dummySet(dummyInput);
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: " Team # ",
+        accessor: "TeamNumber"
+        
+      },
+      {
+        Header: " Matches ",
+        accessor: "Matches"
+      },
+      {
+        Header: " priorities ",
+        accessor: "priorities"
+      },
+      {
+        Header: " avg points ",
+        accessor: "AvgPoints"
+      },
+      {
+        Header: "avg grid points",
+        accessor: "avgGridPoints"
+      },
+      {
+        Header: "avg accuracy",
+        accessor: "avgAccuracy"
+      },
+      {
+        Header: "avg charge station points",
+        accessor: "avgChargeStation"
+      },
+      {
+        Header: "defense",
+        accessor: "defense"
+      },
+      {
+        Header: "penalties",
+        accessor: "penalties"
+      },
+    ], []
+  )
 
-    const dummy = React.useMemo(
-        () => /*[
-            {
-                col1: 'Object',
-                col2: 'Type',
-            },
-            {
-                col1: 'Table:',
-                col2: 'Dummy',
-            },
-            {
-                col1: 'Programmer',
-                col2: 'BA',
-                col3: 'Dominic',
-            }
-        ]*/
-            dummyVals.map((dumms) => [
-                {
-                    col1: dumms
-                },
-            ]),
-        []
-    )
+  const tableInstance = useTable({ columns, data});
 
-
-    const columns = React.useMemo(
-        () => [
-            {
-                Header: 'Column 1',
-                accessor: 'col1',
-            },
-            {
-                Header: 'Column 2',
-                accessor: 'col2',
-            },
-            {
-                Header: 'Column 3',
-                accessor: 'col3',
-            },
-        ],
-        []
-    )
-
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGRoups,
-        rows,
-        perpareRow,
-    } = useTable({ columns, dummyVals })
-
-    return (
-        <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
-            <thead>
-                {headerGRoups.map(headerGroup => (
-                    <tr {...headerGroup.getGeaderGRoupPrps()}>
-                        {headerGroup.headers.map(column => (
-                            <th
-                                {...column.getHeaderProps()}
-                                style={{
-                                    borderBottom: 'solid 3px red',
-                                    background: 'aliceblue',
-                                    color: 'black',
-                                    fontWeight: 'bold',
-                                }}
-                            >
-                                {column.render('Header')}
-                            </th>
-                        ))}
-                    </tr>
-                ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-                {rows.map(row => {
-                    perpareRow(row)
-                    return (
-                        <tr {...row.getRowProps()}>
-                            {row.cells.map(cell => {
-                                return (
-                                    <td
-                                        {...cell.getCellProps()}
-                                        style={{
-                                            padding: '10px',
-                                            border: 'solid 1px gray',
-                                            background: 'papayawhip',
-                                        }}
-                                    >
-                                        {cell.render('Cell')}
-                                    </td>
-                                )
-                            })}
-                        </tr>
-                    )
-                })}
-            </tbody>
-        </table>
-    )
-    
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = tableInstance
+  
+  return (
+    <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+      <thead>
+        {headerGroups.map(headerGroup => (
+          <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map(column => (
+              <th
+                {...column.getHeaderProps()}
+                style={{
+                  background: 'aliceblue',
+                  color: 'black',
+                  fontWeight: 'bold',
+                }}
+              >
+                {column.render('Header')}
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map(row => {
+          prepareRow(row)
+          return (
+            <tr {...row.getRowProps()}>
+              {row.cells.map(cell => {
+                return (
+                  <td
+                    {...cell.getCellProps()}
+                    style={{
+                      padding: '10px',
+                      border: 'solid 1px gray',
+                      background: 'papayaWhip',
+                    }}
+                  >
+                    {cell.render('Cell')}
+                  </td>
+                )
+              })}
+            </tr>
+          )
+        })}
+      </tbody>
+    </table>
+  )
 }
-export default DummyTable;
+
+
+
+export default DummyTable; 

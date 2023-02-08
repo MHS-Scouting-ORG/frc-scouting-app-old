@@ -34,3 +34,48 @@ export const onDeleteTeam = /* GraphQL */ `
     }
   }
 `;
+export const onCreateTeamMatch = /* GraphQL */ `
+  subscription OnCreateTeamMatch(
+    $filter: ModelSubscriptionTeamMatchFilterInput
+  ) {
+    onCreateTeamMatch(filter: $filter) {
+      id
+      name
+      description
+      Team
+      Regional
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTeamMatch = /* GraphQL */ `
+  subscription OnUpdateTeamMatch(
+    $filter: ModelSubscriptionTeamMatchFilterInput
+  ) {
+    onUpdateTeamMatch(filter: $filter) {
+      id
+      name
+      description
+      Team
+      Regional
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTeamMatch = /* GraphQL */ `
+  subscription OnDeleteTeamMatch(
+    $filter: ModelSubscriptionTeamMatchFilterInput
+  ) {
+    onDeleteTeamMatch(filter: $filter) {
+      id
+      name
+      description
+      Team
+      Regional
+      createdAt
+      updatedAt
+    }
+  }
+`;

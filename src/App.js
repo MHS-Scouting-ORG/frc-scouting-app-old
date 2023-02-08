@@ -1,10 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
-import { Amplify, API, graphqlOperation, Auth } from 'aws-amplify'
+import { Amplify, Auth } from 'aws-amplify'
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import awsconfig from './aws-exports'
-import { getTeam, listTeams } from './graphql/queries'
+import DummyTable from './components/DummyTable';
+import Summary from './components/Summary';
+import InnerTable from './components/InnerTable';
+import CommentsOnly from './components/CommentsOnly';
+
+
 import { useEffect, useState } from 'react'
+import ExampleUI from './example'
+import { getTeamInfo } from './api/bluealliance'
+
 
 import DummyTable from './components/DummyTable'
 
@@ -16,26 +24,57 @@ awsconfig.oauth.redirectSignOut = redirectSignOutUri[parseInt(process.env.REACT_
 Amplify.configure(awsconfig)
 
 
-function AuthenticatedUI ({user}) {
+function AuthenticatedUI({ user }) {
   //console.log(user)
+  const [teamInfo, setTeamInfo] = useState({})
   useEffect(() => {
+    getTeamInfo()
+      .then(data => {
+        setTeamInfo(data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  })
 
-  }, [])  
+
   return (
-          <div>
-            <DummyTable></DummyTable>
-          </div>
-          )
+    <div>
+      <img src={logo} className="App-logo" alt="logo" />
+      <p>
+        Edit <code>src/App.js</code> and save to reload.
+      </p>
+
+      <a
+        className="App-link"
+        href="https://reactjs.org"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Learn React
+      </a>
+      <div>
+        {user.username}
+        <br />
+        {JSON.stringify(teamInfo)}
+      </div>
+      
+      <Summary />
+      <InnerTable />
+      <CommentsOnly />
+
+    </div>
+    )
 
 }
 
 function LoginUI() {
   return (
     <div>
-        <button onClick={() => Auth.federatedSignIn({
+      <button onClick={() => Auth.federatedSignIn({
 
-          provider: CognitoHostedUIIdentityProvider.Google
-        })}>Login</button>
+        provider: CognitoHostedUIIdentityProvider.Google
+      })}>Login</button>
 
     </div>
   )
@@ -44,43 +83,31 @@ function LoginUI() {
 function App() {
 
   const [user, setUser] = useState()
-  const [teams, setTeams] = useState([])
+
 
   useEffect(() => {
     (async () => {
       console.log(`async run`)
-      if(!user) {
-       // if(process.env.NODE_ENV !== 'production') {
-       //   Auth.Credentials.configure({
-       //     accessKeyId: "ASIAVJKIAM-AuthRole",
-       //     secretKey: "fake",
-       //     region: "us-west-1"
-       //   })
-       //   setUser({})
-       // }
-       // else
-          setUser(await Auth.currentAuthenticatedUser())
-      }
-      else {
-        return API.graphql(graphqlOperation(listTeams, {}))
+      if (!user) {
+        setUser(await Auth.currentAuthenticatedUser())
       }
     })()
-    .then(console.log.bind(console))
-    .catch(console.error.bind(console))
+      .then(console.log.bind(console))
+      .catch(console.error.bind(console))
   }, [user])
 
-      
+
   return (
     <div className="App">
       <header className="App-header">
         {(_ => {
 
-            if(user) {
-              console.log(`${JSON.stringify(user)} logged in`)
-              return ( <AuthenticatedUI user={user}/> )
-            } 
-            return ( <LoginUI/> )
+          if (user) {
+            //console.log(`${JSON.stringify(user)} logged in`)
+            return (<AuthenticatedUI user={user} />)
           }
+          return (<LoginUI />)
+        }
         )()
         }
       </header>
