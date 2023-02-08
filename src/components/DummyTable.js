@@ -3,15 +3,19 @@ import { useTable } from "react-table"
 //import { apiListTeams, apiAddTeam, apiGetTeam, getMatchesForRegional, apiCreateTeamMatchEntry } from './api/index'
 
 
-const dummy = [
+/*const dummy = [
   {TeamNumber: "Examples: "},
-  {TeamNumber: 2443, Matches: "Q2", priorities: "", TeamTeleOpPoints: 16, GoodTeamRating: [true, " yes "]}, // every different object is specific to a row
+  {TeamNumber: 2443, Matches: "Q2", TeamAutoPoints: 2.5, TeamTeleOpPoints: 16, GoodTeamRating: [true, " yes "]}, // every different object is specific to a row
   {TeamNumber: 2044, Matches: "Q3", TeamAutoPoints: 2, TeamTeleOpPoints: 1, GoodTeamRating: false }
-] 
+] */
+const dummy = [
+  {TeamNumber: 2443, Matches: "Q2",  }, // every different object is specific to a row
+  {TeamNumber: 2044, Matches: "Q3",  }
+]
 
-function DummyTableDG() {
+function DummyTable() {
 
-  const [tableData,setTableData] = useState(["", "", ""]); //each set of quote corresponds to a new made row
+  const [tableData,setTableData] = useState([]);
   const [teamNumber,setTeamNumber] = useState([]) 
 
   //useEffect(() => console.log(data)) //debug purposes
@@ -21,39 +25,53 @@ function DummyTableDG() {
       .then(data => {
         setTeamNumber(data); //"data" defined as the team numbers within the data         //"injecting" data 
       })
-  },[]) */
+  },[]) 
 
-  /*useEffect(() => { //trying to define team.TeamNumber to input test data
-    setTableData (
-      {
-        TeamNumber: 
-      }
-    )
+  useEffect(() => {
+
   }) */
 
   const data = React.useMemo(
-    () => tableData.map((dummy) => {  
-      return dummy;
-    }
+    () => tableData.map(team => {
+      return {
+        TeamNumber: team.TeamNumber,
+        Priorities: team.Priorities,
+        AvgPoints: team.AvgPoints,
+        AvgCharge: team.AvgCharge,
+        Comments: team.Commentss
+      }
+    }),[tableData]
   )
-)
+
   /*const data = React.useMemo(
     () => {
       return dummy;
     }
   ) */
 
-  /*const renderRowSubcomponent =({ row }) => {   //function that holds and displays the sub row of team info when clicked
-    const dummy = [
-      {}
-    ] */
-
   const columns = React.useMemo(
     () => [
-      {
+      /*{
+        Header: " Team Number ",
         Header: " Team # ",
         accessor: "TeamNumber"
       },
+      {
+        Header: " Priorities/Strategies ",
+        accessor: "Priorities"
+      },
+      {
+        Header: " Average Points ",
+        accessor: "AvgPoints"
+      },
+      {
+        Header: " Avg Charge ",
+        accessor: "AvgChargeStation"
+      },
+      {
+        Header: " Comments ",
+        accessor: "Comments"
+      },], [] */
       {
         Header: " Matches ",
         accessor: "Matches"
@@ -97,7 +115,6 @@ function DummyTableDG() {
     headerGroups,
     rows,
     prepareRow,
-    //visibleColumns,
   } = tableInstance
   
   return (
@@ -121,13 +138,12 @@ function DummyTableDG() {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        
         {rows.map(row => {
           prepareRow(row)
-          return ( //<React.Fragment>
+          return (
             <tr {...row.getRowProps()}>
               {row.cells.map(cell => {
-                return (   // apply cell props here
+                return (
                   <td
                     {...cell.getCellProps()}
                     style={{
@@ -141,27 +157,13 @@ function DummyTableDG() {
                 )
               })}
             </tr>
-              
-              // code on bottom
           )
-        })} 
+        })}
       </tbody>
     </table>
   )
 }
 
-{/*{row.IsExpanded ? (
-                <tr>
-                  <td colSpan={visibleColumns.length}
-                  style = {{
-                    maxWidth: "1200px"
-                  }}
-                  >
-                    {renderRowSubcomponent ({ row })}
-                  </td>
-                </tr>
-              ) : null}
 
-                </React.Fragment> */}
 
-export default DummyTableDG; 
+export default DummyTable; 

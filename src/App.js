@@ -56,18 +56,8 @@ function AuthenticatedUI({ user }) {
         {user.username}
         <br />
       </div>
-<<<<<<< HEAD
       <DummyTableDG />
     </div>)
-=======
-      
-      <Summary />
-      <InnerTable />
-      <CommentsOnly />
-
-    </div>
-    )
->>>>>>> 20156249ddf2eaa5ef1d7e625486b1e0c152ccf8
 
 }
 
