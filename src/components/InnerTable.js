@@ -7,7 +7,7 @@ const dummyData = [
 
 ]
 
-function InnerTable(){
+const InnerTable = (props) => {
 
     const data = React.useMemo(
         () => {

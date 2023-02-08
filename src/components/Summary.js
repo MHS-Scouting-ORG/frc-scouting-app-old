@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTable, useSortBy, useExpanded, } from 'react-table';
+
 import InnerTable from './InnerTable'; //add to summary table when clicked 
 
 
@@ -29,37 +30,37 @@ function Summary(){
             accessor: "Matches"
           },
           {
-            Header: " priorities ",
-            accessor: "priorities"
+            Header: " Priorities ",
+            accessor: "Priorities"
           },
           {
-            Header: " avg points ",
+            Header: " Avg Points ",
             accessor: "AvgPoints"
           },
           {
-            Header: "avg grid points",
-            accessor: "avgGridPoints"
+            Header: "Avg Grid Points",
+            accessor: "AvgGridPoints"
           },
           {
-            Header: "avg accuracy",
-            accessor: "avgAccuracy"
+            Header: "Avg Accuracy",
+            accessor: "AvgAccuracy"
           },
           {
-            Header: "avg charge station points",
-            accessor: "avgChargeStation"
+            Header: "Avg Charge Station Points",
+            accessor: "AvgChargeStation"
           },
           {
-            Header: "defense",
-            accessor: "defense"
+            Header: "Defense",
+            accessor: "Defense"
           },
           {
-            Header: "penalties",
-            accessor: "penalties"
+            Header: "Penalties",
+            accessor: "Penalties"
           },
         ], []
       )
   
-    const tableInstance = useTable({ columns, data }, useSortBy);
+    const tableInstance = useTable({ columns, data }, useSortBy, useExpanded);
   
     const {
       getTableProps,
