@@ -1,7 +1,7 @@
 import { Auth, graphqlOperation, API } from 'aws-amplify'
 import { teamMatchesByRegional, getTeam, listTeams} from '../graphql/queries'
 import { updateTeamMatch, createTeamMatch, createTeam } from '../graphql/mutations'
-
+import  buildMatchEntry  from './builder'
 
 /*
  * Get a Team by their TeamNumber  that are currently in our database
@@ -54,37 +54,31 @@ const getMatchesForRegional = async function(regionalId, teamNumber) {
  * - matchid - the match id
  */
 const apiCreateTeamMatchEntry = async function(regionalId, teamId, matchId) {
-    if(!regionalId) {
-        throw "Regional not provided"
+    if(regionalId === undefined) {
+        throw new Error("Regional not provided")
     }
-    if(!teamId) {
-        throw "Team Id not provided"
+    if(teamId === undefined) {
+        throw new Error("Team Id not provided")
     }
-    if(!matchId) {
-        throw "MatchId not provided"
+    if(matchId === undefined) {
+        throw new Error(`MatchId not provided; matchId ${matchId}`)
     }
 
     return API.graphql(graphqlOperation(createTeamMatch, {
-        input: {
-            id: matchId,
-            name: "",
-            Team: teamId,
-            Regional: regionalId
-
-        }
+        input: buildMatchEntry(regionalId, teamId, matchId),
     }))
 }
 
 
 const apiUpdateTeamMatch = async function(regionalId, teamId, matchId) {
     if(!regionalId) {
-        throw "Regional not provided"
+        throw new Error("Regional not provided")
     }
     if(!teamId) {
-        throw "Team Id not provided"
+        throw new Error("Team Id not provided")
     }
     if(!matchId) {
-        throw "MatchId not provided"
+        throw new Error("MatchId not provided")
     }
 
     return API.graphql(graphqlOperation(updateTeamMatch, {

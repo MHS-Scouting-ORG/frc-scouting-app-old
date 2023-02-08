@@ -6,6 +6,59 @@ type Team @model @auth(rules : [{ allow: private, provider: iam}]) {
   id: ID! @primaryKey
   name: String!
   description: String
+  Comment: String
+}
+
+enum IntakeType {
+  SingleSubstation
+  DoubleStation
+  Portals
+  SlidingShelves
+  Ground
+}
+
+enum ChargeStationType {
+  DockedEngaged
+  Docked
+  Attempted
+  None
+}
+
+type ScorePos {
+  Upper: Int
+  Mid: Int
+  Lower: Int
+}
+
+type Scoring {
+  Cones: ScorePos!
+  Cubes: ScorePos!
+}
+
+type AutonomousType {
+  Scored: Scoring!
+  Attempted: Scoring!
+  LeftCommunity: Boolean
+  ChargeStation: ChargeStationType
+}
+
+type PenaltiesType {
+  Fouls: Int
+  Tech: Int
+  Yellow: Int
+  Red: Int
+  Disabled: Boolean
+  DQ: Boolean
+  BrokenBot: Boolean
+}
+
+type TeleopType {
+  Scored: Scoring!
+  Attempted: Scoring!
+  Accuracy: Int
+  RankingPts: Int
+  ChargeStation: ChargeStationType
+  Penalties: PenaltiesType
 }
 
 type TeamMatch @model @auth(rules : [{ allow: private, provider: iam}]) {
@@ -14,4 +67,9 @@ type TeamMatch @model @auth(rules : [{ allow: private, provider: iam}]) {
   description: String
   Team: ID! @index
   Regional: String! @index
+  Autonomous: AutonomousType!
+  Teleop: TeleopType!
+  SmartPlacement: Boolean
+  Comments: String
+  IntakeFrom: [IntakeType]
 }
