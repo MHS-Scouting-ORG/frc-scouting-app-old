@@ -4,6 +4,11 @@ import { Amplify, Auth } from 'aws-amplify'
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import awsconfig from './aws-exports'
 import DummyTableDG from './components/DummyTableDG';
+import DummyTable from './components/DummyTable';
+import Summary from './components/Summary';
+import InnerTable from './components/InnerTable';
+import CommentsOnly from './components/CommentsOnly';
+
 
 import { useEffect, useState } from 'react'
 import ExampleUI from './example'
@@ -51,8 +56,18 @@ function AuthenticatedUI({ user }) {
         {user.username}
         <br />
       </div>
+<<<<<<< HEAD
       <DummyTableDG />
     </div>)
+=======
+      
+      <Summary />
+      <InnerTable />
+      <CommentsOnly />
+
+    </div>
+    )
+>>>>>>> 20156249ddf2eaa5ef1d7e625486b1e0c152ccf8
 
 }
 

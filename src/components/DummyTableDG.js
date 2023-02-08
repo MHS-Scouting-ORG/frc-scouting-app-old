@@ -8,6 +8,10 @@ import { useTable } from "react-table"
   {TeamNumber: 2443, Matches: "Q2", TeamAutoPoints: 2.5, TeamTeleOpPoints: 16, GoodTeamRating: [true, " yes "]}, // every different object is specific to a row
   {TeamNumber: 2044, Matches: "Q3", TeamAutoPoints: 2, TeamTeleOpPoints: 1, GoodTeamRating: false }
 ] */
+const dummy = [
+  {TeamNumber: 2443, Matches: "Q2",  }, // every different object is specific to a row
+  {TeamNumber: 2044, Matches: "Q3",  }
+]
 
 function DummyTableDG() {
 
@@ -49,6 +53,7 @@ function DummyTableDG() {
     () => [
       {
         Header: " Team Number ",
+        Header: " Team # ",
         accessor: "TeamNumber"
       },
       {
@@ -67,6 +72,38 @@ function DummyTableDG() {
         Header: " Comments ",
         accessor: "Comments"
       },], []
+        Header: " Matches ",
+        accessor: "Matches"
+      },
+      {
+        Header: " priorities ",
+        accessor: "priorities"
+      },
+      {
+        Header: " avg points ",
+        accessor: "AvgPoints"
+      },
+      {
+        Header: "avg grid points",
+        accessor: "avgGridPoints"
+      },
+      {
+        Header: "avg accuracy",
+        accessor: "avgAccuracy"
+      },
+      {
+        Header: "avg charge station points",
+        accessor: "avgChargeStation"
+      },
+      {
+        Header: "defense",
+        accessor: "defense"
+      },
+      {
+        Header: "penalties",
+        accessor: "penalties"
+      },
+    ], []
   )
 
   const tableInstance = useTable({ columns, data});
@@ -88,7 +125,6 @@ function DummyTableDG() {
               <th
                 {...column.getHeaderProps()}
                 style={{
-                  borderBottom: 'solid 3px red',
                   background: 'aliceblue',
                   color: 'black',
                   fontWeight: 'bold',
@@ -130,3 +166,4 @@ function DummyTableDG() {
 
 
 export default DummyTableDG;
+export default DummyTable; 
