@@ -3,19 +3,19 @@ import React from 'react';
 class DropDown extends React.Component{
     constructor(props){
         super(props);
-        this.changeDropsDownState = this.changeDropsDownState.bind(this);
+        this.changeDropDown = this.changeDropDown.bind(this);
     }
 
-    changeDropsDownState(){
+    changeDropDown(){
         this.props.changeDropsDownState(this.props.place)
     }
 
     render(){
-        return(
+        return (
             <div>
-                <select onChange={this.dropDownChange}>
+                <select onChange={this.changeDropDown}>
                     <option key={"empty"}></option>
-                    {this.props.options.map((option) => <option key={option}>{option}</option>)}
+                    {this.props.choices.map((choice) => <option key={choice} > {choice} </option>)}
                 </select>
             </div>
         )

@@ -17,10 +17,14 @@ class Form extends React.Component{
 
         this.makeMatchDropDown = this.makeMatchDropDown(this);
         this.changeTeam = this.changeTeam.bind(this);
-        this.makeTeamDropDown = this.makeTeamDropDown.bind(this);     
         
         this.dropDownChange = this.dropDownChange.bind(this);
         this.makeDropDown = this.makeDropDown.bind(this);
+
+        this.btnMinus = this.btnMinus.bind(this);
+        this.btnPlus = this.btnPlus.bind(this);
+        this.inputBoxChanged = this.inputBoxChanged.bind(this);
+        this.makeInputBox = this.makeInputBox.bind(this);
 
         this.state = {
             comments: '',
@@ -37,8 +41,8 @@ class Form extends React.Component{
             bonusVal: [' ', ' '],
             totalPts: 0,
             pentalyVal: [' ',' ',' ',' ',' '],
-            dropDownVal:[' ', ' ', ' ', ' ', ' '] ,
-
+            dropDownVal:['', '', ''] ,
+            inputBoxVal: [0, 0],
 
 
         }
@@ -124,9 +128,6 @@ class Form extends React.Component{
         this.setState({bonusVal: [' ', ' ']});
     }
 
-    makeTeamDropDown(){
-        
-    }
     //---------------------------------------------------------------------------------------------------------------//
 
     dropDownChange(event,i){
@@ -134,11 +135,11 @@ class Form extends React.Component{
         dropDownSates[i] = event.target.value;
     }
 
-    makeDropDown(choices,i){
+    makeDropDown(option,i){
         return(
             <dive>
                 <DropDown>
-                    option={choices}
+                    choice={option}
                     place={i}
                     setState={this.dropDownChange}
                 </DropDown>
@@ -147,6 +148,50 @@ class Form extends React.Component{
     }
 
     //--------------------------------------------------------------------------------------------------------------//
+
+    inputBoxChanged(event, i){
+        let counterStates = this.state.inputBoxVal;
+        if(event.target.value === " "){
+            counterStates[i] = 0;
+        } else {
+            counterStates[i] = event.target.value;
+        }
+    }
+
+    btnMinus(i){
+        let counterStates = this.state.inputBoxVal;
+        if(counterStates[i] > 0){
+            counterStates[i] = parseInt(counterStates[i]) - 1;
+        } else{
+            counterStates[i] = 0;
+        }
+    }
+
+    btnPlus(i){
+        let counterStates = this.state.inputBoxVal;
+        if(counterStates[i] >= 0){
+            counterStates[i] = parseInt(counterStates[i]) + 1;
+        } else {
+            counterStates[i] = 0;
+        }
+    }
+
+    makeInputBox(i){
+        let counterStates = this.state.inputBoxVal;
+        return(
+            <div>
+                <CounterBox>
+                        setState={this.inputBoxChanged}
+                        state={counterStates[i]}
+                        place={i}
+                        buttonMinus={this.btnMinus}
+                        buttonPlus={this.btnPlus}
+                </CounterBox>
+            </div>
+        )
+    }
+
+    //-------------------------------------------------------------------------------------------------------------//
 
     render(){
         return(
@@ -161,6 +206,8 @@ class Form extends React.Component{
                 </form>
                 <h3>TELE-OP</h3>
                 <form>
+                    {this.makeInputBox("Test: ", 0)}
+                    {this.makeInputBox("Test2: ", 1)}
                 </form>
             </div>
         )
