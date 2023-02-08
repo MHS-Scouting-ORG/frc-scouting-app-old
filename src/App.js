@@ -14,8 +14,6 @@ import ExampleUI from './example'
 import { getTeamInfo } from './api/bluealliance'
 
 
-import DummyTable from './components/DummyTable'
-
 const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
 awsconfig.oauth.redirectSignIn = redirectSignInUri[parseInt(process.env.REACT_APP_REDIRECT_INDEX)]
 const redirectSignOutUri = awsconfig.oauth.redirectSignOut.split(',')
