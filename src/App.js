@@ -6,6 +6,8 @@ import awsconfig from './aws-exports'
 import { getTeam, listTeams } from './graphql/queries'
 import { useEffect, useState } from 'react'
 
+import DummyTable from './components/DummyTable'
+
 const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
 awsconfig.oauth.redirectSignIn = redirectSignInUri[parseInt(process.env.REACT_APP_REDIRECT_INDEX)]
 const redirectSignOutUri = awsconfig.oauth.redirectSignOut.split(',')
@@ -21,24 +23,9 @@ function AuthenticatedUI ({user}) {
   }, [])  
   return (
           <div>
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          <div>
-          {user.username}
-
+            <DummyTable></DummyTable>
           </div>
-          </div>)
+          )
 
 }
 
@@ -96,7 +83,6 @@ function App() {
           }
         )()
         }
-        
       </header>
     </div>
   );
