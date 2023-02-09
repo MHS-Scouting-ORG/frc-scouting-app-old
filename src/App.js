@@ -56,17 +56,8 @@ function AuthenticatedUI({ user }) {
         {user.username}
         <br />
       </div>
-      
-      <h3>charged up table</h3>
-      <Summary />
-      <InnerTable />
-
-      <h3>table w/ only comments</h3>
-      <CommentsOnly />
-
-    </div>
-    )
-    
+      <DummyTableDG />
+    </div>)
 
 }
 
@@ -112,7 +103,6 @@ function App() {
         }
         )()
         }
-
       </header>
     </div>
   );
