@@ -11,7 +11,7 @@ class StationDropDown extends React.Component{
     }
 
     changeChargeStation(event){
-        this.props.setChargeStation(event);
+        this.props.changeChargeStationUsed(event);
         this.setState({chargeStationUsed: event.value})
         
     }
@@ -19,13 +19,15 @@ class StationDropDown extends React.Component{
     render(){
         return(
             <div>
-                <select onChange={this.changeChargeStation()}>
-                    <option>Select Option</option>
-                    <option value='dockEngage'>Docked & Engaged</option>
-                    <option value='dockedNotEngaged'>Docked & Not Enaged</option>
-                    <option value='parked'>Parked</option>
-                    <option value='attempted'>Attempted</option>
-                </select>
+                <label> {"Charge Station: "}
+                    <select onChange={this.changeChargeStation()}>
+                        <option value='none'>None</option>
+                        <option value='dockEngage'>Docked & Engaged</option>
+                        <option value='dockedNotEngaged'>Docked & Not Enaged</option>
+                        <option value='parked'>Parked</option>
+                        <option value='attempted'>Attempted</option>
+                    </select>
+                </label>
             </div>
         )
     }

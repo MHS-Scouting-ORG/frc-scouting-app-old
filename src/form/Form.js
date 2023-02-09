@@ -5,6 +5,7 @@ import MatchDropDown from './MatchDropDown';
 import StationDropDown from './StationDropDown';
 import CounterBox from './CounterBox';
 
+
 class Form extends React.Component{
     constructor(props){
         super(props)
@@ -18,13 +19,8 @@ class Form extends React.Component{
         this.makeMatchDropDown = this.makeMatchDropDown(this);
         this.changeTeam = this.changeTeam.bind(this);
         
-        this.dropDownChange = this.dropDownChange.bind(this);
-        this.makeDropDown = this.makeDropDown.bind(this);
-
-        this.btnMinus = this.btnMinus.bind(this);
-        this.btnPlus = this.btnPlus.bind(this);
-        this.inputBoxChanged = this.inputBoxChanged.bind(this);
-        this.makeInputBox = this.makeInputBox.bind(this);
+        this.dropDownChanged = this.dropDownChanged.bind(this);
+        this.makeDropDownBox = this.makeDropDownBox.bind(this);
 
         this.state = {
             comments: '',
@@ -34,7 +30,7 @@ class Form extends React.Component{
             matchData: 'not found',
             teamNumber: ' ',
             teams:['team1', 'team2', 'team3', 'team4', 'team5', 'team6'],
-            chargeStation: [' ', ' ',' ', ' ', ' '],
+            chargeStationVal: ['', '',''],
             whoWon: '',
             checkedWhoWon: [' ' , ' '],
             rankingPts: 0,
@@ -130,85 +126,38 @@ class Form extends React.Component{
 
     //---------------------------------------------------------------------------------------------------------------//
 
-    dropDownChange(event,i){
-        let dropDownSates =  this.state.dropDownVal;
-        dropDownSates[i] = event.target.value;
+    dropDownChanged(event,i){
+        let dropDownStates = this.state.dropDownVal;
+        dropDownStates[i] = event.target.value
     }
 
-    makeDropDown(option,i){
-        return(
-            <dive>
-                <DropDown>
-                    choice={option}
+
+
+    makeDropDownBox(title,options,i){
+        return (
+            <div>
+                <DropDown
+                    title={title}
+                    choices={options}
                     place={i}
-                    setState={this.dropDownChange}
-                </DropDown>
-            </dive>
+                    setState={this.dropDownChanged}
+                />
+            </div>
         )
     }
 
     //--------------------------------------------------------------------------------------------------------------//
 
-    inputBoxChanged(event, i){
-        let counterStates = this.state.inputBoxVal;
-        if(event.target.value === " "){
-            counterStates[i] = 0;
-        } else {
-            counterStates[i] = event.target.value;
-        }
-    }
-
-    btnMinus(i){
-        let counterStates = this.state.inputBoxVal;
-        if(counterStates[i] > 0){
-            counterStates[i] = parseInt(counterStates[i]) - 1;
-        } else{
-            counterStates[i] = 0;
-        }
-    }
-
-    btnPlus(i){
-        let counterStates = this.state.inputBoxVal;
-        if(counterStates[i] >= 0){
-            counterStates[i] = parseInt(counterStates[i]) + 1;
-        } else {
-            counterStates[i] = 0;
-        }
-    }
-
-    makeInputBox(i){
-        let counterStates = this.state.inputBoxVal;
-        return(
-            <div>
-                <CounterBox>
-                        setState={this.inputBoxChanged}
-                        state={counterStates[i]}
-                        place={i}
-                        buttonMinus={this.btnMinus}
-                        buttonPlus={this.btnPlus}
-                </CounterBox>
-            </div>
-        )
-    }
-
     //-------------------------------------------------------------------------------------------------------------//
-
     render(){
         return(
             <div>
                 <h1> FORM </h1>
-                <form>
-
-                </form>
                 <h3>AUTONOMOUS</h3>
-                <form>
-                    {this.makeDropDown}
-                </form>
                 <h3>TELE-OP</h3>
-                <form>
-                    {this.makeInputBox("Test: ", 0)}
-                    {this.makeInputBox("Test2: ", 1)}
-                </form>
+                {this.makeDropDownBox("Test: ", [1,2,3],0)}
+                {this.makeDropDownBox("Test 2: ", ["Slow", "Fast", "Really Fast"], 1)}
+                <CounterBox></CounterBox>
             </div>
         )
     }
