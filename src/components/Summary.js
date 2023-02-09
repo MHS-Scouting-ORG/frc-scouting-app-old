@@ -1,61 +1,81 @@
 import React, { useState } from 'react';
 import { useTable, useSortBy, useExpanded, } from 'react-table';
+import { apiAddTeam, } from '../api';
 
 import InnerTable from './InnerTable'; //add to summary table when clicked 
 
 
 
 const dummyData = [
-    {TeamNumber: '2443', Matches: "Q2",  }, // using to test sortby
-    {TeamNumber: '32', Matches: "Q3",  }
+    {teamNumber: '2443', matches: "Q2",  }, // using to test sortby
+    {teamNumber: '32', matches: "Q3",  }
 
 ]
 
 function Summary(){
 
+    const [teamNums, setTeamNums] = useState([]);
+
+    
     const data = React.useMemo(
         () => {
-        return dummyData;
+        //return dummyData;
+        getTeamsInRegional(getRegionals()).map((team) =>
+        [
+          team.teamNumber // get team number from teams object pulled from the getTeamsRegional api
+        ])
         }
     )
   
     const columns = React.useMemo(
         () => [
           {
-            Header: " Team # ",
-            accessor: "TeamNumber"
+            Header: 'Team #',
+            accessor: "teamNumber",
           },
           {
-            Header: " Matches ",
-            accessor: "Matches"
+            Header: 'Matches',
+            accessor: 'matches',
           },
           {
-            Header: " Priorities ",
-            accessor: "Priorities"
+            Header: 'OPR',
+            accessor: 'opr',
           },
           {
-            Header: " Avg Points ",
-            accessor: "AvgPoints"
+            Header: 'Priorities',
+            accessor: 'priorities',
           },
           {
-            Header: "Avg Grid Points",
-            accessor: "AvgGridPoints"
+            Header: 'CCWM',
+            accessor: 'ccwm',
           },
           {
-            Header: "Avg Accuracy",
-            accessor: "AvgAccuracy"
+            Header: 'Avg Points',
+            accessor: 'avgPoints',
           },
           {
-            Header: "Avg Charge Station Points",
-            accessor: "AvgChargeStation"
+            Header: 'Avg Grid Points',
+            accessor: 'avgGridPoints',
           },
           {
-            Header: "Defense",
-            accessor: "Defense"
+            Header: 'Avg Accuracy',
+            accessor: 'avgAccuracy',
           },
           {
-            Header: "Penalties",
-            accessor: "Penalties"
+            Header: 'Avg Charge Station Points',
+            accessor: 'avgChargeStation',
+          },
+          {
+            Header: 'DPR',
+            accessor: 'dpr',
+          },
+          {
+            Header: 'Defense',
+            accessor: 'defense',
+          },
+          {
+            Header: 'Penalties',
+            accessor: 'penalties',
           },
         ], []
       )

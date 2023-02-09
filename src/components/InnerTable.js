@@ -2,8 +2,8 @@ import React from 'react';
 import { useTable, useSortBy } from 'react-table';
 
 const dummyData = [
-    {Match: "Q2",  }, // using to test sortby
-    {Match: "Q3",  }
+    {match: "Q2",  }, // using to test sortby
+    {match: "Q3",  }
 
 ]
 
@@ -22,7 +22,7 @@ const InnerTable = (props) => {
           columns: [
             {
               Header: 'Match',
-              accessor: 'Match',
+              accessor: 'match',
             },
             {
               Header: 'Priorities',
@@ -30,7 +30,7 @@ const InnerTable = (props) => {
             },
             {
               Header: 'Total Pts',
-              accessor: 'TotalPoints',
+              accessor: 'totalPoints',
             },
             {
               Header: 'Grid Points',
@@ -54,19 +54,19 @@ const InnerTable = (props) => {
           columns: [
             {
               Header: 'Place',
-              accessor: 'AutoPlacement',
+              accessor: 'autoPlacement',
             },
             {
               Header: 'Grid',
-              accessor: 'AutoGrid',
+              accessor: 'autoGrid',
             },
             {
               Header: 'Mobility',
-              accessor: 'AutoMobility',
+              accessor: 'autoMobility',
             },
             {
               Header: 'Charge Station',
-              accessor: 'AutoChargeStation',
+              accessor: 'autoChargeStation',
             },]
         },
         {
@@ -79,42 +79,38 @@ const InnerTable = (props) => {
             {
               Header: 'Endgame',
               accessor: 'endgame',
-            },]
-        },
-        {
-          Header: 'Game Info',
-          columns: [
+            },
             {
               Header: 'Smart Placement',
               accessor: 'smartPlacement',
             },
             {
-                Header: 'Intake From',
-                accessor: 'intakeFrom',
+              Header: 'Intake From',
+              accessor: 'intakeFrom',
             },
             {
               Header: 'Foul | Tech',
-              accessor: 'NumberOfFoulAndTech',
+              accessor: 'numberOfFoulAndTech',
             },
             {
               Header: 'Penalties',
-              accessor: 'Penalties',
+              accessor: 'penalties',
             },
             {
               Header: '# RP',
-              accessor: 'NumberOfRankingPoints',
+              accessor: 'numberOfRankingPoints',
             },]
         },
         {
-          Header: 'Scouter Info',
+          Header: 'Other',
           columns: [
             {
-                Header: 'Defense',
-                accessor: 'defense',
+              Header: 'Defense',
+              accessor: 'defense',
             },
             {
               Header: 'Comments',
-              accessor: 'Comments',
+              accessor: 'comments',
             },
             {
               Header: 'Scouter',
