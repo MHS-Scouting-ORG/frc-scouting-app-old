@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react"
-import { useTable } from "react-table"
-//import { apiListTeams, apiAddTeam, apiGetTeam, getMatchesForRegional, apiCreateTeamMatchEntry } from './api/index'
+import { useExpanded, useTable } from "react-table"
+import { apiGetTeam, apiListTeams } from "../api";
+import DumInnerTable from "./DumInnerTable";
+
 
 
 const dummy = [
   {TeamNumber: "Examples: "},
-  {TeamNumber: 2443, Matches: "Q2", priorities: "", TeamTeleOpPoints: 16, GoodTeamRating: [true, " yes "]}, // every different object is specific to a row
-  {TeamNumber: 2044, Matches: "Q3", TeamAutoPoints: 2, TeamTeleOpPoints: 1, GoodTeamRating: false }
+  {TeamNumber: 2443, Matches: "Q2", priorities: "", }, // every different object is specific to a row
+  {TeamNumber: 2044, Matches: "Q3",  }
 ] 
 
 function DummyTableDG() {
@@ -31,22 +33,63 @@ function DummyTableDG() {
     )
   }) */
 
+  useEffect(() => {
+    
+  })
+
+  useEffect(() => {
+    //console.log(apiGetTeam()) //trying to see team data
+  })
+
+  
+
   const data = React.useMemo(
-    () => tableData.map((dummy) => {  
+    () => {  
       return dummy;
     }
-  )
 )
+
   /*const data = React.useMemo(
     () => {
       return dummy;
     }
   ) */
 
-  /*const renderRowSubcomponent =({ row }) => {   //function that holds and displays the sub row of team info when clicked
-    const dummy = [
-      {}
-    ] */
+  const renderRowSubcomponent = ({ row }) => {   //function that holds and displays the sub row of team info when clicked
+
+    const dummyI = (x) => [ //with parameter "x" trying to take in object which has point data type for point and so and so for others
+      {
+        Match: 'Q13',
+        TotalPts: x.TotalPts
+      },
+      {
+        Match: 'Q11',
+        TotalPts: x.TotalPts
+      }
+    ]
+
+    const dum = /*dummyI.map(x => { */ () => {
+
+      return [
+        {
+          
+        },
+        {
+
+        }
+      ]
+    }
+
+    return dum.length > 0 ?
+    (<pre>
+      <div>{<DumInnerTable information = {dum}/>} </div>
+    </pre>)
+    : (
+      <div style={{
+        padding: '5px',
+    }}> No data collected for Team {row.values.TeamNumber}. </div>
+    );
+  }
 
   const columns = React.useMemo(
     () => [
@@ -89,7 +132,7 @@ function DummyTableDG() {
     ], []
   )
 
-  const tableInstance = useTable({ columns, data});
+  const tableInstance = useTable({ columns, data}, useExpanded);
 
   const {
     getTableProps,
@@ -97,7 +140,7 @@ function DummyTableDG() {
     headerGroups,
     rows,
     prepareRow,
-    //visibleColumns,
+    visibleColumns,
   } = tableInstance
   
   return (
@@ -124,7 +167,7 @@ function DummyTableDG() {
         
         {rows.map(row => {
           prepareRow(row)
-          return ( //<React.Fragment>
+          return ( <React.Fragment>
             <tr {...row.getRowProps()}>
               {row.cells.map(cell => {
                 return (   // apply cell props here
@@ -133,7 +176,7 @@ function DummyTableDG() {
                     style={{
                       padding: '10px',
                       border: 'solid 1px gray',
-                      background: 'papayaWhip',
+                      background: 'black',
                     }}
                   >
                     {cell.render('Cell')}
@@ -141,8 +184,20 @@ function DummyTableDG() {
                 )
               })}
             </tr>
-              
-              // code on bottom
+
+            {row.IsExpanded ? (
+                <tr>
+                  <td colSpan={visibleColumns.length}
+                  style = {{
+                    maxWidth: "1200px"
+                  }}
+                  >
+                    {renderRowSubcomponent ({ row })}
+                  </td>
+                </tr>
+              ) : null}
+
+                </React.Fragment>
           )
         })} 
       </tbody>

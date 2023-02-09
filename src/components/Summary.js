@@ -4,6 +4,7 @@ import InnerTable from './InnerTable'; //add to summary table when clicked
 
 
 
+
 const dummyData = [
     {TeamNumber: '2443', Matches: "Q2",  }, // using to test sortby
     {TeamNumber: '32', Matches: "Q3",  }
