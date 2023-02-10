@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTable, useSortBy, useExpanded, } from 'react-table';
-import { apiAddTeam, } from '../api';
-
+import { apiAddTeam, getTeamsInRegional, getRegionals } from '../api/bluealliance';
+import {apiListTeams,} from '../api/index'
 import InnerTable from './InnerTable'; //add to summary table when clicked 
 
 
@@ -16,16 +16,28 @@ const dummyData = [
 function Summary(){
 
     const [teamNums, setTeamNums] = useState([]);
+    const [averages, setAverages] = useState([]);
+    const [finalData, setFinalData] = useState([]);
+    const [apiData, setApiData] = useState([]);
 
     
+    useEffect(() => { //displays all teams and info for the az east regional in console
+      getTeamsInRegional('2023azva')
+        .then(data => console.log(data))
+        //.then(data => data.map((obj) => setTeams(obj.team_number)))
+        .catch(console.log.bind(console))
+    }, [])
+
     const data = React.useMemo(
         () => {
-        //return dummyData;
-        getTeamsInRegional(getRegionals()).map((team) =>
+        //teamNums
+        return dummyData;
+        
+        /*getTeamsInRegional('2022hiho').map((team) =>
         [
-          team.teamNumber // get team number from teams object pulled from the getTeamsRegional api
-        ])
-        }
+          team.teamNumber // doesn't stop 
+        ])*/
+      }
     )
   
     const columns = React.useMemo(
@@ -159,4 +171,5 @@ function Summary(){
   
   }
   
+  //export {getRegionals, getTeamsInRegional }
   export default Summary;

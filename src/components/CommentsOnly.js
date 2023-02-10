@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useTable, useSortBy } from 'react-table';
+import React, { useEffect, useState } from 'react';
+import { useTable, useSortBy, usePagination } from 'react-table';
 
 
 const dummyData = [
@@ -9,12 +9,44 @@ const dummyData = [
 ]
 
 function CommentsOnly() {
+  
     
     const data = React.useMemo(
         () => {
         return dummyData;
         }
     )
+
+//pasted from react table
+    const EditableCell = ({
+      value: initialValue,
+      row: { index },
+      column: { id },
+      updateMyData, 
+    }) => {
+      
+      const [value, setValue] = React.useState(initialValue)
+    
+      const onChange = e => {
+        setValue(e.target.value)
+      }
+    
+      
+      const onBlur = () => {
+        updateMyData(index, id, value)
+      }
+    
+      
+      useEffect(() => {
+        setValue(initialValue)
+      }, [initialValue])
+    
+      return <input value={value} onChange={onChange} onBlur={onBlur} />
+    }
+
+    const defaultColumn = {
+      Cell: EditableCell
+    };
   
     const columns = React.useMemo(
       () => [
@@ -30,7 +62,7 @@ function CommentsOnly() {
       []
     )
   
-    const tableInstance = useTable({ columns, data }, useSortBy);
+    const tableInstance = useTable({ columns, data, defaultColumn, }, useSortBy, usePagination);
   
     const {
       getTableProps,
