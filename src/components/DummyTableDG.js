@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useExpanded, useTable } from "react-table"
 import { apiGetTeam, apiListTeams } from "../api";
+import { getRegionals, getTeamsInRegional, getApiKey } from "../api/bluealliance";
 import DumInnerTable from "./DumInnerTable";
 
 
@@ -13,8 +14,10 @@ const dummy = [
 
 function DummyTableDG() {
 
-  const [tableData,setTableData] = useState(["", "", ""]); //each set of quote corresponds to a new made row
-  const [teamNumber,setTeamNumber] = useState([]) 
+  const [tableData,setTableData] = useState([]); //each set of quote corresponds to a new made row
+  const [teamsData,setTeamsData] = useState([]); 
+  const [averages,setAverages] = useState([]);
+  const [apiData, setApiData] = useState([]);
 
   //useEffect(() => console.log(data)) //debug purposes
 
@@ -33,21 +36,69 @@ function DummyTableDG() {
     )
   }) */
 
-  useEffect(() => {
-    
-  })
 
-  useEffect(() => {
-    //console.log(apiGetTeam()) //trying to see team data
-  })
+  /*useEffect(() => {
+
+  },[])
+
+  useEffect(() => setAverages(teamNumber.map(team => {
+    console.log(team)
+    return {
+      TeamNumber: team.TeamNumber
+    }
+  })), [])
+
+  useEffect(() => setTableData(averages.map(team => {
+    return {
+      TeamNumber: team.TeamNumber
+    }
+  })), [teamNumber, ]) */
+
+
+ /* const getTeams = async () => {
+    const key = await getRegionals()
+    return await fetch(`https://www.thebluealliance.com/api/v3/event/${key}/teams`, { mode: "cors", headers: { 'x-tba-auth-key': await api.getApiKey() } })
+  } */
+
 
   
 
-  const data = React.useMemo(
-    () => {  
-      return dummy;
+  useEffect(() => {
+    getTeamsInRegional('2023hiho')
+       .then(data => {
+         setTeamsData(data)
+         console.log(data)
+       })
+       //.then()
+       .catch(console.log.bind(console)) 
+   }, []) 
+
+  /*useEffect(() => setTableData(teamsData.map(team => {
+    //const teamNumber = team.team_number;
+    return {
+      TeamNumber: team.team_number
     }
-)
+  })),[]) *///figure out how to use table data correctly so it can be used to set the data const
+
+  /*const data = React.useMemo(
+    () => tableData.map(team => {
+      return {
+        TeamNumber: team.team_number
+      }
+    }), [teamsData, averages]
+)*///work on this one^
+
+
+
+const data = React.useMemo(
+  () => teamsData.map(team => {
+    return {
+      TeamNumber: team.team_number
+    }
+  }), [teamsData, averages]
+) //^works
+
+
 
   /*const data = React.useMemo(
     () => {
@@ -68,7 +119,7 @@ function DummyTableDG() {
       }
     ]
 
-    const dum = /*dummyI.map(x => { */ () => {
+    /*const dum = /*dummyI.map(x => { // () => {
 
       return [
         {
@@ -88,7 +139,7 @@ function DummyTableDG() {
       <div style={{
         padding: '5px',
     }}> No data collected for Team {row.values.TeamNumber}. </div>
-    );
+    );*/
   }
 
   const columns = React.useMemo(
