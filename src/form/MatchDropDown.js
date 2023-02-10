@@ -38,11 +38,11 @@ class MatchDropDown extends React.Component{
         return(
             <div>
                 <select onChange={this.changeMatchType}>
-                    <option>Select Option</option>
-                    <option>Qualification</option>
-                    <option>QuarterFinal</option>
-                    <option>SemiFinal</option>
-                    <option>Final</option>
+                    <option></option>
+                    <option> Qualification </option>
+                    <option> QuarterFinal </option>
+                    <option> SemiFinal </option>
+                    <option> Final </option>
                 </select>
                 {this.generateMatchTypeNum()}
             </div>

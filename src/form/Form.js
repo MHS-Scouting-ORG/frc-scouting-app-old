@@ -4,6 +4,8 @@ import DropDown from './DropDown';
 import MatchDropDown from './MatchDropDown';
 import StationDropDown from './StationDropDown';
 import CounterBox from './CounterBox';
+import {getRegionals, getTeamsInRegional,} from "../api/bluealliance";
+import TextBox from './TextBox';
 
 
 class Form extends React.Component{
@@ -12,7 +14,7 @@ class Form extends React.Component{
 
         this.changeMatchType = this.changeMatchType.bind(this);
         this.changeElmType =  this.changeElmType.bind(this);
-        this.makeMatchElmTypeDropDown = this.makeMatchElmTypeDropDown.bind(this);
+        this.makeMatchTypeDropDown = this.makeMatchTypeDropDown.bind(this);
         this.changeElmNum = this.changeElmNum.bind(this);
        
 
@@ -22,6 +24,12 @@ class Form extends React.Component{
         this.dropDownChanged = this.dropDownChanged.bind(this);
         this.makeDropDownBox = this.makeDropDownBox.bind(this);
 
+        this.changeChargeStation = this.changeChargeStation.bind(this);
+        this.makeChargeStationDropDown = this.makeChargeStationDropDown.bind(this);
+        this.changeChargeStationStartBox = this.changeChargeStationStartBox.bind(this);
+        this.changeChargeStationEndBox = this.changeChargeStationEndBox.bind(this);
+        this.makeChargeStationStartEndTimeBoxes = this.makeChargeStationStartEndTimeBoxes.bind(this);
+
         this.state = {
             comments: '',
             matchType: '',
@@ -30,6 +38,7 @@ class Form extends React.Component{
             matchData: 'not found',
             teamNumber: ' ',
             teams:['team1', 'team2', 'team3', 'team4', 'team5', 'team6'],
+            matchOveride: false,
             chargeStationVal: ['', '',''],
             whoWon: '',
             checkedWhoWon: [' ' , ' '],
@@ -64,8 +73,12 @@ class Form extends React.Component{
         this.setState({teamNumber:''});
     }
 
-    makeMatchElmTypeDropDown(){
-       
+    makeMatchTypeDropDown(matchType){
+       if(matchType === "qf" || matchType === "sf" || matchType === "f"){
+        return(
+            <input onChange={this.changeElmType}/>
+        )
+       }
     }
 
     makeMatchDropDown(){
@@ -74,12 +87,36 @@ class Form extends React.Component{
                 <MatchDropDown
                     setMatchType={this.changeMatchType}
                     setElmType={this.changeElmType}
-                    makeMatchElmTypeDropDown={this.makeMatchElmTypeDropDown}
+                    generateMatchTypeNum={this.makeMatchTypeDropDown}
                     setsetElmType={this.changeElmNum}
 
                 />
             </div>
         )
+    }
+
+    async getMatchTeams(){
+        let matchKey = /*put this years event*//* "event_key"  *//* */ await getTeamsInRegional() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNum;
+        const teams = async () => {
+            await fetch('https://www.thebluealliance.com/api/v3/event/' + /* 'event_Key' */ /**/ await getTeamsInRegional() /**/ + '/matches',{
+                mode: 'cors',
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                data.map((matches) =>{
+                    if(matches.key === matchKey){
+                        this.setState({matchData: matches})
+                        this.setState({teams:matches.alliances.blue.team_keys.concat(matches.alliances.red.team_keys)});
+                        console.log({teams:matches.alliances.blue.team_keys.concat(matches.alliances.red.team_keys)});
+
+                    }
+                })
+            })
+            .catch(err => console.log(err))
+        }
+        console.log(matchKey);
+        teams();
     }
 
     changeTeam(event){
@@ -124,6 +161,25 @@ class Form extends React.Component{
         this.setState({bonusVal: [' ', ' ']});
     }
 
+    makeTeamDropdown(){
+        let alliances = this.state.teams;
+        return parseInt(this.state.matchNum)!== 0 ?(
+            <div>
+                <select onChange={this.changeTeam}>
+                    <option></option>
+                    {alliances.map((alliances) => <option key={alliances}> {alliances} </option>)}
+                </select>
+            </div>
+        ) : (
+            <div>
+                <lable> Team Number
+                    <input type='number' onChange={e => {this.setState({teamNumber: 'frc' + e.target.value})}}></input>
+                </lable>
+            </div>
+        )
+    }
+
+
     //---------------------------------------------------------------------------------------------------------------//
 
     dropDownChanged(event,i){
@@ -148,13 +204,78 @@ class Form extends React.Component{
 
     //--------------------------------------------------------------------------------------------------------------//
 
+    changeChargeStation(event){
+        let chargeStation = Array(this.state.chargeStationVal);
+        chargeStation[0] = event.target.value;
+        this.setState({chargeStationVal: chargeStation});
+    }
+
+    changeChargeStationStartBox(event){
+        let chargeStation = this.state.chargeStationVal;
+        chargeStation[1] = event.target.value;
+    }
+
+    changeChargeStationEndBox(event){
+        let chargeStation = this.state.chargeStationVal;
+        chargeStation[2] = event.target.value;
+    }
+
+    makeChargeStationStartEndTimeBoxes(){
+        let chargeStationValues = this.state.chargeStationVal;
+        let chargeStation = chargeStationValues[0];
+        if( chargeStation !== "None" && chargeStation !== ''){
+            if(chargeStation === "Attempted"){
+                return (
+                    <div>
+                        <label> {"ChargeStation Start: "}
+                            <input type="number" onChange={this.changeChargeStationStartBox}></input>
+                        </label>
+                    </div>
+                )
+            } else if(chargeStation === 'Parked') {
+                return <div></div> 
+            } else {
+                return (
+                    <div>
+                        <div>
+                            <label> {"ChargeStation Start: "}
+                                <input type="number" onChange={this.changeChargeStationStartBox}></input>
+                            </label>
+                        </div>
+                        <div>
+                            <label> {"ChargeStation End: "}
+                                <input type="number" onChange={this.changeChargeStationEndBox}></input>
+                            </label>
+                        </div>
+                    </div>
+                )
+            } 
+        } else {
+            return <div></div>;
+        }
+    }
+
+    makeChargeStationDropDown(){
+        return(
+            <div>
+                <StationDropDown
+                    changeChargeStationUsed={this.changeChargeStation}
+                    makeChargeStationStartEndTimeBoxes={this.makeChargeStationStartEndTimeBoxes}
+                />
+            </div>
+        )
+    }
+
     //-------------------------------------------------------------------------------------------------------------//
     render(){
         return(
             <div>
                 <h1> FORM </h1>
+                {this.makeMatchDropDown}
                 <h3>AUTONOMOUS</h3>
                 <h3>TELE-OP</h3>
+                {this.makeChargeStationDropDown()}
+                {this.makeChargeStationStartEndTimeBoxes()}
                 {this.makeDropDownBox("Test: ", [1,2,3],0)}
                 {this.makeDropDownBox("Test 2: ", ["Slow", "Fast", "Really Fast"], 1)}
                 <CounterBox></CounterBox>
