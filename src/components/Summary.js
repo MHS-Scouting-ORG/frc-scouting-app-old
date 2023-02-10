@@ -1,66 +1,99 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTable, useSortBy, useExpanded, } from 'react-table';
+import { apiAddTeam, getTeamsInRegional, getRegionals } from '../api/bluealliance';
+import {apiListTeams,} from '../api/index'
 import InnerTable from './InnerTable'; //add to summary table when clicked 
 
 
 
 
 const dummyData = [
-    {TeamNumber: '2443', Matches: "Q2",  }, // using to test sortby
-    {TeamNumber: '32', Matches: "Q3",  }
+    {teamNumber: '2443', matches: "Q2",  }, // using to test sortby
+    {teamNumber: '32', matches: "Q3",  }
 
 ]
 
 function Summary(){
 
+    const [teamNums, setTeamNums] = useState([]);
+    const [averages, setAverages] = useState([]);
+    const [finalData, setFinalData] = useState([]);
+    const [apiData, setApiData] = useState([]);
+
+    
+    useEffect(() => { //displays all teams and info for the az east regional in console
+      getTeamsInRegional('2023azva')
+        .then(data => console.log(data))
+        //.then(data => data.map((obj) => setTeams(obj.team_number)))
+        .catch(console.log.bind(console))
+    }, [])
+
     const data = React.useMemo(
         () => {
+        //teamNums
         return dummyData;
-        }
+        
+        /*getTeamsInRegional('2022hiho').map((team) =>
+        [
+          team.teamNumber // doesn't stop 
+        ])*/
+      }
     )
   
     const columns = React.useMemo(
         () => [
           {
-            Header: " Team # ",
-            accessor: "TeamNumber"
+            Header: 'Team #',
+            accessor: "teamNumber",
           },
           {
-            Header: " Matches ",
-            accessor: "Matches"
+            Header: 'Matches',
+            accessor: 'matches',
           },
           {
-            Header: " priorities ",
-            accessor: "priorities"
+            Header: 'OPR',
+            accessor: 'opr',
           },
           {
-            Header: " avg points ",
-            accessor: "AvgPoints"
+            Header: 'Priorities',
+            accessor: 'priorities',
           },
           {
-            Header: "avg grid points",
-            accessor: "avgGridPoints"
+            Header: 'CCWM',
+            accessor: 'ccwm',
           },
           {
-            Header: "avg accuracy",
-            accessor: "avgAccuracy"
+            Header: 'Avg Points',
+            accessor: 'avgPoints',
           },
           {
-            Header: "avg charge station points",
-            accessor: "avgChargeStation"
+            Header: 'Avg Grid Points',
+            accessor: 'avgGridPoints',
           },
           {
-            Header: "defense",
-            accessor: "defense"
+            Header: 'Avg Accuracy',
+            accessor: 'avgAccuracy',
           },
           {
-            Header: "penalties",
-            accessor: "penalties"
+            Header: 'Avg Charge Station Points',
+            accessor: 'avgChargeStation',
+          },
+          {
+            Header: 'DPR',
+            accessor: 'dpr',
+          },
+          {
+            Header: 'Defense',
+            accessor: 'defense',
+          },
+          {
+            Header: 'Penalties',
+            accessor: 'penalties',
           },
         ], []
       )
   
-    const tableInstance = useTable({ columns, data }, useSortBy);
+    const tableInstance = useTable({ columns, data }, useSortBy, useExpanded);
   
     const {
       getTableProps,
@@ -138,4 +171,5 @@ function Summary(){
   
   }
   
+  //export {getRegionals, getTeamsInRegional }
   export default Summary;

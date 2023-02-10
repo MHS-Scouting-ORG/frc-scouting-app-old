@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useTable } from 'react-table';
+import React, { useEffect, useState } from 'react';
+import { useTable, useSortBy, usePagination } from 'react-table';
 
 
 const dummyData = [
@@ -7,13 +7,46 @@ const dummyData = [
     {teamNum: "6",  }
 
 ]
+
 function CommentsOnly() {
+  
     
     const data = React.useMemo(
         () => {
         return dummyData;
         }
     )
+
+//pasted from react table
+    const EditableCell = ({
+      value: initialValue,
+      row: { index },
+      column: { id },
+      updateMyData, 
+    }) => {
+      
+      const [value, setValue] = React.useState(initialValue)
+    
+      const onChange = e => {
+        setValue(e.target.value)
+      }
+    
+      
+      const onBlur = () => {
+        updateMyData(index, id, value)
+      }
+    
+      
+      useEffect(() => {
+        setValue(initialValue)
+      }, [initialValue])
+    
+      return <input value={value} onChange={onChange} onBlur={onBlur} />
+    }
+
+    const defaultColumn = {
+      Cell: EditableCell
+    };
   
     const columns = React.useMemo(
       () => [
@@ -29,59 +62,82 @@ function CommentsOnly() {
       []
     )
   
+    const tableInstance = useTable({ columns, data, defaultColumn, }, useSortBy, usePagination);
+  
     const {
       getTableProps,
       getTableBodyProps,
       headerGroups,
       rows,
       prepareRow,
-    } = useTable({ columns, data })
+    } = tableInstance
   
     return (
-      <table {...getTableProps()} style={{ border: 'white' }}>
-        <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th
-                  {...column.getHeaderProps()}
-                  style={{
-                    borderBottom: 'solid 3px black',
-                    background: 'aliceblue',
-                    color: 'black',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {column.render('Header')}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map(row => {
-            prepareRow(row)
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return (
-                    <td
-                      {...cell.getCellProps()}
-                      style={{
-                        padding: '10px',
-                        border: 'solid 1px gray',
-                        background: 'black',
-                      }}
-                    >
-                      {cell.render('Cell')}
-                    </td>
-                  )
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+      <div>
+        <table {...getTableProps()}>
+  
+          <thead>
+            {
+              headerGroups.map(headerGroup =>
+              (
+                <tr {...headerGroup.getHeaderGroupProps()} >
+                  {
+                    headerGroup.headers.map(column =>
+                    (
+                      <th
+                        {...column.getHeaderProps(column.getSortByToggleProps())}
+                        style={{
+                          padding: '5px',
+                          border: 'solid 1px black',
+                          textAlign: 'center',
+                          background: 'steelblue'
+                        }}
+                      >
+                        {column.render('Header')}
+                      </th>
+                    )
+                    )
+                  }
+                </tr>
+              )
+              )
+            }
+          </thead>
+  
+          <tbody {...getTableBodyProps()}>
+            {
+              rows.map(row => {
+                prepareRow(row)
+                return (
+                  <tr {...row.getRowProps()}>
+                    {
+                      row.cells.map(cell => {
+                        return (
+                          <td
+                            {...cell.getCellProps()}
+                            style={{
+                              padding: '5px',
+                              border: 'solid 1px black',
+                              textAlign: 'center',
+                            }}
+                          >
+                            {cell.render('Cell')}
+                          </td>
+                        )
+                      }
+                      )
+                    }
+                  </tr>
+                )
+              }
+              )
+            }
+          </tbody>
+  
+        </table>
+      </div>
     )
+  
   }
-export default CommentsOnly;
+  
+  export default CommentsOnly;
