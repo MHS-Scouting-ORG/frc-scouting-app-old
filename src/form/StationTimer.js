@@ -3,43 +3,47 @@ import React from "react";
 class StationTimer extends React.Component{
     constructor(props){
         super(props);
-        this.startTimer = this.startTimer.bind(this)
-        this.endTimer = this.endTimer.bind(this)
+        this.runTimer = this.runTimer.bind(this);
+        this.stopTimer = this.stopTimer.bind(this);
+        this.timeChanged = this.timeChanged.bind(this);
         this.state = {
-            counter: 0,
-            startTime: false,
-            pressed: false
+            timer: 0,
+            //isRunning: false,
+            stop: false
         }
     }
 
-    startTimer(){
-        console.log("starting")
-        this.setState({pressed: true})
-        if (this.state.startTime === false) {
-            let count = 0;
-            setInterval(function() {
-                count += .1
-                console.log(Math.round(count * 10) / 10);
-            }, 100);
-            this.setState((state) => ({
-                counter: state.counter + Math.round(count * 10) / 10
-            }));
-        } 
-        else {
+    runTimer() {
+        this.setState({stop: false})
+        if (this.state.stop === false) {
+            console.log("we go");
+            setInterval(() => {
+                if (this.state.stop === true) {
+                    return;
+                }
+                this.setState({timer: Math.round((this.state.timer + .1) * 10) / 10})
+            }, 100)
+        } else {
             return;
         }
     }
-
-    endTimer(){
-        console.log("ending");
-        this.setState({startTime: true, pressed: false});
+    
+    stopTimer() {
+        console.log("we stop");
+        this.setState({stop: true})
     }
+
+    timeChanged(event) {
+        this.props.setState(event, this.props.place);
+    }
+    
 
     render(){
         return(
             <div>
-                <input value={this.state.counter}/>
-                <button onClick={() => (this.state.pressed === false) ? this.startTimer() : this.endTimer()}>Start/Stop</button>
+                <p onChange={this.timeChanged}>{this.state.timer}s</p>
+                <button onClick={this.runTimer}>Start</button>
+                <button onClick={this.stopTimer}>Stop</button>
             </div>
         )
     }
