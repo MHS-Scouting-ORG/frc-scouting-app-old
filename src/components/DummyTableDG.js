@@ -1,84 +1,64 @@
+import { StopReplicationToReplicaRequestFilterSensitiveLog } from "@aws-sdk/client-secrets-manager";
 import React, { useEffect, useState } from "react"
 import { useExpanded, useTable } from "react-table"
 import { apiGetTeam, apiListTeams } from "../api";
-import { getRegionals, getTeamsInRegional, getApiKey } from "../api/bluealliance";
+import { getTeamsInRegional, getTeamInfo } from "../api/bluealliance";
 import DumInnerTable from "./DumInnerTable";
-
-
-
-const dummy = [
-  {TeamNumber: "Examples: "},
-  {TeamNumber: 2443, Matches: "Q2", priorities: "", }, // every different object is specific to a row
-  {TeamNumber: 2044, Matches: "Q3",  }
-] 
 
 function DummyTableDG() {
 
-  const [tableData,setTableData] = useState([]); //each set of quote corresponds to a new made row
-  const [teamsData,setTeamsData] = useState([]); 
+  const [tableData,setTableData] = useState([]); //data on table
+  const [teamsData,setTeamsData] = useState([]); //data of teams
   const [averages,setAverages] = useState([]);
   const [apiData, setApiData] = useState([]);
 
   //useEffect(() => console.log(data)) //debug purposes
 
-  /*useEffect(() => { //trying to set team number of each row
-    apiGetTeam()
+   useEffect(() => {
+    getTeams()
       .then(data => {
-        setTeamNumber(data); //"data" defined as the team numbers within the data         //"injecting" data 
+        setTeamsData(data) 
+        console.log(data)
       })
-  },[]) */
+      .catch(console.log.bind(console))
+   },[]) 
 
-  /*useEffect(() => { //trying to define team.TeamNumber to input test data
-    setTableData (
-      {
-        TeamNumber: 
-      }
-    )
-  }) */
-
-
-  /*useEffect(() => {
-
-  },[])
-
-  useEffect(() => setAverages(teamNumber.map(team => {
+   useEffect(() => setAverages(teamsData.map(team => {
     console.log(team)
     return {
-      TeamNumber: team.TeamNumber
+
+      TeamNumber: team.TeamNumber,
+      Matches: team.Matches,
+      Priorities: team.Priorities,
+      OPR: team.OPR,
+      CCWM: team.CCWM, 
+      AvgPoints: team.AvgPoints,
+      AvgGridPoints: team.AvgGridPoints,
+      AvgAcc: team.AvgAcc,
+      DPR: team.DPR,
+      Defense: team.Defense,
+      Penalties: team.Penalties
+
     }
-  })), [])
+  })), [teamsData])
 
   useEffect(() => setTableData(averages.map(team => {
     return {
-      TeamNumber: team.TeamNumber
+
+      TeamNumber: team.TeamNumber,
+      Matches: team.Matches,
+      Priorities: team.Priorities,
+      OPR: team.OPR,
+      CCWM: team.CCWM, 
+      AvgPoints: team.AvgPoints,
+      AvgGridPoints: team.AvgGridPoints,
+      AvgAcc: team.AvgAcc,
+      DPR: team.DPR,
+      Defense: team.Defense,
+      Penalties: team.Penalties
+
     }
-  })), [teamNumber, ]) */
-
-
- /* const getTeams = async () => {
-    const key = await getRegionals()
-    return await fetch(`https://www.thebluealliance.com/api/v3/event/${key}/teams`, { mode: "cors", headers: { 'x-tba-auth-key': await api.getApiKey() } })
-  } */
-
-
-  
-
-  useEffect(() => {
-    getTeamsInRegional('2023hiho')
-       .then(data => {
-         setTeamsData(data)
-         console.log(data)
-       })
-       //.then()
-       .catch(console.log.bind(console)) 
-   }, []) 
-
-  /*useEffect(() => setTableData(teamsData.map(team => {
-    //const teamNumber = team.team_number;
-    return {
-      TeamNumber: team.team_number
-    }
-  })),[]) *///figure out how to use table data correctly so it can be used to set the data const
+  })),[teamsData, averages]) 
 
   /*const data = React.useMemo(
     () => tableData.map(team => {
@@ -88,47 +68,68 @@ function DummyTableDG() {
     }), [teamsData, averages]
 )*///work on this one^
 
+const getTeams = async () => {
+  return await (getTeamsInRegional('2023hiho'))
+    .catch(err => console.log(err))
+    .then(data => {
+      return data.map(obj => {
+        return {
 
+          TeamNumber: obj.team_number,
+          Matches: '',
+          Priorities: '',
+          OPR: 0,
+          CCWM: 0, 
+          AvgPoints: 0,
+          AvgGridPoints: 0,
+          AvgAcc: 0,
+          DPR: 0,
+          Defense: '',
+          Penalties: 0
+          
+        }
+      })
+    })
+    .catch(err => console.log(err)) 
+}
 
 const data = React.useMemo(
-  () => teamsData.map(team => {
+  () => tableData.map(team => {
     return {
-      TeamNumber: team.team_number
+
+      TeamNumber: team.TeamNumber,
+      Matches: team.Matches,
+      Priorities: team.Priorities,
+      OPR: team.OPR,
+      CCWM: team.CCWM, 
+      AvgPoints: team.AvgPoints,
+      AvgGridPoints: team.AvgGridPoints,
+      AvgAcc: team.AvgAcc,
+      DPR: team.DPR,
+      Defense: team.Defense,
+      Penalties: team.Penalties
+
     }
-  }), [teamsData, averages]
+  }) , [tableData]
 ) //^works
 
+  const renderRowSubComponent = ({ row }) => {   
+    const dum = () =>  {
+      return {
+        Match: 0,
+        Strategy: 'stratTEST',
+        TotalPts: 1,
+        RankingPts: 2,
 
 
-  /*const data = React.useMemo(
-    () => {
-      return dummy;
-    }
-  ) */
+        AutoPlacement: 3,
+        AutoGridPts: 4,
+        AutoChargeStationPts: 5,
 
-  const renderRowSubcomponent = ({ row }) => {   //function that holds and displays the sub row of team info when clicked
-
-    const dummyI = (x) => [ //with parameter "x" trying to take in object which has point data type for point and so and so for others
-      {
-        Match: 'Q13',
-        TotalPts: x.TotalPts
-      },
-      {
-        Match: 'Q11',
-        TotalPts: x.TotalPts
+        TeleGridPts: 6,
+        TeleChargeStationPts: 7
+        
       }
-    ]
-
-    /*const dum = /*dummyI.map(x => { // () => {
-
-      return [
-        {
-          
-        },
-        {
-
-        }
-      ]
     }
 
     return dum.length > 0 ?
@@ -139,46 +140,67 @@ const data = React.useMemo(
       <div style={{
         padding: '5px',
     }}> No data collected for Team {row.values.TeamNumber}. </div>
-    );*/
+    );
   }
 
   const columns = React.useMemo(
     () => [
       {
-        Header: " Team # ",
-        accessor: "TeamNumber"
+        Header: "Team #",
+        accessor: "TeamNumber",
+        Cell: ({ row }) => (
+          <span {...row.getToggleRowExpandedProps()}>
+              {row.values.TeamNumber}
+          </span>)
       },
       {
-        Header: " Matches ",
+        Header: "Matches",
         accessor: "Matches"
       },
       {
-        Header: " priorities ",
-        accessor: "priorities"
+        Header: "Priorities/Strategies",
+        accessor: "Priorities",
+        Cell: ({ row }) => (
+          <div
+              style = {{
+                  whiteSpace: 'normal',
+              }}
+          >
+              {row.original.Priorities}
+          </div>
+        )
       },
       {
-        Header: " avg points ",
+        Header: "OPR",
+        accessor: "OPR"
+      },
+      {
+        Header: "CCWM",
+        accessor: "CCWM"
+      },
+      {
+        Header: "Avg Points",
         accessor: "AvgPoints"
       },
       {
-        Header: "avg grid points",
-        accessor: "avgGridPoints"
+        Header: "Avg Grid Points",
+        accessor: "AvgGridPoints"
       },
       {
-        Header: "avg accuracy",
-        accessor: "avgAccuracy"
+        Header: "Avg Accuracy",
+        accessor: "AvgAcc"
       },
       {
-        Header: "avg charge station points",
-        accessor: "avgChargeStation"
+        Header: "DPR",
+        accessor: "DPR"
       },
       {
-        Header: "defense",
-        accessor: "defense"
+        Header: "Defense",
+        accessor: "Defense"
       },
       {
-        Header: "penalties",
-        accessor: "penalties"
+        Header: "Penalties",
+        accessor: "Penalties"
       },
     ], []
   )
@@ -221,7 +243,7 @@ const data = React.useMemo(
           return ( <React.Fragment>
             <tr {...row.getRowProps()}>
               {row.cells.map(cell => {
-                return (   // apply cell props here
+                return (   
                   <td
                     {...cell.getCellProps()}
                     style={{
@@ -243,7 +265,7 @@ const data = React.useMemo(
                     maxWidth: "1200px"
                   }}
                   >
-                    {renderRowSubcomponent ({ row })}
+                    {renderRowSubComponent ({row})}
                   </td>
                 </tr>
               ) : null}
