@@ -16,7 +16,6 @@ class StationTimer extends React.Component{
     runTimer() {
         this.setState({stop: false})
         if (this.state.stop === false) {
-            console.log("we go");
             setInterval(() => {
                 if (this.state.stop === true) {
                     return;
@@ -29,8 +28,7 @@ class StationTimer extends React.Component{
     }
     
     stopTimer() {
-        console.log("we stop");
-        this.setState({stop: true})
+=        this.setState({stop: true})
     }
 
     timeChanged(event) {
