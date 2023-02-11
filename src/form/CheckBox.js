@@ -7,13 +7,14 @@ class CheckBox extends React.Component{
     }
 
     changeCheckBoxState(){
-        this.props.changeCheckBoxState(this.props.place)
+        this.props.changeCheckBoxState(this.props.place, this.props.label);
     }
 
     render(){
         return(   
             <div>
-                <input type="checkbox" checked={this.props.checked} onChange={this.changeCheckBoxState}></input>
+                <label>{this.props.label.substring(0, this.props.label.length - 1) + ': '}</label>
+                <input type="checkbox" checked={this.props.checked} onChange={this.changeCheckBoxState} id={this.props.label}></input>
             </div>
         )
     }

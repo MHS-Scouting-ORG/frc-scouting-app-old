@@ -30,15 +30,19 @@ class Form extends React.Component{
         this.changeChargeStationEndBox = this.changeChargeStationEndBox.bind(this);
         this.makeChargeStationStartEndTimeBoxes = this.makeChargeStationStartEndTimeBoxes.bind(this);
 
+        this.penaltyBoxChecked = this.penaltyBoxChecked.bind(this);
+        this.makePenaltyBox = this.makePenaltyBox.bind(this);
+
         this.state = {
             comments: '',
+            summaryComments: '',
             matchType: '',
             matchNum: '',
             elmNum: '',
             matchData: 'not found',
             teamNumber: ' ',
             teams:['team1', 'team2', 'team3', 'team4', 'team5', 'team6'],
-            matchOveride: false,
+            override: false,
             chargeStationVal: ['', '',''],
             whoWon: '',
             checkedWhoWon: [' ' , ' '],
@@ -55,7 +59,10 @@ class Form extends React.Component{
 
 //------------------------------------------------------------------------------------------------------------------------//
     changeMatchType(event){
-        let matchType = event ? matchType === 'q': this.setState({elmNum:''});
+        let matchType = event;
+         if(matchType === 'q'){
+            this.setState({elmNum:''});
+        }
         this.setState({matchType:event});
         this.setState({teams:['team1', 'team2', 'team3', 'team4', 'team5', 'team6']});
         this.setState({teamNumber: ' '});
@@ -68,9 +75,9 @@ class Form extends React.Component{
     }
 
     changeElmNum(event){
-        this.setState({elmNum: event.target.value});
-        this.setState({teams:['team1', 'teams2', 'team3', 'team4', 'team5', 'team6']});
-        this.setState({teamNumber:''});
+            this.setState({elmNum: event.target.value});
+            this.setState({teams:['team1', 'teams2', 'team3', 'team4', 'team5', 'team6']});
+            this.setState({teamNumber:''});
     }
 
     makeMatchTypeDropDown(matchType){
@@ -120,7 +127,7 @@ class Form extends React.Component{
     }
 
     changeTeam(event){
-        this.setState({teamNumber:this.target.value});
+        this.setState({teamNumber:event.target.value});
         let data = this.state.matchData;
         let teamColor = 'red';
         let selectedTeam = event.target.value;
@@ -175,9 +182,12 @@ class Form extends React.Component{
                 <lable> Team Number
                     <input type='number' onChange={e => {this.setState({teamNumber: 'frc' + e.target.value})}}></input>
                 </lable>
+                <TextBox title={'Summary Comment:'} commentState={event => {this.setState({summaryComments: event.target.value})}}/>
             </div>
         )
     }
+
+    changeMatch
 
 
     //---------------------------------------------------------------------------------------------------------------//
@@ -267,18 +277,55 @@ class Form extends React.Component{
     }
 
     //-------------------------------------------------------------------------------------------------------------//
+
+    setComment(event){
+        this.setState({comments: event.target.value});
+    }
+
+    //-------------------------------------------------------------------------------------------------------------//
+
+    penaltyBoxChecked(i, label){
+        let penaltyStates = this.state.pentalyVal;
+        if(penaltyStates[i] === label){
+            penaltyStates[i] = ' ';
+        } else {
+            penaltyStates[i] = label;
+        }
+    }
+
+    makePenaltyBox(name ,i){
+        return(
+            <div>
+                <CheckBox
+                    label={name}
+                    changeState={this.penaltyBoxChecked}
+                    place={i}
+                />
+            </div>
+        )
+    }
+
+    //-------------------------------------------------------------------------------------------------------------//
     render(){
         return(
             <div>
                 <h1> FORM </h1>
                 {this.makeMatchDropDown}
+                {this.makeTeamDropdown()}
+                <br></br>
                 <h3>AUTONOMOUS</h3>
+                {this.makeChargeStationDropDown()}
+                <br></br>
                 <h3>TELE-OP</h3>
                 {this.makeChargeStationDropDown()}
                 {this.makeChargeStationStartEndTimeBoxes()}
-                {this.makeDropDownBox("Test: ", [1,2,3],0)}
+                {this.makeDropDownBox("Drive: ", [1,2,3],0)}
                 {this.makeDropDownBox("Test 2: ", ["Slow", "Fast", "Really Fast"], 1)}
+                {this.makePenaltyBox("Yellow Card ",0)}
                 <CounterBox></CounterBox>
+                <br></br>
+                <p>How well is there defense if any?</p>
+                <TextBox title={'Comments: '} commentState={this.setComment}></TextBox>
             </div>
         )
     }
