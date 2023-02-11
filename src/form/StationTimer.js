@@ -28,7 +28,7 @@ class StationTimer extends React.Component{
     }
     
     stopTimer() {
-=        this.setState({stop: true})
+        this.setState({stop: true})
     }
 
     timeChanged(event) {
