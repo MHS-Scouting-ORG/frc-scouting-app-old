@@ -15,7 +15,6 @@ class StationTimer extends React.Component{
 
     runTimer() {
         this.setState({stop: false, debounce: this.state.debounce + 1});
-        console.log(this.state.debounce);
         if (this.state.debounce < 1 && this.state.stop === false) {
             setInterval(() => {
                 if (this.state.stop === true) {
