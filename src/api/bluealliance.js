@@ -6,7 +6,9 @@ import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-sec
 
 const { bluealliance_api_endpoint, year } = config
 
-
+async function getOprs(event_key) {
+  return _fetch(`/event/${event_key}/oprs`)
+}
 
 // get bluealliance api key
 async function getApiKey() {
