@@ -37,8 +37,16 @@ const InnerTable = (props) => {
               accessor: 'gridPts',
             },
             {
-              Header: 'Grid Acc',
-              accessor: 'gridAccuracy',
+              Header: 'Low Grid Acc',
+              accessor: 'lowGridAccuracy',
+            },
+            {
+              Header: 'Mid Grid Acc',
+              accessor: 'midGridAccuracy',
+            },
+            {
+              Header: 'Upper Grid Acc',
+              accessor: 'upperGridAccuracy',
             },
             {
               Header: 'Charge Station',
@@ -57,8 +65,16 @@ const InnerTable = (props) => {
               accessor: 'autoPlacement',
             },
             {
-              Header: 'Grid',
-              accessor: 'autoGrid',
+              Header: ' Low Grid',
+              accessor: 'autoLowGrid',
+            },
+            {
+              Header: 'Mid Grid',
+              accessor: 'autoMidGrid',
+            },
+            {
+              Header: 'Upper Grid',
+              accessor: 'autoUpperGrid',
             },
             {
               Header: 'Mobility',
@@ -73,8 +89,16 @@ const InnerTable = (props) => {
           Header: 'Tele-Op',
           columns: [
             {
-              Header: 'Grid',
-              accessor: 'grid',
+              Header: ' Low Grid',
+              accessor: 'teleLowGrid',
+            },
+            {
+              Header: 'Mid Grid',
+              accessor: 'teleMidGrid',
+            },
+            {
+              Header: 'Upper Grid',
+              accessor: 'teleUpperGrid',
             },
             {
               Header: 'Endgame',
@@ -115,6 +139,10 @@ const InnerTable = (props) => {
             {
               Header: 'Scouter',
               accessor: 'email',
+            },
+            {
+              Header: 'Delete',
+              accessor: 'delete',
             },]
         }
       ], []

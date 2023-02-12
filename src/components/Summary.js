@@ -67,8 +67,16 @@ function Summary(){
             accessor: 'avgPoints',
           },
           {
-            Header: 'Avg Grid Points',
-            accessor: 'avgGridPoints',
+            Header: 'Avg Low Grid Points',
+            accessor: 'avgLowGridPoints',
+          },
+          {
+            Header: 'Avg Mid Grid Points',
+            accessor: 'avgMidGridPoints',
+          },
+          {
+            Header: 'Avg Upper Grid Points',
+            accessor: 'avgUpperGridPoints',
           },
           {
             Header: 'Avg Accuracy',
@@ -105,6 +113,7 @@ function Summary(){
   
     return (
       <div>
+        <h2>summary stats</h2>
         <table {...getTableProps()}>
   
           <thead>
