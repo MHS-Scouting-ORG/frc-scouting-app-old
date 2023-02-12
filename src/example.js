@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { apiCreateTeamMatchEntry, apiListTeams, apiAddTeam, apiGetTeam, getMatchesForRegional } from './api/index'
+import { apiSubscribeToMatchUpdates, apiCreateTeamMatchEntry, apiListTeams, apiAddTeam, apiGetTeam, getMatchesForRegional } from './api/index'
 import { getRegionals, getTeamsInRegional } from './api/bluealliance'
 
 
@@ -21,7 +21,7 @@ function ExampleUI() {
       })
       .catch(err => {
 
-        console.log(`get teams error ${err}`)
+        console.log(`get teams error ${JSON.stringify(err)}`)
       })
     getRegionals()
       .then(data => setRegionals(data))
@@ -29,6 +29,9 @@ function ExampleUI() {
     getTeamsInRegional('2023hiho')
       .then(data => setTeamsInHawaiiRegional(data))
       .catch(console.log.bind(console))
+    apiSubscribeToMatchUpdates(data => {
+      console.log(`update received ${JSON.stringify(data)}`)
+    })
   }, [])
 
 
@@ -63,6 +66,8 @@ function ExampleUI() {
       })
       .catch(err => {
         console.log(err)
+        setMatchId(matchId + 1)
+
       })
     
   }
