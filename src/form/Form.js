@@ -487,10 +487,15 @@ class Form extends React.Component{
                 {this.makeBonusBox("Sustainability", 1)}
                 <br></br>
                 <h2>Strategy & Priorities</h2>
-                {this.makeStrategyBox("Hybrid Node ", 0)}
+                {this.makeStrategyBox("Low Node ", 0)}
                 {this.makeStrategyBox("Mid Node ", 1)}
                 {this.makeStrategyBox("High Node ", 2)}
-                
+                {this.makeStrategyBox("Cubes ", 3)}
+                {this.makeStrategyBox("Cones ", 4)}
+                {this.makeStrategyBox("Charge Station ", 5)}
+                {this.makeStrategyBox("Single Substation ", 6)}
+                {this.makeStrategyBox("Double Substation ", 7)}
+
                 <br></br>
                 <p>How well is there defense if any?</p>
                 <TextBox title={'Comments: '} commentState={this.setComment}></TextBox>
