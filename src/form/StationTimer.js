@@ -39,6 +39,7 @@ class StationTimer extends React.Component{
     render(){
         return(
             <div>
+                <label>{this.props.title}</label>
                 <p onChange={this.timeChanged}>{this.state.timer}s</p>
                 <button onClick={this.runTimer}>Start</button>
                 <button onClick={this.stopTimer}>Stop</button>
