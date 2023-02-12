@@ -64,4 +64,4 @@ const getTeamsInRegional = async function(regional) {
   return _fetch(`/event/${regional}/teams`)
 }
 
-export { getTeamInfo, getRegionals, getTeamsInRegional } 
+export { getOprs, getTeamInfo, getRegionals, getTeamsInRegional } 

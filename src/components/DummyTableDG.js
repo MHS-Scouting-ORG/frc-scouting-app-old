@@ -1,15 +1,9 @@
 import { StopReplicationToReplicaRequestFilterSensitiveLog } from "@aws-sdk/client-secrets-manager";
 import React, { useEffect, useState } from "react"
 import { useExpanded, useTable } from "react-table"
-import { apiGetTeam, apiListTeams } from "../api";
-import { getTeamsInRegional, getTeamInfo } from "../api/bluealliance";
+import { apiGetTeam, apiListTeams, getMatchesForRegional} from "../api";
+import { getTeamsInRegional, getTeamInfo, getOprs } from "../api/bluealliance";
 import DumInnerTable from "./DumInnerTable";
-
-const dumApiData = [
-  {
-
-  },
-]
 
 function DummyTableDG() {
 
@@ -29,14 +23,19 @@ function DummyTableDG() {
       .catch(console.log.bind(console))
    },[]) 
 
-   useEffect(() => { // api data 
-    
-   })
+   useEffect(() => {  //convert to list and filter data structure to find opr dpr and ccwm 
+    getOprs('2022hiho')
+    .then(data => {
+      setApiData(data)
+      console.log(data)
+    })
+    .catch(console.log.bind(console))
+   },[])
 
    useEffect(() => setAverages(teamsData.map(team => {
     console.log(team)
 
-    const avgPoints = {}
+    
 
     return {
 
@@ -113,7 +112,7 @@ const getTeams = async () => {
 }
 
 const getApiData = async () => {
-  
+
 }
 
 const renderRowSubComponent = ({ row }) => { //not working(not showing table within team number)
@@ -164,12 +163,12 @@ const renderRowSubComponent = ({ row }) => { //not working(not showing table wit
   );
 }
 
-const calcAvgPoints = (arr) => { //"arr" is the data parameter which is given when it is called
+/*const calcAvgPoints = (arr) => { //"arr" is the data parameter which is given when it is called
   const indivPoints = () => {arr.map(value => value.TotalPts)}
   let totalPts = 0;
   for (let i = 0; i < individualPoints.length; i++){
   }
-}
+} */
 
 const data = React.useMemo(
   () => tableData.map(team => {
