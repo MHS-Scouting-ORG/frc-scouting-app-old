@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { apiListTeams, apiAddTeam, apiGetTeam, getMatchesForRegional, apiCreateTeamMatchEntry } from './api/index'
+import { apiSubscribeToMatchUpdates, apiCreateTeamMatchEntry, apiListTeams, apiAddTeam, apiGetTeam, getMatchesForRegional } from './api/index'
 import { getRegionals, getTeamsInRegional } from './api/bluealliance'
-
 
 
 function ExampleUI() {
@@ -12,6 +11,8 @@ function ExampleUI() {
   const [regional, setRegional] = useState("")
   const [team, setTeam] = useState("")
   const [match, setMatch] = useState("")
+  const [matchId, setMatchId] = useState(0)
+
   useEffect(() => {
     apiListTeams()
       .then(data => {
@@ -20,7 +21,7 @@ function ExampleUI() {
       })
       .catch(err => {
 
-        console.log(`get teams error ${err}`)
+        console.log(`get teams error ${JSON.stringify(err)}`)
       })
     getRegionals()
       .then(data => setRegionals(data))
@@ -28,6 +29,9 @@ function ExampleUI() {
     getTeamsInRegional('2023hiho')
       .then(data => setTeamsInHawaiiRegional(data))
       .catch(console.log.bind(console))
+    apiSubscribeToMatchUpdates(data => {
+      console.log(`update received ${JSON.stringify(data)}`)
+    })
   }, [])
 
 
@@ -43,6 +47,7 @@ function ExampleUI() {
       .catch(err => {
         console.log(`add teams error ${JSON.stringify(err)}`)
       })
+      
 
   }
 
@@ -54,6 +59,17 @@ function ExampleUI() {
       .catch(err => {
         console.log(`get matches error ${JSON.stringify(err)}`)
       })
+    apiCreateTeamMatchEntry("2443hio","frc2443", matchId)
+      .then(data => {
+        console.log(data)
+        setMatchId(matchId + 1)
+      })
+      .catch(err => {
+        console.log(err)
+        setMatchId(matchId + 1)
+
+      })
+    
   }
 
   const displayRegionals = _ => {

@@ -28,7 +28,7 @@ function AuthenticatedUI({ user }) {
       .catch(err => {
         console.log(err)
       })
-  })
+  }, [])
 
 
   return (
