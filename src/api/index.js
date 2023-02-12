@@ -1,7 +1,25 @@
-import { Auth, graphqlOperation, API } from 'aws-amplify'
+import { graphqlOperation, API } from 'aws-amplify'
 import { teamMatchesByRegional, getTeam, listTeams} from '../graphql/queries'
 import { updateTeamMatch, createTeamMatch, createTeam } from '../graphql/mutations'
+import { onCreateTeamMatch, onUpdateTeamMatch } from '../graphql/subscriptions'
+import  buildMatchEntry  from './builder'
 
+/**
+ * Subscribe to create and update events
+ * @param {*} updateFn 
+ * @param {*} errorFn 
+ */
+const apiSubscribeToMatchUpdates = async function(updateFn, errorFn) {
+
+    API.graphql(graphqlOperation(onCreateTeamMatch)).subscribe({
+        next: ({value}) => updateFn(value),
+        error: (errorFn || (err => console.log(err)))
+    })
+    API.graphql(graphqlOperation(onUpdateTeamMatch)).subscribe({
+        next: updateFn,
+        error : (errorFn || (err => console.log(err)))
+    })
+}
 
 /*
  * Get a Team by their TeamNumber  that are currently in our database
@@ -21,7 +39,7 @@ const apiAddTeam = async function(team) {
  * Get All the teams in our database
  */
 const apiListTeams = async function() {
-    return API.graphql(graphqlOperation(listTeams))
+    return API.graphql(graphqlOperation(listTeams, {}))
 }
 
 /*
@@ -54,37 +72,31 @@ const getMatchesForRegional = async function(regionalId, teamNumber) {
  * - matchid - the match id
  */
 const apiCreateTeamMatchEntry = async function(regionalId, teamId, matchId) {
-    if(!regionalId) {
-        throw "Regional not provided"
+    if(regionalId === undefined) {
+        throw new Error("Regional not provided")
     }
-    if(!teamId) {
-        throw "Team Id not provided"
+    if(teamId === undefined) {
+        throw new Error("Team Id not provided")
     }
-    if(!matchId) {
-        throw "MatchId not provided"
+    if(matchId === undefined) {
+        throw new Error(`MatchId not provided; matchId ${matchId}`)
     }
 
     return API.graphql(graphqlOperation(createTeamMatch, {
-        input: {
-            id: matchId,
-            name: "",
-            Team: teamId,
-            Regional: regionalId
-
-        }
+        input: buildMatchEntry(regionalId, teamId, matchId),
     }))
 }
 
 
 const apiUpdateTeamMatch = async function(regionalId, teamId, matchId) {
     if(!regionalId) {
-        throw "Regional not provided"
+        throw new Error("Regional not provided")
     }
     if(!teamId) {
-        throw "Team Id not provided"
+        throw new Error("Team Id not provided")
     }
     if(!matchId) {
-        throw "MatchId not provided"
+        throw new Error("MatchId not provided")
     }
 
     return API.graphql(graphqlOperation(updateTeamMatch, {
@@ -98,4 +110,4 @@ const apiUpdateTeamMatch = async function(regionalId, teamId, matchId) {
 
 }
 
-export { apiGetTeam, apiAddTeam, apiListTeams, getMatchesForRegional, apiCreateTeamMatchEntry, apiUpdateTeamMatch }
+export { apiSubscribeToMatchUpdates, apiGetTeam, apiAddTeam, apiListTeams, getMatchesForRegional, apiCreateTeamMatchEntry, apiUpdateTeamMatch }

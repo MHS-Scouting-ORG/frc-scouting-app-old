@@ -10,6 +10,7 @@ export const createTeam = /* GraphQL */ `
       id
       name
       description
+      Comment
       createdAt
       updatedAt
     }
@@ -24,6 +25,7 @@ export const updateTeam = /* GraphQL */ `
       id
       name
       description
+      Comment
       createdAt
       updatedAt
     }
@@ -38,6 +40,7 @@ export const deleteTeam = /* GraphQL */ `
       id
       name
       description
+      Comment
       createdAt
       updatedAt
     }
@@ -54,6 +57,27 @@ export const createTeamMatch = /* GraphQL */ `
       description
       Team
       Regional
+      Autonomous {
+        LeftCommunity
+        ChargeStation
+      }
+      Teleop {
+        Accuracy
+        RankingPts
+        ChargeStation
+        Penalties {
+          Fouls
+          Tech
+          Yellow
+          Red
+          Disabled
+          DQ
+          BrokenBot
+        }
+      }
+      SmartPlacement
+      Comments
+      IntakeFrom
       createdAt
       updatedAt
     }
@@ -70,6 +94,27 @@ export const updateTeamMatch = /* GraphQL */ `
       description
       Team
       Regional
+      Autonomous {
+        LeftCommunity
+        ChargeStation
+      }
+      Teleop {
+        Accuracy
+        RankingPts
+        ChargeStation
+        Penalties {
+          Fouls
+          Tech
+          Yellow
+          Red
+          Disabled
+          DQ
+          BrokenBot
+        }
+      }
+      SmartPlacement
+      Comments
+      IntakeFrom
       createdAt
       updatedAt
     }
@@ -86,6 +131,27 @@ export const deleteTeamMatch = /* GraphQL */ `
       description
       Team
       Regional
+      Autonomous {
+        LeftCommunity
+        ChargeStation
+      }
+      Teleop {
+        Accuracy
+        RankingPts
+        ChargeStation
+        Penalties {
+          Fouls
+          Tech
+          Yellow
+          Red
+          Disabled
+          DQ
+          BrokenBot
+        }
+      }
+      SmartPlacement
+      Comments
+      IntakeFrom
       createdAt
       updatedAt
     }
