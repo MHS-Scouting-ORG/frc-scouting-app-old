@@ -1,31 +1,31 @@
 import React from "react";
 
-class StationDropDown extends React.Component{
+class EndGame extends React.Component{
     constructor(props){
         super(props)
-        this.changeChargeStation = this.changeChargeStation.bind(this);
-        this.makeChargeStationStartEndTimeBoxes = this.makeChargeStationStartEndTimeBoxes.bind(this);
+        this.changeEndGame = this.changeEndGame.bind(this);
+        this.makeEndGameStartEndBox = this.makeEndGameStartEndBox.bind(this);
         this.state = {
-            chargeStationUsed: '',
+            changeEndGameUsed: '',
         }
     }
 
-    changeChargeStation(event){
-        this.props.changeChargeStationUsed(event);
-        this.setState({chargeStationUsed: event.value})
+    changeEndGame(event){
+        this.props.changeEndGameUsed(event);
+        this.setState({changeEndGameUsed: event.value})
     }
 
-    makeChargeStationStartEndTimeBoxes(){
+    makeEndGameStartEndBox(){
         return(
-            this.props.makeChargeStationStartEndTimeBoxes(this.state.chargeStationUsed)
+            this.props.makeEndGameStartEndBox(this.state.changeEndGameUsed)
         )
     }
 
     render(){
         return(
             <div>
-                <label> {"Charge Station: "}
-                    <select onChange={this.changeChargeStation}>
+                <label> {"End Game: "}
+                    <select onChange={this.changeEndGame}>
                         <option></option>
                         <option value='None'>None</option>
                         <option value='DockEngage'>Docked & Engaged</option>
@@ -39,4 +39,4 @@ class StationDropDown extends React.Component{
     }
 }
 
-export default StationDropDown;
+export default EndGame;

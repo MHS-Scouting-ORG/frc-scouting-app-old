@@ -2,7 +2,8 @@ import React from 'react';
 import CheckBox from './CheckBox';
 import DropDown from './DropDown';
 import MatchDropDown from './MatchDropDown';
-import StationDropDown from './StationDropDown';
+import EndGame from './EndGame';
+import ChargeStation from './ChargeStation';
 import CounterBox from './CounterBox';
 import {getRegionals, getTeamsInRegional,} from "../api/bluealliance";
 import TextBox from './TextBox';
@@ -16,7 +17,12 @@ class Form extends React.Component{
         this.changeElmType =  this.changeElmType.bind(this);
         this.makeMatchTypeDropDown = this.makeMatchTypeDropDown.bind(this);
         this.changeElmNum = this.changeElmNum.bind(this);
-       
+
+       this.whoWonClicked = this.whoWonClicked.bind(this);
+       this.makeWhoWonBox = this.makeWhoWonBox.bind(this);
+
+       this.strategyBox = this.strategyBox.bind(this);
+       this.makeStrategyBox = this.makeStrategyBox.bind(this);
 
         this.makeMatchDropDown = this.makeMatchDropDown(this);
         this.changeTeam = this.changeTeam.bind(this);
@@ -24,18 +30,28 @@ class Form extends React.Component{
         this.dropDownChanged = this.dropDownChanged.bind(this);
         this.makeDropDownBox = this.makeDropDownBox.bind(this);
 
-        this.changeChargeStation = this.changeChargeStation.bind(this);
-        this.makeChargeStationDropDown = this.makeChargeStationDropDown.bind(this);
-        this.changeChargeStationStartBox = this.changeChargeStationStartBox.bind(this);
-        this.changeChargeStationEndBox = this.changeChargeStationEndBox.bind(this);
-        this.makeChargeStationStartEndTimeBoxes = this.makeChargeStationStartEndTimeBoxes.bind(this);
+        this.changeEndGame = this.changeEndGame.bind(this);
+        this.makeEndGameDropDown = this.makeEndGameDropDown.bind(this);
+        this.changeEndGameStartBox = this.changeEndGameStartBox.bind(this);
+        this.changeEndGameEndBox = this.changeEndGameEndBox.bind(this);
+        this.makeEndGameStartEndBox = this.makeEndGameStartEndBox.bind(this);
 
+        this.changeChargeStation = this.changeChargeStation.bind(this);
+        this.makeChargeStationAuto = this.makeChargeStationAuto.bind(this);
+    
         this.penaltyBoxChecked = this.penaltyBoxChecked.bind(this);
         this.makePenaltyBox = this.makePenaltyBox.bind(this);
+
+        this.smartPlacementChecked = this.smartPlacementChecked.bind(this);
+        this.makeSmartPlacementBox = this.makeSmartPlacementBox.bind(this);
+
+        this.bonusBoxChecked = this.bonusBoxChecked.bind(this);
+        this.makeBonusBox =  this.makeBonusBox.bind(this);
 
         this.state = {
             comments: '',
             summaryComments: '',
+            stationComments: '',
             matchType: '',
             matchNum: '',
             elmNum: '',
@@ -43,21 +59,24 @@ class Form extends React.Component{
             teamNumber: ' ',
             teams:['team1', 'team2', 'team3', 'team4', 'team5', 'team6'],
             override: false,
-            chargeStationVal: ['', '',''],
+            endGameVal: ['', '',''],
+            chargeStationValAuto: '',
             whoWon: '',
             checkedWhoWon: [' ' , ' '],
             rankingPts: 0,
             bonusVal: [' ', ' '],
-            totalPts: 0,
             pentalyVal: [' ',' ',' ',' ',' '],
-            dropDownVal:['', '', ''] ,
+            dropDownVal:['', '', '','',''] ,
             inputBoxVal: [0, 0],
+            smartPlacementVal: ' ',
+            strategyVal: [' ',' ',' ',' ',' ',' ',' ',' ',' '],
 
 
         }
     }
 
 //------------------------------------------------------------------------------------------------------------------------//
+    
     changeMatchType(event){
         let matchType = event;
          if(matchType === 'q'){
@@ -187,8 +206,71 @@ class Form extends React.Component{
         )
     }
 
-    changeMatch
+    whoWonClicked(i, label){
+        let data = this.state.matchData;
+        if(data === 'not found'){
+            window.alert("PICK A TEAM FIRST");
+        } else {
+            if(label === 'Team Won '){
+                this.setState({rankingPts: 2});
+            } else if(label === 'Team Tied '){
+                this.setState({rankingPts:1});
+            }
+            this.setState({bonusVal:[' ',' ']});
+            let whoWon = this.state.checkedWhoWon;
+            whoWon[i - 1] = ' ';
+            whoWon[i + 1] = ' ';
+            if(whoWon[i] === label){
+                whoWon = ' ';
+            } else {
+                whoWon[i] = label;
+            } if(whoWon[0] === ' ' && whoWon[1] === ' '){
+                this.setState({rankingPts:0});
+            }
+        }
+    }
 
+    makeWhoWonBox(name, i){
+        let whoWon = this.state.checkedWhoWon;
+        let checkVal;
+        if(whoWon[i] === name){
+            checkVal = true;
+        } else {
+            checkVal = false;
+        }
+
+        return(
+            <div>
+                <CheckBox
+                    label={name}
+                    changeCheckBoxState={this.whoWonClicked}
+                    place={i}
+                    checked={checkVal}
+                />
+            </div>
+        )
+    }
+
+    strategyBox(i, label){
+        let strategyStates = this.state.strategyVal;
+        if(strategyStates[i] === label){
+            strategyStates[i] = ' ';
+        } else {
+            strategyStates[i] = label;
+        } 
+    }
+
+    makeStrategyBox(name, i){
+        return(
+            <div>
+                <CheckBox
+                    label={name}
+                    changeCheckBoxState={this.strategyBox}
+                    place={i}
+                />
+            </div>
+        )
+    }
 
     //---------------------------------------------------------------------------------------------------------------//
 
@@ -214,48 +296,50 @@ class Form extends React.Component{
 
     //--------------------------------------------------------------------------------------------------------------//
 
-    changeChargeStation(event){
-        let chargeStation = Array(this.state.chargeStationVal);
-        chargeStation[0] = event.target.value;
-        this.setState({chargeStationVal: chargeStation});
+    changeEndGame(event){
+        let endGame = Array(this.state.endGameVal);
+        endGame[0] = event.target.value;
+        this.setState({endGameVal: endGame});
     }
 
-    changeChargeStationStartBox(event){
-        let chargeStation = this.state.chargeStationVal;
-        chargeStation[1] = event.target.value;
+    changeEndGameStartBox(event){
+        let endGame = this.state.endGameVal;
+        endGame[1] = event.target.value;
     }
 
-    changeChargeStationEndBox(event){
-        let chargeStation = this.state.chargeStationVal;
-        chargeStation[2] = event.target.value;
+    changeEndGameEndBox(event){
+        let endGame = this.state.endGameVal;
+        endGame[2] = event.target.value;
     }
 
-    makeChargeStationStartEndTimeBoxes(){
-        let chargeStationValues = this.state.chargeStationVal;
-        let chargeStation = chargeStationValues[0];
-        if( chargeStation !== "None" && chargeStation !== ''){
-            if(chargeStation === "Attempted"){
+    makeEndGameStartEndBox(){
+        let endGameValues = this.state.endGameVal;
+        let endGame = endGameValues[0];
+        if( endGame !== "None" && endGame !== ''){
+            if(endGame === "Attempted"){
                 return (
                     <div>
-                        <label> {"ChargeStation Start: "}
-                            <input type="number" onChange={this.changeChargeStationStartBox}></input>
+                        <label> {"End Game Start: "}
+                            <input type="number" onChange={this.changeEndGameStartBox}></input>
                         </label>
+                        <TextBox title={'End Game Comment:'} commentState={event => {this.setState({stationComments: event.target.value})}}/>
                     </div>
                 )
-            } else if(chargeStation === 'Parked') {
+            } else if(endGame === 'Parked') {
                 return <div></div> 
             } else {
                 return (
                     <div>
                         <div>
-                            <label> {"ChargeStation Start: "}
-                                <input type="number" onChange={this.changeChargeStationStartBox}></input>
+                            <label> {"End Game Start: "}
+                                <input type="number" onChange={this.changeEndGameStartBox}></input>
                             </label>
                         </div>
                         <div>
-                            <label> {"ChargeStation End: "}
-                                <input type="number" onChange={this.changeChargeStationEndBox}></input>
+                            <label> {"End Game End: "}
+                                <input type="number" onChange={this.changeEndGameEndBox}></input>
                             </label>
+                            <TextBox title={'End Game Comment:'} commentState={event => {this.setState({stationComments: event.target.value})}}/>
                         </div>
                     </div>
                 )
@@ -265,12 +349,28 @@ class Form extends React.Component{
         }
     }
 
-    makeChargeStationDropDown(){
+    makeEndGameDropDown(){
         return(
             <div>
-                <StationDropDown
+                <EndGame
+                    changeEndGameUsed={this.changeEndGame}
+                    makeEndGameStartEndBox={this.makeEndGameStartEndBox}
+                />
+            </div>
+        )
+    }
+
+    changeChargeStation(event){
+        let chargeStation = this.state.chargeStationValAuto;
+        chargeStation = event.target.value;
+        this.setState({chargeStationValAuto: chargeStation});
+    }
+
+    makeChargeStationAuto(){
+        return(
+            <div>
+                <ChargeStation
                     changeChargeStationUsed={this.changeChargeStation}
-                    makeChargeStationStartEndTimeBoxes={this.makeChargeStationStartEndTimeBoxes}
                 />
             </div>
         )
@@ -293,12 +393,60 @@ class Form extends React.Component{
         }
     }
 
-    makePenaltyBox(name ,i){
+    makePenaltyBox(name, i){
         return(
             <div>
                 <CheckBox
                     label={name}
-                    changeState={this.penaltyBoxChecked}
+                    changeCheckBoxState={this.penaltyBoxChecked}
+                    place={i}
+                />
+            </div>
+        )
+    }
+
+    smartPlacementChecked(label){
+        let smartPlacementState = this.state.smartPlacementVal;
+        if(smartPlacementState ===  label){
+            smartPlacementState = ' ';
+        } else {
+            smartPlacementState = label;
+        }
+    }
+
+    makeSmartPlacementBox(name, i){
+        return(
+            <div>
+                <CheckBox
+                    label={name}
+                    changeCheckBoxState={this.smartPlacementChecked}
+                    place={i}
+                />
+            </div>
+        )
+    }
+
+    bonusBoxChecked(i, label){
+        let bounsState = this.state.bonusVal;
+        if( bounsState[i] === label){
+            this.setState({rankingPts: this.state.rankingPts - 1});
+        } else { 
+            this.setState({rankingPts: this.state.rankingPts + 1});
+        }
+
+        if(bounsState[i] === label){
+            bounsState[i] = ' ';
+        } else {
+            bounsState[i] = label;
+        }
+    }
+
+    makeBonusBox(name, i){
+        return(
+            <div>
+                <CheckBox
+                    label={name}
+                    changeCheckBoxState={this.bonusBoxChecked}
                     place={i}
                 />
             </div>
@@ -314,15 +462,35 @@ class Form extends React.Component{
                 {this.makeTeamDropdown()}
                 <br></br>
                 <h3>AUTONOMOUS</h3>
-                {this.makeChargeStationDropDown()}
+                {this.makeChargeStationAuto()}
                 <br></br>
                 <h3>TELE-OP</h3>
-                {this.makeChargeStationDropDown()}
-                {this.makeChargeStationStartEndTimeBoxes()}
-                {this.makeDropDownBox("Drive: ", [1,2,3],0)}
-                {this.makeDropDownBox("Test 2: ", ["Slow", "Fast", "Really Fast"], 1)}
+                {this.makeEndGameDropDown()}
+                {this.makeEndGameStartEndBox()}
+                <br></br>
+                {this.makeSmartPlacementBox("Smart Placement ")}
+                <br></br>
+                {this.makeDropDownBox("Drive Strength: ", ["Weak","Normal","Strong"],0)}
+                {this.makeDropDownBox("Drive Speed: ", ["Slow", "Fast", "Really Fast"], 1)}
+                <br></br>
                 {this.makePenaltyBox("Yellow Card ",0)}
-                <CounterBox></CounterBox>
+                {this.makePenaltyBox("Red Card ", 1)}
+                {this.makePenaltyBox("Disable ", 2)}
+                {this.makePenaltyBox("Disqualifed ", 3)}
+                {this.makePenaltyBox("Bot Broke ", 4)}
+                {this.makePenaltyBox("No Show ", 5)}
+                <br></br>
+                <h2>Ranking Points</h2>
+                {this.makeWhoWonBox("Team Won ", 0)}
+                {this.makeWhoWonBox("Team Tied ", 1)}
+                {this.makeBonusBox("Activation ",0)}
+                {this.makeBonusBox("Sustainability", 1)}
+                <br></br>
+                <h2>Strategy & Priorities</h2>
+                {this.makeStrategyBox("Hybrid Node ", 0)}
+                {this.makeStrategyBox("Mid Node ", 1)}
+                {this.makeStrategyBox("High Node ", 2)}
+                
                 <br></br>
                 <p>How well is there defense if any?</p>
                 <TextBox title={'Comments: '} commentState={this.setComment}></TextBox>
