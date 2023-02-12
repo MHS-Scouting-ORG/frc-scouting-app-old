@@ -8,14 +8,15 @@ class StationTimer extends React.Component{
         this.timeChanged = this.timeChanged.bind(this);
         this.state = {
             timer: 0,
-            //isRunning: false,
+            debounce: 0,
             stop: false
         }
     }
 
     runTimer() {
-        this.setState({stop: false})
-        if (this.state.stop === false) {
+        this.setState({stop: false, debounce: this.state.debounce + 1});
+        console.log(this.state.debounce);
+        if (this.state.debounce < 1 && this.state.stop === false) {
             setInterval(() => {
                 if (this.state.stop === true) {
                     return;
@@ -28,7 +29,7 @@ class StationTimer extends React.Component{
     }
     
     stopTimer() {
-        this.setState({stop: true})
+        this.setState({stop: true, debounce: 0});
     }
 
     timeChanged(event) {
