@@ -52,7 +52,9 @@ class Form extends React.Component{
         this.mobilityBoxClick = this.mobilityBoxClick.bind(this);
         this.makeMobilityBox = this.makeMobilityBox.bind(this);
 
-        this.logState = this.logState.bind(this);;
+        this.logState = this.logState.bind(this);
+        this.setComment = this.setComment.bind(this);
+
         this.state = {
             comments: '',
             summaryComments: '',
