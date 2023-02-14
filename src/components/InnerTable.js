@@ -9,11 +9,14 @@ const dummyData = [
 
 const InnerTable = (props) => {
 
-    const data = React.useMemo(
+    const data = React.useMemo( //random data for now
         () => {
         return dummyData;
         }
     )
+    const actualData = props.information; //information in summary table used to pass the data for each match
+
+    const columnValues = Object.keys(actualData[0]);
   
     const columns = React.useMemo(
       () => [
@@ -37,8 +40,16 @@ const InnerTable = (props) => {
               accessor: 'gridPts',
             },
             {
-              Header: 'Grid Acc',
-              accessor: 'gridAccuracy',
+              Header: 'Low Grid Acc',
+              accessor: 'lowGridAccuracy',
+            },
+            {
+              Header: 'Mid Grid Acc',
+              accessor: 'midGridAccuracy',
+            },
+            {
+              Header: 'Upper Grid Acc',
+              accessor: 'upperGridAccuracy',
             },
             {
               Header: 'Charge Station',
@@ -57,8 +68,16 @@ const InnerTable = (props) => {
               accessor: 'autoPlacement',
             },
             {
-              Header: 'Grid',
-              accessor: 'autoGrid',
+              Header: ' Low Grid',
+              accessor: 'autoLowGrid',
+            },
+            {
+              Header: 'Mid Grid',
+              accessor: 'autoMidGrid',
+            },
+            {
+              Header: 'Upper Grid',
+              accessor: 'autoUpperGrid',
             },
             {
               Header: 'Mobility',
@@ -73,8 +92,16 @@ const InnerTable = (props) => {
           Header: 'Tele-Op',
           columns: [
             {
-              Header: 'Grid',
-              accessor: 'grid',
+              Header: ' Low Grid',
+              accessor: 'teleLowGrid',
+            },
+            {
+              Header: 'Mid Grid',
+              accessor: 'teleMidGrid',
+            },
+            {
+              Header: 'Upper Grid',
+              accessor: 'teleUpperGrid',
             },
             {
               Header: 'Endgame',
@@ -115,12 +142,16 @@ const InnerTable = (props) => {
             {
               Header: 'Scouter',
               accessor: 'email',
+            },
+            {
+              Header: 'Delete',
+              accessor: 'delete',
             },]
         }
       ], []
     )
   
-    const tableInstance = useTable({ columns, data }, useSortBy);
+    const tableInstance = useTable({ columns, data }, useSortBy); //change data once actualData gets stuff
   
     const {
       getTableProps,

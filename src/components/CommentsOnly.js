@@ -74,6 +74,7 @@ function CommentsOnly() {
   
     return (
       <div>
+        <h2>comments table</h2>
         <table {...getTableProps()}>
   
           <thead>
@@ -86,12 +87,6 @@ function CommentsOnly() {
                     (
                       <th
                         {...column.getHeaderProps(column.getSortByToggleProps())}
-                        style={{
-                          padding: '5px',
-                          border: 'solid 1px black',
-                          textAlign: 'center',
-                          background: 'steelblue'
-                        }}
                       >
                         {column.render('Header')}
                       </th>
