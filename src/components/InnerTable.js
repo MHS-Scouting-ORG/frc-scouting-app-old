@@ -9,11 +9,14 @@ const dummyData = [
 
 const InnerTable = (props) => {
 
-    const data = React.useMemo(
+    const data = React.useMemo( //random data for now
         () => {
         return dummyData;
         }
     )
+    const actualData = props.information; //information in summary table used to pass the data for each match
+
+    const columnValues = Object.keys(actualData[0]);
   
     const columns = React.useMemo(
       () => [
@@ -148,7 +151,7 @@ const InnerTable = (props) => {
       ], []
     )
   
-    const tableInstance = useTable({ columns, data }, useSortBy);
+    const tableInstance = useTable({ columns, data }, useSortBy); //change data once actualData gets stuff
   
     const {
       getTableProps,

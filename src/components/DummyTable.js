@@ -28,7 +28,7 @@ function DummyTable() {
   },[]) 
 
   useEffect(() => {
-
+    console.log(renderRowSubComponent())
   }) */
 
   const data = React.useMemo(

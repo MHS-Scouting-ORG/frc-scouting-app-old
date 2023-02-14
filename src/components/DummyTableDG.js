@@ -1,8 +1,8 @@
 import { StopReplicationToReplicaRequestFilterSensitiveLog } from "@aws-sdk/client-secrets-manager";
 import React, { useEffect, useState } from "react"
 import { useExpanded, useTable } from "react-table"
-import { apiGetTeam, apiListTeams } from "../api";
-import { getTeamsInRegional, getTeamInfo } from "../api/bluealliance";
+import { apiGetTeam, apiListTeams, getMatchesForRegional} from "../api";
+import { getTeamsInRegional, getTeamInfo, getOprs } from "../api/bluealliance";
 import DumInnerTable from "./DumInnerTable";
 
 function DummyTableDG() {
@@ -12,7 +12,7 @@ function DummyTableDG() {
   const [averages,setAverages] = useState([]);
   const [apiData, setApiData] = useState([]);
 
-  //useEffect(() => console.log(data)) //debug purposes
+  //useEffect(() => {console.log(getTeamsInRegional('2023hiho'))},[]) //debug purposes
 
    useEffect(() => {
     getTeams()
@@ -23,8 +23,20 @@ function DummyTableDG() {
       .catch(console.log.bind(console))
    },[]) 
 
+   useEffect(() => {  //convert to list and filter data structure to find opr dpr and ccwm 
+    getOprs('2022hiho')
+    .then(data => {
+      setApiData(data)
+      console.log(data)
+    })
+    .catch(console.log.bind(console))
+   },[])
+
    useEffect(() => setAverages(teamsData.map(team => {
     console.log(team)
+
+    
+
     return {
 
       TeamNumber: team.TeamNumber,
@@ -33,7 +45,9 @@ function DummyTableDG() {
       OPR: team.OPR,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
-      AvgGridPoints: team.AvgGridPoints,
+      AvgLow: team.AvgLow,
+      AvgMid: team.AvgMid,
+      AvgTop: team.AvgTop,
       AvgAcc: team.AvgAcc,
       DPR: team.DPR,
       Defense: team.Defense,
@@ -51,7 +65,9 @@ function DummyTableDG() {
       OPR: team.OPR,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
-      AvgGridPoints: team.AvgGridPoints,
+      AvgLow: team.AvgLow,
+      AvgMid: team.AvgMid,
+      AvgTop: team.AvgTop,
       AvgAcc: team.AvgAcc,
       DPR: team.DPR,
       Defense: team.Defense,
@@ -81,7 +97,9 @@ const getTeams = async () => {
           OPR: 0,
           CCWM: 0, 
           AvgPoints: 0,
-          AvgGridPoints: 0,
+          AvgLow: 0,
+          AvgMid: 0,
+          AvgTop: 0,
           AvgAcc: 0,
           DPR: 0,
           Defense: '',
@@ -93,6 +111,65 @@ const getTeams = async () => {
     .catch(err => console.log(err)) 
 }
 
+const getApiData = async () => {
+
+}
+
+const renderRowSubComponent = ({ row }) => { //not working(not showing table within team number)
+    
+  const dumTest = [
+    {
+      Match: 0,
+      Strategy: 'stratTEST',
+      TotalPts: 1,
+      RankingPts: 2,
+
+
+      AutoPlacement: 3,
+      AutoGridPts: 4,
+      AutoChargeStationPts: 5,
+
+      TeleGridPts: 6,
+      TeleChargeStationPts: 7
+    }
+  ]
+
+  const dum = dumTest.map(x =>  {
+    return {
+      Match: x.Match,
+      Strategy: x.Strategy,
+      TotalPts: x.TotalPts,
+      RankingPts: x.RankingPts,
+
+
+      AutoPlacement: x.AutoPlacement,
+      AutoGridPts: x.AutoGridPts,
+      AutoChargeStationPts: x.AutoChargeStationPts,
+
+      TeleGridPts: x.TeleGridPts,
+      TeleChargeStationPts: x.TeleChargeStationPts
+      
+    }
+  })
+
+  return dum.length > 0 ?
+  (<pre>
+    <div>{<DumInnerTable information = {dum}/>} </div>
+  </pre>)
+  : (
+    <div style={{
+      padding: '5px',
+  }}> No data collected for Team {row.values.TeamNumber}. </div>
+  );
+}
+
+/*const calcAvgPoints = (arr) => { //"arr" is the data parameter which is given when it is called
+  const indivPoints = () => {arr.map(value => value.TotalPts)}
+  let totalPts = 0;
+  for (let i = 0; i < individualPoints.length; i++){
+  }
+} */
+
 const data = React.useMemo(
   () => tableData.map(team => {
     return {
@@ -103,7 +180,9 @@ const data = React.useMemo(
       OPR: team.OPR,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
-      AvgGridPoints: team.AvgGridPoints,
+      AvgLow: team.AvgLow,
+      AvgMid: team.AvgMid,
+      AvgTop: team.AvgTop,
       AvgAcc: team.AvgAcc,
       DPR: team.DPR,
       Defense: team.Defense,
@@ -112,36 +191,6 @@ const data = React.useMemo(
     }
   }) , [tableData]
 ) //^works
-
-  const renderRowSubComponent = ({ row }) => {   
-    const dum = () =>  {
-      return {
-        Match: 0,
-        Strategy: 'stratTEST',
-        TotalPts: 1,
-        RankingPts: 2,
-
-
-        AutoPlacement: 3,
-        AutoGridPts: 4,
-        AutoChargeStationPts: 5,
-
-        TeleGridPts: 6,
-        TeleChargeStationPts: 7
-        
-      }
-    }
-
-    return dum.length > 0 ?
-    (<pre>
-      <div>{<DumInnerTable information = {dum}/>} </div>
-    </pre>)
-    : (
-      <div style={{
-        padding: '5px',
-    }}> No data collected for Team {row.values.TeamNumber}. </div>
-    );
-  }
 
   const columns = React.useMemo(
     () => [
@@ -183,8 +232,16 @@ const data = React.useMemo(
         accessor: "AvgPoints"
       },
       {
-        Header: "Avg Grid Points",
-        accessor: "AvgGridPoints"
+        Header: "Avg Low Placement",
+        accessor: "AvgLow"
+      },
+      {
+        Header: "Avg Mid Placement",
+        accessor: "AvgMid"
+      },
+      {
+        Header: "Avg Top Placement",
+        accessor: "AvgTop"
       },
       {
         Header: "Avg Accuracy",
@@ -277,19 +334,5 @@ const data = React.useMemo(
     </table>
   )
 }
-
-{/*{row.IsExpanded ? (
-                <tr>
-                  <td colSpan={visibleColumns.length}
-                  style = {{
-                    maxWidth: "1200px"
-                  }}
-                  >
-                    {renderRowSubcomponent ({ row })}
-                  </td>
-                </tr>
-              ) : null}
-
-                </React.Fragment> */}
 
 export default DummyTableDG; 

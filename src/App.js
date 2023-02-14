@@ -13,6 +13,7 @@ import CommentsOnly from './components/CommentsOnly';
 import { useEffect, useState } from 'react'
 import ExampleUI from './example'
 import { getTeamInfo } from './api/bluealliance'
+import DumInnerTable from './components/DumInnerTable';
 
 
 const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
@@ -58,7 +59,6 @@ function AuthenticatedUI({ user }) {
       </div>
       <Summary />
       <CommentsOnly />
-      <DummyTableDG />
     </div>)
 
 }
