@@ -7,6 +7,7 @@ import ChargeStation from './ChargeStation';
 import CounterBox from './CounterBox';
 import {getRegionals, getTeamsInRegional,} from "../api/bluealliance";
 import TextBox from './TextBox';
+import Headers from './Header';
 
 
 class Form extends React.Component{
@@ -14,7 +15,7 @@ class Form extends React.Component{
         super(props)
 
         this.changeMatchType = this.changeMatchType.bind(this);
-        this.changeElmType =  this.changeElmType.bind(this);
+        this.changeMatchNumber =  this.changeMatchNumber.bind(this);
         this.makeMatchTypeDropDown = this.makeMatchTypeDropDown.bind(this);
         this.changeElmNum = this.changeElmNum.bind(this);
 
@@ -48,16 +49,21 @@ class Form extends React.Component{
         this.bonusBoxChecked = this.bonusBoxChecked.bind(this);
         this.makeBonusBox =  this.makeBonusBox.bind(this);
 
+        this.mobilityBoxClick = this.mobilityBoxClick.bind(this);
+        this.makeMobilityBox = this.makeMobilityBox.bind(this);
+
+        this.logState = this.logState.bind(this);;
         this.state = {
             comments: '',
             summaryComments: '',
             stationComments: '',
-            matchType: '',
-            matchNum: '',
-            elmNum: '',
+            matchType:'',
+            elmNum:'',
+            matchNumber:'',
             matchData: 'not found',
             teamNumber: ' ',
             teams:['team1', 'team2', 'team3', 'team4', 'team5', 'team6'],
+            matchOverride: false,
             override: false,
             endGameVal: ['', '',''],
             chargeStationValAuto: '',
@@ -67,9 +73,10 @@ class Form extends React.Component{
             bonusVal: [' ', ' '],
             pentalyVal: [' ',' ',' ',' ',' '],
             dropDownVal:['', '', '','',''] ,
-            inputBoxVal: [0, 0],
+            inputBoxVal: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             smartPlacementVal: ' ',
             strategyVal: [' ',' ',' ',' ',' ',' ',' ',' ',' '],
+            mobilityVal: '',
 
 
         }
@@ -87,22 +94,25 @@ class Form extends React.Component{
         this.setState({teamNumber: ' '});
     }
 
-    changeElmType(event){
-        this.setState({elmNum:event});
+    changeElmNum(event){
+        this.setState({elmNum:(event.target.value)});
         this.setState({teams:['team1', 'team2', 'team3', 'team4', 'team5', 'team6']});
         this.setState({teamNumber: ' '});
     }
 
-    changeElmNum(event){
-            this.setState({elmNum: event.target.value});
-            this.setState({teams:['team1', 'teams2', 'team3', 'team4', 'team5', 'team6']});
-            this.setState({teamNumber:''});
+    changeMatchNumber(event){
+        if(event.target.value !== 0){
+            this.setState({matchOverride: false})
+        }
+        this.setState({matchNumber: event.target.value});
+        this.setState({teams:['team1', 'team2', 'team3', 'team4', 'team5', 'team6']});
+        this.setState({teamNumber:''});
     }
 
     makeMatchTypeDropDown(matchType){
-       if(matchType === "qf" || matchType === "sf" || matchType === "f"){
+       if(matchType === 'qf' || matchType === 'sf' || matchType === 'f'){
         return(
-            <input onChange={this.changeElmType}/>
+            <input onChange={this.changeElmNum}/>
         )
        }
     }
@@ -112,20 +122,28 @@ class Form extends React.Component{
             <div>
                 <MatchDropDown
                     setMatchType={this.changeMatchType}
-                    setElmType={this.changeElmType}
+                    setElmNum={this.changeElmNum}
                     generateMatchTypeNum={this.makeMatchTypeDropDown}
-                    setsetElmType={this.changeElmNum}
+                    setMatchNumber={this.changeMatchNumber}
 
                 />
             </div>
         )
     }
 
+    logState(){
+        console.log(this.state)
+    }
+
     async getMatchTeams(){
-        let matchKey = /*put this years event*//* "event_key"  *//* */ await getTeamsInRegional() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNum;
+        //console.log(this.state.matchType)// + this.state.elmNum + "m" + this.state.matchNumber)
+        let matchKey =  /*put this years event*//* "2022hiho"  *//* */ await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
         const teams = async () => {
-            await fetch('https://www.thebluealliance.com/api/v3/event/' + /* 'event_Key' */ /**/ await getTeamsInRegional() /**/ + '/matches',{
+            await fetch('https://www.thebluealliance.com/api/v3/event/' + /* '2022hiho' */ /**/ await getRegionals() /**/ + '/matches',{
                 mode: 'cors',
+                headers: {
+                    'X-TBA-Auth_Key': "TKWj89sH9nu6hwIza0zK91UQBRUaW5ETVJrZ7KhHOolwmuKxKqD3UkQMAoqHahsn"
+                }
             })
             .then(response => response.json())
             .then(data => {
@@ -428,7 +446,7 @@ class Form extends React.Component{
 
     bonusBoxChecked(i, label){
         let bounsState = this.state.bonusVal;
-        if( bounsState[i] === label){
+        if(bounsState[i] === label){
             this.setState({rankingPts: this.state.rankingPts - 1});
         } else { 
             this.setState({rankingPts: this.state.rankingPts + 1});
@@ -453,26 +471,92 @@ class Form extends React.Component{
         )
     }
 
+    mobilityBoxClick(i ,label){
+        let mobilityState =  this.state.mobilityVal;
+        if(mobilityState === label){
+            mobilityState = ' ';
+        } else {
+            mobilityState = label;
+        }
+    }
+
+    makeMobilityBox(name, i){
+        return(
+            <div>
+                <CheckBox
+                    label={name}
+                    changeCheckBoxState={this.mobilityBoxClick}
+                    place={i}
+                />
+            </div>
+        )
+    }
+
     //-------------------------------------------------------------------------------------------------------------//
     render(){
         return(
             <div>
                 <h1> FORM </h1>
+                <button onClick={this.logState}> Check State </button>
                 {this.makeMatchDropDown}
+                <button onClick={this.getMatchTeams}>GET MATCH TEAM</button>
+                <br></br>
                 {this.makeTeamDropdown()}
                 <br></br>
                 <h3>AUTONOMOUS</h3>
+                <img src={'./images/auto placement.jpg'}></img>
+                {this.makeDropDownBox("Auto Placement On Community: ",[1,2,3,4,5,6],0)}
+                <br></br>
+                <p>Cubes Scored</p>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <p>Cubes Attempted</p>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <p>Cones Scored</p>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <p>Cones Attempted</p>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <br></br>
+                {this.makeMobilityBox("Mobility ")}
+                <br></br>
                 {this.makeChargeStationAuto()}
                 <br></br>
                 <h3>TELE-OP</h3>
+                <p>Cubes Scored</p>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <p>Cubes Attempted</p>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <p>Cones Scored</p>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <p>Cones Attempted</p>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
+                <br></br>
                 {this.makeEndGameDropDown()}
                 {this.makeEndGameStartEndBox()}
                 <br></br>
                 {this.makeSmartPlacementBox("Smart Placement ")}
                 <br></br>
-                {this.makeDropDownBox("Drive Strength: ", ["Weak","Normal","Strong"],0)}
-                {this.makeDropDownBox("Drive Speed: ", ["Slow", "Fast", "Really Fast"], 1)}
+                {this.makeDropDownBox("Drive Strength: ", ["Weak","Normal","Strong"],1)}
+                {this.makeDropDownBox("Drive Speed: ", ["Slow", "Fast", "Really Fast"], 2)}
                 <br></br>
+                <h2>Penalties</h2>
+                <CounterBox></CounterBox>
+                <CounterBox></CounterBox>
                 {this.makePenaltyBox("Yellow Card ",0)}
                 {this.makePenaltyBox("Red Card ", 1)}
                 {this.makePenaltyBox("Disable ", 2)}
@@ -484,7 +568,8 @@ class Form extends React.Component{
                 {this.makeWhoWonBox("Team Won ", 0)}
                 {this.makeWhoWonBox("Team Tied ", 1)}
                 {this.makeBonusBox("Activation ",0)}
-                {this.makeBonusBox("Sustainability", 1)}
+                {this.makeBonusBox("Sustainability ", 1)}
+                <Headers display={this.state.rankingPts} bonus={this.state.bonusVal}/>
                 <br></br>
                 <h2>Strategy & Priorities</h2>
                 {this.makeStrategyBox("Low Node ", 0)}
@@ -495,10 +580,12 @@ class Form extends React.Component{
                 {this.makeStrategyBox("Charge Station ", 5)}
                 {this.makeStrategyBox("Single Substation ", 6)}
                 {this.makeStrategyBox("Double Substation ", 7)}
-
                 <br></br>
                 <p>How well is there defense if any?</p>
-                <TextBox title={'Comments: '} commentState={this.setComment}></TextBox>
+                <TextBox title={"Comments: "} commentState={this.setComment}></TextBox>
+                <div>
+                    <button>Submit</button>
+                </div>
             </div>
         )
     }

@@ -45,6 +45,8 @@ class MatchDropDown extends React.Component{
                     <option> Final </option>
                 </select>
                 {this.generateMatchTypeNum()}
+                <label>Match:</label>
+                <input onChange={this.props.setMatchNumber}></input>
             </div>
         )
     }
