@@ -10,11 +10,14 @@ function DummyTableDG() {
   const [tableData,setTableData] = useState([]); //data on table
   const [teamsData,setTeamsData] = useState([]); //data of teams
   const [averages,setAverages] = useState([]);
-  const [apiData, setApiData] = useState([]);
-
-  //useEffect(() => {console.log(getTeamsInRegional('2023hiho'))},[]) //debug purposes
+  const [oprData, setOprData] = useState([]);
 
    useEffect(() => {
+    
+  },[]
+) //debug purposes ^ 
+
+   useEffect(() => { // sets team numbers of objects
     getTeams()
       .then(data => {
         setTeamsData(data) 
@@ -23,20 +26,19 @@ function DummyTableDG() {
       .catch(console.log.bind(console))
    },[]) 
 
-   useEffect(() => {  //convert to list and filter data structure to find opr dpr and ccwm 
+   useEffect(() => {     //set opr data //convert to list and filter data structure to find opr dpr and ccwm 
     getOprs('2022hiho')
-    .then(data => {
-      setApiData(data)
-      console.log(data)
+    .then(data => { 
+      console.log(Object.keys(data))
+      setOprData(Object.values(data)[0].frc2090)
+      console.log(Object.values(data))
+      console.log(oprData) 
     })
     .catch(console.log.bind(console))
    },[])
 
    useEffect(() => setAverages(teamsData.map(team => {
-    console.log(team)
-
-    
-
+    //console.log(team)
     return {
 
       TeamNumber: team.TeamNumber,
@@ -111,9 +113,9 @@ const getTeams = async () => {
     .catch(err => console.log(err)) 
 }
 
-const getApiData = async () => {
-
-}
+/*const getCcwms = () => { //implement displaying data of opr ccwm and dpr
+  return await
+} */
 
 const renderRowSubComponent = ({ row }) => { //not working(not showing table within team number)
     
