@@ -10,13 +10,12 @@ function DummyTableDG() {
   const [tableData,setTableData] = useState([]); //data on table
   const [teamsData,setTeamsData] = useState([]); //data of teams
   const [averages,setAverages] = useState([]);
-  const [oprData, setOprData] = useState([]);
+  const [oprData,setOprData] = useState([]); //data of team ccwm opr and dpr
+  const [opr,setOpr] = useState([]);
 
    useEffect(() => {
-    
-  },[]
-) //debug purposes ^ 
-
+  },[]) //debug purposes ^ 
+  
    useEffect(() => { // sets team numbers of objects
     getTeams()
       .then(data => {
@@ -30,14 +29,45 @@ function DummyTableDG() {
     getOprs('2022hiho')
     .then(data => { 
       console.log(Object.keys(data))
-      setOprData(Object.values(data)[0].frc2090)
-      console.log(Object.values(data))
-      console.log(oprData) 
+      const oprList = Object.values(data)
+      const oData = oprList[1]
+      const dataOpr = Object.values(oData)
+      console.log(dataOpr)
+      setOpr(oData) // state opr is now a list that holds the oprs of teams that it is available for
+      console.log(Object.values(data)[0])
+      console.log(opr) 
+      console.log(oData)
     })
     .catch(console.log.bind(console))
-   },[])
+   },[teamsData])
 
-   useEffect(() => setAverages(teamsData.map(team => {
+   useEffect(() => setOprData(teamsData.map(team => {
+
+    const OPR = () => {
+      opr.map(data => {
+        return data
+      })
+    }
+    console.log(opr)
+    return {
+
+      TeamNumber: team.TeamNumber,
+      Matches: team.Matches,
+      Priorities: team.Priorities,
+      OPR: opr.filter(opr.keys === opr.keys.substring(indexOf('')) === team.TeamNumber !== 0),
+      CCWM: team.CCWM, 
+      AvgPoints: team.AvgPoints,
+      AvgLow: team.AvgLow,
+      AvgMid: team.AvgMid,
+      AvgTop: team.AvgTop,
+      AvgAcc: team.AvgAcc,
+      DPR: team.DPR,
+      Defense: team.Defense,
+      Penalties: team.Penalties
+    }
+   })),[teamsData]) 
+
+   useEffect(() => setAverages(oprData.map(team => {
     //console.log(team)
     return {
 
@@ -56,7 +86,7 @@ function DummyTableDG() {
       Penalties: team.Penalties
 
     }
-  })), [teamsData])
+  })), [teamsData, oprData])
 
   useEffect(() => setTableData(averages.map(team => {
     return {
@@ -76,15 +106,49 @@ function DummyTableDG() {
       Penalties: team.Penalties
 
     }
-  })),[teamsData, averages]) 
+  })),[teamsData, averages, oprData]) 
 
-  /*const data = React.useMemo(
-    () => tableData.map(team => {
+const getOprData = async () => {
+  return await (getOprs('2023hiho'))
+  .catch(err => console.log(err))
+  .then(data => {
+    const OPR = () => {
+      getOprs('2023hiho')
+      .then(data => {
+        return Object.values(data)[1]
+      })
+    }
+    return OPR.map(obj => {
       return {
-        TeamNumber: team.team_number
+        TeamNumber: obj.TeamNumber,
+        Matches: obj.Matches,
+        Priorities: obj.Priorities,
+        OPR: obj.frc2090,
+        CCWM: obj.CCWM, 
+        AvgPoints: obj.AvgPoints,
+        AvgLow: obj.AvgLow,
+        AvgMid: obj.AvgMid,
+        AvgTop: obj.AvgTop,
+        AvgAcc: obj.AvgAcc,
+        DPR: obj.DPR,
+        Defense: obj.Defense,
+        Penalties: obj.Penalties
       }
-    }), [teamsData, averages]
-)*///work on this one^
+    })
+  })
+} 
+//dont know if work ^
+
+/*const dataTeamObj = async () => {
+  const hawaiiKey = '2023hiho'
+  const arizonaKey = '2023azva'
+  const callDataFunct = () => {
+    getTeamsInRegional(hawaiiKey)
+    getOprs(hawaiiKey)
+  }
+  return await callDataFunct()
+  .then(data )
+  } */
 
 const getTeams = async () => {
   return await (getTeamsInRegional('2023hiho'))
@@ -112,10 +176,6 @@ const getTeams = async () => {
     })
     .catch(err => console.log(err)) 
 }
-
-/*const getCcwms = () => { //implement displaying data of opr ccwm and dpr
-  return await
-} */
 
 const renderRowSubComponent = ({ row }) => { //not working(not showing table within team number)
     
