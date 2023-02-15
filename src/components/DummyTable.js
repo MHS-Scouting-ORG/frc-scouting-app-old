@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { useTable } from "react-table"
+import { getTeamInfo, getRegionals, getTeamsInRegional } from '../api/bluealliance'
+import InnerTable from 'Inn'
+
 //import { apiListTeams, apiAddTeam, apiGetTeam, getMatchesForRegional, apiCreateTeamMatchEntry } from './api/index'
 
 
@@ -16,7 +19,7 @@ const dummy = [
 function DummyTable() {
 
   const [tableData,setTableData] = useState([]);
-  const [teamNumber,setTeamNumber] = useState([]) 
+  const [teamData,setTeamData] = useState([]) 
 
   //useEffect(() => console.log(data)) //debug purposes
 
@@ -31,16 +34,36 @@ function DummyTable() {
 
   }) */
 
+  
+  useEffect(() => {
+      getTeamsInRegional("2023hiho")
+      .then(data => {
+        setTeamData(data)
+        console.log(data)
+      })
+      .catch(console.log.bind(console))
+  })
+
+  useEffect(() => {
+    setTableData(teamData.map(team => {
+      return {
+        TeamNumber: team.team_number
+        
+      }
+    }))
+  })
+
   const data = React.useMemo(
-    () => tableData.map(team => {
+    () => tableData.map(team => { 
       return {
         TeamNumber: team.TeamNumber,
-        Priorities: team.Priorities,
+
+        /*Priorities: team.Priorities,
         AvgPoints: team.AvgPoints,
         AvgCharge: team.AvgCharge,
-        Comments: team.Commentss
+        Comments: team.Commentss*/
       }
-    }),[tableData]
+    }),[teamData]
   )
 
   /*const data = React.useMemo(
@@ -72,6 +95,10 @@ function DummyTable() {
         Header: " Comments ",
         accessor: "Comments"
       },], [] */
+      {
+        Header: "Team #",
+        accessor: "TeamNumber"
+      },
       {
         Header: " Matches ",
         accessor: "Matches"
@@ -149,7 +176,7 @@ function DummyTable() {
                     style={{
                       padding: '10px',
                       border: 'solid 1px gray',
-                      background: 'papayaWhip',
+                      background: 'darkblue',
                     }}
                   >
                     {cell.render('Cell')}
