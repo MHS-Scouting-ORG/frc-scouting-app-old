@@ -13,7 +13,8 @@ import CommentsOnly from './components/CommentsOnly';
 import { useEffect, useState } from 'react'
 import ExampleUI from './example'
 import { getTeamInfo } from './api/bluealliance'
-//import DummyTable from './components/DummyTable'
+import DumInnerTable from './components/DumInnerTable';
+
 
 const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
 awsconfig.oauth.redirectSignIn = redirectSignInUri[parseInt(process.env.REACT_APP_REDIRECT_INDEX)]
@@ -34,7 +35,7 @@ function AuthenticatedUI({ user }) {
       .catch(err => {
         console.log(err)
       })
-  })
+  }, [])
 
 
   return (

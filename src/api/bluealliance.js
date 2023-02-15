@@ -6,7 +6,16 @@ import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-sec
 
 const { bluealliance_api_endpoint, year } = config
 
-
+/**
+ * Get OPR
+ * @param {*} event_key 
+ * @returns 
+ */
+async function getOprs(event_key) {
+  if(!event_key || event_key.length === 0)
+    throw new Error("Event Key not provided")
+  return _fetch(`/event/${event_key}/oprs`)
+}
 
 // get bluealliance api key
 async function getApiKey() {
@@ -50,7 +59,9 @@ const getRegionals = async function() {
  * - regional - regional id from bluealliance
  */
 const getTeamsInRegional = async function(regional) {
+  if(!regional || regional.length === 0)
+    throw new Error(`regional not provided ${regional}`)
   return _fetch(`/event/${regional}/teams`)
 }
 
-export { getTeamInfo, getRegionals, getTeamsInRegional } 
+export { getOprs, getTeamInfo, getRegionals, getTeamsInRegional } 

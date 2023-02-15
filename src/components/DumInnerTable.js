@@ -15,7 +15,7 @@ const DumInnerTable = (props) => {
                         accessor: 'Match'
                     },
                     {
-                        Header: 'Priorities',
+                        Header: 'Priorities/Strategies',
                         accessor: 'Strategy'
                     },
                     {
@@ -35,11 +35,11 @@ const DumInnerTable = (props) => {
                         accessor: 'AutoPlacement'
                     },
                     {
-                        Header: 'GridPts',
+                        Header: 'Auto Grid Points',
                         accessor: 'AutoGridPts'
                     },
                     {
-                        Header: 'ChargeStationPts',
+                        Header: 'Charge Staton Points',
                         accessor: 'AutoChargeStationPts'
                     },]
             },
@@ -47,18 +47,18 @@ const DumInnerTable = (props) => {
                 Header: 'Tele-Op',
                 columns: [
                     {
-                        Header: 'GridPts',
+                        Header: 'Tele-Op Grid Points',
                         accessor: 'TeleGridPts'
                     },
                     {
-                        Header: 'GridPts',
-                        accessor: 'TeleGridPts'
+                        Header: 'Tele-Op ChargeStation Points',
+                        accessor: 'TeleChargeStationPts'
                     },]
             }
         ],[]
     )
 
-    const tableInstance = ({columns, data})
+    const tableInstance = useTable({columns, data})
 
     const {
         getTableProps,
@@ -68,71 +68,71 @@ const DumInnerTable = (props) => {
         prepareRow,
       } = tableInstance
 
-      return (
-        <div>
-          <table {...getTableProps()}>
-    
-            <thead>
-              {
-                headerGroups.map(headerGroup =>
-                (
-                  <tr {...headerGroup.getHeaderGroupProps()} >
-                    {
-                      headerGroup.headers.map(column =>
-                      (
-                        <th
-                          {...column.getHeaderProps(column.getSortByToggleProps())}
+       return (
+    <div>
+      <table {...getTableProps()}>
+
+        <thead>
+          {
+            headerGroups.map(headerGroup =>
+            (
+              <tr {...headerGroup.getHeaderGroupProps()} >
+                {
+                  headerGroup.headers.map(column =>
+                  (
+                    <th
+                      {...column.getHeaderProps()}
+                      style={{
+                        padding: '5px',
+                        border: 'solid 1px black',
+                        textAlign: 'center',
+                        background: 'steelblue'
+                      }}
+                    >
+                      {column.render('Header')}
+                    </th>
+                  )
+                  )
+                }
+              </tr>
+            )
+            )
+          }
+        </thead>
+
+        <tbody {...getTableBodyProps()}>
+          {
+            rows.map(row => {
+              prepareRow(row)
+              return (
+                <tr {...row.getRowProps()}>
+                  {
+                    row.cells.map(cell => {
+                      return (
+                        <td
+                          {...cell.getCellProps()}
                           style={{
                             padding: '5px',
                             border: 'solid 1px black',
                             textAlign: 'center',
-                            background: 'steelblue'
                           }}
                         >
-                          {column.render('Header')}
-                        </th>
-                      )
+                          {cell.render('Cell')}
+                        </td>
                       )
                     }
-                  </tr>
-                )
-                )
-              }
-            </thead>
-    
-            <tbody {...getTableBodyProps()}>
-              {
-                rows.map(row => {
-                  prepareRow(row)
-                  return (
-                    <tr {...row.getRowProps()}>
-                      {
-                        row.cells.map(cell => {
-                          return (
-                            <td
-                              {...cell.getCellProps()}
-                              style={{
-                                padding: '5px',
-                                border: 'solid 1px black',
-                                textAlign: 'center',
-                              }}
-                            >
-                              {cell.render('Cell')}
-                            </td>
-                          )
-                        }
-                        )
-                      }
-                    </tr>
-                  )
-                }
-                )
-              }
-            </tbody>
-    
-          </table>
-        </div>
-      )
+                    )
+                  }
+                </tr>
+              )
+            }
+            )
+          }
+        </tbody>
+
+      </table>
+    </div>
+  )
 
 } 
 

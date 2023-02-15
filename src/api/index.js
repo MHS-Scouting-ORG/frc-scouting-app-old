@@ -1,7 +1,25 @@
-import { Auth, graphqlOperation, API } from 'aws-amplify'
+import { graphqlOperation, API } from 'aws-amplify'
 import { teamMatchesByRegional, getTeam, listTeams} from '../graphql/queries'
 import { updateTeamMatch, createTeamMatch, createTeam } from '../graphql/mutations'
+import { onCreateTeamMatch, onUpdateTeamMatch } from '../graphql/subscriptions'
 import  buildMatchEntry  from './builder'
+
+/**
+ * Subscribe to create and update events
+ * @param {*} updateFn 
+ * @param {*} errorFn 
+ */
+const apiSubscribeToMatchUpdates = async function(updateFn, errorFn) {
+
+    API.graphql(graphqlOperation(onCreateTeamMatch)).subscribe({
+        next: ({value}) => updateFn(value),
+        error: (errorFn || (err => console.log(err)))
+    })
+    API.graphql(graphqlOperation(onUpdateTeamMatch)).subscribe({
+        next: updateFn,
+        error : (errorFn || (err => console.log(err)))
+    })
+}
 
 /*
  * Get a Team by their TeamNumber  that are currently in our database
@@ -21,7 +39,7 @@ const apiAddTeam = async function(team) {
  * Get All the teams in our database
  */
 const apiListTeams = async function() {
-    return API.graphql(graphqlOperation(listTeams))
+    return API.graphql(graphqlOperation(listTeams, {}))
 }
 
 /*
@@ -92,4 +110,4 @@ const apiUpdateTeamMatch = async function(regionalId, teamId, matchId) {
 
 }
 
-export { apiGetTeam, apiAddTeam, apiListTeams, getMatchesForRegional, apiCreateTeamMatchEntry, apiUpdateTeamMatch }
+export { apiSubscribeToMatchUpdates, apiGetTeam, apiAddTeam, apiListTeams, getMatchesForRegional, apiCreateTeamMatchEntry, apiUpdateTeamMatch }
