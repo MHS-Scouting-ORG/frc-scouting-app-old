@@ -8,6 +8,7 @@ import CounterBox from './CounterBox';
 import {getRegionals, getTeamsInRegional,} from "../api/bluealliance";
 import TextBox from './TextBox';
 import Headers from './Header';
+import StationTimer from './StationTimer';
 
 
 class Form extends React.Component{
@@ -19,11 +20,11 @@ class Form extends React.Component{
         this.makeMatchTypeDropDown = this.makeMatchTypeDropDown.bind(this);
         this.changeElmNum = this.changeElmNum.bind(this);
 
-       this.whoWonClicked = this.whoWonClicked.bind(this);
-       this.makeWhoWonBox = this.makeWhoWonBox.bind(this);
+        this.whoWonClicked = this.whoWonClicked.bind(this);
+        this.makeWhoWonBox = this.makeWhoWonBox.bind(this);
 
-       this.strategyBox = this.strategyBox.bind(this);
-       this.makeStrategyBox = this.makeStrategyBox.bind(this);
+        this.strategyBox = this.strategyBox.bind(this);
+        this.makeStrategyBox = this.makeStrategyBox.bind(this);
 
         this.makeMatchDropDown = this.makeMatchDropDown(this);
         this.changeTeam = this.changeTeam.bind(this);
@@ -75,7 +76,7 @@ class Form extends React.Component{
             bonusVal: [' ', ' '],
             pentalyVal: [' ',' ',' ',' ',' '],
             dropDownVal:['', '', '','',''] ,
-            inputBoxVal: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            counterBoxVal: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             smartPlacementVal: ' ',
             strategyVal: [' ',' ',' ',' ',' ',' ',' ',' ',' '],
             mobilityVal: '',
@@ -494,6 +495,26 @@ class Form extends React.Component{
         )
     }
 
+    //-------------------------------------------------------------------------------------------------------------//
+
+    counterBoxChanged(event, i) {
+        let counterStates = this.state.counterBoxVal;
+        counterStates[i] = event.target.value;
+    }
+
+    makeCounterBox(title, i) {
+        let counterStates = this.state.counterBoxVal;
+        return (
+            <div>
+                <counterBox
+                    label={title}
+                    setState={this.counterBoxChanged}
+                    place={i}
+                    state={counterStates[i]}
+                />
+            </div>
+        )
+    }
     //-------------------------------------------------------------------------------------------------------------//
     render(){
         return(
