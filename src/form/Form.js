@@ -52,8 +52,13 @@ class Form extends React.Component{
         this.mobilityBoxClick = this.mobilityBoxClick.bind(this);
         this.makeMobilityBox = this.makeMobilityBox.bind(this);
 
+        this.overrideChange = this.overrideChange.bind(this);
+        this.makeOverrideBox = this.makeOverrideBox.bind(this);
+
         this.logState = this.logState.bind(this);
         this.setComment = this.setComment.bind(this);
+
+        this.submitState = this.submitState.bind(this);
 
         this.state = {
             comments: '',
@@ -79,6 +84,10 @@ class Form extends React.Component{
             smartPlacementVal: ' ',
             strategyVal: [' ',' ',' ',' ',' ',' ',' ',' ',' '],
             mobilityVal: '',
+            totalPoints: 0,
+            hybridAccuracy: 0,
+            midRowAccuracy: 0,
+            highRowAccuracy: 0,
 
 
         }
@@ -239,7 +248,9 @@ class Form extends React.Component{
             this.setState({bonusVal:[' ',' ']});
             let whoWon = this.state.checkedWhoWon;
             whoWon[i - 1] = ' ';
+            whoWon[i - 2] = ' ';
             whoWon[i + 1] = ' ';
+            whoWon[i + 2] = ' ';
             if(whoWon[i] === label){
                 whoWon = ' ';
             } else {
@@ -494,6 +505,133 @@ class Form extends React.Component{
         )
     }
 
+    overrideChange(fill, filler){
+        this.setState({override: !this.state.override});
+    }
+
+    makeOverrideBox(){
+        return(
+            <div>
+                <CheckBox
+                    label={'Override '}
+                    changeCheckBoxState={this.overrideChange}
+                />
+            </div>
+        )
+    }
+
+    //-------------------------------------------------------------------------------------------------------------//
+
+    async submitState(){
+        let windowAlertMsg = 'Form is incomplete, you still need to fill out: ';
+
+        let dropVal = this.state.dropDownVal;
+        let autoPlacement = dropVal[0];
+        let driveStrength = dropVal[1];
+        let driveSpeed = dropVal[2];
+        let doubleStation = dropVal[3];
+
+        let endGame = this.state.endGameVal;
+        let endGameUsed = endGame[0];
+        let endGameStart = endGame[1];
+        let endGameEnd = endGame[3];
+
+        let chargeStationAuto = this.state.chargeStationValAuto;
+
+        let bonuses = this.state.bonusVal;
+        let strats = this.state.strategyVal;
+        let strategy = this.state.strategyVal;
+        let penalties = this.state.pentalyVal;
+
+
+        let endGamePts = 0;
+        let chargeStationPts = 0;
+        let mobilityPts = 0;
+
+        let incompleteForm = false;
+
+        if(endGameUsed === 'DockEngage'){
+            endGamePts = 10;
+        } else if(endGameUsed === "DockedNotEngaged"){
+            endGamePts = 6;
+        } else if(endGameUsed === 'Parked'){
+            endGamePts = 2;
+        } else {
+            endGamePts = 0;
+        }
+
+        if(endGameUsed === '' ){
+            incompleteForm = true;
+            windowAlertMsg = windowAlertMsg + "\nWhat charge station the robot did"
+        }  else{ 
+            if(endGameUsed !== 'None'){
+                if(endGameUsed === 'Attempted'){
+                    if(endGameStart === ''){
+                        incompleteForm = true;
+                        windowAlertMsg = windowAlertMsg + "\nWhat time the robot started charge station"
+                    }
+                } else {
+                    if(endGameStart === ''){
+                        incompleteForm = true;
+                        windowAlertMsg = windowAlertMsg + "\nWhat time the robot started charge station"
+                    } if(endGameEnd === ''){
+                        incompleteForm = true;
+                        windowAlertMsg = windowAlertMsg + "\nWhat time the robot ended charge station"
+                    }
+                }
+            }
+        }
+
+        if(chargeStationAuto === 'DockEngage'){
+            chargeStationPts = 12;
+        } else if(chargeStationAuto === "DockedNotEngaged"){
+            chargeStationPts = 8;
+        } else {
+            chargeStationPts = 0;
+        }
+
+        if(chargeStationAuto === '' ){
+            incompleteForm = true;
+            windowAlertMsg = windowAlertMsg + "\nWhat charge station the robot did"
+        }
+
+        if(this.state.mobilityVal === ' '){
+            mobilityPts = 0;
+        } else{
+            mobilityPts = 2;
+        }
+
+        let points;
+        let highAccuracy;
+        let midAccuracy;
+        let lowAccuracy;
+
+        this.setState({
+            totalPoints: points,
+            hybridAccuracy: lowAccuracy,
+            midRowAccuracy: midAccuracy,
+            highRowAccuracy: highAccuracy
+        })
+        
+        if(autoPlacement === ''){
+            incompleteForm = true;
+            windowAlertMsg = windowAlertMsg + "\nPosition of robot during Auto"
+        }
+
+        if(driveStrength === ''){
+            incompleteForm = true;
+            windowAlertMsg = windowAlertMsg + "\nWhat strength is the robot drive"
+        }
+
+        if(driveSpeed === ''){
+            incompleteForm = true;
+            windowAlertMsg = windowAlertMsg + "\nHow fast is the robot drive"
+        }
+
+
+    }
+
+
     //-------------------------------------------------------------------------------------------------------------//
     render(){
         return(
@@ -581,13 +719,15 @@ class Form extends React.Component{
                 {this.makeStrategyBox("Cones ", 4)}
                 {this.makeStrategyBox("Charge Station ", 5)}
                 {this.makeStrategyBox("Single Substation ", 6)}
-                {this.makeStrategyBox("Double Substation ", 7)}
+                {this.makeDropDownBox("Double Substation: ",["Sliding Shelve","Shelve"], 3)}
                 <br></br>
                 <p>How well is there defense if any?</p>
                 <TextBox title={"Comments: "} commentState={this.setComment}></TextBox>
                 <div>
                     <button>Submit</button>
                 </div>
+                <p> ONLY CLICK IF NOTHING ELSE CAN BE FILLED </p>
+                {this.makeOverrideBox()}
             </div>
         )
     }
