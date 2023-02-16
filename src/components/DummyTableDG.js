@@ -71,11 +71,7 @@ function DummyTableDG() {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
       Priorities: team.Priorities,
-<<<<<<< HEAD
-      OPR: team.OPR,
-=======
-      //OPR: opr.filter(opr.keys === opr.keys.substring(indexOf('')) === team.TeamNumber !== 0),
->>>>>>> 1e691e37985473a395c15861457172fe6903773d
+      OPR: opr.filter(opr.keys === opr.keys.substring(indexOf('')) === team.TeamNumber !== 0),
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgLow: team.AvgLow,
