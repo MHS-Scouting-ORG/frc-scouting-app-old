@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useTable, useSortBy, useExpanded, } from 'react-table';
+import { useTable, useSortBy, useExpanded, useGlobalFilter } from 'react-table';
 import { apiAddTeam, getTeamsInRegional, getRegionals, getOprs } from '../api/bluealliance';
 import {apiListTeams,} from '../api/index'
 import InnerTable from './InnerTable'; //add to summary table when clicked 
+import GlobalFilter from './GlobalFilter';
 
-
-
-
-const dummyData = [
-    {teamNumber: '2443', matches: "Q2",  }, // using to test sortby
-    {teamNumber: '32', matches: "Q3",  }
-
-]
 
 function Summary(){
 
@@ -49,11 +42,89 @@ function Summary(){
       }))
     }, [teamData])
 
+
     const renderRowSubComponent = ({ row }) => {
+      const t = apiData.filter((x) => parseInt(x.TeamId) === row.values.TeamNumber && parseInt(x.MatchId.substring(x.MatchId.indexOf('_')+2)) !== 0);
+
+      const disp = t.map(x => {
+          return {
+              match: x.MatchId.substring(x.MatchId.indexOf('_')+1),
+              priorities: x.Priorities.filter(val => val.trim() !== '').length !== 0 ? x.Strategy.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
+              totalPoints: x.TotalPoints,
+              gridPts: x.LowHubAccuracy !== null ? x.LowHubAccuracy.toFixed(2) : '',
+              lowGridAcc: x.lowGridAcc !== null ? x.lowGridAcc.toFixed(2) : '',
+              midGridAcc: x.midGridAcc !== null ? x.midGridAcc.toFixed(2) : '',
+              upperGridAcc: x.upperGridAcc !== null ? x.upperGridAcc.toFixed(2) : '',
+
+              autoPlacement: x.autoPlacement,
+              autoLowGrid: `${x.AutoLowMade}/${x.AutoLowMade + x.AutoLowMissed}`,
+              autoMidGrid: `${x.AutoMidMade}/${x.AutoMidMade + x.AutoMidMissed}`,
+              autoUpperGrid: `${x.AutoUpperMade}/${x.AutoUpperMade + x.AutoUpperMissed}`,
+              mobility: x.mobility,
+              autoChargeStation: x.chargeStation,
+
+              teleLowGrid: `${x.TeleLowMade}/${x.TeleLowMade + x.TeleLowMissed}`,
+              teleMidGrid: `${x.TeleMidMade}/${x.TeleMidMade + x.TeleMidMissed}`,
+              teleUpperGrid: `${x.TeleUpperMade}/${x.TeleUpperMade + x.TeleUpperMissed}`,
+              endgame: x.endgame !== undefined ? x.endgame : '',
+              CSStart: x.csStart !== undefined ? x.csStart : '',
+              CSEnd: x.csEnd !== undefined ? x.csEnd : '',
+              smartPlacement: x.smartPlacement,
+              intakeFrom: x.intakeFrom.filter(val => val.trim() !== '').length !== 0 ? x.intakeFrom.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
+              numberofFoulAndTech: x.numOfFouls !== undefined && x.numOfTech !== undefined ? `${x.NumberOfFouls} | ${x.NumberOfTech}` : '',
+              Penalties: x.Penalties !== undefined && x.Penalties.filter(val => val.trim() !== '').length !== 0 ? x.Penalties.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
+              NumberOfRankingPoints: x.NumberOfRankingPoints !== undefined ? x.NumberOfRankingPoints : '',
+
+              defense: x.defense,
+              comments: x.Comments !== undefined ? x.Comments.trim() : '',
+              email: x.email.substring(0, x.email.length-17),
+
+          };
+      })
       
+      return disp.length > 0 ?               // if there is data on team, display a table when expanded
+          (<pre>
+              <div> {<InnerTable information={disp} />} </div>
+          </pre>)
+          : (                             // else if no data, notify no data has been collected
+              <div style={{
+                  padding: '5px',
+              }}> No data collected for Team {row.values.TeamNumber}. </div>
+          );
+  }
+
+    //methods for what needs to be shown on summary table, accessors are from form people
+    
+    const getMax = (arr) => {                       // Get max of array
+      return arr.sort((a, b) => b - a).shift();
     }
 
-    //methods for grid avgs, accessors are from form people
+    const getPriorities = (arr) => {
+      let pri = arr.map(teamObj => teamObj.Priorities).reduce((a,b) => a.concat(b), []).filter((item) => item.trim() !== '');
+      return uniqueArr(pri);
+    }
+
+    const getIntakeFrom = (arr) => {
+      let intFrom = arr.map(teamObj => teamObj.intakeFrom).reduce((a,b) => a.concat(b), []).filter((item) => item.trim() !== '');
+      return uniqueArr(intFrom);
+    }
+
+    const uniqueArr = (arr) => {
+      const a = arr.map(x => x.trim());
+        return a.filter((item, index) => {
+            return a.indexOf(item, 0) === index;
+        })
+    }
+
+    const calcAvgPoints = (arr) => { //average points
+      let individualPts = arr.map(val => val.TotalPoints);
+      let totalPts = 0;
+      for(let i = 0; i < individualPts.length; i++){
+        totalPts = totalPts + individualPts[i];
+      }
+      let avgPts = totalPts / individualPts.length;
+      return avgPts.toFixed(3);
+    }
 
     const calcLowGrid = (arr) => { //autolowmade & auto telelowmade accessor from form (tbd since idk what they made it)
       let low = arr.map(val => (val.AutoLowMade + val.TeleLowMade));
@@ -204,6 +275,10 @@ function Summary(){
           {
             Header: 'Team #',
             accessor: "teamNumber",
+            Cell: ({ row }) => (
+              <span {...row.getToggleRowExpandedProps()}>
+                  {row.values.teamNumber}
+              </span>)
           },
           {
             Header: 'Matches',
@@ -272,7 +347,7 @@ function Summary(){
         ], []
       )
   
-    const tableInstance = useTable({ columns, data }, useSortBy, useExpanded);
+    const tableInstance = useTable({ columns, data }, useGlobalFilter, useSortBy, useExpanded);
   
     const {
       getTableProps,
@@ -280,74 +355,133 @@ function Summary(){
       headerGroups,
       rows,
       prepareRow,
+      visibleColumns,
+      state,
+      setGlobalFilter,
     } = tableInstance
+
+    const {globalFilter} = state;
   
     return (
       <div>
-        <h2>summary stats</h2>
-        <table {...getTableProps()}>
-  
-          <thead>
-            {
-              headerGroups.map(headerGroup =>
-              (
-                <tr {...headerGroup.getHeaderGroupProps()} >
-                  {
-                    headerGroup.headers.map(column =>
-                    (
-                      <th
-                        {...column.getHeaderProps(column.getSortByToggleProps())}
-                        style={{
-                          padding: '5px',
-                          border: 'solid 1px black',
-                          textAlign: 'center',
-                          background: 'steelblue'
-                        }}
+          <table style={{ width:'1250px' }} >
+              <tbody>
+                  <tr>
+                      <td
+                          style={{
+                              minWidth: '750px'
+                          }}
                       >
-                        {column.render('Header')}
-                      </th>
-                    )
-                    )
+                          
+                          <br/>
+                      </td>
+                      <h3>summary stats</h3>
+                      <td>
+                          <p>
+                              <strong>KEY</strong> 
+                              <br/> "Avg" / μ = Average
+                              <br/> σ = Standard Deviation
+                              <br/> Acc = Accuracy
+                          </p>
+                      </td>
+                      <td>
+                          <img src={"./images/community.jpg"} width="300px" height="240px"
+                              style={{
+                                  display: 'inline-block',
+                                  margin: '25px'
+                              }}
+                          ></img>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+          
+          <br/><br/>
+
+          <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
+          <table {...getTableProps()} 
+              style={{
+                  width: '1250px'
+              }}
+          >
+              <thead>
+                  {
+                      headerGroups.map(headerGroup =>
+                      (
+                          <tr {...headerGroup.getHeaderGroupProps()} >
+                              {
+                                  headerGroup.headers.map(column =>
+                                  (
+                                      <th
+                                          {...column.getHeaderProps(column.getSortByToggleProps())}
+                                          style={{
+                                              padding: '5px',
+                                              textAlign: 'center',
+                                          }}
+                                      >
+                                          {column.render('Header')}
+                                      </th>
+                                  )
+                                  )
+                              }
+                          </tr>
+                      )
+                      )
                   }
-                </tr>
-              )
-              )
-            }
-          </thead>
-  
-          <tbody {...getTableBodyProps()}>
-            {
-              rows.map(row => {
-                prepareRow(row)
-                return (
-                  <tr {...row.getRowProps()}>
-                    {
-                      row.cells.map(cell => {
-                        return (
-                          <td
-                            {...cell.getCellProps()}
-                            style={{
-                              padding: '5px',
-                              border: 'solid 1px black',
-                              textAlign: 'center',
-                            }}
-                          >
-                            {cell.render('Cell')}
-                          </td>
-                        )
+              </thead>
+
+              <tbody {...getTableBodyProps()}>
+
+                  {
+                      rows.map(row => {
+                          prepareRow(row)
+
+                          return (<React.Fragment  >
+
+                              <tr {...row.getRowProps()}>
+                                  {
+                                      row.cells.map(cell => {
+                                          return (
+                                              <td
+                                                  {...cell.getCellProps()}
+                                                  style={{
+                                                      padding: '5px',
+                                                      border: 'solid 1px black',
+                                                      textAlign: 'center',
+                                                  }}
+                                              >
+                                                  {cell.render('Cell')}
+
+                                              </td>
+                                          )
+                                      }
+                                      )
+                                  }
+                              </tr>
+
+                              {row.isExpanded ? (
+                                  <tr>
+                                      <td colSpan={visibleColumns.length}
+                                          style = {{
+                                              maxWidth: '1200px'
+                                          }}
+                                      >
+                                          {renderRowSubComponent({ row })}
+                                      </td>
+                                  </tr>
+                              ) : null}
+
+
+                          </React.Fragment>
+                          )
                       }
                       )
-                    }
-                  </tr>
-                )
-              }
-              )
-            }
-          </tbody>
-  
-        </table>
+                  }
+              </tbody>
+
+          </table>
       </div>
-    )
+  )
   
   }
   

@@ -81,7 +81,7 @@ const InnerTable = (props) => {
             },
             {
               Header: 'Mobility',
-              accessor: 'autoMobility',
+              accessor: 'mobility',
             },
             {
               Header: 'Charge Station',
