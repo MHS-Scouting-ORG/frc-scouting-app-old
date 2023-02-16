@@ -19,6 +19,7 @@ class Form extends React.Component{
         this.changeMatchNumber =  this.changeMatchNumber.bind(this);
         this.makeMatchTypeDropDown = this.makeMatchTypeDropDown.bind(this);
         this.changeElmNum = this.changeElmNum.bind(this);
+        this.getMatchTeams = this.getMatchTeams.bind(this);
 
         this.whoWonClicked = this.whoWonClicked.bind(this);
         this.makeWhoWonBox = this.makeWhoWonBox.bind(this);
@@ -86,9 +87,8 @@ class Form extends React.Component{
             strategyVal: [' ',' ',' ',' ',' ',' ',' ',' ',' '],
             mobilityVal: '',
             totalPoints: 0,
-            hybridAccuracy: 0,
-            midRowAccuracy: 0,
-            highRowAccuracy: 0,
+            cubesAccuracy: 0,
+            conesAccuracy: 0
 
 
         }
@@ -151,10 +151,10 @@ class Form extends React.Component{
         //console.log(this.state.matchType)// + this.state.elmNum + "m" + this.state.matchNumber)
         let matchKey =  /*put this years event*//* "2022hiho"  *//* */ await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
         const teams = async () => {
-            await fetch('https://www.thebluealliance.com/api/v3/event/' + /* '2022hiho' */ /**/ await getRegionals() /**/ + '/matches',{
+            await fetch('https://www.thebluealliance.com/api/v3/team/' +  'frc2443'  + '/event/'  +  '2022hiho'  + '/matches' ,{
                 mode: 'cors',
-                headers: {
-                    'X-TBA-Auth_Key': "TKWj89sH9nu6hwIza0zK91UQBRUaW5ETVJrZ7KhHOolwmuKxKqD3UkQMAoqHahsn"
+                headers:{
+                'X-TBA-Auth-Key': 'TKWj89sH9nu6hwIza0zK91UQBRUaW5ETVJrZ7KhHOolwmuKxKqD3UkQMAoqHahsn'
                 }
             })
             .then(response => response.json())
@@ -523,6 +523,28 @@ class Form extends React.Component{
 
     //-------------------------------------------------------------------------------------------------------------//
 
+    counterBoxChanged(event, i) {
+        console.log("aaaaa");
+        let counterStates = this.state.counterBoxVal;
+        counterStates[i] = event.target.value;
+    }
+
+    makeCounterBox(title, i) {
+        let counterStates = this.state.counterBoxVal;
+        return (
+            <div>
+                <CounterBox
+                    label={title}
+                    setState={this.counterBoxChanged}
+                    place={i}
+                    state={counterStates[i]}
+                />
+            </div>
+        )
+    }
+
+    //-------------------------------------------------------------------------------------------------------------//
+
     async submitState(){
         let windowAlertMsg = 'Form is incomplete, you still need to fill out: ';
 
@@ -544,6 +566,24 @@ class Form extends React.Component{
         let strategy = this.state.strategyVal;
         let penalties = this.state.pentalyVal;
 
+        let counterVal =  this.state.counterBoxVal;
+
+        let lowAutoCubes  = parseInt(counterVal[0]);
+        let midAutoCubes = parseInt(counterVal[1]);
+        let highAutoCubes = parseInt(counterVal[2]); 
+        let lowAutoCones = parseInt(counterVal[6]);
+        let midAutoCones = parseInt(counterVal[7]);
+        let highAutoCones = parseInt(counterVal[8]);
+
+        let lowTeleCubes = parseInt(counterVal[12]);
+        let midTeleCubes = parseInt(counterVal[13]);
+        let highTeleCubes = parseInt(counterVal[14]);
+        let lowTeleCones = parseInt(counterVal[18]);
+        let midTeleCones = parseInt(counterVal[19]);
+        let highTeleCones = parseInt(counterVal[20]);
+
+        let cubesMissed = parseInt(counterVal[3]) + parseInt(counterVal[4]) + parseInt(counterVal[5]) + parseInt(counterVal[15]) + parseInt(counterVal[16]) + parseInt(counterVal[17]); 
+        let conesMissed = parseInt(counterVal[9]) + parseInt(counterVal[10]) + parseInt(counterVal[11]) + parseInt(counterVal[21]) + parseInt(counterVal[22]) + parseInt(counterVal[23]); 
 
         let endGamePts = 0;
         let chargeStationPts = 0;
@@ -602,16 +642,15 @@ class Form extends React.Component{
             mobilityPts = 2;
         }
 
-        let points;
-        let highAccuracy;
-        let midAccuracy;
-        let lowAccuracy;
+        let points =  chargeStationPts + endGamePts + mobilityPts;
+        let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesMissed + lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes));
+        let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesMissed + lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones));
 
         this.setState({
             totalPoints: points,
-            hybridAccuracy: lowAccuracy,
-            midRowAccuracy: midAccuracy,
-            highRowAccuracy: highAccuracy
+            cubesAccuracy: cubesTeleAutoAccuracy,
+            conesAccuracy: conesTeleAutoAccuracy,
+            
         })
         
         if(autoPlacement === ''){
@@ -635,25 +674,6 @@ class Form extends React.Component{
 
     //-------------------------------------------------------------------------------------------------------------//
 
-    counterBoxChanged(event, i) {
-        let counterStates = this.state.counterBoxVal;
-        counterStates[i] = event.target.value;
-    }
-
-    makeCounterBox(title, i) {
-        let counterStates = this.state.counterBoxVal;
-        return (
-            <div>
-                <counterBox
-                    label={title}
-                    setState={this.counterBoxChanged}
-                    place={i}
-                    state={counterStates[i]}
-                />
-            </div>
-        )
-    }
-    //-------------------------------------------------------------------------------------------------------------//
     render(){
         return(
             <div>
@@ -669,7 +689,7 @@ class Form extends React.Component{
                 {this.makeDropDownBox("Auto Placement On Community: ",[1,2,3,4,5,6],0)}
                 <br></br>
                 <p>Cubes Scored</p>
-                <CounterBox></CounterBox>
+                {this.makeCounterBox("High Cubes: ", 0)}
                 <CounterBox></CounterBox>
                 <CounterBox></CounterBox>
                 <p>Cubes Attempted</p>

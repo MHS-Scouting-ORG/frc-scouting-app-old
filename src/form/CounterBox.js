@@ -18,15 +18,17 @@ class CounterBox extends React.Component{
     }
 
     countChanged(event) {
+        console.log("aaa")
+        this.setState({counter: event.target.value});
         this.props.setState(event, this.props.place);
     }
 
     render() {
         return(
             <div> 
-                <label>{this.props.title}</label>
+                <label>{this.props.label}</label>
                 <button onClick={() => this.updateCounter(-1)}>-</button>
-                <input value={this.state.counter} onChange={this.countChanged}/>
+                <input value={this.state.counter} id={this.props.place} onChange={this.countChanged}/>
                 <button onClick={() => this.updateCounter(1)}>+</button>
             </div>
         );
