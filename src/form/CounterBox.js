@@ -12,12 +12,16 @@ class CounterBox extends React.Component{
 
     updateCounter(increment) {
         let val = increment + this.state.counter;
+        const input = document.getElementById(this.props.place)
         this.setState((state) => ({
             counter: ( (val >= 0) ? state.counter + increment : 0),
         }));
+        input.value = parseInt(this.state.counter) + 1;
     }
 
     countChanged(event) {
+        console.log("apple cider");
+        this.setState({counter: event.target.value});
         this.props.setState(event, this.props.place);
     }
 
@@ -26,7 +30,7 @@ class CounterBox extends React.Component{
             <div> 
                 <label>{this.props.title}</label>
                 <button onClick={() => this.updateCounter(-1)}>-</button>
-                <input value={this.state.counter} onChange={this.countChanged}/>
+                <input type="number" id={this.props.place} onChange={this.countChanged}/>
                 <button onClick={() => this.updateCounter(1)}>+</button>
             </div>
         );
