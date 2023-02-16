@@ -22,22 +22,34 @@ function Summary(){
           //console.log(data);
         })
         .catch(console.log.bind(console))
-    }, [teamData])
+    }, [])
 
-    useEffect(() => { //opr, ccwm, dpr
-      getOprs('2022hiho')
-      .then(data => {
-        setOprData(data);
-        //console.log(data);
-      })
-      .catch(console.log.bind(console))
-    }, [oprData])
+    useEffect(() => { //opr, ccwm, dpr doesn't work 
+      const fetchData = async () => {
+        try {
+          const stuff = await getOprs("2022hiho");
+          setOprData(stuff.map(team => ({
+            return: {
+              opr: team.oprs.opr,
+              ccwm: team.oprs.ccwm,
+              dpr: team.oprs.dpr,
+            } 
+          })));
+        }
+        catch(error){
+          console.log(error);
+        }
+      }
+      fetchData();
+    }, []);
+
+  
 
     useEffect(() => { //used for calculations
       setTableData(teamData.map(team => {
         return{
           teamNumber: team.team_number,
-          //ccwm: team.ccwm,
+          ccwm: team.ccwm,
         }
       }))
     }, [teamData])
@@ -124,6 +136,16 @@ function Summary(){
       }
       let avgPts = totalPts / individualPts.length;
       return avgPts.toFixed(3);
+    }
+
+    const calcAvgGrid = (arr) => {
+      let individualPts = arr.map(val => val.gridPoints);
+      let totalPts = 0;
+      for(let i = 0; i < individualPts.length; i++){
+        totalPts = totalPts + individualPts[i];
+      }
+      let avgGridPts = totalPts / individualPts.length;
+      return avgGridPts.toFixed(3);
     }
 
     const calcLowGrid = (arr) => { //autolowmade & auto telelowmade accessor from form (tbd since idk what they made it)
@@ -263,7 +285,9 @@ function Summary(){
         () => tableData.map(team => {
         return{
           teamNumber: team.teamNumber,
-          //ccwm: team.ccwm,
+          opr: team.opr,
+          ccwm: team.ccwm,
+          dpr: team.dpr,
         }
         
         
@@ -299,6 +323,10 @@ function Summary(){
           {
             Header: 'Avg Points',
             accessor: 'avgPoints',
+          },
+          {
+            Header: 'Avg Grid Points',
+            accessor: 'avgGridPoints',
           },
           {
             Header: 'Avg Low Grid Points',
@@ -347,7 +375,7 @@ function Summary(){
         ], []
       )
   
-    const tableInstance = useTable({ columns, data }, useGlobalFilter, useSortBy, useExpanded);
+    const tableInstance = useTable({ columns, data, oprData }, useGlobalFilter, useSortBy, useExpanded);
   
     const {
       getTableProps,
