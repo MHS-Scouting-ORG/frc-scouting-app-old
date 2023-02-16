@@ -12,9 +12,11 @@ class CounterBox extends React.Component{
 
     updateCounter(increment) {
         let val = increment + this.state.counter;
+        const input = document.getElementById(this.props.place)
         this.setState((state) => ({
             counter: ( (val >= 0) ? state.counter + increment : 0),
         }));
+        input.value = parseInt(this.state.counter) + 1;
     }
 
     countChanged(event) {
