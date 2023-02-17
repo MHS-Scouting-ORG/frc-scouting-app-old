@@ -1,9 +1,10 @@
 import { StopReplicationToReplicaRequestFilterSensitiveLog } from "@aws-sdk/client-secrets-manager";
 import React, { useEffect, useState } from "react"
-import { useExpanded, useTable } from "react-table"
+import { useExpanded, useTable, useSortBy, useGlobalFilter } from "react-table"
 import { apiGetTeam, apiListTeams, getMatchesForRegional} from "../api";
 import { getTeamsInRegional, getTeamInfo, getOprs } from "../api/bluealliance";
 import DumInnerTable from "./DumInnerTable";
+import GlobalFilter from "./GlobalFilter";
 
 function DummyTableDG() {
 
@@ -13,20 +14,11 @@ function DummyTableDG() {
   const [averages,setAverages] = useState([]);
   const [oprData,setOprData] = useState([]); //data of team ccwm opr and dpr
   const [oprList,setOprList] = useState([]);
+  const [dprList, setDprList] = useState([]);
+  const [ccwmList, setCcwmList] = useState([]);
 
    useEffect(() => {
   },[]) //debug purposes ^ 
-
-  /*useEffect(() => {
-    getOprs('2023hiho')
-    .then(data => {
-      data.map(data => {
-        return {
-          frc2443opr: data.frc2443
-        }
-      })
-    })
-  },[]) */
   
    useEffect(() => { // sets team numbers of objects
     getTeams()
@@ -44,23 +36,12 @@ function DummyTableDG() {
       const cData = oprDataArr[0] //ccwm 
       const dData = oprDataArr[1] //dpr
       const oData = oprDataArr[2] //opr
-      const cDataKeys = Object.keys(cData) //ccwm team
-      const dDataKeys = Object.keys(dData) //dpr team
-      const oDataKeys = Object.keys(oData) // opr team
-      const dataOpr = Object.values(oData)
-      //const frc2443opr = oDataKeys.find(frc2443)
 
-      console.log(dataOpr)
       setOprList(oData) // state opr is now a list that holds the oprs of teams that it is available for
-      console.log(Object.values(data)[1])
-      console.log(oData) 
-      console.log(dataOpr)
-      console.log(data) // whole
-      console.log(cDataKeys)
-      console.log(cDataKeys[1])
-      console.log(getTeamsInRegional('2023hiho'))
-      console.log(teamNum)
-      console.log(oprDataArr[0]['frc2090']) // now know that multiple squares bracket can be used
+      setDprList(dData)
+      setCcwmList(cData) 
+
+      console.log(data) // whole list of ccwm, dpr, and opr
     })
     .catch(console.log.bind(console))
    },[teamsData])
@@ -87,22 +68,19 @@ function DummyTableDG() {
    })),[teamsData]) 
 
    useEffect(() => setOprData(teamNum.map(team => {
-    /*getOprs('2023hiho')
-    .then(data => Object.values(data).map(data => {
 
-    }))*/
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
       Priorities: team.Priorities,
       OPR: oprList[team.TeamNum],    // FIND WAY TO EVAL KEY OR TO MAP VALUES UNIQUE TO EACH TEAM ROW
-      CCWM: team.CCWM, 
+      CCWM: ccwmList[team.TeamNum], 
       AvgPoints: team.AvgPoints,
       AvgLow: team.AvgLow,
       AvgMid: team.AvgMid,
       AvgTop: team.AvgTop,
       AvgAcc: team.AvgAcc,
-      DPR: team.DPR,
+      DPR: dprList[team.TeamNum],
       Defense: team.Defense,
       Penalties: team.Penalties,
 
@@ -140,10 +118,10 @@ function DummyTableDG() {
       Defense: team.Defense,
       Penalties: team.Penalties,
 
-      //TeamNum: teamNum
+      TeamNum: team.TeamNum
 
     }
-  })), [teamsData])
+  })), [teamsData, teamNum, oprData])
 
   useEffect(() => setTableData(averages.map(team => {
     return {
@@ -162,40 +140,9 @@ function DummyTableDG() {
       Defense: team.Defense,
       Penalties: team.Penalties,
 
-      //TeamNum: team.teamNum
+      TeamNum: team.TeamNum
     }
-  })),[teamsData, averages]) 
-
-const getOprData = async () => {
-  return await (getOprs('2023hiho'))
-  .catch(err => console.log(err))
-  .then(data => {
-    const OPR = () => {
-      getOprs('2023hiho')
-      .then(data => {
-        return Object.values(data)[1]
-      })
-    }
-    return OPR.map(obj => {
-      return {
-        TeamNumber: obj.TeamNumber,
-        Matches: obj.Matches,
-        Priorities: obj.Priorities,
-        OPR: obj.frc2090,
-        CCWM: obj.CCWM, 
-        AvgPoints: obj.AvgPoints,
-        AvgLow: obj.AvgLow,
-        AvgMid: obj.AvgMid,
-        AvgTop: obj.AvgTop,
-        AvgAcc: obj.AvgAcc,
-        DPR: obj.DPR,
-        Defense: obj.Defense,
-        Penalties: obj.Penalties
-      }
-    })
-  })
-} 
-//dont know if work ^
+  })),[teamsData,teamNum, oprData, averages]) 
 
 const getTeams = async () => {
    return await (getTeamsInRegional('2023hiho'))
@@ -207,17 +154,17 @@ const getTeams = async () => {
           Matches: '',
           Priorities: '',
           OPR: "",
-          CCWM: 0, 
-          AvgPoints: 0,
-          AvgLow: 0,
-          AvgMid: 0,
-          AvgTop: 0,
-          AvgAcc: 0,
-          DPR: 0,
+          CCWM: "", 
+          AvgPoints: "",
+          AvgLow: "",
+          AvgMid: "",
+          AvgTop: "",
+          AvgAcc: "",
+          DPR: "",
           Defense: '',
-          Penalties: 0,
+          Penalties: "",
 
-          //TeamNum: 0,
+          TeamNum: "",
         }
 
         return teamNumObj
@@ -383,25 +330,30 @@ const data = React.useMemo(
     ], []
   )
 
-  const tableInstance = useTable({ columns, data}, useExpanded);
+  const tableInstance = useTable({ columns, data}, useGlobalFilter, useSortBy, useExpanded);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    state,
+    setGlobalFilter,
     prepareRow,
     visibleColumns,
   } = tableInstance
+
+  const {globalFilter} = state
   
   return (
     <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+      <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
       <thead>
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
               <th
-                {...column.getHeaderProps()}
+                {...column.getHeaderProps(column.getSortByToggleProps())}
                 style={{
                   background: 'aliceblue',
                   color: 'black',
