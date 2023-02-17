@@ -151,7 +151,7 @@ class Form extends React.Component{
         //console.log(this.state.matchType)// + this.state.elmNum + "m" + this.state.matchNumber)
         let matchKey =  /*put this years event*//* "2022hiho"  *//* */ await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
         const teams = async () => {
-            await fetch('https://www.thebluealliance.com/api/v3/team/' +  'frc2443'  + '/event/'  +  '2022hiho'  + '/matches' ,{
+            await fetch('https://www.thebluealliance.com/api/v3/event/'  +  '2022hiho' /* change event_key*/  + '/matches' ,{
                 mode: 'cors',
                 headers:{
                 'X-TBA-Auth-Key': 'TKWj89sH9nu6hwIza0zK91UQBRUaW5ETVJrZ7KhHOolwmuKxKqD3UkQMAoqHahsn'
@@ -167,18 +167,20 @@ class Form extends React.Component{
                         console.log({teams:matches.alliances.blue.team_keys.concat(matches.alliances.red.team_keys)});
 
                     }
+                    console.log(matches);
                 })
             })
             .catch(err => console.log(err))
         }
         console.log(matchKey);
+        console.log(matchData)
         teams();
     }
 
     changeTeam(event){
         this.setState({teamNumber:event.target.value});
         let data = this.state.matchData;
-        let teamColor = 'red';
+        let teamColor = 'blue';
         let selectedTeam = event.target.value;
         data.alliances.blue.team_keys.map((team) => {
             if(team === selectedTeam){
