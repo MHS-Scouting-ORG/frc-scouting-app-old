@@ -66,12 +66,11 @@ function DummyTableDG() {
    },[teamsData])
 
    useEffect(() => setTeamNum(teamsData.map(team => {
-    console.log(teamNum.TeamNum)
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
       Priorities: team.Priorities,
-      OPR: opr.filter(opr.keys === opr.keys.substring(indexOf('')) === team.TeamNumber !== 0),
+      OPR: team.OPR,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgLow: team.AvgLow,
@@ -88,12 +87,15 @@ function DummyTableDG() {
    })),[teamsData]) 
 
    useEffect(() => setOprData(teamNum.map(team => {
+    /*getOprs('2023hiho')
+    .then(data => Object.values(data).map(data => {
 
+    }))*/
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
       Priorities: team.Priorities,
-      OPR: team.OPR,    // FIND WAY TO EVAL KEY OR TO MAP VALUES UNIQUE TO EACH TEAM ROW
+      OPR: oprList[team.TeamNum],    // FIND WAY TO EVAL KEY OR TO MAP VALUES UNIQUE TO EACH TEAM ROW
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgLow: team.AvgLow,
@@ -104,11 +106,11 @@ function DummyTableDG() {
       Defense: team.Defense,
       Penalties: team.Penalties,
 
-      TeamNum: `frc${team.TeamNumber}`
+      TeamNum: team.TeamNum
     }
    })), [teamsData, teamNum])
 
-   useEffect(() => setAverages(teamsData.map(team => {
+   useEffect(() => setAverages(oprData.map(team => {
     console.log(team)
     //setTeamNum(teamNum.map('frc' + team.TeamNumber)) //figure out how to map all teams with frc
     // experiment does not work ^
@@ -124,7 +126,6 @@ function DummyTableDG() {
 
 
     return {
-
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
       Priorities: team.Priorities,
@@ -205,7 +206,7 @@ const getTeams = async () => {
           TeamNumber: obj.team_number,
           Matches: '',
           Priorities: '',
-          OPR: 0,
+          OPR: "",
           CCWM: 0, 
           AvgPoints: 0,
           AvgLow: 0,
