@@ -18,7 +18,7 @@ function DummyTableDG() {
   const [ccwmList,setCcwmList] = useState([]);
 
    useEffect(() => {
-    
+    //console.log((getMatchesForRegional('2023week0')))
   },[]) //debug purposes or test ^ 
   
    useEffect(() => { // sets team numbers of objects
@@ -43,12 +43,16 @@ function DummyTableDG() {
       setCcwmList(cData) 
 
       console.log(data) // whole list of ccwm, dpr, and opr
-      console.log((oprList['frc2443']).toFixed(2))
+
+      const teamNumb = Object.keys(cData)
+      console.log(teamNumb)
+      //console.log((oprList['frc2443']).toFixed(2))
     })
     .catch(console.log.bind(console))
    },[teamsData])
 
    useEffect(() => setTeamNum(teamsData.map(team => {
+
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
