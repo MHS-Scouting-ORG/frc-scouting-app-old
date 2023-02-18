@@ -57,8 +57,13 @@ function AuthenticatedUI({ user }) {
         {user.username}
         <br />
       </div>
+<<<<<<< HEAD
       <ExampleUI />
       <DummyTableDG />
+=======
+      {/*<ExampleUI />*/}
+      <DummyTable />
+>>>>>>> d12167a4b73c449e98fa09853fe3ec6fe6a19d8b
     </div>
     )
 

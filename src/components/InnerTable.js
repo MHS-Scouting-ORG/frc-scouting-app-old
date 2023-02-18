@@ -9,14 +9,14 @@ const dummyData = [
 
 const InnerTable = (props) => {
 
-    const data = React.useMemo( //random data for now
+    /*const data = React.useMemo( //random data for now
         () => {
         return dummyData;
         }
-    )
-    const actualData = props.information; //information in summary table used to pass the data for each match
+    ) */
+    const /*actual*/data = props.information; //information in summary table used to pass the data for each match
 
-    const columnValues = Object.keys(actualData[0]);
+    //const columnValues = Object.keys(actualData[0]);
   
     const columns = React.useMemo(
       () => [
@@ -54,11 +54,8 @@ const InnerTable = (props) => {
             {
               Header: 'Charge Station',
               accessor: 'chargeStation',
-            },
-            {
-              Header: 'Mobility',
-              accessor: 'mobility',
-            },]
+            },],
+          //accessor: 'matchSums',
         },
         {
           Header: 'Autonomous',
@@ -68,7 +65,7 @@ const InnerTable = (props) => {
               accessor: 'autoPlacement',
             },
             {
-              Header: ' Low Grid',
+              Header: 'Low Grid',
               accessor: 'autoLowGrid',
             },
             {
@@ -86,7 +83,8 @@ const InnerTable = (props) => {
             {
               Header: 'Charge Station',
               accessor: 'autoChargeStation',
-            },]
+            },],
+          //accessor: 'autonomous',
         },
         {
           Header: 'Tele-Op',
@@ -126,7 +124,8 @@ const InnerTable = (props) => {
             {
               Header: '# RP',
               accessor: 'numberOfRankingPoints',
-            },]
+            },],
+          //accessor: 'teleop',
         },
         {
           Header: 'Other',
@@ -146,7 +145,8 @@ const InnerTable = (props) => {
             {
               Header: 'Delete',
               accessor: 'delete',
-            },]
+            },],
+          //accessor: 'other',
         }
       ], []
     )

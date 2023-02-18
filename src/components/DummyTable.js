@@ -46,6 +46,15 @@ function DummyTable() {
       .catch(console.log.bind(console))
   },[])
 
+  /*const getTeams = async () => {
+      await getTeamsInRegional("2023hiho")
+      .then(data => {
+        setTeamData(data)
+        console.log(data)
+      })
+      .catch(console.log.bind(console))
+  }*/
+
   useEffect(() => {
     setTableData(teamData.map(team => {
       return {
@@ -64,7 +73,7 @@ function DummyTable() {
         AvgCharge: team.AvgCharge,
         Comments: team.Commentss*/
       }
-    }),[teamData]
+    }),[tableData]
   )
 
   /*const data = React.useMemo(
@@ -74,13 +83,86 @@ function DummyTable() {
   ) */
 
   const renderRowSubComponent = ({ row }) => {
-    const disp = teamData.map(team => {
+
+    const t = [
+      {
+        match: 1,
+        priorities: "bro idk what im doing",
+        totalPoints: 3,
+        gridPts: null,
+          lowGridAccuracy: null,
+          midGridAccuracy: null,
+          upperGridAccuracy: null,
+          chargeStation: null,
+          //mobility: null,
+        //},
+        //autonomous: {
+          autoPlacement: null,
+          autoLowGrid: null,
+          autoMidGrid: null,
+          autoUpperGrid: null,
+          mobility: null,
+          autoChargeStation: null,
+        //},
+        //tele: {
+          teleLowGrid: null,
+          teleMidGrid: null,
+          teleUpperGrid: null,
+          endgame: null,
+          smartPlacement: null,
+          intakeFrom: null,
+          numberOfFoulAndTech: null,
+          penalties: null,
+          numberOfRankingPoints: null,
+        //},
+        //other: {
+          defense: null,
+          comments: null,
+          email: null,
+          delete: 'testing',
+        //}
+      }
+    ]
+
+    const disp = /*teamData*/t.map(team => {
       return {
-        team: "i",
-        match: "need",
-        priorities: "to",
-        totalPts: "test",
-        autoPlacement: "this",
+        //matchSums: {
+          match: team.match,
+          priorities: team.priorities,
+          totalPoints: team.totalPoints,
+          gridPts: null,
+          lowGridAccuracy: null,
+          midGridAccuracy: null,
+          upperGridAccuracy: null,
+          chargeStation: null,
+          //mobility: null,
+        //},
+        //autonomous: {
+          autoPlacement: null,
+          autoLowGrid: null,
+          autoMidGrid: null,
+          autoUpperGrid: null,
+          mobility: null,
+          autoChargeStation: null,
+        //},
+        //tele: {
+          teleLowGrid: null,
+          teleMidGrid: null,
+          teleUpperGrid: null,
+          endgame: null,
+          smartPlacement: null,
+          intakeFrom: null,
+          numberOfFoulAndTech: null,
+          penalties: null,
+          numberOfRankingPoints: null,
+        //},
+        //other: {
+          defense: null,
+          comments: null,
+          email: null,
+          delete: 'testing',
+        //}
+        
       }
     })
 
@@ -173,8 +255,17 @@ function DummyTable() {
   const {globalFilter} = state;
   
   return (
+    <div>
+
+    <br></br>
+    <br></br>
+
+    <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
+
+    <br></br>
+    <br></br>
+
     <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
-      <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
 
       <thead>
         {headerGroups.map(headerGroup => (
@@ -240,6 +331,7 @@ function DummyTable() {
           } 
       </tbody>
     </table>
+    </div>
   )
 }
 
