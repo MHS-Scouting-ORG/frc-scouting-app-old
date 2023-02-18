@@ -45,7 +45,7 @@ class Form extends React.Component{
         this.counterBoxChanged = this.counterBoxChanged.bind(this);
         this.makeCounterBox = this.makeCounterBox.bind(this);
 
-        this.penaltyBoxChecked = this.penaltyBoxChecked.bind(this); //a
+        this.penaltyBoxChecked = this.penaltyBoxChecked.bind(this); //aa
         this.makePenaltyBox = this.makePenaltyBox.bind(this);
 
         this.smartPlacementChecked = this.smartPlacementChecked.bind(this);

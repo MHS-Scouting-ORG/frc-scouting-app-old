@@ -25,7 +25,7 @@ class CounterBox extends React.Component{
         })
         input.value = (( val >= 0 ) ? input.value + increment : 0);
     }
-    //e
+    //ee
     countChanged(event) {
         /*
         console.log("aaa")
