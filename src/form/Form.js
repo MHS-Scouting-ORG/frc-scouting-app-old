@@ -42,6 +42,9 @@ class Form extends React.Component{
         this.changeChargeStation = this.changeChargeStation.bind(this);
         this.makeChargeStationAuto = this.makeChargeStationAuto.bind(this);
     
+        this.counterBoxChanged = this.counterBoxChanged.bind(this);
+        this.makeCounterBox = this.makeCounterBox.bind(this);
+
         this.penaltyBoxChecked = this.penaltyBoxChecked.bind(this);
         this.makePenaltyBox = this.makePenaltyBox.bind(this);
 
@@ -81,8 +84,8 @@ class Form extends React.Component{
             rankingPts: 0,
             bonusVal: [' ', ' '],
             pentalyVal: [' ',' ',' ',' ',' '],
-            dropDownVal:['', '', '','',''] ,
-            counterBoxVal: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            dropDownVal:['', '', '','',''],
+            counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             smartPlacementVal: ' ',
             strategyVal: [' ',' ',' ',' ',' ',' ',' ',' ',' '],
             mobilityVal: '',
@@ -149,7 +152,7 @@ class Form extends React.Component{
 
     async getMatchTeams(){
         //console.log(this.state.matchType)// + this.state.elmNum + "m" + this.state.matchNumber)
-        let matchKey =  /*put this years event*//* "2022hiho"  *//* */ await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
+        let matchKey =  /*put this years event*//*/*/ "2022hiho"  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
         const teams = async () => {
             await fetch('https://www.thebluealliance.com/api/v3/event/'  +  '2022hiho' /* change event_key*/  + '/matches' ,{
                 mode: 'cors',
@@ -159,21 +162,21 @@ class Form extends React.Component{
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 data.map((matches) =>{
-                    if(matches.key === matchKey){
+                    console.log(matches.key)
+                    if(matches.key === matchKey){ //not running
+                        console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
                         this.setState({matchData: matches})
                         this.setState({teams:matches.alliances.blue.team_keys.concat(matches.alliances.red.team_keys)});
                         console.log({teams:matches.alliances.blue.team_keys.concat(matches.alliances.red.team_keys)});
 
                     }
-                    console.log(matches);
                 })
             })
             .catch(err => console.log(err))
         }
-        console.log(matchKey);
-        console.log(matchData)
+        console.log(this.matchKey);
+        console.log(this.matchData)
         teams();
     }
 
@@ -526,20 +529,20 @@ class Form extends React.Component{
     //-------------------------------------------------------------------------------------------------------------//
 
     counterBoxChanged(event, i) {
-        console.log("aaaaa");
-        let counterStates = this.state.counterBoxVal;
+        //console.log("aaaaa");
+        let counterStates = this.state.counterBoxVals;
         counterStates[i] = event.target.value;
     }
 
     makeCounterBox(title, i) {
-        let counterStates = this.state.counterBoxVal;
+        let counterStates = this.state.counterBoxVals;
         return (
             <div>
                 <CounterBox
                     label={title}
-                    setState={this.counterBoxChanged}
+                    counterChanged={this.counterBoxChanged}
+                    counterState={counterStates[i]}
                     place={i}
-                    state={counterStates[i]}
                 />
             </div>
         )
