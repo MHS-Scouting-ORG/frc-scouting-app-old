@@ -42,6 +42,8 @@ class Form extends React.Component{
         this.changeChargeStation = this.changeChargeStation.bind(this);
         this.makeChargeStationAuto = this.makeChargeStationAuto.bind(this);
     
+        this.buttonMinus = this.buttonMinus.bind(this);
+        this.buttonPlus = this.buttonPlus.bind(this);
         this.counterBoxChanged = this.counterBoxChanged.bind(this);
         this.makeCounterBox = this.makeCounterBox.bind(this);
 
@@ -164,8 +166,7 @@ class Form extends React.Component{
             .then(data => {
                 data.map((matches) =>{
                     console.log(matches.key)
-                    if(matches.key === matchKey){ //not running
-                        console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+                    if(matches.key === matchKey){
                         this.setState({matchData: matches})
                         this.setState({teams:matches.alliances.blue.team_keys.concat(matches.alliances.red.team_keys)});
                         console.log({teams:matches.alliances.blue.team_keys.concat(matches.alliances.red.team_keys)});
@@ -528,10 +529,34 @@ class Form extends React.Component{
 
     //-------------------------------------------------------------------------------------------------------------//
 
-    counterBoxChanged(event, i) {
-        //console.log("aaaaa");
+    buttonMinus(event, i) {
         let counterStates = this.state.counterBoxVals;
-        counterStates[i] = event.target.value;
+        if (counterStates[i] > 0) {
+            counterStates[i] = parseInt(counterStates[i] - 1)
+        }
+        else if (counterStates[i] <= 0) {
+            counterStates[i] = 0
+        }
+    }
+    
+    buttonPlus(event, i) {
+        let counterStates = this.state.counterBoxVals;
+        if (counterStates[i] >= 0) {
+            counterStates[i] = parseInt(counterStates[i] + 1)
+        }
+        else if (counterStates[i] < 0) {
+            counterStates[i] = 0
+        }
+    }
+
+    counterBoxChanged(event, i) {
+        let counterStates = this.state.counterBoxVals;
+        if(event.target.value === '') {
+            counterStates[i] = 0
+        }
+        else {
+            counterStates[i] = event.target.value;
+        }
     }
 
     makeCounterBox(title, i) {
@@ -540,9 +565,11 @@ class Form extends React.Component{
             <div>
                 <CounterBox
                     label={title}
-                    counterChanged={this.counterBoxChanged}
-                    counterState={counterStates[i]}
+                    setState={this.counterBoxChanged}
                     place={i}
+                    state={counterStates[i]}
+                    minusButton={this.buttonMinus}
+                    plusButton={this.buttonPlus}
                 />
             </div>
         )
