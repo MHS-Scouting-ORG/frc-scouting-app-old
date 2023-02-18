@@ -57,8 +57,10 @@ function AuthenticatedUI({ user }) {
         {user.username}
         <br />
       </div>
-      <DummyTableDG />
-    </div>)
+      <ExampleUI />
+      <DummyTable />
+    </div>
+    )
 
 }
 

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react"
-import { useTable } from "react-table"
+import { useTable, useSortBy, useExpanded, useGlobalFilter } from "react-table"
+import { getTeamInfo, getRegionals, getTeamsInRegional } from '../api/bluealliance'
+import InnerTable from './InnerTable'
+import GlobalFilter from './GlobalFilter'
+
 //import { apiListTeams, apiAddTeam, apiGetTeam, getMatchesForRegional, apiCreateTeamMatchEntry } from './api/index'
 
 
@@ -16,7 +20,8 @@ const dummy = [
 function DummyTable() {
 
   const [tableData,setTableData] = useState([]);
-  const [teamNumber,setTeamNumber] = useState([]) 
+  const [teamData,setTeamData] = useState([]) 
+  //const [globalFilter, setGlobalFilter] = useState([])
 
   //useEffect(() => console.log(data)) //debug purposes
 
@@ -31,16 +36,35 @@ function DummyTable() {
     console.log(renderRowSubComponent())
   }) */
 
+  
+  useEffect(() => {
+      getTeamsInRegional("2023hiho")
+      .then(data => {
+        setTeamData(data)
+        console.log(data)
+      })
+      .catch(console.log.bind(console))
+  },[])
+
+  useEffect(() => {
+    setTableData(teamData.map(team => {
+      return {
+        TeamNumber: team.team_number
+      }
+    }))
+  },[teamData])
+
   const data = React.useMemo(
-    () => tableData.map(team => {
+    () => tableData.map(team => { 
       return {
         TeamNumber: team.TeamNumber,
-        Priorities: team.Priorities,
+
+        /*Priorities: team.Priorities,
         AvgPoints: team.AvgPoints,
         AvgCharge: team.AvgCharge,
-        Comments: team.Commentss
+        Comments: team.Commentss*/
       }
-    }),[tableData]
+    }),[teamData]
   )
 
   /*const data = React.useMemo(
@@ -48,6 +72,24 @@ function DummyTable() {
       return dummy;
     }
   ) */
+
+  const renderRowSubComponent = ({ row }) => {
+    const disp = teamData.map(team => {
+      return {
+        team: "i",
+        match: "need",
+        priorities: "to",
+        totalPts: "test",
+        autoPlacement: "this",
+      }
+    })
+
+    return (
+      <pre>
+        <div> {<InnerTable information={disp} /> } </div>
+      </pre>
+    )
+  }
 
   const columns = React.useMemo(
     () => [
@@ -72,6 +114,14 @@ function DummyTable() {
         Header: " Comments ",
         accessor: "Comments"
       },], [] */
+      {
+        Header: "Team #",
+        accessor: "TeamNumber",
+        Cell: ({ row }) => (
+          <span {...row.getToggleRowExpandedProps()}>
+            {row.values.TeamNumber}
+          </span>)
+      },
       {
         Header: " Matches ",
         accessor: "Matches"
@@ -107,7 +157,7 @@ function DummyTable() {
     ], []
   )
 
-  const tableInstance = useTable({ columns, data});
+  const tableInstance = useTable({columns, data}, useGlobalFilter, useSortBy, useExpanded);
 
   const {
     getTableProps,
@@ -115,16 +165,23 @@ function DummyTable() {
     headerGroups,
     rows,
     prepareRow,
+    visibleColumns,
+    setGlobalFilter,
+    state,
   } = tableInstance
+
+  const {globalFilter} = state;
   
   return (
     <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+      <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
+
       <thead>
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
               <th
-                {...column.getHeaderProps()}
+                {...column.getHeaderProps(column.getSortByToggleProps())}
                 style={{
                   background: 'aliceblue',
                   color: 'black',
@@ -138,27 +195,49 @@ function DummyTable() {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {rows.map(row => {
-          prepareRow(row)
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map(cell => {
-                return (
-                  <td
-                    {...cell.getCellProps()}
-                    style={{
-                      padding: '10px',
-                      border: 'solid 1px gray',
-                      background: 'papayaWhip',
-                    }}
-                  >
-                    {cell.render('Cell')}
-                  </td>
-                )
-              })}
-            </tr>
-          )
-        })}
+        
+        {
+          rows.map(row => {
+            prepareRow(row)
+            
+            return ( <React.Fragment>
+              <tr {...row.getRowProps()}>
+                  {
+                    row.cells.map(cell => {
+                      return (
+                          <td
+                              {...cell.getCellProps()}
+                              style={{
+                                padding: '10px',
+                                border: 'solid 1px gray',
+                                background: 'darkblue',
+                              }}
+                            >
+                              {cell.render('Cell')}
+                          </td>
+                        )
+                    }
+                    )
+                  }
+                  </tr>
+
+                  {row.isExpanded ? (
+                    <tr>
+                      <td colSpan={visibleColumns.length}
+                        style = {{
+                          maxWidth: '1200px'
+                        }}
+                      >
+                        {renderRowSubComponent({ row })}
+                      </td>
+                    </tr>
+                  ) : null}
+                  
+              </React.Fragment>
+              )
+            }
+            )
+          } 
       </tbody>
     </table>
   )
