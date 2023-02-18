@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable } from 'react-table'
+import { useTable, useSortBy } from 'react-table'
 
 const DumInnerTable = (props) => {
 
@@ -31,7 +31,7 @@ const DumInnerTable = (props) => {
                 Header: 'Auto',
                 columns: [
                     {
-                        Header: 'AutoPlacement',
+                        Header: 'Auto Placement',
                         accessor: 'AutoPlacement'
                     },
                     {
@@ -39,7 +39,19 @@ const DumInnerTable = (props) => {
                         accessor: 'AutoGridPts'
                     },
                     {
-                        Header: 'Charge Staton Points',
+                        Header: 'Auto Grid Low Placement',
+                        accessor: 'AutoLowPlacement'
+                    },
+                    {
+                        Header: 'Auto Grid Mid Placement',
+                        accessor: 'AutoMidPlacement'
+                    },
+                    {
+                        Header: 'Auto Grid Top Placement',
+                        accessor: 'AutoTopPlacement'
+                    },
+                    {
+                        Header: 'Charge Station Points',
                         accessor: 'AutoChargeStationPts'
                     },]
             },
@@ -51,6 +63,18 @@ const DumInnerTable = (props) => {
                         accessor: 'TeleGridPts'
                     },
                     {
+                        Header: 'Tele-Op Grid Low Placement',
+                        accessor: 'TeleLowPlacement'
+                    },
+                    {
+                        Header: 'Tele-Op Grid Mid Placement',
+                        accessor: 'TeleMidPlacement'
+                    },
+                    {
+                        Header: 'Tele-Op Grid Top Placement',
+                        accessor: 'TeleTopPlacement'
+                    },
+                    {
                         Header: 'Tele-Op ChargeStation Points',
                         accessor: 'TeleChargeStationPts'
                     },]
@@ -58,7 +82,7 @@ const DumInnerTable = (props) => {
         ],[]
     )
 
-    const tableInstance = useTable({columns, data})
+    const tableInstance = useTable({columns, data}, useSortBy)
 
     const {
         getTableProps,
@@ -81,12 +105,14 @@ const DumInnerTable = (props) => {
                   headerGroup.headers.map(column =>
                   (
                     <th
-                      {...column.getHeaderProps()}
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
                       style={{
+                        color: 'black',
+                        fontWeight: 'bold',
                         padding: '5px',
                         border: 'solid 1px black',
                         textAlign: 'center',
-                        background: 'steelblue'
+                        background: 'aliceblue'
                       }}
                     >
                       {column.render('Header')}
@@ -113,8 +139,9 @@ const DumInnerTable = (props) => {
                           {...cell.getCellProps()}
                           style={{
                             padding: '5px',
-                            border: 'solid 1px black',
+                            border: 'solid 1px grey',
                             textAlign: 'center',
+                            background: 'black'
                           }}
                         >
                           {cell.render('Cell')}
