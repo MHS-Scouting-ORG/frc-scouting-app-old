@@ -1,17 +1,21 @@
 import { StopReplicationToReplicaRequestFilterSensitiveLog } from "@aws-sdk/client-secrets-manager";
 import React, { useEffect, useState } from "react"
-import { useExpanded, useTable } from "react-table"
+import { useExpanded, useTable, useSortBy, useGlobalFilter } from "react-table"
 import { apiGetTeam, apiListTeams, getMatchesForRegional} from "../api";
 import { getTeamsInRegional, getTeamInfo, getOprs } from "../api/bluealliance";
 import DumInnerTable from "./DumInnerTable";
+import GlobalFilter from "./GlobalFilter";
 
 function DummyTableDG() {
 
   const [tableData,setTableData] = useState([]); //data on table
   const [teamsData,setTeamsData] = useState([]); //data of teams
+  const [teamNum, setTeamNum] = useState([]) // team numbers frc{teamNumber}
   const [averages,setAverages] = useState([]);
   const [oprData,setOprData] = useState([]); //data of team ccwm opr and dpr
-  const [opr,setOpr] = useState([]);
+  const [oprList,setOprList] = useState([]);
+  const [dprList, setDprList] = useState([]);
+  const [ccwmList, setCcwmList] = useState([]);
 
    useEffect(() => {
   },[]) //debug purposes ^ 
@@ -28,49 +32,22 @@ function DummyTableDG() {
    useEffect(() => {     //set opr data //convert to list and filter data structure to find opr dpr and ccwm 
     getOprs('2022hiho')
     .then(data => { 
-      console.log(Object.keys(data))
-      const oprList = Object.values(data)
-      const oData = oprList[1]
-      const dataOpr = Object.values(oData)
-      console.log(dataOpr)
-      setOpr(oData) // state opr is now a list that holds the oprs of teams that it is available for
-      console.log(Object.values(data)[0])
-      console.log(opr) 
-      console.log(oData)
+      const oprDataArr = Object.values(data)
+      const cData = oprDataArr[0] //ccwm 
+      const dData = oprDataArr[1] //dpr
+      const oData = oprDataArr[2] //opr
+
+      setOprList(oData) // state opr is now a list that holds the oprs of teams that it is available for
+      setDprList(dData)
+      setCcwmList(cData) 
+
+      console.log(data) // whole list of ccwm, dpr, and opr
     })
     .catch(console.log.bind(console))
    },[teamsData])
 
-   useEffect(() => setOprData(teamsData.map(team => {
-
-    const OPR = () => {
-      opr.map(data => {
-        return data
-      })
-    }
-    console.log(opr)
+   useEffect(() => setTeamNum(teamsData.map(team => {
     return {
-
-      TeamNumber: team.TeamNumber,
-      Matches: team.Matches,
-      Priorities: team.Priorities,
-      //OPR: opr.filter(opr.keys === opr.keys.substring(indexOf('')) === team.TeamNumber !== 0),
-      CCWM: team.CCWM, 
-      AvgPoints: team.AvgPoints,
-      AvgLow: team.AvgLow,
-      AvgMid: team.AvgMid,
-      AvgTop: team.AvgTop,
-      AvgAcc: team.AvgAcc,
-      DPR: team.DPR,
-      Defense: team.Defense,
-      Penalties: team.Penalties
-    }
-   })),[teamsData]) 
-
-   useEffect(() => setAverages(oprData.map(team => {
-    //console.log(team)
-    return {
-
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
       Priorities: team.Priorities,
@@ -83,10 +60,68 @@ function DummyTableDG() {
       AvgAcc: team.AvgAcc,
       DPR: team.DPR,
       Defense: team.Defense,
-      Penalties: team.Penalties
+      Penalties: team.Penalties,
+
+      TeamNum: `frc${team.TeamNumber}`
+    }
+    
+   })),[teamsData]) 
+
+   useEffect(() => setOprData(teamNum.map(team => {
+
+    return {
+      TeamNumber: team.TeamNumber,
+      Matches: team.Matches,
+      Priorities: team.Priorities,
+      OPR: oprList[team.TeamNum],    // FIND WAY TO EVAL KEY OR TO MAP VALUES UNIQUE TO EACH TEAM ROW
+      CCWM: ccwmList[team.TeamNum], 
+      AvgPoints: team.AvgPoints,
+      AvgLow: team.AvgLow,
+      AvgMid: team.AvgMid,
+      AvgTop: team.AvgTop,
+      AvgAcc: team.AvgAcc,
+      DPR: dprList[team.TeamNum],
+      Defense: team.Defense,
+      Penalties: team.Penalties,
+
+      TeamNum: team.TeamNum
+    }
+   })), [teamsData, teamNum])
+
+   useEffect(() => setAverages(oprData.map(team => {
+    console.log(team)
+    //setTeamNum(teamNum.map('frc' + team.TeamNumber)) //figure out how to map all teams with frc
+    // experiment does not work ^
+    /*const test = [1, 2, 3, 4, 5, 6]
+
+    const test2 = [{one: 1, two: 2, three: 3}, {four: 4, five: 5, six: 6}, {seven: 7, eight: 8, nine: 9}]
+
+    const one = test2[1]
+    const disOp = test2.find(element => element.length > 0) 
+
+    const testF = () => { return 1} */
+    // experiments ^
+
+
+    return {
+      TeamNumber: team.TeamNumber,
+      Matches: team.Matches,
+      Priorities: team.Priorities,
+      OPR: team.OPR,
+      CCWM: team.CCWM, 
+      AvgPoints: team.AvgPoints,
+      AvgLow: team.AvgLow,
+      AvgMid: team.AvgMid,
+      AvgTop: team.AvgTop,
+      AvgAcc: team.AvgAcc,
+      DPR: team.DPR,
+      Defense: team.Defense,
+      Penalties: team.Penalties,
+
+      TeamNum: team.TeamNum
 
     }
-  })), [teamsData, oprData])
+  })), [teamsData, teamNum, oprData])
 
   useEffect(() => setTableData(averages.map(team => {
     return {
@@ -103,79 +138,56 @@ function DummyTableDG() {
       AvgAcc: team.AvgAcc,
       DPR: team.DPR,
       Defense: team.Defense,
-      Penalties: team.Penalties
+      Penalties: team.Penalties,
 
+      TeamNum: team.TeamNum
     }
-  })),[teamsData, averages, oprData]) 
-
-const getOprData = async () => {
-  return await (getOprs('2023hiho'))
-  .catch(err => console.log(err))
-  .then(data => {
-    const OPR = () => {
-      getOprs('2023hiho')
-      .then(data => {
-        return Object.values(data)[1]
-      })
-    }
-    return OPR.map(obj => {
-      return {
-        TeamNumber: obj.TeamNumber,
-        Matches: obj.Matches,
-        Priorities: obj.Priorities,
-        OPR: obj.frc2090,
-        CCWM: obj.CCWM, 
-        AvgPoints: obj.AvgPoints,
-        AvgLow: obj.AvgLow,
-        AvgMid: obj.AvgMid,
-        AvgTop: obj.AvgTop,
-        AvgAcc: obj.AvgAcc,
-        DPR: obj.DPR,
-        Defense: obj.Defense,
-        Penalties: obj.Penalties
-      }
-    })
-  })
-} 
-//dont know if work ^
-
-/*const dataTeamObj = async () => {
-  const hawaiiKey = '2023hiho'
-  const arizonaKey = '2023azva'
-  const callDataFunct = () => {
-    getTeamsInRegional(hawaiiKey)
-    getOprs(hawaiiKey)
-  }
-  return await callDataFunct()
-  .then(data )
-  } */
+  })),[teamsData,teamNum, oprData, averages]) 
 
 const getTeams = async () => {
-  return await (getTeamsInRegional('2023hiho'))
+   return await (getTeamsInRegional('2023hiho'))
     .catch(err => console.log(err))
     .then(data => {
       return data.map(obj => {
-        return {
-
+        const teamNumObj = {
           TeamNumber: obj.team_number,
           Matches: '',
           Priorities: '',
-          OPR: 0,
-          CCWM: 0, 
-          AvgPoints: 0,
-          AvgLow: 0,
-          AvgMid: 0,
-          AvgTop: 0,
-          AvgAcc: 0,
-          DPR: 0,
+          OPR: "",
+          CCWM: "", 
+          AvgPoints: "",
+          AvgLow: "",
+          AvgMid: "",
+          AvgTop: "",
+          AvgAcc: "",
+          DPR: "",
           Defense: '',
-          Penalties: 0
-          
+          Penalties: "",
+
+          TeamNum: "",
         }
+
+        return teamNumObj
       })
     })
-    .catch(err => console.log(err)) 
+    .catch(err => console.log(err))
+   /*await (getOprs('2023hiho'))
+   .catch(err => console.log(err))
+   .then(data => { 
+    
+   })*/
 }
+
+/* async function getApiData(event) {
+  await getOprs(event)
+  .then(data => setOprData(data))
+  await getTeams(event)
+  .then(data => setTeamNumber(data))
+  return {
+  
+  }
+} */
+// experiment ^
 
 const renderRowSubComponent = ({ row }) => { //not working(not showing table within team number)
     
@@ -225,13 +237,7 @@ const renderRowSubComponent = ({ row }) => { //not working(not showing table wit
   );
 }
 
-/*const calcAvgPoints = (arr) => { //"arr" is the data parameter which is given when it is called
-  const indivPoints = () => {arr.map(value => value.TotalPts)}
-  let totalPts = 0;
-  for (let i = 0; i < individualPoints.length; i++){
-  }
-} */
-
+// ===================================================================================
 const data = React.useMemo(
   () => tableData.map(team => {
     return {
@@ -324,25 +330,30 @@ const data = React.useMemo(
     ], []
   )
 
-  const tableInstance = useTable({ columns, data}, useExpanded);
+  const tableInstance = useTable({ columns, data}, useGlobalFilter, useSortBy, useExpanded);
 
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    state,
+    setGlobalFilter,
     prepareRow,
     visibleColumns,
   } = tableInstance
+
+  const {globalFilter} = state
   
   return (
     <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+      <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
       <thead>
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
               <th
-                {...column.getHeaderProps()}
+                {...column.getHeaderProps(column.getSortByToggleProps())}
                 style={{
                   background: 'aliceblue',
                   color: 'black',
