@@ -10,15 +10,16 @@ function DummyTableDG() {
 
   const [tableData,setTableData] = useState([]); //data on table
   const [teamsData,setTeamsData] = useState([]); //data of teams
-  const [teamNum, setTeamNum] = useState([]) // team numbers frc{teamNumber}
+  const [teamNum,setTeamNum] = useState([]) // team numbers frc{teamNumber}
   const [averages,setAverages] = useState([]);
   const [oprData,setOprData] = useState([]); //data of team ccwm opr and dpr
   const [oprList,setOprList] = useState([]);
-  const [dprList, setDprList] = useState([]);
-  const [ccwmList, setCcwmList] = useState([]);
+  const [dprList,setDprList] = useState([]);
+  const [ccwmList,setCcwmList] = useState([]);
 
    useEffect(() => {
-  },[]) //debug purposes ^ 
+    
+  },[]) //debug purposes or test ^ 
   
    useEffect(() => { // sets team numbers of objects
     getTeams()
@@ -42,6 +43,7 @@ function DummyTableDG() {
       setCcwmList(cData) 
 
       console.log(data) // whole list of ccwm, dpr, and opr
+      console.log((oprList['frc2443']).toFixed(2))
     })
     .catch(console.log.bind(console))
    },[teamsData])
@@ -69,11 +71,13 @@ function DummyTableDG() {
 
    useEffect(() => setOprData(teamNum.map(team => {
 
+    //const opr = ((oprList[team.TeamNum]).toFixed(2))
+
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
       Priorities: team.Priorities,
-      OPR: oprList[team.TeamNum],    // FIND WAY TO EVAL KEY OR TO MAP VALUES UNIQUE TO EACH TEAM ROW
+      OPR: oprList[team.TeamNum],    
       CCWM: ccwmList[team.TeamNum], 
       AvgPoints: team.AvgPoints,
       AvgLow: team.AvgLow,
@@ -86,23 +90,11 @@ function DummyTableDG() {
 
       TeamNum: team.TeamNum
     }
-   })), [teamsData, teamNum])
+   })), [teamsData, teamNum, ccwmList, dprList, oprList])
 
    useEffect(() => setAverages(oprData.map(team => {
-    console.log(team)
-    //setTeamNum(teamNum.map('frc' + team.TeamNumber)) //figure out how to map all teams with frc
-    // experiment does not work ^
-    /*const test = [1, 2, 3, 4, 5, 6]
-
-    const test2 = [{one: 1, two: 2, three: 3}, {four: 4, five: 5, six: 6}, {seven: 7, eight: 8, nine: 9}]
-
-    const one = test2[1]
-    const disOp = test2.find(element => element.length > 0) 
-
-    const testF = () => { return 1} */
-    // experiments ^
-
-
+    //console.log(team)
+    
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
@@ -171,44 +163,39 @@ const getTeams = async () => {
       })
     })
     .catch(err => console.log(err))
-   /*await (getOprs('2023hiho'))
-   .catch(err => console.log(err))
-   .then(data => { 
-    
-   })*/
 }
 
-/* async function getApiData(event) {
-  await getOprs(event)
-  .then(data => setOprData(data))
-  await getTeams(event)
-  .then(data => setTeamNumber(data))
-  return {
-  
-  }
-} */
-// experiment ^
-
-const renderRowSubComponent = ({ row }) => { //not working(not showing table within team number)
+const renderRowSubComponent = ({ row }) => {
     
   const dumTest = [
     {
       Match: 0,
-      Strategy: 'stratTEST',
-      TotalPts: 1,
-      RankingPts: 2,
+      Strategy: 1,
+      TotalPts: 2,
+      RankingPts: 3,
 
+      AutoPlacement: 4,
+      AutoGridPts: 5,
+      AutoChargeStationPts: 6,
 
-      AutoPlacement: 3,
-      AutoGridPts: 4,
-      AutoChargeStationPts: 5,
+      TeleGridPts: 7,
+      TeleChargeStationPts: 8
+    }, 
+    {
+      Match: 9,
+      Strategy: 10,
+      TotalPts: 11,
+      RankingPts: 12,
 
-      TeleGridPts: 6,
-      TeleChargeStationPts: 7
-    }
-  ]
+      AutoPlacement: 13,
+      AutoGridPts: 14,
+      AutoChargeStationPts: 15,
 
-  const dum = dumTest.map(x =>  {
+      TeleGridPts: 16,
+      TeleChargeStationPts: 17
+    },/* {}, {} */]
+
+  const dum = dumTest.map(x => {
     return {
       Match: x.Match,
       Strategy: x.Strategy,
@@ -258,7 +245,7 @@ const data = React.useMemo(
 
     }
   }) , [tableData]
-) //^works
+) 
 
   const columns = React.useMemo(
     () => [
@@ -346,65 +333,67 @@ const data = React.useMemo(
   const {globalFilter} = state
   
   return (
-    <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+    <div>
       <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
-      <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-                style={{
-                  background: 'aliceblue',
-                  color: 'black',
-                  fontWeight: 'bold',
-                }}
-              >
-                {column.render('Header')}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        
-        {rows.map(row => {
-          prepareRow(row)
-          return ( <React.Fragment>
-            <tr {...row.getRowProps()}>
-              {row.cells.map(cell => {
-                return (   
-                  <td
-                    {...cell.getCellProps()}
-                    style={{
-                      padding: '10px',
-                      border: 'solid 1px gray',
-                      background: 'black',
-                    }}
-                  >
-                    {cell.render('Cell')}
-                  </td>
-                )
-              })}
-            </tr>
-
-            {row.IsExpanded ? (
-                <tr>
-                  <td colSpan={visibleColumns.length}
-                  style = {{
-                    maxWidth: "1200px"
+      <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+        <thead>
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                <th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  style={{
+                    background: 'aliceblue',
+                    color: 'black',
+                    fontWeight: 'bold',
                   }}
-                  >
-                    {renderRowSubComponent ({row})}
-                  </td>
-                </tr>
-              ) : null}
+                >
+                  {column.render('Header')}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+        
+          {rows.map(row => {
+            prepareRow(row)
+            return ( <React.Fragment>
+              <tr {...row.getRowProps()}>
+                {row.cells.map(cell => {
+                  return (   
+                    <td
+                      {...cell.getCellProps()}
+                      style={{
+                        padding: '10px',
+                        border: 'solid 1px gray',
+                        background: 'black',
+                      }}
+                    >
+                      {cell.render('Cell')}
+                    </td>
+                  )
+                })}
+              </tr>
 
-                </React.Fragment>
-          )
-        })} 
-      </tbody>
-    </table>
+              {row.isExpanded ? (
+                  <tr>
+                    <td colSpan={visibleColumns.length}
+                    style = {{
+                      maxWidth: "1200px"
+                    }}
+                    >
+                      {renderRowSubComponent ({row})}
+                    </td>
+                  </tr>
+                ) : null}
+
+                  </React.Fragment>
+            )
+          })} 
+        </tbody>
+      </table>
+    </div>
   )
 }
 
