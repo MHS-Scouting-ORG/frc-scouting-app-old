@@ -745,9 +745,20 @@ class Form extends React.Component{
             mobilityPts = 2;
         }
 
-        let points =  chargeStationPts + endGamePts + mobilityPts;
+        let autoPoints = 6 * (highAutoCones + highAutoCubes) + 4 * (midAutoCones + midAutoCubes) + 3 * (lowAutoCones + lowAutoCubes);
+        let telePoints = 5 * (highTeleCones + highTeleCubes) + 3 * (midTeleCones + midTeleCubes) + 2 * (lowTeleCones + lowTeleCubes);
+        let points = (chargeStationPts + endGamePts + mobilityPts) + autoPoints + telePoints;
+        /*
+        let cubesHighTeleAutoAccuracy = 100 * ((highAutoCones + highTeleCubes) / (conesMissed + highAutoCones + highTeleCones));
+        let conesHighTeleAutoAccuracy;
+        let cubesMidTeleAutoAccuracy;
+        let conesMidTeleAutoAccuracy;
+        let cubesLowTeleAutoAccuracy;
+        let conesLowTeleAutoAccuracy;
+        */
         let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesMissed + lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes));
         let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesMissed + lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones));
+        
 
         this.setState({
             totalPoints: points,
@@ -806,7 +817,7 @@ class Form extends React.Component{
             window.alert(windowAlertMsg);
         } else if (incompleteForm === false || override === true){
             console.log(penalties);
-            apiCreateTeamMatchEntry => ({
+            apiCreateTeamMatchEntry({
                 TeamId: this.state.teamNumber.substring(3, this.state.teamNumber.length),
                 RegionalId: "2022hiho",
                 MatchId: /*put this years event*//*/*/ "2023week0"  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber,
