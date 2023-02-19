@@ -101,7 +101,7 @@ function Summary(){
           : (                             // else if no data, notify no data has been collected
               <div style={{
                   padding: '5px',
-              }}> No data collected for Team {row.values.TeamNumber}. </div>
+              }}> No data collected for Team {row.values.teamNumber}. </div>
           );
   }
 

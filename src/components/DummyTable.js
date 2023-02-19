@@ -124,12 +124,12 @@ function DummyTable() {
       }
     ]
 
-    const disp = /*teamData*/t.map(team => {
+    const disp = teamData.map(team => {
       return {
         //matchSums: {
-          match: team.match,
-          priorities: team.priorities,
-          totalPoints: team.totalPoints,
+          match: null,
+          priorities: 'oh em geeeee',
+          totalPoints: 'thanks dominic',
           gridPts: null,
           lowGridAccuracy: null,
           midGridAccuracy: null,
