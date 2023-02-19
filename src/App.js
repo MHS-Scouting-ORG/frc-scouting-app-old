@@ -10,7 +10,8 @@ import Summary from './components/Summary';
 
 import { useEffect, useState } from 'react'
 import ExampleUI from './example'
-import { getTeamInfo } from './api/bluealliance'
+import { getRegionals, getTeamInfo } from './api/bluealliance'
+import DumInnerTable from './components/DumInnerTable';
 
 
 const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
@@ -22,8 +23,15 @@ Amplify.configure(awsconfig)
 
 
 function AuthenticatedUI({ user }) {
+  const [regional, setRegional] = useState()
   //console.log(user)
-  const [teamInfo, setTeamInfo] = useState({})
+  useEffect(() => {
+    getRegionals() 
+    .then(data => {
+      setRegional(data[0].key)
+    })
+  })
+  /*const [teamInfo, setTeamInfo] = useState({})
   useEffect(() => {
     getTeamInfo()
       .then(data => {
@@ -32,7 +40,7 @@ function AuthenticatedUI({ user }) {
       .catch(err => {
         console.log(err)
       })
-  }, [])
+  }, []) */
 
 
   return (
@@ -54,8 +62,15 @@ function AuthenticatedUI({ user }) {
         {user.username}
         <br />
       </div>
-      <ExampleUI />
-      <DummyTableDG />
+      {(() => {
+        if(regional){
+          return <DummyTableDG regional = {regional} />
+        }
+        else {
+          return <div/>
+        }
+      })()}
+      
     </div>
     )
 

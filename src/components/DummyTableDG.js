@@ -4,21 +4,30 @@ import { useExpanded, useTable, useSortBy, useGlobalFilter } from "react-table"
 import { apiGetTeam, apiListTeams, getMatchesForRegional} from "../api";
 import { getTeamsInRegional, getTeamInfo, getOprs } from "../api/bluealliance";
 import DumInnerTable from "./DumInnerTable";
+import GridInnerTable from './GridInnerTable';
 import GlobalFilter from "./GlobalFilter";
 
-function DummyTableDG() {
+function DummyTableDG(props) {
 
   const [tableData,setTableData] = useState([]); //data on table
   const [teamsData,setTeamsData] = useState([]); //data of teams
   const [teamNum,setTeamNum] = useState([]) // team numbers frc{teamNumber}
-  const [averages,setAverages] = useState([]);
   const [oprData,setOprData] = useState([]); //data of team ccwm opr and dpr
+  const [averages,setAverages] = useState([]);
+  const [apiData, setApiData] = useState([]) //data retrieved
+
   const [oprList,setOprList] = useState([]);
   const [dprList,setDprList] = useState([]);
   const [ccwmList,setCcwmList] = useState([]);
 
+  const [gridState,setGridState] = useState(false);
+
    useEffect(() => {
-    
+    getMatchesForRegional(props.regional)
+    .then(data => {
+      console.log(data)
+    })
+    //console.log((getMatchesForRegional('2023week0')))
   },[]) //debug purposes or test ^ 
   
    useEffect(() => { // sets team numbers of objects
@@ -29,6 +38,14 @@ function DummyTableDG() {
       })
       .catch(console.log.bind(console))
    },[]) 
+
+   useEffect(() => {
+    getMatchesForRegional('2022hiho')
+    .then(data => {
+      setApiData(data)
+    })
+    .catch(console.log.bind(console))
+  }, [teamsData]) //get matches form regional for state variable and use state to be filtered and used
 
    useEffect(() => {     //set opr data //convert to list and filter data structure to find opr dpr and ccwm 
     getOprs('2022hiho')
@@ -43,24 +60,25 @@ function DummyTableDG() {
       setCcwmList(cData) 
 
       console.log(data) // whole list of ccwm, dpr, and opr
-      console.log((oprList['frc2443']).toFixed(2))
+
+      const teamNumb = Object.keys(cData)
+      console.log(oData)
+      //console.log((oprList['frc2443']).toFixed(2))
     })
     .catch(console.log.bind(console))
    },[teamsData])
 
    useEffect(() => setTeamNum(teamsData.map(team => {
+
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
-      OPR: team.OPR,
       Priorities: team.Priorities,
-      CCWM: team.CCWM, 
+      OPR: oprList[team.TeamNum],    
+      CCWM: ccwmList[team.TeamNum], 
       AvgPoints: team.AvgPoints,
-      AvgLow: team.AvgLow,
-      AvgMid: team.AvgMid,
-      AvgTop: team.AvgTop,
-      AvgAcc: team.AvgAcc,
-      DPR: team.DPR,
+      AvgGridPoints: team.AvgGridPoints,
+      DPR: dprList[team.TeamNum],
       Defense: team.Defense,
       Penalties: team.Penalties,
 
@@ -76,14 +94,11 @@ function DummyTableDG() {
     return {
       TeamNumber: team.TeamNumber,
       Priorities: team.Priorities,
-      OPR: oprList[team.TeamNum] ? (oprList[team.TeamNum]).toFixed(3) : null,     
-      CCWM: ccwmList[team.TeamNum] ? (ccwmList[team.TeamNum]).toFixed(3) : null, 
+      OPR: oprList[team.TeamNum] ? (oprList[team.TeamNum]).toFixed(2) : null,    
+      CCWM: ccwmList[team.TeamNum] ? (ccwmList[team.TeamNum]).toFixed(2) : null, 
       AvgPoints: team.AvgPoints,
-      AvgLow: team.AvgLow,
-      AvgMid: team.AvgMid,
-      AvgTop: team.AvgTop,
-      AvgAcc: team.AvgAcc,
-      DPR: dprList[team.TeamNum] ? (dprList[team.TeamNum]).toFixed(3) : null,
+      AvgGridPoints: team.AvgGridPoints,
+      DPR: dprList[team.TeamNum] ? (dprList[team.TeamNum]).toFixed(2) : null ,
       Defense: team.Defense,
       Penalties: team.Penalties,
 
@@ -101,16 +116,12 @@ function DummyTableDG() {
       Priorities: team.Priorities,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
-      AvgLow: team.AvgLow,
-      AvgMid: team.AvgMid,
-      AvgTop: team.AvgTop,
-      AvgAcc: team.AvgAcc,
+      AvgGridPoints: team.AvgGridPoints,
       DPR: team.DPR,
       Defense: team.Defense,
       Penalties: team.Penalties,
 
       TeamNum: team.TeamNum
-
     }
   })), [teamsData, teamNum, oprData])
 
@@ -123,10 +134,7 @@ function DummyTableDG() {
       Priorities: team.Priorities,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
-      AvgLow: team.AvgLow,
-      AvgMid: team.AvgMid,
-      AvgTop: team.AvgTop,
-      AvgAcc: team.AvgAcc,
+      AvgGridPoints: team.AvgGridPoints,
       DPR: team.DPR,
       Defense: team.Defense,
       Penalties: team.Penalties,
@@ -147,10 +155,7 @@ const getTeams = async () => {
           Priorities: '',
           CCWM: "", 
           AvgPoints: "",
-          AvgLow: "",
-          AvgMid: "",
-          AvgTop: "",
-          AvgAcc: "",
+          AvgGridPoints: 0,
           DPR: "",
           Defense: '',
           Penalties: "",
@@ -223,6 +228,56 @@ const renderRowSubComponent = ({ row }) => {
   );
 }
 
+const renderRowSubComponentGrid = () => {
+    
+  const dumTest = [
+    {
+      AvgLower: 0,
+      AvgMid: 1,
+      AvgUpper: 2,
+
+      AvgLowerAcc: 4,
+      AvgMidAcc: 5,
+      AvgUpperAcc: 6,
+    }, 
+    {
+      AvgLower: 7,
+      AvgMid: 8,
+      AvgUpper: 9,
+
+      AvgLowerAcc: 10,
+      AvgMidAcc: 11,
+      AvgUpperAcc: 12,
+    },/* {}, {} */]
+
+  const dum = dumTest.map(x => {
+    return {
+      AvgLower: x.AvgLower,
+      AvgMid: x.AvgMid,
+      AvgUpper: x.AvgUpper,
+
+      AvgLowerAcc: x.AvgLowerAcc,
+      AvgMidAcc: x.AvgMidAcc,
+      AvgUpperAcc: x.AvgUpperAcc,
+    }
+  })
+
+  return dum.length > 0 ?
+  (<pre>
+    <div>{<GridInnerTable information = {dum}/>} </div>
+  </pre>)
+  : (
+    <div style={{
+      padding: '5px',
+  }}> No data collected. </div>
+  );
+}
+
+function gridStateHandler(bool){
+  setGridState(bool)
+}
+
+
 // ===================================================================================
 const data = React.useMemo(
   () => tableData.map(team => {
@@ -234,10 +289,11 @@ const data = React.useMemo(
       Priorities: team.Priorities,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
-      AvgLow: team.AvgLow,
+      AvgGridPoints: team.AvgGridPoints,
+      /*AvgLow: team.AvgLow,
       AvgMid: team.AvgMid,
       AvgTop: team.AvgTop,
-      AvgAcc: team.AvgAcc,
+      AvgAcc: team.AvgAcc,*/
       DPR: team.DPR,
       Defense: team.Defense,
       Penalties: team.Penalties
@@ -254,7 +310,8 @@ const data = React.useMemo(
         Cell: ({ row }) => (
           <span {...row.getToggleRowExpandedProps()}>
               {row.values.TeamNumber}
-          </span>)
+          </span>
+          )
       },
       {
         Header: "Priorities/Strategies",
@@ -284,6 +341,10 @@ const data = React.useMemo(
       {
         Header: "Avg Grid Points",
         accessor: "AvgGridPoints",
+        Cell: ({ row }) => (
+          <span {...row.getToggleRowExpandedProps()}>
+              {row.values.AvgGridPoints}
+          </span>) 
       },
       {
         Header: "DPR",
@@ -317,7 +378,9 @@ const data = React.useMemo(
   
   return (
     <div>
+
       <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
+      <br></br>
       <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
         <thead>
           {headerGroups.map(headerGroup => (
@@ -346,6 +409,9 @@ const data = React.useMemo(
                 {row.cells.map(cell => {
                   return (   
                     <td
+                      
+                      onClick={() => {cell.column.Header === "Avg Grid Points" ? gridStateHandler(true) : gridStateHandler(false) }}
+
                       {...cell.getCellProps()}
                       style={{
                         padding: '10px',
@@ -360,6 +426,17 @@ const data = React.useMemo(
               </tr>
 
               {row.isExpanded ? (
+                  gridState === true ? (
+                  <tr>
+                    <td colSpan={visibleColumns.length}
+                    style = {{
+                      maxWidth: "1200px"
+                    }}
+                    >
+                      {renderRowSubComponentGrid ()}
+                    </td>
+                  </tr>
+                  ) : (
                   <tr>
                     <td colSpan={visibleColumns.length}
                     style = {{
@@ -369,7 +446,19 @@ const data = React.useMemo(
                       {renderRowSubComponent ({row})}
                     </td>
                   </tr>
-                ) : null}
+                  )) : null}
+
+                {/*row.isExpanded && gridState === true ? (
+                  <tr>
+                    <td colSpan={visibleColumns.length}
+                    style = {{
+                      maxWidth: "1200px"
+                    }}
+                    >
+                      {renderRowSubComponentGrid ({row})}
+                    </td>
+                  </tr>
+                ) : null*/}
 
                   </React.Fragment>
             )
