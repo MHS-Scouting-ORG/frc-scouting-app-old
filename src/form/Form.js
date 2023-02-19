@@ -745,9 +745,23 @@ class Form extends React.Component{
             mobilityPts = 2;
         }
 
-        let points = chargeStationPts + endGamePts + mobilityPts;
+        let highGridPoints = 6 * (highAutoCones + highAutoCubes) + 5 * (highTeleCones + highTeleCubes);
+        let midGridPoints = 4 * (midAutoCones + midAutoCubes) + 3 * (midTeleCones + midTeleCubes);
+        let lowGridPoints = 3 * (lowAutoCones + lowAutoCubes) + 2 * (lowTeleCones + lowTeleCubes);
+        let autoPoints = 6 * (highAutoCones + highAutoCubes) + 4 * (midAutoCones + midAutoCubes) + 3 * (lowAutoCones + lowAutoCubes);
+        let telePoints = 5 * (highTeleCones + highTeleCubes) + 3 * (midTeleCones + midTeleCubes) + 2 * (lowTeleCones + lowTeleCubes);
+        let points = (chargeStationPts + endGamePts + mobilityPts) + autoPoints + telePoints;
+        /*
+        let cubesHighTeleAutoAccuracy = 100 * ((highAutoCones + highTeleCubes) / (conesMissed + highAutoCones + highTeleCones));
+        let conesHighTeleAutoAccuracy;
+        let cubesMidTeleAutoAccuracy;
+        let conesMidTeleAutoAccuracy;
+        let cubesLowTeleAutoAccuracy;
+        let conesLowTeleAutoAccuracy;
+        */
         let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesMissed + lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes));
         let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesMissed + lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones));
+        
 
         this.setState({
             totalPoints: points,
