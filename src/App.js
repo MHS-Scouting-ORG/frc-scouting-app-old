@@ -5,7 +5,7 @@ import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import awsconfig from './aws-exports'
 import { useEffect, useState } from 'react'
 import ExampleUI from './example'
-import { getTeamInfo } from './api/bluealliance'
+import { getRegionals, getTeamInfo } from './api/bluealliance'
 import Form from './form/Form';
 
 
@@ -19,7 +19,15 @@ Amplify.configure(awsconfig)
 
 function AuthenticatedUI({ user }) {
   //console.log(user)
-  const [teamInfo, setTeamInfo] = useState({})
+  const [regional, setRegional] = useState()
+  useEffect(() => {
+    getRegionals()
+    .then(data => {
+      setRegional(data[0].key)
+    })
+  })
+
+  /*const [teamInfo, setTeamInfo] = useState({})
   useEffect(() => {
     getTeamInfo()
       .then(data => {
@@ -28,7 +36,7 @@ function AuthenticatedUI({ user }) {
       .catch(err => {
         console.log(err)
       })
-  }, [])
+  }, [])*/
 
 
   return (
@@ -49,11 +57,16 @@ function AuthenticatedUI({ user }) {
       <div>
         {user.username}
         <br />
-        {JSON.stringify(teamInfo)}
+        {/*JSON.stringify(teamInfo)*/}
       </div>
-      <Form/>
-      <ExampleUI/>
-
+        <Form/>
+      {/*(() => {
+        if(regional){
+          return <Form regional={regional}/>
+        } else {
+          return <div/>
+        }
+      })*/}
     </div>)
 
 }

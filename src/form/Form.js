@@ -9,6 +9,7 @@ import {getRegionals, getTeamsInRegional,} from "../api/bluealliance";
 import TextBox from './TextBox';
 import Headers from './Header';
 import StationTimer from './StationTimer';
+import { apiCreateTeamMatchEntry } from '../api';
 
 
 class Form extends React.Component{
@@ -93,7 +94,7 @@ class Form extends React.Component{
             mobilityVal: '',
             totalPoints: 0,
             cubesAccuracy: 0,
-            conesAccuracy: 0
+            conesAccuracy: 0,
 
 
         }
@@ -147,6 +148,7 @@ class Form extends React.Component{
             </div>
         )
     }
+
 
     logState(){
         console.log(this.state)
@@ -241,34 +243,6 @@ class Form extends React.Component{
             </div>
         )
     }
-/*
-    whoWonClicked(i, label){
-        let data = this.state.matchData;
-        if(data === 'not found'){
-            window.alert("PICK A TEAM FIRST");
-        } else {
-            if(label === 'Team Won '){
-                this.setState({rankingPts: 2});
-            } else if(label === 'Team Tied '){
-                this.setState({rankingPts:1});
-            }
-            else{
-                this.setState({rankingPts: 0})
-            }
-            this.setState({bonusVal:[' ',' ']});
-            let whoWon = this.state.checkedWhoWon;
-            whoWon[i - 1] = ' ';
-            whoWon[i + 1] = ' ';
-            if(whoWon[i] === label){
-                whoWon = ' ';
-            } else {
-                whoWon[i] = label;
-            } if(whoWon[0] === ' ' && whoWon[1] === ' '){
-                this.setState({rankingPts:0});
-            }
-        }
-    }
-    */
 
     whoWonClicked(i,label){
         let data = this.state.matchData;
@@ -569,6 +543,16 @@ class Form extends React.Component{
 
     //-------------------------------------------------------------------------------------------------------------//
 
+    counterBoxChanged(event, i) {
+        let counterStates = this.state.counterBoxVals;
+        if(event.target.value === '') {
+            counterStates[i] = 0
+        }
+        else {
+            counterStates[i] = event.target.value;
+        }
+    }
+
     buttonMinus(event, i) {
         let counterStates = this.state.counterBoxVals;
         if (counterStates[i] > 0) {
@@ -586,16 +570,6 @@ class Form extends React.Component{
         }
         else if (counterStates[i] < 0) {
             counterStates[i] = 0
-        }
-    }
-
-    counterBoxChanged(event, i) {
-        let counterStates = this.state.counterBoxVals;
-        if(event.target.value === '') {
-            counterStates[i] = 0
-        }
-        else {
-            counterStates[i] = event.target.value;
         }
     }
 
@@ -637,10 +611,11 @@ class Form extends React.Component{
         let strats = this.state.strategyVal;
         let strategies = this.state.strategyVal;
         let penalties = this.state.pentalyVal;
+        let smartPlacemnet = this.state.smartPlacementVal;
 
-        let counterVal =  this.state.counterBoxVal;
+        let counterVal =  this.state.counterBoxVals;
 
-        let highAutoCubes  = parseInt(counterVal[0]);
+        let highAutoCubes = parseInt(counterVal[0]);
         let midAutoCubes = parseInt(counterVal[1]);
         let lowAutoCubes = parseInt(counterVal[2]); 
         let highAutoCones = parseInt(counterVal[6]);
@@ -656,6 +631,8 @@ class Form extends React.Component{
 
         let cubesMissed = parseInt(counterVal[3]) + parseInt(counterVal[4]) + parseInt(counterVal[5]) + parseInt(counterVal[15]) + parseInt(counterVal[16]) + parseInt(counterVal[17]); 
         let conesMissed = parseInt(counterVal[9]) + parseInt(counterVal[10]) + parseInt(counterVal[11]) + parseInt(counterVal[21]) + parseInt(counterVal[22]) + parseInt(counterVal[23]); 
+
+        let mobility = this.state.mobilityVal;
 
         let endGamePts = 0;
         let chargeStationPts = 0;
@@ -711,7 +688,7 @@ class Form extends React.Component{
             windowAlertMsg = windowAlertMsg + "\nWhat charge station the robot did"
         }
 
-        if(this.state.mobilityVal === ' '){
+        if(mobility === ' '){
             mobilityPts = 0;
         } else{
             mobilityPts = 2;
@@ -778,9 +755,58 @@ class Form extends React.Component{
             window.alert(windowAlertMsg);
         } else if (incompleteForm === false || override === true){
             console.log(penalties);
-            
-        } 
+            apiCreateTeamMatchEntry => ({
+                TeamId: this.state.teamNumber.substring(3, this.state.teamNumber.length),
+                RegionalId: "2022hiho",
+                MatchId: /*put this years event*//*/*/ "2023week0"  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber,
 
+                TotalPoints: Number(points),
+                CubesAccuracy: Number(cubesTeleAutoAccuracy),
+                ConesAccuracy: Number(conesTeleAutoAccuracy),
+
+                Autonomous: {
+                    StartPlacement: smartPlacemnet,
+                    Scored:{
+                        Cones:{
+                            Upper: Number(counterVal[6]),
+                            Mid: Number(counterVal[7]),
+                            Lower: Number(counterVal[8]),
+                        },
+                        Cubes:{
+                            Upper: Number(counterVal[0]),
+                            Mid: Number(counterVal[1]),
+                            Lower: Number(counterVal[2])
+                        }
+                    },
+
+                    Attempted:{
+                        Cones:{
+                            Upper: Number(counterVal[9]),
+                            Mid: Number(counterVal[10]),
+                            Lower: Number(counterVal[11]),
+                        },
+                        Cubes:{
+                            Upper: Number(counterVal[3]),
+                            Mid: Number(counterVal[4]),
+                            Lower: Number(counterVal[5]),
+                        },
+                    },
+
+                    LeftCoummunity: mobility,
+                    ChargeStation: {chargeStationAuto},
+                },
+
+                TeleOp:{
+                    Scored:{
+                        Upper: Number(counterVal[18]),
+                        Mid: Number(counterVal[19]),
+
+                    }
+                }
+
+
+            })
+        }
 
     }
 
@@ -802,17 +828,17 @@ class Form extends React.Component{
                 {this.makeDropDownBox("Auto Placement On Community: ",[1,2,3,4,5,6],0)}
                 <br></br>
                 <p>Cubes Scored</p>
-                {this.makeCounterBox("High Cubes: ", 0)}
-                {this.makeCounterBox("Mid Cubes: ", 1)}
-                {this.makeCounterBox("Low Cubes: ", 2)}
+                {this.makeCounterBox("High Cubes Made: ", 0)}
+                {this.makeCounterBox("Mid Cubes Made: ", 1)}
+                {this.makeCounterBox("Low Cubes Made: ", 2)}
                 <p>Cubes Attempted</p>
                 {this.makeCounterBox("High Cubes Attempted: ", 3)}
                 {this.makeCounterBox("Mid Cubes Attempted: ", 4)}
                 {this.makeCounterBox("Low Cubes Attempted: ", 5)}
                 <p>Cones Scored</p>
-                {this.makeCounterBox("High Cones: ", 6)}
-                {this.makeCounterBox("Mid Cones: ", 7)}
-                {this.makeCounterBox("Low Cones: ", 8)}
+                {this.makeCounterBox("High Cones Made: ", 6)}
+                {this.makeCounterBox("Mid Cones Made: ", 7)}
+                {this.makeCounterBox("Low Cones Made: ", 8)}
                 <p>Cones Attempted</p>
                 {this.makeCounterBox("High Cones Attempted: ", 9)}
                 {this.makeCounterBox("Mid Cones Attempted: ", 10)}
@@ -824,17 +850,17 @@ class Form extends React.Component{
                 <br></br>
                 <h3>TELE-OP</h3>
                 <p>Cubes Scored</p>
-                {this.makeCounterBox("High Cubes: ", 12)}
-                {this.makeCounterBox("Mid Cubes: ", 13)}
-                {this.makeCounterBox("Low Cubes: ", 14)}
+                {this.makeCounterBox("High Cubes Made: ", 12)}
+                {this.makeCounterBox("Mid Cubes Made: ", 13)}
+                {this.makeCounterBox("Low Cubes Made: ", 14)}
                 <p>Cubes Attempted</p>
                 {this.makeCounterBox("High Cubes Attempted: ", 15)}
                 {this.makeCounterBox("Mid Cubes Attempted: ", 16)}
                 {this.makeCounterBox("Low Cubes Attempted: ", 17)}
                 <p>Cones Scored</p>
-                {this.makeCounterBox("High Cones: ", 18)}
-                {this.makeCounterBox("Mid Cones: ", 19)}
-                {this.makeCounterBox("Low Cones: ", 20)}
+                {this.makeCounterBox("High Cones Made: ", 18)}
+                {this.makeCounterBox("Mid Cones Made: ", 19)}
+                {this.makeCounterBox("Low Cones Made: ", 20)}
                 <p>Cones Attempted</p>
                 {this.makeCounterBox("High Cones Attempted: ", 21)}
                 {this.makeCounterBox("Mid Cones Attempted: ", 22)}
@@ -878,7 +904,7 @@ class Form extends React.Component{
                 <p>How well is there defense if any?</p>
                 <TextBox title={"Comments: "} commentState={this.setComment}></TextBox>
                 <div>
-                    <button>Submit</button>
+                    <button onClick={this.submitState}>Submit</button>
                 </div>
                 <p> ONLY CLICK IF NOTHING ELSE CAN BE FILLED </p>
                 {this.makeOverrideBox()}
