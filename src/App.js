@@ -12,7 +12,7 @@ import CommentsOnly from './components/CommentsOnly';
 
 import { useEffect, useState } from 'react'
 import ExampleUI from './example'
-import { getTeamInfo } from './api/bluealliance'
+import { getRegionals, getTeamInfo } from './api/bluealliance'
 import DumInnerTable from './components/DumInnerTable';
 
 
@@ -25,8 +25,15 @@ Amplify.configure(awsconfig)
 
 
 function AuthenticatedUI({ user }) {
+  const [regional, setRegional] = useState()
   //console.log(user)
-  const [teamInfo, setTeamInfo] = useState({})
+  useEffect(() => {
+    getRegionals() 
+    .then(data => {
+      setRegional(data[0].key)
+    })
+  })
+  /*const [teamInfo, setTeamInfo] = useState({})
   useEffect(() => {
     getTeamInfo()
       .then(data => {
@@ -35,7 +42,7 @@ function AuthenticatedUI({ user }) {
       .catch(err => {
         console.log(err)
       })
-  }, [])
+  }, []) */
 
 
   return (
@@ -57,13 +64,15 @@ function AuthenticatedUI({ user }) {
         {user.username}
         <br />
       </div>
-<<<<<<< HEAD
-      <ExampleUI />
-      <DummyTableDG />
-=======
-      {/*<ExampleUI />*/}
-      <DummyTable />
->>>>>>> d12167a4b73c449e98fa09853fe3ec6fe6a19d8b
+      {(() => {
+        if(regional){
+          return <DummyTableDG regional = {regional} />
+        }
+        else {
+          return <div/>
+        }
+      })()}
+      
     </div>
     )
 
