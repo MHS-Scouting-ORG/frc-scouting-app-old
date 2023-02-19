@@ -41,6 +41,11 @@ class Form extends React.Component{
 
         this.changeChargeStation = this.changeChargeStation.bind(this);
         this.makeChargeStationAuto = this.makeChargeStationAuto.bind(this);
+
+        this.runTimer = this.runTimer.bind(this);
+        this.stopTimer = this.stopTimer.bind(this);
+        this.timeChanged = this.timeChanged.bind(this);
+        this.makeChargeStationTimer = this.makeChargeStationTimer.bind(this);
     
         this.buttonMinus = this.buttonMinus.bind(this);
         this.buttonPlus = this.buttonPlus.bind(this);
@@ -81,6 +86,7 @@ class Form extends React.Component{
             override: false,
             endGameVal: ['', '',''],
             chargeStationValAuto: '',
+            endGameTimer: 0.0,
             whoWon: '',
             checkedWhoWon: [' ', ' '],
             rankingPts: 0,
@@ -441,6 +447,51 @@ class Form extends React.Component{
             <div>
                 <ChargeStation
                     changeChargeStationUsed={this.changeChargeStation}
+                />
+            </div>
+        )
+    }
+
+    //-------------------------------------------------------------------------------------------------------------//
+
+    runTimer(event) {
+        console.log("starting")
+        let endGameTimerState = this.state.endGameTimer
+        setInterval(() => {
+            if (this.stopTimer === true) {
+                return;
+            }
+            endGameTimerState = parseInt(Math.round(event.target.value + .1) * 10) / 10;
+        }, 100)
+    }
+
+    stopTimer(event) {
+        let endGameTimerState = this.state.endGameTimer
+        console.log(endGameTimerState)
+        endGameTimerState = parseInt(Math.round(event.target.value + .1) * 10) / 10;
+        return true;
+    }
+
+    timeChanged(event) {
+        let endGameTimerState = this.state.endGameTimer
+        if (event.target.value === '') {
+            endGameTimerState = 0;
+        }
+        else {
+            endGameTimerState = event.target.value;
+        }
+    }
+
+    makeChargeStationTimer(title) {
+        let endGameTimerState = this.state.endGameTimer
+        return (
+            <div>
+                <StationTimer
+                label={title}
+                setState={this.timeChanged}
+                state={endGameTimerState}
+                startButton={this.runTimer}
+                stopButton={this.stopTimer}
                 />
             </div>
         )
@@ -821,6 +872,7 @@ class Form extends React.Component{
                 {this.makeMobilityBox("Mobility ")}
                 <br></br>
                 {this.makeChargeStationAuto()}
+                {this.makeChargeStationTimer("Time ")}
                 <br></br>
                 <h3>TELE-OP</h3>
                 <p>Cubes Scored</p>

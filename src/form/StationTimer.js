@@ -7,13 +7,15 @@ class StationTimer extends React.Component{
         this.stopTimer = this.stopTimer.bind(this);
         this.timeChanged = this.timeChanged.bind(this);
         this.state = {
-            timer: 0,
+            timer: 0.0,
             debounce: 0,
             stop: false
         }
     }
 
-    runTimer() {
+    runTimer(event) {
+        this.props.startButton(event, this.props.place);
+        const time = document.getElementById("time");
         this.setState({stop: false, debounce: this.state.debounce + 1});
         if (this.state.debounce < 1 && this.state.stop === false) {
             setInterval(() => {
@@ -21,28 +23,32 @@ class StationTimer extends React.Component{
                     return;
                 }
                 this.setState({timer: Math.round((this.state.timer + .1) * 10) / 10})
+                time.value = parseInt(Math.round((this.state.timer + .1) * 10) / 10);
             }, 100)
         } else {
             return;
         }
     }
     
-    stopTimer() {
+    stopTimer(event) {
+        this.props.stopButton(event, this.props.place);
         this.setState({stop: true, debounce: 0});
     }
 
     timeChanged(event) {
-        this.props.setState(event, this.props.place);
+        this.setState({timer: event.target.value})
+        this.props.setState(event, this.props.state);
     }
     
 
     render(){
         return(
             <div>
-                <label>{this.props.title}</label>
-                <p onChange={this.timeChanged}>{this.state.timer}s</p>
-                <button onClick={this.runTimer}>Start</button>
-                <button onClick={this.stopTimer}>Stop</button>
+                <label>{this.props.label}</label>
+                <input type='number' onChange={this.timeChanged} id="time"/>
+                <button /* value={this.props.state} */ onClick={this.runTimer}>Start</button>
+                <br></br>
+                <button /* value={this.props.state} */ onClick={this.stopTimer}>Stop</button>
             </div>
         )
     }
