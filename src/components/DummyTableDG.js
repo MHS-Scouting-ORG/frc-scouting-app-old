@@ -52,8 +52,8 @@ function DummyTableDG() {
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
-      Priorities: team.Priorities,
       OPR: team.OPR,
+      Priorities: team.Priorities,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgLow: team.AvgLow,
@@ -75,16 +75,15 @@ function DummyTableDG() {
 
     return {
       TeamNumber: team.TeamNumber,
-      Matches: team.Matches,
       Priorities: team.Priorities,
-      OPR: oprList[team.TeamNum],    
-      CCWM: ccwmList[team.TeamNum], 
+      OPR: oprList[team.TeamNum] ? (oprList[team.TeamNum]).toFixed(3) : null,     
+      CCWM: ccwmList[team.TeamNum] ? (ccwmList[team.TeamNum]).toFixed(3) : null, 
       AvgPoints: team.AvgPoints,
       AvgLow: team.AvgLow,
       AvgMid: team.AvgMid,
       AvgTop: team.AvgTop,
       AvgAcc: team.AvgAcc,
-      DPR: dprList[team.TeamNum],
+      DPR: dprList[team.TeamNum] ? (dprList[team.TeamNum]).toFixed(3) : null,
       Defense: team.Defense,
       Penalties: team.Penalties,
 
@@ -98,8 +97,8 @@ function DummyTableDG() {
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
-      Priorities: team.Priorities,
       OPR: team.OPR,
+      Priorities: team.Priorities,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgLow: team.AvgLow,
@@ -120,8 +119,8 @@ function DummyTableDG() {
 
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
-      Priorities: team.Priorities,
       OPR: team.OPR,
+      Priorities: team.Priorities,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgLow: team.AvgLow,
@@ -144,8 +143,8 @@ const getTeams = async () => {
         const teamNumObj = {
           TeamNumber: obj.team_number,
           Matches: '',
-          Priorities: '',
           OPR: "",
+          Priorities: '',
           CCWM: "", 
           AvgPoints: "",
           AvgLow: "",
@@ -231,8 +230,8 @@ const data = React.useMemo(
 
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
-      Priorities: team.Priorities,
       OPR: team.OPR,
+      Priorities: team.Priorities,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgLow: team.AvgLow,
@@ -258,10 +257,6 @@ const data = React.useMemo(
           </span>)
       },
       {
-        Header: "Matches",
-        accessor: "Matches"
-      },
-      {
         Header: "Priorities/Strategies",
         accessor: "Priorities",
         Cell: ({ row }) => (
@@ -276,43 +271,31 @@ const data = React.useMemo(
       },
       {
         Header: "OPR",
-        accessor: "OPR"
+        accessor: "OPR",
       },
       {
         Header: "CCWM",
-        accessor: "CCWM"
+        accessor: "CCWM",
       },
       {
         Header: "Avg Points",
-        accessor: "AvgPoints"
+        accessor: "AvgPoints",
       },
       {
-        Header: "Avg Low Placement",
-        accessor: "AvgLow"
-      },
-      {
-        Header: "Avg Mid Placement",
-        accessor: "AvgMid"
-      },
-      {
-        Header: "Avg Top Placement",
-        accessor: "AvgTop"
-      },
-      {
-        Header: "Avg Accuracy",
-        accessor: "AvgAcc"
+        Header: "Avg Grid Points",
+        accessor: "AvgGridPoints",
       },
       {
         Header: "DPR",
-        accessor: "DPR"
+        accessor: "DPR",
       },
       {
         Header: "Defense",
-        accessor: "Defense"
+        accessor: "Defense",
       },
       {
         Header: "Penalties",
-        accessor: "Penalties"
+        accessor: "Penalties",
       },
     ], []
   )

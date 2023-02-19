@@ -6,14 +6,11 @@ import awsconfig from './aws-exports'
 import DummyTableDG from './components/DummyTableDG';
 import DummyTable from './components/DummyTable';
 import Summary from './components/Summary';
-import InnerTable from './components/InnerTable';
-import CommentsOnly from './components/CommentsOnly';
 
 
 import { useEffect, useState } from 'react'
 import ExampleUI from './example'
 import { getTeamInfo } from './api/bluealliance'
-import DumInnerTable from './components/DumInnerTable';
 
 
 const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
@@ -58,7 +55,7 @@ function AuthenticatedUI({ user }) {
         <br />
       </div>
       <ExampleUI />
-      <DummyTable />
+      <DummyTableDG />
     </div>
     )
 
