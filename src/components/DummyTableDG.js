@@ -93,7 +93,6 @@ function DummyTableDG(props) {
 
     return {
       TeamNumber: team.TeamNumber,
-      Matches: team.Matches,
       Priorities: team.Priorities,
       OPR: oprList[team.TeamNum] ? (oprList[team.TeamNum]).toFixed(2) : null,    
       CCWM: ccwmList[team.TeamNum] ? (ccwmList[team.TeamNum]).toFixed(2) : null, 
@@ -113,8 +112,8 @@ function DummyTableDG(props) {
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
-      Priorities: team.Priorities,
       OPR: team.OPR,
+      Priorities: team.Priorities,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgGridPoints: team.AvgGridPoints,
@@ -131,8 +130,8 @@ function DummyTableDG(props) {
 
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
-      Priorities: team.Priorities,
       OPR: team.OPR,
+      Priorities: team.Priorities,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgGridPoints: team.AvgGridPoints,
@@ -152,8 +151,8 @@ const getTeams = async () => {
         const teamNumObj = {
           TeamNumber: obj.team_number,
           Matches: '',
-          Priorities: '',
           OPR: "",
+          Priorities: '',
           CCWM: "", 
           AvgPoints: "",
           AvgGridPoints: 0,
@@ -286,8 +285,8 @@ const data = React.useMemo(
 
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
-      Priorities: team.Priorities,
       OPR: team.OPR,
+      Priorities: team.Priorities,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgGridPoints: team.AvgGridPoints,
@@ -329,15 +328,15 @@ const data = React.useMemo(
       },
       {
         Header: "OPR",
-        accessor: "OPR"
+        accessor: "OPR",
       },
       {
         Header: "CCWM",
-        accessor: "CCWM"
+        accessor: "CCWM",
       },
       {
         Header: "Avg Points",
-        accessor: "AvgPoints"
+        accessor: "AvgPoints",
       },
       {
         Header: "Avg Grid Points",
@@ -349,15 +348,15 @@ const data = React.useMemo(
       },
       {
         Header: "DPR",
-        accessor: "DPR"
+        accessor: "DPR",
       },
       {
         Header: "Defense",
-        accessor: "Defense"
+        accessor: "Defense",
       },
       {
         Header: "Penalties",
-        accessor: "Penalties"
+        accessor: "Penalties",
       },
     ], []
   )
