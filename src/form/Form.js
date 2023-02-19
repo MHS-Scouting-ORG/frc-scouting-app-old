@@ -745,7 +745,7 @@ class Form extends React.Component{
             mobilityPts = 2;
         }
 
-        let points =  chargeStationPts + endGamePts + mobilityPts;
+        let points = chargeStationPts + endGamePts + mobilityPts;
         let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesMissed + lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes));
         let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesMissed + lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones));
 
@@ -806,7 +806,7 @@ class Form extends React.Component{
             window.alert(windowAlertMsg);
         } else if (incompleteForm === false || override === true){
             console.log(penalties);
-            apiCreateTeamMatchEntry => ({
+            apiCreateTeamMatchEntry({
                 TeamId: this.state.teamNumber.substring(3, this.state.teamNumber.length),
                 RegionalId: "2022hiho",
                 MatchId: /*put this years event*//*/*/ "2023week0"  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber,
@@ -815,8 +815,9 @@ class Form extends React.Component{
                 CubesAccuracy: Number(cubesTeleAutoAccuracy),
                 ConesAccuracy: Number(conesTeleAutoAccuracy),
 
+
                 Autonomous: {
-                    StartPlacement: smartPlacemnet,
+                    AutoPlacement: Number(autoPlacement),
                     Scored:{
                         Cones:{
                             Upper: Number(counterVal[6]),
@@ -849,15 +850,63 @@ class Form extends React.Component{
 
                 TeleOp:{
                     Scored:{
-                        Upper: Number(counterVal[18]),
-                        Mid: Number(counterVal[19]),
+                        Cones:{
+                            Upper: Number(counterVal[18]),
+                            Mid: Number(counterVal[19]),
+                            Lower: Number(counterVal[20]),
+                        },
+                        Cubes:{
+                            Upper: Number(counterVal[12]),
+                            Mid: Number(counterVal[13]),
+                            Lower: Number(counterVal[14]),
+                        },
+                    },
 
-                    }
-                }
+                    Attempted:{
+                        Cones:{
+                            Upper: Number(counterVal[21]),
+                            Mid: Number(counterVal[22]),
+                            Lower: Number(counterVal[23]),
+                        },
+                        Cubes:{
+                            Upper: Number(counterVal[15]),
+                            Mid: Number(counterVal[16]),
+                            Lower: Number(counterVal[17]),
+                        }
+                    },
+
+                    EndGame: String(endGameUsed),
+                    EndGameStart: Number(endGameStart),
+                    EndGameEnd: Number(endGameEnd),
+                    EndGameComment:  String(this.state.stationComments),
+
+                    StartPlacement: Boolean(smartPlacemnet),
+                },
+
+                DriveStrength: String(driveStrength),
+                DriveSpeed: String(driveSpeed),
+
+                Fouls: Number(counterVal[24]),
+                TechFouls: Number(counterVal[25]),
+                Penalties: penalties,
+
+                BonusRankingPoints: bonuses,
+                RankingPoints: Number(this.state.rankingPts),
+
+                Strategy: strategies,
+                DoubleSubstation: String(dropVal[3]),
+                Comment: String(this.state.comments),
+                SummaryComments: String(this.state.summaryComments),
 
 
             })
+            .then(window.alert("States have successfully been submited to table"))
+            .catch(err => {
+                console.log(err)
+            })
         }
+        let regional = await getRegionals();
+        console.log(regional)
 
     }
 
