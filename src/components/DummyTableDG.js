@@ -347,6 +347,22 @@ const data = React.useMemo(
           </span>) 
       },
       {
+        Header: "Avg Cone Points",
+        accessor: "avgConePts",
+      },
+      {
+        Header: "Avg Cone Acc",
+        accessor: "Avg Cone Acc",
+      },
+      {
+        Header: "Avg Cube Points",
+        accessor: "AvgCubePoints"
+      },
+      {
+        Header: "Avg Cube Acc",
+        accessor: "Avg Cube Acc",
+      },
+      {
         Header: "DPR",
         accessor: "DPR",
       },
@@ -378,6 +394,26 @@ const data = React.useMemo(
   
   return (
     <div>
+
+      <h2>summary statistics 
+        <img src={"./images/charge.png"} width="350px" height= "500px"></img>
+      </h2>
+
+      <p>
+          <strong>KEY</strong> 
+          <br/> "Avg" / μ = Average
+          <br/> σ = Standard Deviation
+          <br/> Acc = Accuracy
+      </p>
+
+      <img src={"./images/community.jpg"} width="400px" height="340px"
+          style={{
+              display: 'inline-block',
+              margin: '25px'
+          }}
+      ></img>
+
+      <br></br>
 
       <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
       <br></br>
