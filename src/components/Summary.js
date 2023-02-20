@@ -4,7 +4,7 @@ import { apiAddTeam, getTeamsInRegional, getRegionals, getOprs } from '../api/bl
 import {apiListTeams,} from '../api/index'
 import InnerTable from './InnerTable'; //add to summary table when clicked 
 import GlobalFilter from './GlobalFilter';
-
+import List from './List'
 
 function Summary(){
 
@@ -14,6 +14,8 @@ function Summary(){
     const [averages, setAverages] = useState([]);
     const [finalData, setFinalData] = useState([]);
     const [apiData, setApiData] = useState([]);
+
+    const [sortBy, setSortBy] = useState([])
     
     useEffect(() => { //displays all teams and info for the az east regional in console
       getTeamsInRegional('2022hiho')
@@ -429,6 +431,29 @@ function Summary(){
       return avgEndgame.toFixed(3);
     }
 
+    const calcColumnSort = (arr,gridPts,conePts,coneAcc,cubePts,cubeAcc,charge) => {
+      let sum = 0;
+      if(arr.includes("Grid Points")){
+        sum = sum + gridPts;
+      }
+      if(arr.includes("Cone Points")){
+        sum = sum + conePts;
+      }
+      if(arr.includes("Accurate Cone Placement")){
+        sum = sum + coneAcc;
+      }
+      if(arr.includes("Cube Points")){
+        sum = sum + cubePts;
+      }
+      if(arr.includes("Accurate Cube Placement")){
+        sum = sum + cubeAcc;
+      }
+      if(arr.includes("Charge Station")){
+        sum = sum + charge;
+      }
+
+      return sum.toFixed(3);
+    }
 
     const calcDeviation = (arr, mean) => { //standard deviation
       const distance = arr.map(val => {
@@ -451,11 +476,13 @@ function Summary(){
     //data being displayed
     const data = React.useMemo( 
         () => tableData.map(team => {
+        const grade = calcColumnSort(sortBy,team.gridPoints,team.conePoints,team.coneAccuracy,team.cubePoints,team.cubeAccuracy,team.chargeStation);
         return{
           teamNumber: team.teamNumber,
           opr: team.opr,
           ccwm: team.ccwm,
           dpr: team.dpr,
+          SumPriority: grade
         }
         
         
@@ -516,6 +543,10 @@ function Summary(){
             Header: 'Comments',
             accessor: 'comments',
           },
+          {
+            Header: 'Grade',
+            accessor: "SumPriority",
+          },
         ], []
       )
   
@@ -555,6 +586,10 @@ function Summary(){
                               <br/> σ = Standard Deviation
                               <br/> Acc = Accuracy
                           </p>
+                      </td>
+                      <p1> Select checkboxes to choose which priorities to sort by. Then click on <strong>Column Sort</strong>. </p1>
+                      <td>
+                        <List setList={setSortBy}/>
                       </td>
                       <td>
                           <img src={"./images/community.jpg"} width="300px" height="240px"
