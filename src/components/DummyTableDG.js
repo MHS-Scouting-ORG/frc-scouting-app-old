@@ -6,6 +6,7 @@ import { getTeamsInRegional, getTeamInfo, getOprs } from "../api/bluealliance";
 import DumInnerTable from "./DumInnerTable";
 import GridInnerTable from './GridInnerTable';
 import GlobalFilter from "./GlobalFilter";
+import { ConsoleLogger } from "@aws-amplify/core";
 
 function DummyTableDG(props) {
 
@@ -15,12 +16,10 @@ function DummyTableDG(props) {
   const [oprData,setOprData] = useState([]); //data of team ccwm opr and dpr
   const [averages,setAverages] = useState([]);
   const [apiData, setApiData] = useState([]) //data retrieved
-
+  const [gridState,setGridState] = useState(false); //differentiate between team and grid table
   const [oprList,setOprList] = useState([]);
   const [dprList,setDprList] = useState([]);
   const [ccwmList,setCcwmList] = useState([]);
-
-  const [gridState,setGridState] = useState(false);
 
    useEffect(() => {
     getMatchesForRegional(props.regional)
@@ -43,11 +42,14 @@ function DummyTableDG(props) {
     getMatchesForRegional('2022hiho')
     .then(data => {
       setApiData(data)
+      console.log(apiData)
+      console.log(data)
+      console.log(data.data)
     })
     .catch(console.log.bind(console))
   }, [teamsData]) //get matches form regional for state variable and use state to be filtered and used
 
-   useEffect(() => {     //set opr data //convert to list and filter data structure to find opr dpr and ccwm 
+   useEffect(() => {     //set opr data and convert to list and filter data structure to find opr dpr and ccwm 
     getOprs('2022hiho')
     .then(data => { 
       const oprDataArr = Object.values(data)
@@ -55,15 +57,11 @@ function DummyTableDG(props) {
       const dData = oprDataArr[1] //dpr
       const oData = oprDataArr[2] //opr
 
-      setOprList(oData) // state opr is now a list that holds the oprs of teams that it is available for
+      setOprList(oData)
       setDprList(dData)
       setCcwmList(cData) 
 
       console.log(data) // whole list of ccwm, dpr, and opr
-
-      const teamNumb = Object.keys(cData)
-      console.log(oData)
-      //console.log((oprList['frc2443']).toFixed(2))
     })
     .catch(console.log.bind(console))
    },[teamsData])
@@ -85,12 +83,9 @@ function DummyTableDG(props) {
       TeamNum: `frc${team.TeamNumber}`
     }
     
-   })),[teamsData]) 
+   })),[teamsData, ccwmList, dprList, oprList]) 
 
    useEffect(() => setOprData(teamNum.map(team => {
-
-    //const opr = ((oprList[team.TeamNum]).toFixed(2))
-
     return {
       TeamNumber: team.TeamNumber,
       Priorities: team.Priorities,
@@ -108,7 +103,7 @@ function DummyTableDG(props) {
 
    useEffect(() => setAverages(oprData.map(team => {
     //console.log(team)
-    
+
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
@@ -127,7 +122,6 @@ function DummyTableDG(props) {
 
   useEffect(() => setTableData(averages.map(team => {
     return {
-
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
       OPR: team.OPR,
@@ -141,8 +135,8 @@ function DummyTableDG(props) {
 
       TeamNum: team.TeamNum
     }
-  })),[teamsData,teamNum, oprData, averages]) 
-
+  })),[teamsData, teamNum, oprData, averages]) 
+// ================================================ !CALC HERE! ========================
 const getTeams = async () => {
    return await (getTeamsInRegional('2023hiho'))
     .catch(err => console.log(err))
@@ -168,7 +162,7 @@ const getTeams = async () => {
     })
     .catch(err => console.log(err))
 }
-
+// ================================= !CHANGE HERE TO USE DATA FROM API! ===========
 const renderRowSubComponent = ({ row }) => {
     
   const dumTest = [
@@ -278,7 +272,7 @@ function gridStateHandler(bool){
 }
 
 
-// ===================================================================================
+// ======================================= !TABLE HERE! ===========================================
 const data = React.useMemo(
   () => tableData.map(team => {
     return {
@@ -357,6 +351,10 @@ const data = React.useMemo(
       {
         Header: "Penalties",
         accessor: "Penalties",
+      },
+      {
+        Header: "Comments",
+        accessor: "Comments",
       },
     ], []
   )
