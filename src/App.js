@@ -44,8 +44,8 @@ function AuthenticatedUI({ user }) {
 
 
   return (
-    <div>
-      <img src={logo} className="App-logo" alt="logo" />
+    <div>{//*
+      <img src={logo} className="App-logo" alt="logo" />/*}
       <p>
         Edit <code>src/App.js</code> and save to reload.
       </p>
@@ -61,7 +61,8 @@ function AuthenticatedUI({ user }) {
       <div>
         {user.username}
         <br />
-      </div>
+      </div>*/}
+
       {/*<ExampleUI />*/}
       {/*<DummyTable />*/}
       <Summary></Summary>
