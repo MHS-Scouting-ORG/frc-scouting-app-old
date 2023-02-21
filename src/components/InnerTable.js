@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable, useSortBy } from 'react-table';
+import { useTable, useSortBy, useExpanded, useGlobalFilter } from 'react-table';
 
 const dummyData = [
     {match: "Q2",  }, // using to test sortby
@@ -15,9 +15,9 @@ const InnerTable = (props) => {
         }
     ) */
     const /*actual*/data = props.information; //information in summary table used to pass the data for each match
-
+    const deleteRow = props.delete;
     //const columnValues = Object.keys(actualData[0]);
-  
+
     const columns = React.useMemo(
       () => [
         {
@@ -144,15 +144,20 @@ const InnerTable = (props) => {
             },
             {
               Header: 'Delete',
-              accessor: 'delete',
+              Cell: ({ row }) => (
+                <span {...row.getToggleRowExpandedProps(
+                  <button onClick={deleteRow}> DELETE </button>
+                )}>
+                  Click to delete this row
+                </span>)
             },],
           //accessor: 'other',
         }
       ], []
     )
   
-    const tableInstance = useTable({ columns, data }, useSortBy); //change data once actualData gets stuff
-  
+    const tableInstance = useTable({ columns, data }, useSortBy, useExpanded); //change data once actualData gets stuff
+
     const {
       getTableProps,
       getTableBodyProps,

@@ -14,8 +14,10 @@ function Summary(){
     const [averages, setAverages] = useState([]);
     const [finalData, setFinalData] = useState([]);
     const [apiData, setApiData] = useState([]);
-
     const [sortBy, setSortBy] = useState([])
+
+    //Experimental
+    const [deletedData,setDeletedData] = useState([]);
     
     useEffect(() => { //displays all teams and info for the az east regional in console
       getTeamsInRegional('2022hiho')
@@ -58,14 +60,23 @@ function Summary(){
 
 
     const renderRowSubComponent = ({ row }) => {
-      const t = apiData.filter((x) => parseInt(x.TeamId) === row.values.TeamNumber && parseInt(x.MatchId.substring(x.MatchId.indexOf('_')+2)) !== 0);
+      //const t = apiData.filter((x) => parseInt(x.TeamId) === row.values.TeamNumber && parseInt(x.MatchId.substring(x.MatchId.indexOf('_')+2)) !== 0);
+
+      const t = [{
+        MatchId: "2022hiho_q10",
+        Priorities: ["Cube ","Charge Station "],
+        TotalPoints: 45,
+
+        intakeFrom: ["Double Substation "],
+        email: "braedenjames.asuncion2025@mauihigh.org"
+      }]
 
       const disp = t.map(x => {
           return {
               match: x.MatchId.substring(x.MatchId.indexOf('_')+1),
-              priorities: x.Priorities.filter(val => val.trim() !== '').length !== 0 ? x.Strategy.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
+              //priorities: x.Priorities.filter(val => val.trim() !== '').length !== 0 ? x.Strategy.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
               totalPoints: x.TotalPoints,
-              gridPts: x.LowHubAccuracy !== null ? x.LowHubAccuracy.toFixed(2) : '',
+              /*gridPts: x.LowHubAccuracy !== null ? x.LowHubAccuracy.toFixed(2) : '',
               lowGridAcc: x.lowGridAcc !== null ? x.lowGridAcc.toFixed(2) : '',
               midGridAcc: x.midGridAcc !== null ? x.midGridAcc.toFixed(2) : '',
               upperGridAcc: x.upperGridAcc !== null ? x.upperGridAcc.toFixed(2) : '',
@@ -91,14 +102,20 @@ function Summary(){
 
               defense: x.defense,
               comments: x.Comments !== undefined ? x.Comments.trim() : '',
-              email: x.email.substring(0, x.email.length-17),
+              email: x.email.substring(0, x.email.length-17),*/
 
           };
       })
       
+      const handleDelete = (event) => {
+        //setData(data.filter((i) => i !== event.target.value));
+        //setDeletedData(data.filter((i) => i == index))
+        console.log(event.target)
+      }
+
       return disp.length > 0 ?               // if there is data on team, display a table when expanded
           (<pre>
-              <div> {<InnerTable information={disp} />} </div>
+              <div> {<InnerTable information={disp} deleteRow={handleDelete}/>} </div>
           </pre>)
           : (                             // else if no data, notify no data has been collected
               <div style={{
@@ -384,7 +401,6 @@ function Summary(){
       return devi.toFixed(3); //rounds standard deviation to thousandths
     }
 
-    
     //data being displayed
     const data = React.useMemo( 
         () => tableData.map(team => {
@@ -489,18 +505,14 @@ function Summary(){
                       >
                           
                           <br/>
-                      </td>
                       <h3>summary stats</h3>
-                      <td>
                           <p>
                               <strong>KEY</strong> 
                               <br/> "Avg" / μ = Average
                               <br/> σ = Standard Deviation
                               <br/> Acc = Accuracy
                           </p>
-                      </td>
-                      <p1> Select checkboxes to choose which priorities to sort by. Then click on <strong>Column Sort</strong>. </p1>
-                      <td>
+                      <p> Select checkboxes to choose which priorities to sort by. Then click on <strong>Column Sort</strong>. </p>
                         <List setList={setSortBy}/>
                       </td>
                       <td>
