@@ -41,24 +41,13 @@ function AuthenticatedUI({ user }) {
 
   return (
     <div>
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
-
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
+      <img src={'./images/t-shirt Deisnv 2-01.png'} width= "500px" height= "600px"></img>
       <div>
-        {user.username}
+        {/*user.username*/}
         <br />
         {/*JSON.stringify(teamInfo)*/}
       </div>
+        <ExampleUI />
         <Form/>
       {/*(() => {
         if(regional){

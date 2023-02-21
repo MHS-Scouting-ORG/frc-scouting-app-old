@@ -9,7 +9,8 @@ import {getRegionals, getTeamsInRegional,} from "../api/bluealliance";
 import TextBox from './TextBox';
 import Headers from './Header';
 import StationTimer from './StationTimer';
-import { apiCreateTeamMatchEntry } from '../api';
+import {apiAddTeam, apiCreateTeamMatchEntry, apiUpdateTeamMatch} from '../api';
+import { ConsoleLogger } from '@aws-amplify/core';
 
 
 class Form extends React.Component{
@@ -162,9 +163,9 @@ class Form extends React.Component{
 
     async getMatchTeams(){
         //console.log(this.state.matchType)// + this.state.elmNum + "m" + this.state.matchNumber)
-        let matchKey =  /*put this years event*//*/*/ "2023week0"  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
+        let matchKey =  /*put this years event*//*/*/ "2022hiho"  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
         const teams = async () => {
-            await fetch('https://www.thebluealliance.com/api/v3/event/'  +  '2023week0' /* change event_key*/  + '/matches' ,{
+            await fetch('https://www.thebluealliance.com/api/v3/event/'  +  '2022hiho' /* change event_key*/  + '/matches' ,{
                 mode: 'cors',
                 headers:{
                 'X-TBA-Auth-Key': 'TKWj89sH9nu6hwIza0zK91UQBRUaW5ETVJrZ7KhHOolwmuKxKqD3UkQMAoqHahsn'
@@ -233,7 +234,7 @@ class Form extends React.Component{
 
     makeTeamDropdown(){
         let alliances = this.state.teams;
-        return parseInt(this.state.matchNum)!== 0 ?(
+        return parseInt(this.state.matchNumber) !== 0 ?(
             <div>
                 <select onChange={this.changeTeam}>
                     <option></option>
@@ -644,6 +645,8 @@ class Form extends React.Component{
 
     async submitState(){
         let windowAlertMsg = 'Form is incomplete, you still need to fill out: ';
+        let matchKey = /*put this years event*//*/*/ "2022hiho"  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
+        let teamNum = this.state.teamNumber;
 
         let dropVal = this.state.dropDownVal;
         let autoPlacement = dropVal[0];
@@ -751,14 +754,23 @@ class Form extends React.Component{
         let autoPoints = 6 * (highAutoCones + highAutoCubes) + 4 * (midAutoCones + midAutoCubes) + 3 * (lowAutoCones + lowAutoCubes);
         let telePoints = 5 * (highTeleCones + highTeleCubes) + 3 * (midTeleCones + midTeleCubes) + 2 * (lowTeleCones + lowTeleCubes);
         let points = (chargeStationPts + endGamePts + mobilityPts) + autoPoints + telePoints;
-        /*
+        let cubePts = (highAutoCubes * 6) + (highTeleCubes * 5) + (midAutoCubes * 4) + (midTeleCubes * 3) + (lowAutoCubes * 3) +  (lowTeleCubes * 2);
+        let conePts = (highAutoCones * 6) + (highTeleCones * 5) + (midAutoCones * 4) + (midTeleCones * 3) + (lowAutoCones * 3) +  (lowTeleCones * 2);
+
         let cubesHighTeleAutoAccuracy = 100 * ((highAutoCones + highTeleCubes) / (conesMissed + highAutoCones + highTeleCones));
-        let conesHighTeleAutoAccuracy;
-        let cubesMidTeleAutoAccuracy;
-        let conesMidTeleAutoAccuracy;
-        let cubesLowTeleAutoAccuracy;
-        let conesLowTeleAutoAccuracy;
-        */
+        let conesHighTeleAutoAccuracy = 100 * ((highAutoCubes +  highTeleCubes) / (cubesMissed + highAutoCubes + highTeleCubes));
+        let highAccuracy = 100 * ((conesHighTeleAutoAccuracy + cubesHighTeleAutoAccuracy) / (conesMissed + cubesMissed + conesHighTeleAutoAccuracy + cubesHighTeleAutoAccuracy));
+
+        let cubesMidTeleAutoAccuracy = 100 * ((midAutoCubes + midTeleCubes) / (cubesMissed + midAutoCubes + midTeleCubes));
+        let conesMidTeleAutoAccuracy = 100 * ((midAutoCones + midTeleCones) / (conesMissed + midAutoCones + midTeleCones));
+        let midAccuracy = 100 * ((cubesMidTeleAutoAccuracy + conesMidTeleAutoAccuracy) / (conesMissed + cubesMissed + cubesMidTeleAutoAccuracy + conesMidTeleAutoAccuracy));
+
+        let cubesLowTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes) / (cubesMissed + lowAutoCubes + lowTeleCubes));
+        let conesLowTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones) / (conesMissed + lowAutoCones + lowTeleCones));
+        let lowAccuracy = 100 * ((cubesLowTeleAutoAccuracy + conesLowTeleAutoAccuracy) / (conesMissed + cubesMissed + conesLowTeleAutoAccuracy + cubesLowTeleAutoAccuracy));
+
+        let totalGridPts = highGridPoints + midGridPoints + lowGridPoints;
+
         let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesMissed + lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes));
         let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesMissed + lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones));
         
@@ -820,107 +832,98 @@ class Form extends React.Component{
             window.alert(windowAlertMsg);
         } else if (incompleteForm === false || override === true){
             console.log(penalties);
-            apiCreateTeamMatchEntry({
-                TeamId: this.state.teamNumber.substring(3, this.state.teamNumber.length),
-                RegionalId: "2022hiho",
-                MatchId: /*put this years event*//*/*/ "2023week0"  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber,
+            apiCreateTeamMatchEntry("2022hiho", teamNum, matchKey)
+            /*.then(data => {
+                console.log(data)
+            }) 
+            apiAddTeam('2023hiho', teamNum, matchKey)
+            .then(data => { 
+                console.log(data)
+            })*/
+            .then({
+                body:{
+                    TeamId: this.state.teamNumber.substring(3, this.state.teamNumber.length),
+                    RegionalId: "2022hiho",
+                    MatchId: /*put this years event*//*/*/ "2022hiho"  /* */ /*await getRegionals()*/    + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber,
 
-                TotalPoints: Number(points),
-                CubesAccuracy: Number(cubesTeleAutoAccuracy),
-                ConesAccuracy: Number(conesTeleAutoAccuracy),
+                    TotalPoints: Number(points),
+                    TotalGridPoints: Number(totalGridPts),
+                    CubeTotalPoints: Number(cubePts),
+                    ConeTotalPoints: Number(conePts),
+                    HighGridPoints: Number(highGridPoints),
+                    MidGridPoints: Number(midGridPoints),
+                    LowGridPoints: Number(lowGridPoints),
+                    CubesAccuracy: Number(cubesTeleAutoAccuracy),
+                    ConesAccuracy: Number(conesTeleAutoAccuracy),
+                    LowAccuracy: Number(lowAccuracy),
+                    MidAccuracy: Number(midAccuracy),
+                    HighAccuracy: Number(highAccuracy),
 
-
-                Autonomous: {
                     AutoPlacement: Number(autoPlacement),
-                    Scored:{
-                        Cones:{
-                            Upper: Number(counterVal[6]),
-                            Mid: Number(counterVal[7]),
-                            Lower: Number(counterVal[8]),
-                        },
-                        Cubes:{
-                            Upper: Number(counterVal[0]),
-                            Mid: Number(counterVal[1]),
-                            Lower: Number(counterVal[2])
-                        }
-                    },
 
-                    Attempted:{
-                        Cones:{
-                            Upper: Number(counterVal[9]),
-                            Mid: Number(counterVal[10]),
-                            Lower: Number(counterVal[11]),
-                        },
-                        Cubes:{
-                            Upper: Number(counterVal[3]),
-                            Mid: Number(counterVal[4]),
-                            Lower: Number(counterVal[5]),
-                        },
-                    },
+                    AutoHighCubesScored: Number(counterVal[0]),
+                    AutoMidCubesScored: Number(counterVal[1]),
+                    AutoLowCubesScored: Number(counterVal[2]),
 
-                    LeftCoummunity: mobility,
-                    ChargeStation: {chargeStationAuto},
-                },
+                    AutoHighConesScored: Number(counterVal[6]),
+                    AutoMidConesScored: Number(counterVal[7]),
+                    AutoLowConesScored: Number(counterVal[8]),
 
-                TeleOp:{
-                    Scored:{
-                        Cones:{
-                            Upper: Number(counterVal[18]),
-                            Mid: Number(counterVal[19]),
-                            Lower: Number(counterVal[20]),
-                        },
-                        Cubes:{
-                            Upper: Number(counterVal[12]),
-                            Mid: Number(counterVal[13]),
-                            Lower: Number(counterVal[14]),
-                        },
-                    },
+                    AutoHighCubesAttempted: Number(counterVal[3]),
+                    AutoMidCubesAttempted: Number(counterVal[4]),
+                    AutoLowCubesAttempted: Number(counterVal[5]),
 
-                    Attempted:{
-                        Cones:{
-                            Upper: Number(counterVal[21]),
-                            Mid: Number(counterVal[22]),
-                            Lower: Number(counterVal[23]),
-                        },
-                        Cubes:{
-                            Upper: Number(counterVal[15]),
-                            Mid: Number(counterVal[16]),
-                            Lower: Number(counterVal[17]),
-                        }
-                    },
+                    AutoHighConesAttempted: Number(counterVal[9]),
+                    AutoMidConesAttemoted: Number(counterVal[10]),
+                    AutoLowConesAttempted: Number(counterVal[11]),
 
+                    LeftCoummunity: Boolean(mobility),
+                    ChargeStation: String(chargeStationAuto),
+                            
+                    TeleHighCubesScored: Number(counterVal[12]),
+                    TeleMidCubesScored: Number(counterVal[13]),
+                    TeleLowCubesScored: Number(counterVal[14]),
+
+                    TeleHighCubesAttempted: Number(counterVal[15]),
+                    TeleMidCubesAttempted: Number(counterVal[16]),
+                    TeleLowCubesAttempted: Number(counterVal[17]),
+
+                    TeleHighConesScored: Number(counterVal[18]),
+                    TeleMidConesScored: Number(counterVal[19]),
+                    TeleLowConesScored: Number(counterVal[20]),
+
+                    TeleHighConesAttempted: Number(counterVal[21]),
+                    TeleMidConesAttempted: Number(counterVal[22]),
+                    TeleLowConesAttempted: Number(counterVal[23]),
+                   
                     EndGame: String(endGameUsed),
                     EndGameStart: Number(endGameStart),
                     EndGameEnd: Number(endGameEnd),
                     EndGameComment:  String(this.state.stationComments),
 
                     StartPlacement: Boolean(smartPlacemnet),
-                },
+                    BonusRankingPoints: bonuses,
+                    RankingPts: Number(this.state.rankingPts),
+    
+                    DriveStrength: String(driveStrength),
+                    DriveSpeed: String(driveSpeed),
 
-                DriveStrength: String(driveStrength),
-                DriveSpeed: String(driveSpeed),
+                    Fouls: Number(counterVal[24]),
+                    TechFouls: Number(counterVal[25]),
+                    Penalties: penalties,
+                    Strategy: strategies,
+                    DoubleSubstation: String(doubleStation[3]),
+                    Comment: String(this.state.comments),
+                    SummaryComments: String(this.state.summaryComments),
 
-                Fouls: Number(counterVal[24]),
-                TechFouls: Number(counterVal[25]),
-                Penalties: penalties,
-
-                BonusRankingPoints: bonuses,
-                RankingPoints: Number(this.state.rankingPts),
-
-                Strategy: strategies,
-                DoubleSubstation: String(dropVal[3]),
-                Comment: String(this.state.comments),
-                SummaryComments: String(this.state.summaryComments),
-
-
-            })
+                }
+            }) 
             .then(window.alert("States have successfully been submited to table"))
             .catch(err => {
                 console.log(err)
             })
         }
-        let regional = await getRegionals();
-        console.log(regional)
+        console.log(this.state);
 
     }
 
@@ -930,7 +933,7 @@ class Form extends React.Component{
     render(){
         return(
             <div>
-                <h1> FORM </h1>
+                <h1> FORM  <img src={'./images/BLUETHUNDERLOGO_WHITE.png'} width= "35px" height= "35px"></img></h1>
                 <button onClick={this.logState}> Check State </button>
                 {this.makeMatchDropDown}
                 <button onClick={this.getMatchTeams}>GET MATCH TEAM</button>
@@ -961,7 +964,6 @@ class Form extends React.Component{
                 {this.makeMobilityBox("Mobility ")}
                 <br></br>
                 {this.makeChargeStationAuto()}
-                {this.makeChargeStationTimer("Time ")}
                 <br></br>
                 <h3>TELE-OP</h3>
                 <p>Cubes Scored</p>
@@ -1014,7 +1016,7 @@ class Form extends React.Component{
                 {this.makeStrategyBox("Cones ", 4)}
                 {this.makeStrategyBox("Charge Station ", 5)}
                 {this.makeStrategyBox("Single Substation ", 6)}
-                {this.makeDropDownBox("Double Substation: ",["Sliding Shelve","Shelve"], 3)}
+                {this.makeDropDownBox("Double Substation: ",["Shute","Sliding Shelve"], 3)}
                 <br></br>
                 <p>How well is there defense if any?</p>
                 <TextBox title={"Comments: "} commentState={this.setComment}></TextBox>
