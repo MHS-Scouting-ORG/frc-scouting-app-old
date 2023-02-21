@@ -22,7 +22,7 @@ function DummyTableDG(props) {
   const [ccwmList,setCcwmList] = useState([]);
 
    useEffect(() => {
-    getMatchesForRegional(props.regional)
+    apiListTeams('2022hiho')
     .then(data => {
       console.log(data)
     })
@@ -39,7 +39,7 @@ function DummyTableDG(props) {
    },[]) 
 
    useEffect(() => {
-    getMatchesForRegional('2022hiho')
+    getMatchesForRegional('2022hiho', 'frc2090')
     .then(data => {
       setApiData(data)
       console.log(apiData)

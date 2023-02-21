@@ -63,7 +63,7 @@ function AuthenticatedUI({ user }) {
         <br />
       </div>*/}
 
-      {/*<ExampleUI />*/}
+      <ExampleUI />
       <DummyTableDG regional = {regional} />
       {/*<Summary></Summary>*/}
     </div>
