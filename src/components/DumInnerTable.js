@@ -23,73 +23,150 @@ const DumInnerTable = (props) => {
                         accessor: 'TotalPts'
                     },
                     {
+                      Header: 'Grid Pts',
+                      accessor: 'GridPts',
+                    },
+                    {
                         Header: 'Cone Acc',
                         accessor: 'ConeAcc'
                     },
                     {
                         Header: 'Cube Acc',
                         accessor: 'CubeAcc'
-                    },
-                    {
-                        Header: 'Ranking Pts',
-                        accessor: 'RankingPts'
                     },] 
             },
             {
-                Header: 'Auto',
+                Header: 'Autonomous',
                 columns: [
                     {
                         Header: 'Auto Placement',
                         accessor: 'AutoPlacement'
                     },
                     {
-                        Header: 'Grid Points',
-                        accessor: 'AutoGridPts'
+                        Header: 'Mobility',
+                        accessor: 'mobility'
                     },
                     {
-                      Header: 'Charge Points',
+                        Header: 'Upper 🟪 Pts',
+                        accessor: 'AutoUpperConePts'
+                    },
+                    {
+                        Header: 'Upper 🟪 Pts',
+                        accessor: 'AutoUpperCubePts'
+                    },
+                    {
+                        Header: 'Mid Cone Pts',
+                        accessor: 'AutoMidConePts'
+                    },
+                    {
+                      Header: 'Mid 🟪 Pts',
+                      accessor: 'AutoMidCubePts'
+                    },
+                    {
+                        Header: 'Low Cone Pts',
+                        accessor: 'AutoLowConePts'
+                    },
+                    {
+                      Header: 'Low 🟪 Pts',
+                      accessor: 'AutoLowCubePts'
+                    },
+                    {
+                      Header: 'CS. Pts',
                       accessor: 'AutoChargeStationPts'
-                    },
-                    {
-                        Header: 'Grid Low Placement',
-                        accessor: 'AutoLowPlacement'
-                    },
-                    {
-                        Header: 'Grid Mid Placement',
-                        accessor: 'AutoMidPlacement'
-                    },
-                    {
-                        Header: 'Grid Top Placement',
-                        accessor: 'AutoTopPlacement'
                     },]
             },
             {
                 Header: 'Tele-Op',
                 columns: [
                     {
-                        Header: 'Grid Points',
+                        Header: 'Grid Pts',
                         accessor: 'TeleGridPts'
                     },
                     {
-                        Header: 'Grid Low Placement',
-                        accessor: 'TeleLowPlacement'
+                        Header: 'Upper Cone Pts',
+                        accessor: 'TeleUpperConePts'
                     },
                     {
-                        Header: 'Grid Mid Placement',
-                        accessor: 'TeleMidPlacement'
+                      Header: 'Upper 🟪 Pts',
+                      accessor: 'TeleUpperCubePts'
                     },
                     {
-                        Header: 'Grid Top Placement',
-                        accessor: 'TeleTopPlacement'
+                        Header: 'Mid Cone Pts',
+                        accessor: 'TeleMidConePts'
                     },
                     {
-                        Header: 'ChargeStation Points',
-                        accessor: 'TeleChargeStationPts'
+                      Header: 'Mid 🟪 Pts',
+                      accessor: 'TeleMidCubePts'
+                    },
+                    {
+                        Header: 'Low Cone Pts',
+                        accessor: 'TeleLowConePts'
+                    },
+                    {
+                      Header: 'Low 🟪 Pts',
+                      accessor: 'TeleLowCubePts'
+                    },
+                    {
+                        Header: 'Endgame Pts',
+                        accessor: 'TeleEndgame'
+                    },
+                    {
+                      Header: 'CS Start',
+                      accessor: 'CSStart',
+                    },
+                    {
+                      Header: 'CS End',
+                      accessor: 'CSEnd',
+                    },
+                    {
+                      Header: 'Endgame Comments',
+                      accessor: 'EndComments',
+                    },
+                    {
+                      Header: 'Drive Strength',
+                      accessor: 'DriveStrength',
+                    },
+                    {
+                      Header: 'Drive Speed',
+                      accessor: 'DriveSpeed',
+                    },
+                    {
+                      Header: 'Smart Placement',
+                      accessor: 'SmartPlacement',
+                    },
+                    {
+                      Header: 'Intake From',
+                      accessor: 'IntakeFrom',
+                    },
+                    {
+                      Header: 'Foul | Tech',
+                      accessor: 'NumberOfFoulAndTech',
+                    },
+                    {
+                      Header: 'Penalties',
+                      accessor: 'Penalties',
+                    },
+                    {
+                      Header: '# RP',
+                      accessor: 'NumberOfRankingPoints',
                     },]
             },
             {
-              Header: "Comments",
-              accessor: "Comments"
+              Header: 'Other',
+              columns: [
+                {
+                  Header: 'Comments',
+                  accessor: 'Comments',
+                },
+                {
+                  Header: 'Scouter',
+                  accessor: 'Email',
+                },
+                {
+                  Header: 'Delete',
+                  accessor: 'Delete',
+                },],
+              
             }
         ],[]
     )
