@@ -23,6 +23,14 @@ const DumInnerTable = (props) => {
                         accessor: 'TotalPts'
                     },
                     {
+                        Header: 'Cone Acc',
+                        accessor: 'ConeAcc'
+                    },
+                    {
+                        Header: 'Cube Acc',
+                        accessor: 'CubeAcc'
+                    },
+                    {
                         Header: 'Ranking Pts',
                         accessor: 'RankingPts'
                     },] 
@@ -35,49 +43,53 @@ const DumInnerTable = (props) => {
                         accessor: 'AutoPlacement'
                     },
                     {
-                        Header: 'Auto Grid Points',
+                        Header: 'Grid Points',
                         accessor: 'AutoGridPts'
                     },
                     {
-                        Header: 'Auto Grid Low Placement',
+                      Header: 'Charge Points',
+                      accessor: 'AutoChargeStationPts'
+                    },
+                    {
+                        Header: 'Grid Low Placement',
                         accessor: 'AutoLowPlacement'
                     },
                     {
-                        Header: 'Auto Grid Mid Placement',
+                        Header: 'Grid Mid Placement',
                         accessor: 'AutoMidPlacement'
                     },
                     {
-                        Header: 'Auto Grid Top Placement',
+                        Header: 'Grid Top Placement',
                         accessor: 'AutoTopPlacement'
-                    },
-                    {
-                        Header: 'Charge Station Points',
-                        accessor: 'AutoChargeStationPts'
                     },]
             },
             {
                 Header: 'Tele-Op',
                 columns: [
                     {
-                        Header: 'Tele-Op Grid Points',
+                        Header: 'Grid Points',
                         accessor: 'TeleGridPts'
                     },
                     {
-                        Header: 'Tele-Op Grid Low Placement',
+                        Header: 'Grid Low Placement',
                         accessor: 'TeleLowPlacement'
                     },
                     {
-                        Header: 'Tele-Op Grid Mid Placement',
+                        Header: 'Grid Mid Placement',
                         accessor: 'TeleMidPlacement'
                     },
                     {
-                        Header: 'Tele-Op Grid Top Placement',
+                        Header: 'Grid Top Placement',
                         accessor: 'TeleTopPlacement'
                     },
                     {
-                        Header: 'Tele-Op ChargeStation Points',
+                        Header: 'ChargeStation Points',
                         accessor: 'TeleChargeStationPts'
                     },]
+            },
+            {
+              Header: "Comments",
+              accessor: "Comments"
             }
         ],[]
     )
