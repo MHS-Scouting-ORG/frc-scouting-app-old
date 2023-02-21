@@ -38,8 +38,8 @@ const apiAddTeam = async function(team) {
 const apiUpdateTeam = async function(team, data) {
   await API.graphql(graphqlOperation(updateTeam, {
     input: {
+       ...data,
       id: team.id,
-      ...data
     }
   }))
 }
@@ -108,13 +108,11 @@ const apiUpdateTeamMatch = async function(regionalId, teamId, matchId, data) {
         throw new Error("MatchId not provided")
     }
     const input = {
-             id: matchId,
+            ...data,
+            id: matchId,
             name: "",
             Team: teamId,
             Regional: regionalId,
-            ...data
-
-        
     }    
 
     return API.graphql(graphqlOperation(updateTeamMatch, {
