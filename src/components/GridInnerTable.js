@@ -8,51 +8,51 @@ function GridInnerTable(props) {
     const columns = React.useMemo(
         () => [
             {
-                Header: 'Upper',
+                Header: 'Upper Averages',
                 columns: [
                     {
-                        Header: 'Avg Upper',
+                        Header: 'Upper',
                         accessor: 'AvgUpper'
                     },
                     {
-                        Header: 'Avg Upper Acc',
+                        Header: 'Upper Acc',
                         accessor: 'AvgUpperAcc'
                     },
                     {
-                        Header: 'Avg Upper Cone',
+                        Header: 'Upper Cone',
                         accessor: 'AvgUpperCone'
                     },
                     {
-                        Header: 'Avg Upper Cone Acc',
+                        Header: 'Upper Cone Acc',
                         accessor: 'AvgUpperConeAcc'
                     },
                     {
-                        Header: 'Avg Upper Cube',
+                        Header: 'Upper Cube',
                         accessor: 'AvgUpperCube'
                     },
                     {
-                        Header: 'Avg Upper Cube Acc',
+                        Header: 'Upper Cube Acc',
                         accessor: 'AvgUpperCubeAcc'
                     },
                 ]
             },
             {
-                Header: 'Mid',
+                Header: 'Mid Averages',
                 columns: [
                     {
-                        Header: 'Avg Mid',
+                        Header: 'Mid',
                         accessor: 'AvgMid'
                     },
                     {
-                        Header: 'Avg Mid Acc',
+                        Header: 'Mid Acc',
                         accessor: 'AvgMidAcc'
                     },
                     {
-                        Header: 'Avg Mid Cone',
+                        Header: 'Mid Cone',
                         accessor: 'AvgMidCone'
                     },
                     {
-                        Header: 'Avg Mid Cone Acc',
+                        Header: 'Mid Cone Acc',
                         accessor: 'AvgMidConeAcc'
                     },
                     {
@@ -60,36 +60,36 @@ function GridInnerTable(props) {
                         accessor: 'AvgMidCube'
                     },
                     {
-                        Header: 'Avg Mid Cube Acc',
+                        Header: 'Mid Cube Acc',
                         accessor: 'AvgMidCubeAcc'
                     },
                 ]
             },
             {
-                Header: 'Lower',
+                Header: 'Lower Averages',
                 columns: [
                     {
-                        Header: 'Avg Lower',
+                        Header: 'Lower',
                         accessor: 'AvgLower'
                     },
                     {
-                        Header: 'Avg Lower Acc',
+                        Header: 'Lower Acc',
                         accessor: 'AvgLowerAcc'
                     },
                     {
-                        Header: 'Avg Lower Cone',
+                        Header: 'Lower Cone',
                         accessor: 'AvgLowerCone'
                     },
                     {
-                        Header: 'Avg Lower Cone Acc',
+                        Header: 'Lower Cone Acc',
                         accessor: 'AvgLowerConeAcc'
                     },
                     {
-                        Header: 'Avg Lower Cube',
+                        Header: 'Lower Cube',
                         accessor: 'AvgLowerCube'
                     },
                     {
-                        Header: 'Avg Lower Cube Acc',
+                        Header: 'Lower Cube Acc',
                         accessor: 'AvgLowerCubeAcc'
                     },
                 ]

@@ -3,15 +3,14 @@ import './App.css';
 import { Amplify, Auth } from 'aws-amplify'
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import awsconfig from './aws-exports'
-import DummyTableDG from './components/DummyTableDG';
-import DummyTable from './components/DummyTable';
-import Summary from './components/Summary';
+import MainTable from './components/MainTable';
 
 
 import { useEffect, useState } from 'react'
 import ExampleUI from './example'
 import { getRegionals, getTeamInfo } from './api/bluealliance'
 import DumInnerTable from './components/DumInnerTable';
+import { ChargeStationType } from './api/builder';
 
 
 const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
@@ -44,8 +43,8 @@ function AuthenticatedUI({ user }) {
 
 
   return (
-    <div>{//*
-      <img src={logo} className="App-logo" alt="logo" />/*}
+    <div>
+      {/*<img src={logo} className="App-logo" alt="logo" />/*}
       <p>
         Edit <code>src/App.js</code> and save to reload.
       </p>
@@ -64,8 +63,8 @@ function AuthenticatedUI({ user }) {
       </div>*/}
 
       {/*<ExampleUI />*/}
-      {/*<DummyTable />*/}
-      <Summary></Summary>
+      <MainTable regional = {regional} />
+      {/*<Summary></Summary>*/}
     </div>
     )
 

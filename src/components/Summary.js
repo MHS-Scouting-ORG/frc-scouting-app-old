@@ -147,6 +147,7 @@ function Summary(){
         })
     }
 
+    //avg total points
     const calcAvgPoints = (arr) => { //average points
       let individualPts = arr.map(val => val.totalPoints);
       let totalPts = 0;
@@ -157,6 +158,7 @@ function Summary(){
       return avgPts.toFixed(3);
     }
 
+    //avg grid points
     const calcAvgGrid = (arr) => {
       let individualPts = arr.map(val => val.gridPoints);
       let totalPts = 0;
@@ -167,84 +169,67 @@ function Summary(){
       return avgGridPts.toFixed(3);
     }
 
-    const calcLowConeGrid = (arr) => { //autolowmade & auto telelowmade accessor from form (tbd since idk what they made it)
-      let low = arr.map(val => (val.AutoLowConeMade + val.TeleLowConeMade));
-      let sumLow = 0;
-      for(let i = 0; i < low.length; i++){
-        sumLow = sumLow + low[i];      //sum of low grid
+    //avg total cube and cone poinyts and acc
+
+    const calcTotalCubes = (arr) => {
+      let totalCubes = arr.map(val => val.cubePts);
+      let sumTotalCubes = 0;
+      for(let i = 0; i < totalCubes.length; i++){
+        sumTotalCubes = sumTotalCubes + totalCubes[i];
       }
-      let avgLowCone = sumLow / low.length;
-      return avgLowCone.toFixed(3);       //avg of low grid (rounds to .000)
+      let avgTotalCubes = sumTotalCubes / totalCubes.length;
+      return avgTotalCubes.toFixed(3);
     }
 
-    const calcLowCubeGrid = (arr) => { //autolowmade & auto telelowmade accessor from form (tbd since idk what they made it)
-      let low = arr.map(val => (val.AutoLowCubeMade + val.TeleLowCubeMade));
-      let sumLow = 0;
-      for(let i = 0; i < low.length; i++){
-        sumLow = sumLow + low[i];      //sum of low grid
+    const calcTotalCubesAcc = (arr) => {
+      let totalCubesAcc = arr.map(val => val.cubesTeleAutoAccurary);
+      let sumTotalCubesAcc = 0;
+      for(let i = 0; i < totalCubesAcc.length; i++){
+        sumTotalCubesAcc = sumTotalCubesAcc + totalCubesAcc[i];
       }
-      let avgLowCube = sumLow / low.length;
-      return avgLowCube.toFixed(3);       //avg of low grid (rounds to .000)
+      let avgTotalCubesAcc = sumTotalCubesAcc / totalCubesAcc.length;
+      return avgTotalCubesAcc.toFixed(3);
     }
 
-    const calcLowConeAcc = (arr) => {
-      let lowAcc = arr.map(val => val.LowConeGridAcc);
-      let sumLowAcc = 0;
-      for(let i = 0; i < lowAcc.length; i++){
-        sumLowAcc = sumLowAcc + lowAcc[i];  
+    const calcTotalCones = (arr) => {
+      let totalCones = arr.map(val => val.conePts);
+      let sumTotalCones = 0;
+      for(let i = 0; i < totalCones.length; i++){
+        sumTotalCones = sumTotalCones + totalCones[i];
       }
-      let avgLowConeAcc = sumLowAcc / lowAcc.length;  //avg acc of low
-      return avgLowConeAcc.toFixed(3); 
+      let avgTotalCones = sumTotalCones / totalCones.length;
+      return avgTotalCones.toFixed(3);
     }
 
-    const calcLowCubeAcc = (arr) => {
-      let lowAcc = arr.map(val => val.LowCubeGridAcc);
-      let sumLowAcc = 0;
-      for(let i = 0; i < lowAcc.length; i++){
-        sumLowAcc = sumLowAcc + lowAcc[i];  
+    const calcTotalConesAcc = (arr) => {
+      let totalConesAcc = arr.map(val => val.conesTeleAutoAccurary);
+      let sumTotalConesAcc = 0;
+      for(let i = 0; i < totalConesAcc.length; i++){
+        sumTotalConesAcc = sumTotalConesAcc / totalConesAcc.length;
       }
-      let avgLowCubeAcc = sumLowAcc / lowAcc.length;  //avg acc of low
-      return avgLowCubeAcc.toFixed(3); 
+      let avgTotalConesAcc = sumTotalConesAcc / totalConesAcc.length;
+      return avgTotalConesAcc.toFixed(3);
     }
 
-    const calcMidConeGrid = (arr) => { //automidmade & auto telemidmade accessor from form (tbd since idk what they made it)
-      let mid = arr.map(val => (val.AutoMidConeMade + val.TeleMidConeMade));
-      let sumMid = 0;
-      for(let i = 0; i < mid.length; i++){
-        sumMid = sumMid + mid[i];      //sum of mid grid
+    //avg UPPER grid stuff
+    const calcUpperGrid = (arr) => {
+      let upper = arr.map(val => val.highGridPoints);
+      let sumUpper = 0;
+      for(let i = 0; i < upper.length; i++){
+        sumUpper = sumUpper + upper[i];
       }
-      let avgMidCone = sumMid / mid.length;
-      return avgMidCone.toFixed(3);       //avg of mid grid (rounds to .000)
+      let avgUpper = sumUpper / upper.length;
+      return avgUpper.toFixed(3);
     }
 
-    const calcMidCubeGrid = (arr) => { //automidmade & auto telemidmade accessor from form (tbd since idk what they made it)
-      let mid = arr.map(val => (val.AutoMidCubeMade + val.TeleMidCubeMade));
-      let sumMid = 0;
-      for(let i = 0; i < mid.length; i++){
-        sumMid = sumMid + mid[i];      //sum of mid grid
+    const calcUpperGridAcc = (arr) => {
+      let upperAcc = arr.map(val => val.highGridAcc);
+      let sumUpperAcc = 0;
+      for(let i = 0; i < upperAcc.length; i++){
+        sumUpperAcc = sumUpperAcc + upperAcc[i];
       }
-      let avgMidCube = sumMid / mid.length;
-      return avgMidCube.toFixed(3);       //avg of mid grid (rounds to .000)
-    }
-
-    const calcMidConeAcc = (arr) => {
-      let midAcc = arr.map(val => val.midConeGridAcc);
-      let sumMidAcc = 0;
-      for(let i = 0; i < midAcc.length; i++){
-        sumMidAcc = sumMidAcc + midAcc[i];  
-      }
-      let avgMidConeAcc = sumMidAcc / midAcc.length;  //avg acc of mid
-      return avgMidConeAcc.toFixed(3); 
-    }
-
-    const calcMidCubeAcc = (arr) => {
-      let midAcc = arr.map(val => val.midCubeGridAcc);
-      let sumMidAcc = 0;
-      for(let i = 0; i < midAcc.length; i++){
-        sumMidAcc = sumMidAcc + midAcc[i];  
-      }
-      let avgMidCubeAcc = sumMidAcc / midAcc.length;  //avg acc of mid
-      return avgMidCubeAcc.toFixed(3); 
+      let avgUpperAcc = sumUpperAcc / upperAcc.length;
+      return avgUpperAcc.toFixed(3);
     }
 
     const calcUpperConeGrid = (arr) => { //autouppermade & auto teleuppermade accessor from form (tbd since idk what they made it)
@@ -255,16 +240,6 @@ function Summary(){
       }
       let avgUpperCone = sumUpper / upper.length;
       return avgUpperCone.toFixed(3);       //avg of upper grid (rounds to .000)
-    }
-
-    const calcUpperCubeGrid = (arr) => { //autouppermade & auto teleuppermade accessor from form (tbd since idk what they made it)
-      let upper = arr.map(val => (val.AutoUpperCubeMade + val.TeleUpperCubeMade));
-      let sumUpper = 0;
-      for(let i = 0; i < upper.length; i++){
-        sumUpper = sumUpper + upper[i];      //sum of upper grid
-      }
-      let avgUpperCube = sumUpper / upper.length;
-      return avgUpperCube.toFixed(3);       //avg of upper grid (rounds to .000)
     }
 
     const calcUpperConeAcc = (arr) => {
@@ -287,26 +262,139 @@ function Summary(){
       return avgUpperCubeAcc.toFixed(3); 
     }
 
-    const calcTotalCubesAcc = (arr) => {
-      let totalCubesAcc = arr.map(val => val.cubesTeleAutoAccurary);
-      let sumTotalCubesAcc = 0;
-      for(let i = 0; i < totalCubesAcc.length; i++){
-        sumTotalCubesAcc = sumTotalCubesAcc + totalCubesAcc[i];
+    const calcUpperCubeGrid = (arr) => { //autouppermade & auto teleuppermade accessor from form (tbd since idk what they made it)
+      let upper = arr.map(val => (val.AutoUpperCubeMade + val.TeleUpperCubeMade));
+      let sumUpper = 0;
+      for(let i = 0; i < upper.length; i++){
+        sumUpper = sumUpper + upper[i];      //sum of upper grid
       }
-      let avgTotalCubesAcc = sumTotalCubesAcc / totalCubesAcc.length;
-      return avgTotalCubesAcc.toFixed(3);
+      let avgUpperCube = sumUpper / upper.length;
+      return avgUpperCube.toFixed(3);       //avg of upper grid (rounds to .000)
     }
 
-    const calcTotalConesAcc = (arr) => {
-      let totalConesAcc = arr.map(val => val.conesTeleAutoAccurary);
-      let sumTotalConesAcc = 0;
-      for(let i = 0; i < totalConesAcc.length; i++){
-        sumTotalConesAcc = sumTotalConesAcc / totalConesAcc.length;
+    //avg MID grid stuff
+    const calcMidGrid = (arr) => {
+      let mid = arr.map(val => val.midGridPoints);
+      let sumMid = 0;
+      for(let i = 0; i < mid.length; i++){
+        sumMid = sumMid + mid.length[i];
       }
-      let avgTotalConesAcc = sumTotalConesAcc / totalConesAcc.length;
-      return avgTotalConesAcc.toFixed(3);
+      let avgMid = sumMid / mid.length;
+      return avgMid.toFixed(3);
     }
 
+    const calcMidGridAcc = (arr) => {
+      let midAcc = arr.map(val => val.midGridAcc);
+      let sumMidAcc = 0;
+      for(let i = 0; i < midAcc.length; i++){
+        sumMidAcc = sumMidAcc + midAcc[i];
+      }
+      let avgMidAcc = sumMidAcc / midAcc.length;
+      return avgMidAcc.toFixed(3);
+    }
+
+    const calcMidConeGrid = (arr) => { //automidmade & auto telemidmade accessor from form (tbd since idk what they made it)
+      let mid = arr.map(val => (val.AutoMidConeMade + val.TeleMidConeMade));
+      let sumMid = 0;
+      for(let i = 0; i < mid.length; i++){
+        sumMid = sumMid + mid[i];      //sum of mid grid
+      }
+      let avgMidCone = sumMid / mid.length;
+      return avgMidCone.toFixed(3);       //avg of mid grid (rounds to .000)
+    }
+
+    const calcMidConeAcc = (arr) => {
+      let midAcc = arr.map(val => val.midConeGridAcc);
+      let sumMidAcc = 0;
+      for(let i = 0; i < midAcc.length; i++){
+        sumMidAcc = sumMidAcc + midAcc[i];  
+      }
+      let avgMidConeAcc = sumMidAcc / midAcc.length;  //avg acc of mid
+      return avgMidConeAcc.toFixed(3); 
+    }
+
+    const calcMidCubeGrid = (arr) => { //automidmade & auto telemidmade accessor from form (tbd since idk what they made it)
+      let mid = arr.map(val => (val.AutoMidCubeMade + val.TeleMidCubeMade));
+      let sumMid = 0;
+      for(let i = 0; i < mid.length; i++){
+        sumMid = sumMid + mid[i];      //sum of mid grid
+      }
+      let avgMidCube = sumMid / mid.length;
+      return avgMidCube.toFixed(3);       //avg of mid grid (rounds to .000)
+    }
+
+    const calcMidCubeAcc = (arr) => {
+      let midAcc = arr.map(val => val.midCubeGridAcc);
+      let sumMidAcc = 0;
+      for(let i = 0; i < midAcc.length; i++){
+        sumMidAcc = sumMidAcc + midAcc[i];  
+      }
+      let avgMidCubeAcc = sumMidAcc / midAcc.length;  //avg acc of mid
+      return avgMidCubeAcc.toFixed(3); 
+    }
+
+    //avg LOW grid stuff
+    const calcLowGrid = (arr) => {
+      let low = arr.map(val => (val.lowGridPoints));
+      let sumLow = 0;
+      for(let i = 0; i < low.length; i++){
+        sumLow = sumLow + low[i];
+      }
+      let avgLow = sumLow / low.length;
+      return avgLow.toFixed(3);
+    }
+
+    const calcLowAcc = (arr) => {
+      let lowAcc = arr.map(val => val.lowGridAcc);
+      let sumLowAcc = 0;
+      for(let i = 0; i < lowAcc.length; i++){
+        sumLowAcc = sumLowAcc + lowAcc[i];
+      }
+      let avgLowAcc = sumLowAcc + lowAcc.length;
+      return avgLowAcc.toFixed(3);
+    }
+
+    const calcLowConeGrid = (arr) => { //autolowmade & auto telelowmade accessor from form (tbd since idk what they made it)
+      let low = arr.map(val => (val.AutoLowConeMade + val.TeleLowConeMade));
+      let sumLow = 0;
+      for(let i = 0; i < low.length; i++){
+        sumLow = sumLow + low[i];      //sum of low grid
+      }
+      let avgLowCone = sumLow / low.length;
+      return avgLowCone.toFixed(3);       //avg of low grid (rounds to .000)
+    }
+
+    const calcLowConeAcc = (arr) => {
+      let lowAcc = arr.map(val => val.LowConeGridAcc);
+      let sumLowAcc = 0;
+      for(let i = 0; i < lowAcc.length; i++){
+        sumLowAcc = sumLowAcc + lowAcc[i];  
+      }
+      let avgLowConeAcc = sumLowAcc / lowAcc.length;  //avg acc of low
+      return avgLowConeAcc.toFixed(3); 
+    }
+
+    const calcLowCubeGrid = (arr) => { //autolowmade & auto telelowmade accessor from form (tbd since idk what they made it)
+      let low = arr.map(val => (val.AutoLowCubeMade + val.TeleLowCubeMade));
+      let sumLow = 0;
+      for(let i = 0; i < low.length; i++){
+        sumLow = sumLow + low[i];      //sum of low grid
+      }
+      let avgLowCube = sumLow / low.length;
+      return avgLowCube.toFixed(3);       //avg of low grid (rounds to .000)
+    }
+
+    const calcLowCubeAcc = (arr) => {
+      let lowAcc = arr.map(val => val.LowCubeGridAcc);
+      let sumLowAcc = 0;
+      for(let i = 0; i < lowAcc.length; i++){
+        sumLowAcc = sumLowAcc + lowAcc[i];  
+      }
+      let avgLowCubeAcc = sumLowAcc / lowAcc.length;  //avg acc of low
+      return avgLowCubeAcc.toFixed(3); 
+    }
+
+    //charge station
     const calcChargeStation = (arr) => {  //for auto bc calculating endgame is a diff method
       let chargeStation = arr.map(val => {
         if(val.chargeStation === 'None' || val.chargeStation === 'Attempted'){
