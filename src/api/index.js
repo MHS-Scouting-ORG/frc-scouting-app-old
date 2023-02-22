@@ -1,6 +1,6 @@
 import { graphqlOperation, API } from 'aws-amplify'
 import { teamMatchesByRegional, getTeam, listTeams} from '../graphql/queries'
-import { updateTeamMatch, createTeamMatch, createTeam } from '../graphql/mutations'
+import { updateTeamMatch, createTeamMatch, createTeam, updateTeam } from '../graphql/mutations'
 import { onCreateTeamMatch, onUpdateTeamMatch } from '../graphql/subscriptions'
 import  buildMatchEntry  from './builder'
 
@@ -33,6 +33,15 @@ const apiGetTeam = async function(teamNumber) {
  */
 const apiAddTeam = async function(team) {
     await API.graphql(graphqlOperation(createTeam, { input: team }))
+}
+
+const apiUpdateTeam = async function(team, data) {
+  await API.graphql(graphqlOperation(updateTeam, {
+    input: {
+       ...data,
+      id: team.id,
+    }
+  }))
 }
 
 /*
@@ -88,7 +97,7 @@ const apiCreateTeamMatchEntry = async function(regionalId, teamId, matchId) {
 }
 
 
-const apiUpdateTeamMatch = async function(regionalId, teamId, matchId) {
+const apiUpdateTeamMatch = async function(regionalId, teamId, matchId, data) {
     if(!regionalId) {
         throw new Error("Regional not provided")
     }
@@ -98,16 +107,18 @@ const apiUpdateTeamMatch = async function(regionalId, teamId, matchId) {
     if(!matchId) {
         throw new Error("MatchId not provided")
     }
-
-    return API.graphql(graphqlOperation(updateTeamMatch, {
-        input: {
+    const input = {
+            ...data,
             id: matchId,
             name: "",
             Team: teamId,
-            Regional: regionalId
-        }
-    }))
+            Regional: regionalId,
+    }    
+
+    return API.graphql(graphqlOperation(updateTeamMatch, {
+        input
+   }))
 
 }
 
-export { apiSubscribeToMatchUpdates, apiGetTeam, apiAddTeam, apiListTeams, getMatchesForRegional, apiCreateTeamMatchEntry, apiUpdateTeamMatch }
+export { apiSubscribeToMatchUpdates, apiGetTeam, apiAddTeam, apiListTeams, getMatchesForRegional, apiCreateTeamMatchEntry, apiUpdateTeamMatch, apiUpdateTeam }
