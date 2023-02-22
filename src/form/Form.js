@@ -654,6 +654,8 @@ class Form extends React.Component{
         let driveSpeed = dropVal[2];
         let doubleStation = dropVal[3];
 
+        let ranking = this.state.rankingPts;
+
         let endGame = this.state.endGameVal;
         let endGameUsed = endGame[0];
         let endGameStart = endGame[1];
@@ -778,9 +780,9 @@ class Form extends React.Component{
 
         let totalGridPts = highGridPoints + midGridPoints + lowGridPoints;
 
-        let cubeHighAccuracy = 100 * (highAutoCubes + highTeleCubes) / (cubesMissed + highAutoCubes + highTeleCubes);
-        let cubeMidAccuracy = 100 * (midAutoCubes + midTeleCubes) / (cubesMissed + midAutoCubes + midTeleCubes);
-        let cubeLowAccuracy = 100 * (lowAutoCubes + lowTeleCubes) / (cubesMissed + lowAutoCubes + lowTeleCubes);
+        let cubeHighAccuracy = 100 * (highAutoCubes + highTeleCubes) / (cubesAttempted + highAutoCubes + highTeleCubes);
+        let cubeMidAccuracy = 100 * (midAutoCubes + midTeleCubes) / (cubesAttempted + midAutoCubes + midTeleCubes);
+        let cubeLowAccuracy = 100 * (lowAutoCubes + lowTeleCubes) / (cubesAttempted + lowAutoCubes + lowTeleCubes);
 
         
 
@@ -845,32 +847,89 @@ class Form extends React.Component{
             window.alert(windowAlertMsg);
         } else if (incompleteForm === false || override === true){
             console.log(penalties);
-            apiCreateTeamMatchEntry("2023hiho", teamNum, matchKey)
+           await apiCreateTeamMatchEntry("2023hiho", teamNum, matchKey)
+    
+           /*let data = 
+           {
+           Autonomous:{
+            LeftCommunity: true,
+       },
 
-            let data = 
-                {
-                Autonomous:{
-                Score:{
-                    Cones:{
-                        Upper: 1,
-                        Mid: 2,
-                        Lower: 3,
+       Teleop:{
+           RankingPts: 4,
+       }
+   }*/
+
+            apiUpdateTeamMatch('2023hiho', teamNum, matchKey,  {
+                Autonomous: {
+                    Scored : {
+                        Cones: {
+                            Upper: Number(highAutoCones),
+                            Mid: 0,
+                            Lower: 0
+                        },
+                        Cubes : {
+                            Upper: 0,
+                            Mid: 0,
+                            Lower: 0
+                        }
                     },
-                    Cubes:{
-                        Upper:6,
-                        Mid: 7,
-                        Lower: 8,
+                    Attempted: {
+                        Cones: {
+                            Upper: 0,
+                            Mid: 0,
+                            Lower: 0
+                        },
+                        Cubes : {
+                            Upper: 0,
+                            Mid: 0,
+                            Lower: 0
+                        }
+                    },
+                    LeftCommunity: true,
+                },
+                Teleop : {
+                    Scored : {
+                        Cones: {
+                            Upper: 0,
+                            Mid: 0,
+                            Lower: 0
+                        },
+                        Cubes : {
+                            Upper: 0,
+                            Mid: 0,
+                            Lower: 0
+                        }
+                    },
+                    Attempted: {
+                        Cones: {
+                            Upper: 0,
+                            Mid: 0,
+                            Lower: 0
+                        },
+                        Cubes : {
+                            Upper: 0,
+                            Mid: 0,
+                            Lower: 0
+                        }
+                    },
+                    Accuracy: -1,
+                    RankingPts: Number(ranking),
+                    Penalties: {
+                        Fouls: 0,
+                        Tech: 0,
+                        Yellow: 0,
+                        Red: 0,
+                        Disabled: true,
+                        DQ: true,
+                        BrokenBot: true   
                     }
-                }, 
-            },
-
-            TeleOp:{
-                RankingPts: 4,
+                },
+                SmartPlacement: true,
+                Comments: "",
+                IntakeFrom: [] 
             }
-        }
-
-            apiUpdateTeamMatch('2023hiho', teamNum, matchKey, data)
-                
+            )
                   /*  data:{
             
             TeamId: this.state.teamNumber.substring(3, this.state.teamNumber.length),
