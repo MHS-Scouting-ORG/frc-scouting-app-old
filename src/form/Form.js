@@ -910,16 +910,16 @@ class Form extends React.Component{
             AutoMidCubesAttempted: Number(counterVal[4]),
             AutoLowCubesAttempted: Number(counterVal[5]),
 
-                    AutoHighConesAttempted: Number(counterVal[9]),
-                    AutoMidConesAttemoted: Number(counterVal[10]),
-                    AutoLowConesAttempted: Number(counterVal[11]),
+            AutoHighConesAttempted: Number(counterVal[9]),
+            AutoMidConesAttemoted: Number(counterVal[10]),
+            AutoLowConesAttempted: Number(counterVal[11]),
 
-                    LeftCoummunity: Boolean(mobility),
-                    ChargeStation: String(chargeStationAuto),
+            LeftCoummunity: Boolean(mobility),
+            ChargeStation: String(chargeStationAuto),
                             
-                    TeleHighCubesScored: Number(counterVal[12]),
-                    TeleMidCubesScored: Number(counterVal[13]),
-                    TeleLowCubesScored: Number(counterVal[14]),
+            TeleHighCubesScored: Number(counterVal[12]),
+            TeleMidCubesScored: Number(counterVal[13]),
+            TeleLowCubesScored: Number(counterVal[14]),
 
             TeleHighCubesAttempted: Number(counterVal[15]),
             TeleMidCubesAttempted: Number(counterVal[16]),
