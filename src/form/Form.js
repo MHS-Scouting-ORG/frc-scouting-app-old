@@ -780,9 +780,9 @@ class Form extends React.Component{
 
         let totalGridPts = highGridPoints + midGridPoints + lowGridPoints;
 
-        let cubeHighAccuracy = 100 * (highAutoCubes + highTeleCubes) / (cubesAttempted + highAutoCubes + highTeleCubes);
-        let cubeMidAccuracy = 100 * (midAutoCubes + midTeleCubes) / (cubesAttempted + midAutoCubes + midTeleCubes);
-        let cubeLowAccuracy = 100 * (lowAutoCubes + lowTeleCubes) / (cubesAttempted + lowAutoCubes + lowTeleCubes);
+        let cubeHighAccuracy = 100 * (highAutoCubes + highTeleCubes) / (highCubesAttempted + highConesAttempted);
+        let cubeMidAccuracy = 100 * (midAutoCubes + midTeleCubes) / (midCubesAttempted + midConesAttempted);
+        let cubeLowAccuracy = 100 * (lowAutoCubes + lowTeleCubes) / (lowCubesAttempted + lowConesAttempted);
 
         
 
@@ -936,18 +936,24 @@ class Form extends React.Component{
             RegionalId: "2023hiho",
             MatchId: /*put this years event*//*/*/ // "2023hiho"  /* */   + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber,
 
-                    /*TotalPoints: Number(points),
-                    TotalGridPoints: Number(totalGridPts),
-                    CubeTotalPoints: Number(cubePts),
-                    ConeTotalPoints: Number(conePts),
-                    HighGridPoints: Number(highGridPoints),
-                    MidGridPoints: Number(midGridPoints),
-                    LowGridPoints: Number(lowGridPoints),
-                    CubesAccuracy: Number(cubesTeleAutoAccuracy),
-                    ConesAccuracy: Number(conesTeleAutoAccuracy),
-                    LowAccuracy: Number(lowAccuracy),
-                    MidAccuracy: Number(midAccuracy),
-                    HighAccuracy: Number(highAccuracy),
+          /*TotalPoints: Number(points),
+            TotalGridPoints: Number(totalGridPts),
+            CubeTotalPoints: Number(cubePts),
+            ConeTotalPoints: Number(conePts),
+            HighGridPoints: Number(highGridPoints),
+            MidGridPoints: Number(midGridPoints),
+            LowGridPoints: Number(lowGridPoints),
+            CubesAccuracy: Number(cubesTeleAutoAccuracy),
+            ConesAccuracy: Number(conesTeleAutoAccuracy),
+            LowAccuracy: Number(lowAccuracy),
+            MidAccuracy: Number(midAccuracy),
+            HighAccuracy: Number(highAccuracy),
+            HighCubesAccuracy: Number(cubesHighTeleAutoAccuracy),
+            HighConesAccuracy: Number(conesHighTeleAutoAccuracy),
+            MidCubesAccuracy: Number(cubesMidTeleAutoAccuracy),
+            MidConesAccuracy: Number(conesMidTeleAutoAccuracy),
+            LowCubesAccuracy: Number(cubesLowTeleAutoAccuracy),
+            LowConesAccuracy: Number(conesLowTeleAutoAccuracy),
 
             AutoPlacement: Number(autoPlacement),
 
@@ -963,16 +969,16 @@ class Form extends React.Component{
             AutoMidCubesAttempted: Number(counterVal[4]),
             AutoLowCubesAttempted: Number(counterVal[5]),
 
-                    AutoHighConesAttempted: Number(counterVal[9]),
-                    AutoMidConesAttemoted: Number(counterVal[10]),
-                    AutoLowConesAttempted: Number(counterVal[11]),
+            AutoHighConesAttempted: Number(counterVal[9]),
+            AutoMidConesAttemoted: Number(counterVal[10]),
+            AutoLowConesAttempted: Number(counterVal[11]),
 
-                    LeftCoummunity: Boolean(mobility),
-                    ChargeStation: String(chargeStationAuto),
+            LeftCoummunity: Boolean(mobility),
+            ChargeStation: String(chargeStationAuto),
                             
-                    TeleHighCubesScored: Number(counterVal[12]),
-                    TeleMidCubesScored: Number(counterVal[13]),
-                    TeleLowCubesScored: Number(counterVal[14]),
+            TeleHighCubesScored: Number(counterVal[12]),
+            TeleMidCubesScored: Number(counterVal[13]),
+            TeleLowCubesScored: Number(counterVal[14]),
 
             TeleHighCubesAttempted: Number(counterVal[15]),
             TeleMidCubesAttempted: Number(counterVal[16]),
@@ -1036,22 +1042,22 @@ class Form extends React.Component{
                 {this.makeTeamDropdown()}
                 <br></br>
                 <h3>AUTONOMOUS</h3>
-                <img src={'./images/auto placement.jpg'}></img>
+                <img src={'./images/auto placement.jpg'} width="250px" height = "260px"></img>
                 {this.makeDropDownBox("Auto Placement On Community: ",[1,2,3,4,5,6],0)}
                 <br></br>
-                <p>Cubes Scored</p>
+                <p>🟪Cubes Scored</p>
                 {this.makeCounterBox("High Cubes Made: ", 0)}
                 {this.makeCounterBox("Mid Cubes Made: ", 1)}
                 {this.makeCounterBox("Low Cubes Made: ", 2)}
-                <p>Cubes Attempted</p>
+                <p>🟪Cubes Attempted</p>
                 {this.makeCounterBox("High Cubes Attempted: ", 3)}
                 {this.makeCounterBox("Mid Cubes Attempted: ", 4)}
                 {this.makeCounterBox("Low Cubes Attempted: ", 5)}
-                <p>Cones Scored</p>
+                <p>🔺Cones Scored</p>
                 {this.makeCounterBox("High Cones Made: ", 6)}
                 {this.makeCounterBox("Mid Cones Made: ", 7)}
                 {this.makeCounterBox("Low Cones Made: ", 8)}
-                <p>Cones Attempted</p>
+                <p>🔺Cones Attempted</p>
                 {this.makeCounterBox("High Cones Attempted: ", 9)}
                 {this.makeCounterBox("Mid Cones Attempted: ", 10)}
                 {this.makeCounterBox("Low Cones Attempted: ", 11)}
@@ -1061,19 +1067,19 @@ class Form extends React.Component{
                 {this.makeChargeStationAuto()}
                 <br></br>
                 <h3>TELE-OP</h3>
-                <p>Cubes Scored</p>
+                <p>🟪Cubes Scored</p>
                 {this.makeCounterBox("High Cubes Made: ", 12)}
                 {this.makeCounterBox("Mid Cubes Made: ", 13)}
                 {this.makeCounterBox("Low Cubes Made: ", 14)}
-                <p>Cubes Attempted</p>
+                <p>🟪Cubes Attempted</p>
                 {this.makeCounterBox("High Cubes Attempted: ", 15)}
                 {this.makeCounterBox("Mid Cubes Attempted: ", 16)}
                 {this.makeCounterBox("Low Cubes Attempted: ", 17)}
-                <p>Cones Scored</p>
+                <p>🔺Cones Scored</p>
                 {this.makeCounterBox("High Cones Made: ", 18)}
                 {this.makeCounterBox("Mid Cones Made: ", 19)}
                 {this.makeCounterBox("Low Cones Made: ", 20)}
-                <p>Cones Attempted</p>
+                <p>🔺Cones Attempted</p>
                 {this.makeCounterBox("High Cones Attempted: ", 21)}
                 {this.makeCounterBox("Mid Cones Attempted: ", 22)}
                 {this.makeCounterBox("Low Cones Attempted: ", 23)}
@@ -1086,7 +1092,7 @@ class Form extends React.Component{
                 {this.makeDropDownBox("Drive Strength: ", ["Weak","Normal","Strong"],1)}
                 {this.makeDropDownBox("Drive Speed: ", ["Slow", "Fast", "Really Fast"], 2)}
                 <br></br>
-                <h2>Penalties</h2>
+                <h3>PENALTIES</h3>
                 {this.makeCounterBox("Fouls: ", 24)}
                 {this.makeCounterBox("Tech Fouls: ", 25)}
                 {this.makePenaltyBox("Yellow Card ",0)}
@@ -1096,14 +1102,14 @@ class Form extends React.Component{
                 {this.makePenaltyBox("Bot Broke ", 4)}
                 {this.makePenaltyBox("No Show ", 5)}
                 <br></br>
-                <h2>Ranking Points</h2>
+                <h3>RANKING POINTS</h3>
                 {this.makeWhoWonBox("Team Won ", 0)}
                 {this.makeWhoWonBox("Team Tied ", 1)}
                 {this.makeBonusBox("Activation ",0)}
                 {this.makeBonusBox("Sustainability ", 1)}
                 <Headers display={this.state.rankingPts} bonus={this.state.bonusVal}/>
                 <br></br>
-                <h2>Strategy & Priorities</h2>
+                <h3>STRATEGY & PRIORITIES</h3>
                 {this.makeStrategyBox("Low Node ", 0)}
                 {this.makeStrategyBox("Mid Node ", 1)}
                 {this.makeStrategyBox("High Node ", 2)}
@@ -1115,7 +1121,7 @@ class Form extends React.Component{
                 {this.makeStrategyBox("Double Substation Silding Shelve ", 8)}
                 <br></br>
                 <p>How well is there defense if any?</p>
-                <TextBox title={"Comments: "} commentState={this.setComment}></TextBox>
+                <TextBox title={"💬Comments: "} commentState={this.setComment}></TextBox>
                 <div>
                     <button onClick={this.submitState}>Submit</button>
                 </div>
