@@ -20,7 +20,7 @@ class ChargeStation extends React.Component{
     render(){
         return(
             <div>
-                <label> {"Charge Station: "}
+                <label> {"⚡Charge Station: "}
                     <select onChange={this.changeChargeStation}>
                         <option></option>
                         <option value='None'>None</option>

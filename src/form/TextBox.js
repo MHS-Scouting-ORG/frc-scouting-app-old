@@ -4,7 +4,7 @@ function TextBox(props){
     return(
         <div>
             <p>{props.title}</p>
-            <p>{props.subtitle}</p>
+            <p style={{fontSize: 16}}>{props.subtitle}</p>
             <textarea onChange={props.commentState} row="4" cols='50'
                 style={{
                     wordWarp: 'normal',
