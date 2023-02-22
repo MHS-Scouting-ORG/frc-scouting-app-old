@@ -778,9 +778,9 @@ class Form extends React.Component{
 
         let totalGridPts = highGridPoints + midGridPoints + lowGridPoints;
 
-        let cubeHighAccuracy = 100 * (highAutoCubes + highTeleCubes) / (cubesMissed + highAutoCubes + highTeleCubes);
-        let cubeMidAccuracy = 100 * (midAutoCubes + midTeleCubes) / (cubesMissed + midAutoCubes + midTeleCubes);
-        let cubeLowAccuracy = 100 * (lowAutoCubes + lowTeleCubes) / (cubesMissed + lowAutoCubes + lowTeleCubes);
+        let cubeHighAccuracy = 100 * (highAutoCubes + highTeleCubes) / (highCubesAttempted + highConesAttempted);
+        let cubeMidAccuracy = 100 * (midAutoCubes + midTeleCubes) / (midCubesAttempted + midConesAttempted);
+        let cubeLowAccuracy = 100 * (lowAutoCubes + lowTeleCubes) / (lowCubesAttempted + lowConesAttempted);
 
         
 
@@ -877,18 +877,24 @@ class Form extends React.Component{
             RegionalId: "2023hiho",
             MatchId: /*put this years event*//*/*/ // "2023hiho"  /* */   + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber,
 
-                    /*TotalPoints: Number(points),
-                    TotalGridPoints: Number(totalGridPts),
-                    CubeTotalPoints: Number(cubePts),
-                    ConeTotalPoints: Number(conePts),
-                    HighGridPoints: Number(highGridPoints),
-                    MidGridPoints: Number(midGridPoints),
-                    LowGridPoints: Number(lowGridPoints),
-                    CubesAccuracy: Number(cubesTeleAutoAccuracy),
-                    ConesAccuracy: Number(conesTeleAutoAccuracy),
-                    LowAccuracy: Number(lowAccuracy),
-                    MidAccuracy: Number(midAccuracy),
-                    HighAccuracy: Number(highAccuracy),
+            /*TotalPoints: Number(points),
+            TotalGridPoints: Number(totalGridPts),
+            CubeTotalPoints: Number(cubePts),
+            ConeTotalPoints: Number(conePts),
+            HighGridPoints: Number(highGridPoints),
+            MidGridPoints: Number(midGridPoints),
+            LowGridPoints: Number(lowGridPoints),
+            CubesAccuracy: Number(cubesTeleAutoAccuracy),
+            ConesAccuracy: Number(conesTeleAutoAccuracy),
+            LowAccuracy: Number(lowAccuracy),
+            MidAccuracy: Number(midAccuracy),
+            HighAccuracy: Number(highAccuracy),
+            HighCubesAccuracy: Number(cubesHighTeleAutoAccuracy),
+            HighConesAccuracy: Number(conesHighTeleAutoAccuracy),
+            MidCubesAccuracy: Number(cubesMidTeleAutoAccuracy),
+            MidConesAccuracy: Number(conesMidTeleAutoAccuracy),
+            LowCubesAccuracy: Number(cubesLowTeleAutoAccuracy),
+            LowConesAccuracy: Number(conesLowTeleAutoAccuracy),
 
             AutoPlacement: Number(autoPlacement),
 
