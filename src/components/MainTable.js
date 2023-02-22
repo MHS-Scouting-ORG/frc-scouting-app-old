@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { useExpanded, useTable, useSortBy, useGlobalFilter } from "react-table"
 import { apiGetTeam, apiListTeams, getMatchesForRegional} from "../api";
 import { getTeamsInRegional, getTeamInfo, getOprs } from "../api/bluealliance";
-import DumInnerTable from "./DumInnerTable";
+import TeamInnerTable from "./TeamInnerTable";
 import GridInnerTable from './GridInnerTable';
 import GlobalFilter from "./GlobalFilter";
 import { ConsoleLogger } from "@aws-amplify/core";
@@ -79,6 +79,10 @@ function MainTable(props) {
       CCWM: ccwmList[team.TeamNum], 
       AvgPoints: team.AvgPoints,
       AvgGridPoints: team.AvgGridPoints,
+      AvgConePts: team.AvgConePts,
+      AvgConeAcc: team.AvgConeAcc,
+      AvgCubePts: team.AvgCubePts,
+      AvgCubeAcc: team.AvgCubeAcc,
       DPR: dprList[team.TeamNum],
       Defense: team.Defense,
       Penalties: team.Penalties,
@@ -96,6 +100,10 @@ function MainTable(props) {
       CCWM: ccwmList[team.TeamNum] ? (ccwmList[team.TeamNum]).toFixed(2) : null, 
       AvgPoints: team.AvgPoints,
       AvgGridPoints: team.AvgGridPoints,
+      AvgConePts: team.AvgConePts,
+      AvgConeAcc: team.AvgConeAcc,
+      AvgCubePts: team.AvgCubePts,
+      AvgCubeAcc: team.AvgCubeAcc,
       DPR: dprList[team.TeamNum] ? (dprList[team.TeamNum]).toFixed(2) : null ,
       Defense: team.Defense,
       Penalties: team.Penalties,
@@ -115,6 +123,10 @@ function MainTable(props) {
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgGridPoints: team.AvgGridPoints,
+      AvgConePts: team.AvgConePts,
+      AvgConeAcc: team.AvgConeAcc,
+      AvgCubePts: team.AvgCubePts,
+      AvgCubeAcc: team.AvgCubeAcc,
       DPR: team.DPR,
       Defense: team.Defense,
       Penalties: team.Penalties,
@@ -132,6 +144,10 @@ function MainTable(props) {
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgGridPoints: team.AvgGridPoints,
+      AvgConePts: team.AvgConePts,
+      AvgConeAcc: team.AvgConeAcc,
+      AvgCubePts: team.AvgCubePts,
+      AvgCubeAcc: team.AvgCubeAcc,
       DPR: team.DPR,
       Defense: team.Defense,
       Penalties: team.Penalties,
@@ -151,8 +167,12 @@ const getTeams = async () => {
           OPR: "",
           Priorities: '',
           CCWM: "", 
-          AvgPoints: "",
+          AvgPoints: 0,
           AvgGridPoints: 0,
+          AvgConePts: 0,
+          AvgConeAcc: 0,
+          AvgCubePts: 0,
+          AvgCubeAcc: 0,
           DPR: "",
           Defense: '',
           Penalties: "",
@@ -211,28 +231,26 @@ const renderRowSubComponent = ({ row }) => {
             AutoUpperCubePts: `${x.AutoHighCubesScored}/${x.AutoHighCubesScored + x.AutoHighCubesAttempted}`,
             AutoMidConePts: `${x.AutoMidConesScored}/${x.AutoMidConesScored + x.AutoMidConesAttempted}`,
             AutoMidCubePts: `${x.AutoMidCubesScored}/${x.AutoMidCubesScored + x.AutoMidCubesAttempted}`,
-            AutoLowConePts: `${x.AutoLowMade}/${x.AutoLowMade + x.AutoLowMissed}`,
-            AutoLowCubePts: `${x.AutoLowMade}/${x.AutoLowMade + x.AutoLowMissed}`,
-            AutoChargeStationPts: x.chargeStation,
+            AutoLowConePts: `${x.AutoLowConesScored}/${x.AutoLowConesScored + x.AutoLowConesAttempted}`,
+            AutoLowCubePts: `${x.AutoLowCubesScored}/${x.AutoLowCubesScored + x.AutoLowCubesScored}`,
+            AutoChargeStationPts: x.ChargeStation,
 
-            TeleGridPts: `${x.TeleGridMade}/${x.TeleGridMade + x.TeleGridMissed}`,
-            TeleUpperConePts: `${x.TeleUpperMade}/${x.TeleUpperMade + x.TeleUpperMissed}`,
-            TeleUpperCubePts: `${x.TeleUpperMade}/${x.TeleUpperMade + x.TeleUpperMissed}`,
-            TeleMidConePts: `${x.TeleMidMade}/${x.TeleMidMade + x.TeleMidMissed}`,
-            TeleMidCubePts: `${x.TeleMidMade}/${x.TeleMidMade + x.TeleMidMissed}`,
-            TeleLowConePts: `${x.TeleLowMade}/${x.TeleLowMade + x.TeleLowMissed}`,
-            TeleLowCubePts: `${x.TeleLowMade}/${x.TeleLowMade + x.TeleLowMissed}`,
-            TeleEndgame: x.endgame !== undefined ? x.endgame : '',
-            CSStart: x.csStart !== undefined ? x.csStart : '',
-            CSEnd: x.csEnd !== undefined ? x.csEnd : '',
-            EndComments: x.EndComments !== undefined ? x.EndComments.trim() : '',
+            TeleUpperConePts: `${x.TeleHighConesScored}/${x.TeleHighConesScored + x.TeleHighConesAttempted}`,
+            TeleUpperCubePts: `${x.TeleHighConesScored}/${x.TeleHighConesScored + x.TeleHighConesAttempted}`,
+            TeleMidConePts: `${x.TeleMidConesScored}/${x.TeleMidConesScored + x.TeleMidConesAttempted}`,
+            TeleMidCubePts: `${x.TeleMidCubesScored}/${x.TeleMidCubesScored + x.TeleMidCubesAttempted}`,
+            TeleLowConePts: `${x.TeleLowConesScored}/${x.TeleLowConesScored + x.TeleLowConesAttempted}`,
+            TeleLowCubePts: `${x.TeleLowCubesScored}/${x.TeleLowCubesScored + x.TeleLowCubesAttempted}`,
+            TeleEndgame: x.EndGame !== undefined ? x.EndGame : '',
+            CSStart: x.EndGameStart !== undefined ? x.EndGameStart : '',
+            CSEnd: x.EndGameEnd !== undefined ? x.EndGameEnd : '',
+            EndComments: x.EndGameComments !== undefined ? x.EndGameComments.trim() : '',
             DriveStrength: x.DriveStrength !== undefined ? x.DriveStrength : '',
             DriveSpeed: x.DriveSpeed !== undefined ? x.DriveSpeed : '',
-            SmartPlacement: x.smartPlacement,
-            IntakeFrom: x.intakeFrom.filter(val => val.trim() !== '').length !== 0 ? x.intakeFrom.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
-            NumberofFoulAndTech: x.numOfFouls !== undefined && x.numOfTech !== undefined ? `${x.NumberOfFouls} | ${x.NumberOfTech}` : '',
+            SmartPlacement: x.SmartPlacement,
+            NumberofFoulAndTech: x.Fouls !== undefined && x.TechFouls !== undefined ? `${x.Fouls} | ${x.TechFouls}` : '',
             Penalties: x.Penalties !== undefined && x.Penalties.filter(val => val.trim() !== '').length !== 0 ? x.Penalties.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
-            NumberOfRankingPoints: x.NumberOfRankingPoints !== undefined ? x.NumberOfRankingPoints : '',
+            NumberOfRankingPoints: x.RankingPts !== undefined  && ? x.RankingPts : '',
 
             Comments: x.Comments !== undefined ? x.Comments.trim() : '',
             Email: x.email.substring(0, x.email.length-17),
@@ -260,7 +278,7 @@ const renderRowSubComponent = ({ row }) => {
 
   return dum.length > 0 ?
   (<pre>
-    <div>{<DumInnerTable information = {dum}/>} </div>
+    <div>{<TeamInnerTable information = {dum}/>} </div>
   </pre>)
   : (
     <div style={{
@@ -319,19 +337,16 @@ function gridStateHandler(bool){
 }
 
 //methods for what needs to be shown on summary table, accessors are from form people
-    
-const getMax = (arr) => {                       // Get max of array
+  
+//gets max of array
+  const getMax = (arr) => { 
     return arr.sort((a, b) => b - a).shift();
   }
 
+  //displays priorities
   const getPriorities = (arr) => {
-    let pri = arr.map(teamObj => teamObj.Priorities).reduce((a,b) => a.concat(b), []).filter((item) => item.trim() !== '');
+    let pri = arr.map(teamObj => teamObj.Strategy).reduce((a,b) => a.concat(b), []).filter((item) => item.trim() !== '');
     return uniqueArr(pri);
-  }
-
-  const getIntakeFrom = (arr) => {
-    let intFrom = arr.map(teamObj => teamObj.intakeFrom).reduce((a,b) => a.concat(b), []).filter((item) => item.trim() !== '');
-    return uniqueArr(intFrom);
   }
 
   const uniqueArr = (arr) => {  
@@ -343,18 +358,18 @@ const getMax = (arr) => {                       // Get max of array
 
   //avg total points
   const calcAvgPoints = (arr) => { //average points
-    let individualPts = arr.map(val => val.totalPoints);
+    let individualPts = arr.map(val => val.TotalPoints);
     let totalPts = 0;
     for(let i = 0; i < individualPts.length; i++){
-      totalPts = totalPts + individualPts[i];
+      totalPts = totalPts + individualPts[i]; //total pts
     }
     let avgPts = totalPts / individualPts.length;
-    return avgPts.toFixed(3);
+    return avgPts.toFixed(3); //avg it
   }
 
   //avg grid points
   const calcAvgGrid = (arr) => {
-    let individualPts = arr.map(val => val.gridPoints);
+    let individualPts = arr.map(val => val.TotalGridPoints);
     let totalPts = 0;
     for(let i = 0; i < individualPts.length; i++){
       totalPts = totalPts + individualPts[i];
@@ -363,30 +378,9 @@ const getMax = (arr) => {                       // Get max of array
     return avgGridPts.toFixed(3);
   }
 
-  //avg total cube and cone poinyts and acc
-
-  const calcTotalCubes = (arr) => {
-    let totalCubes = arr.map(val => val.cubePts);
-    let sumTotalCubes = 0;
-    for(let i = 0; i < totalCubes.length; i++){
-      sumTotalCubes = sumTotalCubes + totalCubes[i];
-    }
-    let avgTotalCubes = sumTotalCubes / totalCubes.length;
-    return avgTotalCubes.toFixed(3);
-  }
-
-  const calcTotalCubesAcc = (arr) => {
-    let totalCubesAcc = arr.map(val => val.cubesTeleAutoAccurary);
-    let sumTotalCubesAcc = 0;
-    for(let i = 0; i < totalCubesAcc.length; i++){
-      sumTotalCubesAcc = sumTotalCubesAcc + totalCubesAcc[i];
-    }
-    let avgTotalCubesAcc = sumTotalCubesAcc / totalCubesAcc.length;
-    return avgTotalCubesAcc.toFixed(3);
-  }
-
+  //avg total cone and cube points and acc
   const calcTotalCones = (arr) => {
-    let totalCones = arr.map(val => val.conePts);
+    let totalCones = arr.map(val => val.ConeTotalPoints);
     let sumTotalCones = 0;
     for(let i = 0; i < totalCones.length; i++){
       sumTotalCones = sumTotalCones + totalCones[i];
@@ -396,7 +390,7 @@ const getMax = (arr) => {                       // Get max of array
   }
 
   const calcTotalConesAcc = (arr) => {
-    let totalConesAcc = arr.map(val => val.conesTeleAutoAccurary);
+    let totalConesAcc = arr.map(val => val.ConesAccuracy);
     let sumTotalConesAcc = 0;
     for(let i = 0; i < totalConesAcc.length; i++){
       sumTotalConesAcc = sumTotalConesAcc / totalConesAcc.length;
@@ -405,9 +399,29 @@ const getMax = (arr) => {                       // Get max of array
     return avgTotalConesAcc.toFixed(3);
   }
 
+  const calcTotalCubes = (arr) => {
+    let totalCubes = arr.map(val => val.CubeTotalPoints);
+    let sumTotalCubes = 0;
+    for(let i = 0; i < totalCubes.length; i++){
+      sumTotalCubes = sumTotalCubes + totalCubes[i];
+    }
+    let avgTotalCubes = sumTotalCubes / totalCubes.length;
+    return avgTotalCubes.toFixed(3);
+  }
+
+  const calcTotalCubesAcc = (arr) => {
+    let totalCubesAcc = arr.map(val => val.CubesAccuracy);
+    let sumTotalCubesAcc = 0;
+    for(let i = 0; i < totalCubesAcc.length; i++){
+      sumTotalCubesAcc = sumTotalCubesAcc + totalCubesAcc[i];
+    }
+    let avgTotalCubesAcc = sumTotalCubesAcc / totalCubesAcc.length;
+    return avgTotalCubesAcc.toFixed(3);
+  }
+
   //avg UPPER grid stuff
   const calcUpperGrid = (arr) => {
-    let upper = arr.map(val => val.highGridPoints);
+    let upper = arr.map(val => val.HighGridPoints);
     let sumUpper = 0;
     for(let i = 0; i < upper.length; i++){
       sumUpper = sumUpper + upper[i];
@@ -417,7 +431,7 @@ const getMax = (arr) => {                       // Get max of array
   }
 
   const calcUpperGridAcc = (arr) => {
-    let upperAcc = arr.map(val => val.highGridAcc);
+    let upperAcc = arr.map(val => val.HighAccuracy);
     let sumUpperAcc = 0;
     for(let i = 0; i < upperAcc.length; i++){
       sumUpperAcc = sumUpperAcc + upperAcc[i];
@@ -426,8 +440,8 @@ const getMax = (arr) => {                       // Get max of array
     return avgUpperAcc.toFixed(3);
   }
 
-  const calcUpperConeGrid = (arr) => { //autouppermade & auto teleuppermade accessor from form (tbd since idk what they made it)
-    let upper = arr.map(val => (val.AutoUpperConeMade + val.TeleUpperConeMade));
+  const calcUpperConeGrid = (arr) => {  
+    let upper = arr.map(val => (val.AutoHighConesScored + val.TeleHighConesScored));
     let sumUpper = 0;
     for(let i = 0; i < upper.length; i++){
       sumUpper = sumUpper + upper[i];      //sum of upper grid
@@ -436,8 +450,8 @@ const getMax = (arr) => {                       // Get max of array
     return avgUpperCone.toFixed(3);       //avg of upper grid (rounds to .000)
   }
 
-  const calcUpperConeAcc = (arr) => {
-    let upperAcc = arr.map(val => val.upperConeGridAcc);
+  const calcUpperConeAcc = (arr) => { 
+    let upperAcc = arr.map(val => val.HighConesAccuracy);
     let sumUpperAcc = 0;
     for(let i = 0; i < upperAcc.length; i++){
       sumUpperAcc = sumUpperAcc + upperAcc[i];  
@@ -446,18 +460,8 @@ const getMax = (arr) => {                       // Get max of array
     return avgUpperConeAcc.toFixed(3); 
   }
 
-  const calcUpperCubeAcc = (arr) => {
-    let upperAcc = arr.map(val => val.upperCubeGridAcc);
-    let sumUpperAcc = 0;
-    for(let i = 0; i < upperAcc.length; i++){
-      sumUpperAcc = sumUpperAcc + upperAcc[i];  
-    }
-    let avgUpperCubeAcc = sumUpperAcc / upperAcc.length;  //avg acc of mid
-    return avgUpperCubeAcc.toFixed(3); 
-  }
-
-  const calcUpperCubeGrid = (arr) => { //autouppermade & auto teleuppermade accessor from form (tbd since idk what they made it)
-    let upper = arr.map(val => (val.AutoUpperCubeMade + val.TeleUpperCubeMade));
+  const calcUpperCubeGrid = (arr) => { 
+    let upper = arr.map(val => (val.AutoHighCubesScored + val.TeleHighCubesScored));
     let sumUpper = 0;
     for(let i = 0; i < upper.length; i++){
       sumUpper = sumUpper + upper[i];      //sum of upper grid
@@ -466,9 +470,19 @@ const getMax = (arr) => {                       // Get max of array
     return avgUpperCube.toFixed(3);       //avg of upper grid (rounds to .000)
   }
 
+  const calcUpperCubeAcc = (arr) => { 
+    let upperAcc = arr.map(val => val.HighCubesAccuracy);
+    let sumUpperAcc = 0;
+    for(let i = 0; i < upperAcc.length; i++){
+      sumUpperAcc = sumUpperAcc + upperAcc[i];  
+    }
+    let avgUpperCubeAcc = sumUpperAcc / upperAcc.length;  //avg acc of mid
+    return avgUpperCubeAcc.toFixed(3); 
+  }
+
   //avg MID grid stuff
   const calcMidGrid = (arr) => {
-    let mid = arr.map(val => val.midGridPoints);
+    let mid = arr.map(val => val.MidGridPoints);
     let sumMid = 0;
     for(let i = 0; i < mid.length; i++){
       sumMid = sumMid + mid.length[i];
@@ -478,7 +492,7 @@ const getMax = (arr) => {                       // Get max of array
   }
 
   const calcMidGridAcc = (arr) => {
-    let midAcc = arr.map(val => val.midGridAcc);
+    let midAcc = arr.map(val => val.MidAccuracy);
     let sumMidAcc = 0;
     for(let i = 0; i < midAcc.length; i++){
       sumMidAcc = sumMidAcc + midAcc[i];
@@ -488,7 +502,7 @@ const getMax = (arr) => {                       // Get max of array
   }
 
   const calcMidConeGrid = (arr) => { //automidmade & auto telemidmade accessor from form (tbd since idk what they made it)
-    let mid = arr.map(val => (val.AutoMidConeMade + val.TeleMidConeMade));
+    let mid = arr.map(val => (val.AutoMidConesScored + val.TeleMidConesScored));
     let sumMid = 0;
     for(let i = 0; i < mid.length; i++){
       sumMid = sumMid + mid[i];      //sum of mid grid
@@ -497,8 +511,8 @@ const getMax = (arr) => {                       // Get max of array
     return avgMidCone.toFixed(3);       //avg of mid grid (rounds to .000)
   }
 
-  const calcMidConeAcc = (arr) => {
-    let midAcc = arr.map(val => val.midConeGridAcc);
+  const calcMidConeAcc = (arr) => { 
+    let midAcc = arr.map(val => val.MidConeAccuracy);
     let sumMidAcc = 0;
     for(let i = 0; i < midAcc.length; i++){
       sumMidAcc = sumMidAcc + midAcc[i];  
@@ -508,7 +522,7 @@ const getMax = (arr) => {                       // Get max of array
   }
 
   const calcMidCubeGrid = (arr) => { //automidmade & auto telemidmade accessor from form (tbd since idk what they made it)
-    let mid = arr.map(val => (val.AutoMidCubeMade + val.TeleMidCubeMade));
+    let mid = arr.map(val => (val.AutoMidCubesScored + val.TeleMidCubesScored));
     let sumMid = 0;
     for(let i = 0; i < mid.length; i++){
       sumMid = sumMid + mid[i];      //sum of mid grid
@@ -517,8 +531,8 @@ const getMax = (arr) => {                       // Get max of array
     return avgMidCube.toFixed(3);       //avg of mid grid (rounds to .000)
   }
 
-  const calcMidCubeAcc = (arr) => {
-    let midAcc = arr.map(val => val.midCubeGridAcc);
+  const calcMidCubeAcc = (arr) => { 
+    let midAcc = arr.map(val => val.MidCubesAccuracy);
     let sumMidAcc = 0;
     for(let i = 0; i < midAcc.length; i++){
       sumMidAcc = sumMidAcc + midAcc[i];  
@@ -529,7 +543,7 @@ const getMax = (arr) => {                       // Get max of array
 
   //avg LOW grid stuff
   const calcLowGrid = (arr) => {
-    let low = arr.map(val => (val.lowGridPoints));
+    let low = arr.map(val => (val.LowGridPoints));
     let sumLow = 0;
     for(let i = 0; i < low.length; i++){
       sumLow = sumLow + low[i];
@@ -539,7 +553,7 @@ const getMax = (arr) => {                       // Get max of array
   }
 
   const calcLowAcc = (arr) => {
-    let lowAcc = arr.map(val => val.lowGridAcc);
+    let lowAcc = arr.map(val => val.LowAccuracy);
     let sumLowAcc = 0;
     for(let i = 0; i < lowAcc.length; i++){
       sumLowAcc = sumLowAcc + lowAcc[i];
@@ -549,7 +563,7 @@ const getMax = (arr) => {                       // Get max of array
   }
 
   const calcLowConeGrid = (arr) => { //autolowmade & auto telelowmade accessor from form (tbd since idk what they made it)
-    let low = arr.map(val => (val.AutoLowConeMade + val.TeleLowConeMade));
+    let low = arr.map(val => (val.AutoLowConesScored + val.TeleLowConesScored));
     let sumLow = 0;
     for(let i = 0; i < low.length; i++){
       sumLow = sumLow + low[i];      //sum of low grid
@@ -558,8 +572,8 @@ const getMax = (arr) => {                       // Get max of array
     return avgLowCone.toFixed(3);       //avg of low grid (rounds to .000)
   }
 
-  const calcLowConeAcc = (arr) => {
-    let lowAcc = arr.map(val => val.LowConeGridAcc);
+  const calcLowConeAcc = (arr) => { 
+    let lowAcc = arr.map(val => val.LowConesAccuracy);
     let sumLowAcc = 0;
     for(let i = 0; i < lowAcc.length; i++){
       sumLowAcc = sumLowAcc + lowAcc[i];  
@@ -568,8 +582,8 @@ const getMax = (arr) => {                       // Get max of array
     return avgLowConeAcc.toFixed(3); 
   }
 
-  const calcLowCubeGrid = (arr) => { //autolowmade & auto telelowmade accessor from form (tbd since idk what they made it)
-    let low = arr.map(val => (val.AutoLowCubeMade + val.TeleLowCubeMade));
+  const calcLowCubeGrid = (arr) => { 
+    let low = arr.map(val => (val.AutoLowCubesScored + val.TeleLowCubesScored));
     let sumLow = 0;
     for(let i = 0; i < low.length; i++){
       sumLow = sumLow + low[i];      //sum of low grid
@@ -578,8 +592,8 @@ const getMax = (arr) => {                       // Get max of array
     return avgLowCube.toFixed(3);       //avg of low grid (rounds to .000)
   }
 
-  const calcLowCubeAcc = (arr) => {
-    let lowAcc = arr.map(val => val.LowCubeGridAcc);
+  const calcLowCubeAcc = (arr) => { 
+    let lowAcc = arr.map(val => val.LowCubesAccuracy);
     let sumLowAcc = 0;
     for(let i = 0; i < lowAcc.length; i++){
       sumLowAcc = sumLowAcc + lowAcc[i];  
@@ -591,13 +605,13 @@ const getMax = (arr) => {                       // Get max of array
   //charge station
   const calcChargeStation = (arr) => {  //for auto bc calculating endgame is a diff method
     let chargeStation = arr.map(val => {
-      if(val.chargeStation === 'None' || val.chargeStation === 'Attempted'){
+      if(val.ChargeStation === 'None' || val.ChargeStation === 'Attempted'){
         return 0;
       }
-      else if(val.chargeStation === 'Docked and Not Engaged'){
+      else if(val.ChargeStation === 'DockedNotEngaged'){
         return 10;
       }
-      else if(val.chargeStation === 'Docked and Engaged'){
+      else if(val.ChargeStation === 'DockedEngage'){
         return 12;
       }
       else{
@@ -616,16 +630,16 @@ const getMax = (arr) => {                       // Get max of array
 
   const calcEndgame = (arr) => { //only for teleop
     let endgame = arr.map(val => {
-      if(val.endgame === 'None' || val.endgame === 'Attempted'){
+      if(val.EndGame === 'None' || val.EndGame === 'Attempted'){
         return 0;
       }
-      else if(val.endgame === 'Parked'){
+      else if(val.EndGame === 'Parked'){
         return 2;
       }
-      else if(val.endgame === 'Docked and Not Engaged'){
+      else if(val.EndGame === 'DockedNotEngaged'){
         return 6;
       }
-      else if(val.endgame === 'Docked and Engaged'){
+      else if(val.EndGame === 'DockedEngage'){
         return 8;
       }
       else{
@@ -687,7 +701,7 @@ const getMax = (arr) => {                       // Get max of array
 // ======================================= !TABLE HERE! ===========================================
 const data = React.useMemo(
   () => tableData.map(team => {
-    const grade = calcColumnSort(sortBy,team.gridPoints,team.conePoints,team.coneAccuracy,team.cubePoints,team.cubeAccuracy,team.chargeStation)
+    const grade = calcColumnSort(sortBy,team.NGridPoints,team.NConePoints,team.NConeAccuracy,team.NCubePoints,team.NCubeAccuracy,team.NChargeStation)
     
     return {
 
@@ -698,14 +712,22 @@ const data = React.useMemo(
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgGridPoints: team.AvgGridPoints,
-      /*AvgLow: team.AvgLow,
-      AvgMid: team.AvgMid,
-      AvgTop: team.AvgTop,
-      AvgAcc: team.AvgAcc,*/
+      AvgConePts: team.AvgConePts,
+      AvgConeAcc: team.AvgConeAcc,
+      AvgCubePts: team.AvgCubePts,
+      AvgCubeAcc: team.AvgCubeAcc,
       DPR: team.DPR,
       Defense: team.Defense,
       Penalties: team.Penalties,
-      SumPriorities: grade
+      SumPriorities: grade !== 0.000 ? grade : "",
+
+      NGridPoints: team.NGridPoints,
+      NConePoints: team.NConePoints, 
+      NConeAccuracy: team.NConeAccuracy, 
+      NCubePoints: team.NCubePoints, 
+      NCubeAccuracy: team.NCubeAccuracy, 
+      NChargeStation: team.NChargeStation,
+
     }
   }) , [tableData]
 ) 
@@ -756,11 +778,11 @@ const data = React.useMemo(
       },
       {
         Header: "Avg Cone Points",
-        accessor: "avgConePts",
+        accessor: "AvgConePts",
       },
       {
         Header: "Avg Cone Acc",
-        accessor: "Avg Cone Acc",
+        accessor: "AvgConeAcc",
       },
       {
         Header: "Avg Cube Points",
@@ -768,7 +790,7 @@ const data = React.useMemo(
       },
       {
         Header: "Avg Cube Acc",
-        accessor: "Avg Cube Acc",
+        accessor: "AvgCubeAcc",
       },
       {
         Header: "DPR",
