@@ -373,7 +373,7 @@ class Form extends React.Component{
                         <label> {"End Game Start: "}
                             <input type="number" onChange={this.changeEndGameStartBox}></input>
                         </label>
-                        <TextBox title={'End Game Comment:'} commentState={event => {this.setState({stationComments: event.target.value})}}/>
+                        <TextBox title={'End Game Comment:'} subtitle={'EX: when they had to get on compared to rest of alliance, were they the one doing the balancing, did they mess up alliances balance, etc.'} commentState={event => {this.setState({stationComments: event.target.value})}}/>
                     </div>
                 )
             } else if(endGame === 'Parked') {
@@ -390,7 +390,7 @@ class Form extends React.Component{
                             <label> {"End Game End: "}
                                 <input type="number" onChange={this.changeEndGameEndBox}></input>
                             </label>
-                            <TextBox title={'End Game Comment:'} commentState={event => {this.setState({stationComments: event.target.value})}}/>
+                            <TextBox title={'End Game Comment: '} subtitle={'EX: when they had to get on compared to rest of alliance, were they the one doing the balancing, did they mess up alliances balance, etc.'} commentState={event => {this.setState({stationComments: event.target.value})}}/>
                         </div>
                     </div>
                 )
@@ -683,8 +683,15 @@ class Form extends React.Component{
         let midTeleCones = parseInt(counterVal[19]);
         let lowTeleCones = parseInt(counterVal[20]);
 
-        let cubesMissed = parseInt(counterVal[3]) + parseInt(counterVal[4]) + parseInt(counterVal[5]) + parseInt(counterVal[15]) + parseInt(counterVal[16]) + parseInt(counterVal[17]); 
-        let conesMissed = parseInt(counterVal[9]) + parseInt(counterVal[10]) + parseInt(counterVal[11]) + parseInt(counterVal[21]) + parseInt(counterVal[22]) + parseInt(counterVal[23]); 
+        let cubesAttempted = parseInt(counterVal[3]) + parseInt(counterVal[4]) + parseInt(counterVal[5]) + parseInt(counterVal[15]) + parseInt(counterVal[16]) + parseInt(counterVal[17]); 
+        let conesAttempted = parseInt(counterVal[9]) + parseInt(counterVal[10]) + parseInt(counterVal[11]) + parseInt(counterVal[21]) + parseInt(counterVal[22]) + parseInt(counterVal[23]);
+
+        let highCubesAttempted = parseInt(counterVal[3]) + parseInt(counterVal[15]);
+        let highConesAttempted = parseInt(counterVal[9]) + parseInt(counterVal[21]);
+        let midCubesAttempted = parseInt(counterVal[4]) + parseInt(counterVal[16]);
+        let midConesAttempted = parseInt(counterVal[10]) + parseInt(counterVal[22]);
+        let lowCubesAttempted = parseInt(counterVal[5]) + parseInt(counterVal[17]);
+        let lowConesAttempted = parseInt(counterVal[11]) + parseInt(counterVal[23]);
 
         let mobility = this.state.mobilityVal;
 
@@ -757,22 +764,22 @@ class Form extends React.Component{
         let cubePts = (highAutoCubes * 6) + (highTeleCubes * 5) + (midAutoCubes * 4) + (midTeleCubes * 3) + (lowAutoCubes * 3) +  (lowTeleCubes * 2);
         let conePts = (highAutoCones * 6) + (highTeleCones * 5) + (midAutoCones * 4) + (midTeleCones * 3) + (lowAutoCones * 3) +  (lowTeleCones * 2);
 
-        let cubesHighTeleAutoAccuracy = 100 * ((highAutoCones + highTeleCubes) / (conesMissed + highAutoCones + highTeleCones));
-        let conesHighTeleAutoAccuracy = 100 * ((highAutoCubes +  highTeleCubes) / (cubesMissed + highAutoCubes + highTeleCubes));
-        let highAccuracy = 100 * ((conesHighTeleAutoAccuracy + cubesHighTeleAutoAccuracy) / (conesMissed + cubesMissed + conesHighTeleAutoAccuracy + cubesHighTeleAutoAccuracy));
+        let cubesHighTeleAutoAccuracy = 100 * ((highAutoCubes + highTeleCubes) / (highCubesAttempted));
+        let conesHighTeleAutoAccuracy = 100 * ((highAutoCones +  highTeleCones) / (highConesAttempted));
+        let highAccuracy = 100 * ((conesHighTeleAutoAccuracy + cubesHighTeleAutoAccuracy) / (highCubesAttempted + highConesAttempted));
 
-        let cubesMidTeleAutoAccuracy = 100 * ((midAutoCubes + midTeleCubes) / (cubesMissed + midAutoCubes + midTeleCubes));
-        let conesMidTeleAutoAccuracy = 100 * ((midAutoCones + midTeleCones) / (conesMissed + midAutoCones + midTeleCones));
-        let midAccuracy = 100 * ((cubesMidTeleAutoAccuracy + conesMidTeleAutoAccuracy) / (conesMissed + cubesMissed + cubesMidTeleAutoAccuracy + conesMidTeleAutoAccuracy));
+        let cubesMidTeleAutoAccuracy = 100 * ((midAutoCubes + midTeleCubes) / (midCubesAttempted));
+        let conesMidTeleAutoAccuracy = 100 * ((midAutoCones + midTeleCones) / (midConesAttempted));
+        let midAccuracy = 100 * ((cubesMidTeleAutoAccuracy + conesMidTeleAutoAccuracy) / (midCubesAttempted + midConesAttempted));
 
-        let cubesLowTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes) / (cubesMissed + lowAutoCubes + lowTeleCubes));
-        let conesLowTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones) / (conesMissed + lowAutoCones + lowTeleCones));
-        let lowAccuracy = 100 * ((cubesLowTeleAutoAccuracy + conesLowTeleAutoAccuracy) / (conesMissed + cubesMissed + conesLowTeleAutoAccuracy + cubesLowTeleAutoAccuracy));
+        let cubesLowTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes) / (lowCubesAttempted));
+        let conesLowTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones) / (lowConesAttempted));
+        let lowAccuracy = 100 * ((cubesLowTeleAutoAccuracy + conesLowTeleAutoAccuracy) / (lowCubesAttempted + lowConesAttempted));
 
         let totalGridPts = highGridPoints + midGridPoints + lowGridPoints;
 
-        let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesMissed + lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes));
-        let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesMissed + lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones));
+        let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (lowCubesAttempted + midCubesAttempted + highCubesAttempted));
+        let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (lowConesAttempted + midConesAttempted + highConesAttempted));
         
 
         this.setState({
@@ -859,6 +866,13 @@ class Form extends React.Component{
                     MidAccuracy: Number(midAccuracy),
                     HighAccuracy: Number(highAccuracy),
 
+                    HighCubeAccuracy: Number(cubesHighTeleAutoAccuracy),
+                    HighConeAccuracy: Number(conesHighTeleAutoAccuracy),
+                    MidCubeAccuracy: Number(cubesMidTeleAutoAccuracy),
+                    MidConeAccuracy: Number(conesMidTeleAutoAccuracy),
+                    LowCubeAccuracy: Number(cubesLowTeleAutoAccuracy),
+                    LowConeAccuracy: Number(conesLowTeleAutoAccuracy),
+
                     AutoPlacement: Number(autoPlacement),
 
                     AutoHighCubesScored: Number(counterVal[0]),
@@ -874,10 +888,10 @@ class Form extends React.Component{
                     AutoLowCubesAttempted: Number(counterVal[5]),
 
                     AutoHighConesAttempted: Number(counterVal[9]),
-                    AutoMidConesAttemoted: Number(counterVal[10]),
+                    AutoMidConesAttempted: Number(counterVal[10]),
                     AutoLowConesAttempted: Number(counterVal[11]),
 
-                    LeftCoummunity: Boolean(mobility),
+                    LeftCommunity: Boolean(mobility),
                     ChargeStation: String(chargeStationAuto),
                             
                     TeleHighCubesScored: Number(counterVal[12]),
