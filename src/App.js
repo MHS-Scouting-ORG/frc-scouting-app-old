@@ -62,8 +62,9 @@ function AuthenticatedUI({ user }) {
         <br />
       </div>*/}
 
-      {/*<ExampleUI />*/}
+      <ExampleUI />
       <MainTable regional = {regional} />
+        
       {/*<Summary></Summary>*/}
     </div>
     )

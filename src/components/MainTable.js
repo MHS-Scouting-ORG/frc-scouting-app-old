@@ -36,18 +36,18 @@ function MainTable(props) {
     getTeams()
       .then(data => {
         setTeamsData(data) 
-        console.log(data)
+        //console.log(data)
       })
       .catch(console.log.bind(console))
    },[]) 
 
    useEffect(() => {
-    getMatchesForRegional('2022hiho')
+    getMatchesForRegional('2023hiho')
     .then(data => {
       setApiData(data)
-      console.log(apiData)
+      console.log(apiData) // same as console logging data
       console.log(data)
-      console.log(data.data)
+      //console.log(data.data)
     })
     .catch(console.log.bind(console))
   }, [teamsData]) //get matches form regional for state variable and use state to be filtered and used
@@ -64,7 +64,7 @@ function MainTable(props) {
       setDprList(dData)
       setCcwmList(cData) 
 
-      console.log(data) // whole list of ccwm, dpr, and opr
+      //console.log(data) // whole list of ccwm, dpr, and opr
     })
     .catch(console.log.bind(console))
    },[teamsData])
