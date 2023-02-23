@@ -27,7 +27,7 @@ function MainTable(props) {
    useEffect(() => {
     getMatchesForRegional(props.regional)
     .then(data => {
-      console.log(data)
+      //console.log(data)
     })
     //console.log((getMatchesForRegional('2023week0')))
   },[]) //debug purposes or test ^ 
@@ -44,7 +44,7 @@ function MainTable(props) {
    useEffect(() => {
     getMatchesForRegional('2023hiho')
     .then(data => {
-      setApiData(data)
+      setApiData(data.data.teamMatchesByRegional.items)
       console.log(apiData) // same as console logging data
       console.log(data)
       //console.log(data.data)
@@ -70,7 +70,6 @@ function MainTable(props) {
    },[teamsData])
 
    useEffect(() => setTeamNum(teamsData.map(team => {
-
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
@@ -113,6 +112,18 @@ function MainTable(props) {
    })), [teamsData, teamNum, ccwmList, dprList, oprList])
 
    useEffect(() => setAverages(oprData.map(team => {
+    const teamStats = apiData.filter(x => x.Team === team.TeamNum)
+    //console.log(teamStats)
+    /*
+    const points = x.TotalPoints
+    const avgPoints = calcAvgPoints(teamStats)
+    const avgGridPoints = calcAvgGridPoints(teamStats)
+    const totalConePts = calcTotalCones(teamStats)
+    const totalConeAcc = calcTotalConesAcc(teamStats)
+    const totalCubePts = calcTotalCubes(teamStats)
+    const totalCubeAcc = calcTotalCubeAcc(teamStats)
+    const priorities = getPriorities(teamStats)
+    */
     //console.log(team)
 
     return {
@@ -187,44 +198,18 @@ const getTeams = async () => {
 }
 // ================================= !CHANGE HERE TO USE DATA FROM API! ===========
 const renderRowSubComponent = ({ row }) => {
-    
-  const dumTest = [
-    {
-      Match: 0,
-      Strategy: 1,
-      TotalPts: 2,
-      RankingPts: 3,
-
-      AutoPlacement: 4,
-      AutoGridPts: 5,
-      AutoChargeStationPts: 6,
-
-      TeleGridPts: 7,
-      TeleChargeStationPts: 8
-    }, 
-    {
-      Match: 9,
-      Strategy: 10,
-      TotalPts: 11,
-      RankingPts: 12,
-
-      AutoPlacement: 13,
-      AutoGridPts: 14,
-      AutoChargeStationPts: 15,
-
-      TeleGridPts: 16,
-      TeleChargeStationPts: 17
-    },/* {}, {} */]
-
-    /*const disp = dumTest.map(x => {
+  const t = apiData.filter(x => x.Team === `frc${row.values.TeamNumber}`)
+  console.log(t)
+  console.log(t.map(x => x.RankingPts))
+    const disp = t.map(x => {
         return {
-            Match: x.MatchId.substring(x.MatchId.indexOf('_')+1),
+            Match: x.id.substring(x.id.indexOf('_')+1),
+            /* ================= all code in block does not exist yet within the data object
             Strategy: x.Priorities.filter(val => val.trim() !== '').length !== 0 ? x.Strategy.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
             TotalPts: x.TotalPoints,
             GridPts: x.TotalGridPoints,
             ConeAcc: x.ConeAccuracy !== null ? x.ConeAccuracy.toFixed(2) : '',
             CubeAcc: x.CubeAccurary !== null ? x.CubeAccuracy.toFixed(2) : '',
-
             AutoPlacement: x.AutoPlacement,
             Mobility: x.LeftCommunity,
             AutoUpperConePts: `${x.AutoHighConesScored}/${x.AutoHighConesScored + x.AutoHighConesAttempted}`,
@@ -234,7 +219,6 @@ const renderRowSubComponent = ({ row }) => {
             AutoLowConePts: `${x.AutoLowConesScored}/${x.AutoLowConesScored + x.AutoLowConesAttempted}`,
             AutoLowCubePts: `${x.AutoLowCubesScored}/${x.AutoLowCubesScored + x.AutoLowCubesScored}`,
             AutoChargeStationPts: x.ChargeStation,
-
             TeleUpperConePts: `${x.TeleHighConesScored}/${x.TeleHighConesScored + x.TeleHighConesAttempted}`,
             TeleUpperCubePts: `${x.TeleHighConesScored}/${x.TeleHighConesScored + x.TeleHighConesAttempted}`,
             TeleMidConePts: `${x.TeleMidConesScored}/${x.TeleMidConesScored + x.TeleMidConesAttempted}`,
@@ -250,35 +234,18 @@ const renderRowSubComponent = ({ row }) => {
             SmartPlacement: x.SmartPlacement,
             NumberofFoulAndTech: x.Fouls !== undefined && x.TechFouls !== undefined ? `${x.Fouls} | ${x.TechFouls}` : '',
             Penalties: x.Penalties !== undefined && x.Penalties.filter(val => val.trim() !== '').length !== 0 ? x.Penalties.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
-            NumberOfRankingPoints: x.RankingPts !== undefined  && ? x.RankingPts : '',
+            */
+            NumberOfRankingPoints: x.Teleop.RankingPts !== undefined ? x.Teleop.RankingPts : '',
 
             Comments: x.Comments !== undefined ? x.Comments.trim() : '',
-            Email: x.email.substring(0, x.email.length-17),
+    //      Email: x.email.substring(0, x.email.length-17), */
 
         };
-    })*/
+    })
 
-  const dum = dumTest.map(x => {
-    return {
-      Match: x.Match,
-      Strategy: x.Strategy,
-      TotalPts: x.TotalPts,
-      RankingPts: x.RankingPts,
-
-
-      AutoPlacement: x.AutoPlacement,
-      AutoGridPts: x.AutoGridPts,
-      AutoChargeStationPts: x.AutoChargeStationPts,
-
-      TeleGridPts: x.TeleGridPts,
-      TeleChargeStationPts: x.TeleChargeStationPts
-      
-    }
-  })
-
-  return dum.length > 0 ?
+  return disp.length > 0 ?
   (<pre>
-    <div>{<TeamInnerTable information = {dum}/>} </div>
+    <div>{<TeamInnerTable information = {disp}/>} </div>
   </pre>)
   : (
     <div style={{
@@ -288,6 +255,29 @@ const renderRowSubComponent = ({ row }) => {
 }
 
 const renderRowSubComponentGrid = () => {
+//const gridStats = apiData.filter(x => x.Team === team.TeamNum)
+  /*
+    const upperGridPts = calcUpperGrid(gridStats)
+    const upperGridAcc = calcUpperGridAcc(gridStats)
+    const upperConePts = calcUpperConeGrid(gridStats)
+    const upperConeAcc = calcUpperConeAcc(gridStats)
+    const upperCubePts = calcUpperCubeGrid(gridStats)
+    const upperCubeAcc = calcUpperCubeAcc(gridStats)
+
+    const midGridPts = calcMidGrid(gridStats)
+    const midGridAcc = calcMidGridAcc(gridStats)
+    const midConePts = calcMidConeGrid(gridStats)
+    const midConeAcc = calcMidConeAcc(gridStats)
+    const midCubePts = calcMidCubeGrid(gridStats)
+    const midCubeAcc = calcMidCubeAcc(gridStats)
+
+    const lowGridPts = calcLowGrid(gridStats)
+    const lowGridAcc = calcLowAcc(gridStats)
+    const lowConePts = calcLowConeGrid(gridStats)
+    const lowConeAcc = calcLowConeAcc(gridStats)
+    const lowCubePts = calcLowCubeGrid(gridStats)
+    const lowCubeAcc = calcLowCubeAcc(gridStats)
+  */
     
   const dumTest = [
     {
@@ -786,7 +776,7 @@ const data = React.useMemo(
       },
       {
         Header: "Avg Cube Points",
-        accessor: "AvgCubePoints"
+        accessor: "AvgCubePts"
       },
       {
         Header: "Avg Cube Acc",
@@ -807,6 +797,19 @@ const data = React.useMemo(
       {
         Header: "Comments",
         accessor: "Comments",
+        Cell: ({row}) => {
+          return <div
+              style = {{
+                  minWidth: '300px',
+                  maxWidth: '300px',
+                  textAlign: 'left',
+                  padding: '5px',
+                  whiteSpace: 'break-spaces'
+              }}
+          >
+              {row.original.Comments}
+          </div>
+      }
       },
       {
         Header: "Grade",
@@ -925,18 +928,6 @@ const data = React.useMemo(
                     </td>
                   </tr>
                   )) : null}
-
-                {/*row.isExpanded && gridState === true ? (
-                  <tr>
-                    <td colSpan={visibleColumns.length}
-                    style = {{
-                      maxWidth: "1200px"
-                    }}
-                    >
-                      {renderRowSubComponentGrid ({row})}
-                    </td>
-                  </tr>
-                ) : null*/}
 
                   </React.Fragment>
             )

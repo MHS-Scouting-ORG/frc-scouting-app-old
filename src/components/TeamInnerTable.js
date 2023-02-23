@@ -27,11 +27,11 @@ const TeamInnerTable = (props) => {
                       accessor: 'GridPts',
                     },
                     {
-                        Header: 'Cone Acc',
+                        Header: '🔺 Acc',
                         accessor: 'ConeAcc'
                     },
                     {
-                        Header: 'Cube Acc',
+                        Header: '🟪 Acc',
                         accessor: 'CubeAcc'
                     },] 
             },
@@ -47,7 +47,7 @@ const TeamInnerTable = (props) => {
                         accessor: 'Mobility'
                     },
                     {
-                        Header: 'Upper Cone Pts',
+                        Header: 'Upper 🔺 Pts',
                         accessor: 'AutoUpperConePts'
                     },
                     {
@@ -55,7 +55,7 @@ const TeamInnerTable = (props) => {
                         accessor: 'AutoUpperCubePts'
                     },
                     {
-                        Header: 'Mid Cone Pts',
+                        Header: 'Mid 🔺 Pts',
                         accessor: 'AutoMidConePts'
                     },
                     {
@@ -63,7 +63,7 @@ const TeamInnerTable = (props) => {
                       accessor: 'AutoMidCubePts'
                     },
                     {
-                        Header: 'Low Cone Pts',
+                        Header: 'Low 🔺 Pts',
                         accessor: 'AutoLowConePts'
                     },
                     {
@@ -87,7 +87,7 @@ const TeamInnerTable = (props) => {
                       accessor: 'TeleUpperCubePts'
                     },
                     {
-                        Header: 'Mid Cone Pts',
+                        Header: 'Mid 🔺 Pts',
                         accessor: 'TeleMidConePts'
                     },
                     {
@@ -95,7 +95,7 @@ const TeamInnerTable = (props) => {
                       accessor: 'TeleMidCubePts'
                     },
                     {
-                        Header: 'Low Cone Pts',
+                        Header: 'Low 🔺 Pts',
                         accessor: 'TeleLowConePts'
                     },
                     {
