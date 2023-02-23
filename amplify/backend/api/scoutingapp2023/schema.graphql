@@ -91,7 +91,7 @@ type ScoringTotalType {
   GridPoints: Int
   GridScoringByPlacement: ScoringComponentType
   Cones: Int
-  Cube: Int
+  Cubes: Int
 }
 
 type EndGameTally {

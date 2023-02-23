@@ -70,7 +70,7 @@ export const getTeamMatch = /* GraphQL */ `
           Total
           GridPoints
           Cones
-          Cube
+          Cubes
         }
         DriveStrength
         DriveSpeed

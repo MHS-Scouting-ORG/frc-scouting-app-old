@@ -79,7 +79,7 @@ export const createTeamMatch = /* GraphQL */ `
           Total
           GridPoints
           Cones
-          Cube
+          Cubes
         }
         DriveStrength
         DriveSpeed
@@ -146,7 +146,7 @@ export const updateTeamMatch = /* GraphQL */ `
           Total
           GridPoints
           Cones
-          Cube
+          Cubes
         }
         DriveStrength
         DriveSpeed
@@ -213,7 +213,7 @@ export const deleteTeamMatch = /* GraphQL */ `
           Total
           GridPoints
           Cones
-          Cube
+          Cubes
         }
         DriveStrength
         DriveSpeed
