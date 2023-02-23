@@ -648,6 +648,9 @@ class Form extends React.Component{
         let matchKey = /*put this years event*//*/*/ "2022hiho"  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
         let teamNum = this.state.teamNumber;
 
+        let comments = this.state.comments;
+        let summaryComments = this.state.summaryComments;
+
         let dropVal = this.state.dropDownVal;
         let autoPlacement = dropVal[0];
         let driveStrength = dropVal[1];
@@ -667,7 +670,7 @@ class Form extends React.Component{
         let strats = this.state.strategyVal;
         let strategies = this.state.strategyVal;
         let penalties = this.state.pentalyVal;
-        let smartPlacemnet = this.state.smartPlacementVal;
+        let smartPlacement = this.state.smartPlacementVal;
 
         let counterVal =  this.state.counterBoxVals;
 
@@ -684,6 +687,20 @@ class Form extends React.Component{
         let highTeleCones = parseInt(counterVal[18]);
         let midTeleCones = parseInt(counterVal[19]);
         let lowTeleCones = parseInt(counterVal[20]);
+
+        let highCubesAutoAttempted = parseInt(counterVal[3]);
+        let midCubesAutoAttempted = parseInt(counterVal[4]);
+        let lowCubesAutoAttempted = parseInt(counterVal[5]);
+        let highCubesTeleAttempted = parseInt(counterVal[15]);
+        let midCubesTeleAttempted = parseInt(counterVal[16]);
+        let lowCubesTeleAttempted = parseInt(counterVal[17]);
+
+        let highConesAutoAttempted = parseInt(counterVal[9]);
+        let midConesAutoAttempted = parseInt(counterVal[10]);
+        let lowConesAutoAttempted = parseInt(counterVal[11]);
+        let highConesTeleAttempted = parseInt(counterVal[21]);
+        let midConesTeleAttempted = parseInt(counterVal[22]);
+        let lowConesTeleAttempted = parseInt(counterVal[23]);
 
         let cubesAttempted = parseInt(counterVal[3]) + parseInt(counterVal[4]) + parseInt(counterVal[5]) + parseInt(counterVal[15]) + parseInt(counterVal[16]) + parseInt(counterVal[17]); 
         let conesAttempted = parseInt(counterVal[9]) + parseInt(counterVal[10]) + parseInt(counterVal[11]) + parseInt(counterVal[21]) + parseInt(counterVal[22]) + parseInt(counterVal[23]);
@@ -706,9 +723,9 @@ class Form extends React.Component{
 
         let override = this.state.override;
 
-        if(endGameUsed === 'DockEngage'){
+        if(endGameUsed === 'DockedEngaged'){
             endGamePts = 10;
-        } else if(endGameUsed === "DockedNotEngaged"){
+        } else if(endGameUsed === "Docked"){
             endGamePts = 6;
         } else if(endGameUsed === 'Parked'){
             endGamePts = 2;
@@ -721,7 +738,7 @@ class Form extends React.Component{
             windowAlertMsg = windowAlertMsg + "\nWhat charge station the robot did"
         }  else{ 
             if(endGameUsed !== 'None'){
-                if(endGameUsed === 'Attempted'){
+                if(endGameUsed === 'ATTEMPTED'){
                     if(endGameStart === ''){
                         incompleteForm = true;
                         windowAlertMsg = windowAlertMsg + "\nWhat time the robot started charge station"
@@ -738,9 +755,9 @@ class Form extends React.Component{
             }
         }
 
-        if(chargeStationAuto === 'DockEngage'){
+        if(chargeStationAuto === 'DockedEngaged'){
             chargeStationPts = 12;
-        } else if(chargeStationAuto === "DockedNotEngaged"){
+        } else if(chargeStationAuto === "Docked"){
             chargeStationPts = 8;
         } else {
             chargeStationPts = 0;
@@ -786,8 +803,8 @@ class Form extends React.Component{
 
         
 
-        let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (lowCubesAttempted + midCubesAttempted + highCubesAttempted));
-        let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (lowConesAttempted + midConesAttempted + highConesAttempted));
+        let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesAttempted));
+        let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesAttempted));
         
 
         this.setState({
@@ -865,56 +882,58 @@ class Form extends React.Component{
                     Scored : {
                         Cones: {
                             Upper: Number(highAutoCones),
-                            Mid: 0,
-                            Lower: 0
+                            Mid: Number(midAutoCones),
+                            Lower:  Number(lowAutoCones)
                         },
                         Cubes : {
-                            Upper: 0,
-                            Mid: 0,
-                            Lower: 0
+                            Upper:  Number(highAutoCubes),
+                            Mid:  Number(midAutoCubes),
+                            Lower: Number(lowAutoCubes)
                         }
                     },
                     Attempted: {
                         Cones: {
-                            Upper: 0,
-                            Mid: 0,
-                            Lower: 0
+                            Upper: Number(highConesAutoAttempted),
+                            Mid: Number(midConesAutoAttempted),
+                            Lower:  Number(lowConesAutoAttempted)
                         },
                         Cubes : {
-                            Upper: 0,
-                            Mid: 0,
-                            Lower: 0
+                            Upper:  Number(highCubesAutoAttempted),
+                            Mid:  Number(midCubesAutoAttempted),
+                            Lower: Number(lowCubesAutoAttempted)
                         }
                     },
-                    LeftCommunity: true,
+                    LeftCommunity: Boolean(mobility),
+                    ChargeStation: String(chargeStationAuto),
                 },
                 Teleop : {
                     Scored : {
                         Cones: {
-                            Upper: 0,
-                            Mid: 0,
-                            Lower: 0
+                            Upper: Number(highTeleCones),
+                            Mid: Number(midTeleCones),
+                            Lower: Number(lowTeleCones)
                         },
                         Cubes : {
-                            Upper: 0,
-                            Mid: 0,
-                            Lower: 0
+                            Upper: Number(highTeleCubes),
+                            Mid: Number(midTeleCubes),
+                            Lower: Number(lowTeleCubes)
                         }
                     },
                     Attempted: {
                         Cones: {
-                            Upper: 0,
-                            Mid: 0,
-                            Lower: 0
+                            Upper: Number(highConesTeleAttempted),
+                            Mid: Number(midConesTeleAttempted),
+                            Lower: Number(lowConesTeleAttempted)
                         },
                         Cubes : {
-                            Upper: 0,
-                            Mid: 0,
-                            Lower: 0
+                            Upper: Number(highCubesTeleAttempted),
+                            Mid: Number(midCubesTeleAttempted),
+                            Lower: Number(lowCubesTeleAttempted)
                         }
                     },
                     Accuracy: -1,
                     RankingPts: Number(ranking),
+                    ChargeStation: String(endGame),
                     Penalties: {
                         Fouls: 0,
                         Tech: 0,
@@ -925,11 +944,10 @@ class Form extends React.Component{
                         BrokenBot: true   
                     }
                 },
-                SmartPlacement: true,
-                Comments: "",
+                SmartPlacement: Boolean(smartPlacement),
+                Comments: String(comments),
                 IntakeFrom: [] 
-            }
-            )
+            })
                   /*  data:{
             
             TeamId: this.state.teamNumber.substring(3, this.state.teamNumber.length),

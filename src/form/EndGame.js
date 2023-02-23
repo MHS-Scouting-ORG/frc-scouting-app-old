@@ -28,10 +28,10 @@ class EndGame extends React.Component{
                     <select onChange={this.changeEndGame}>
                         <option></option>
                         <option value='None'>None</option>
-                        <option value='DockEngage'>Docked & Engaged</option>
-                        <option value='DockedNotEngaged'>Docked & Not Enaged</option>
+                        <option value='DockedEngaged'>Docked & Engaged</option>
+                        <option value='Docked'>Docked & Not Enaged</option>
                         <option value='Parked'>Parked</option>
-                        <option value='Attempted'>Attempted</option>
+                        <option value='ATTEMPTED'>Attempted</option>
                     </select>
                 </label>
             </div>

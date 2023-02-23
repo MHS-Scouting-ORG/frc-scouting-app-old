@@ -15,9 +15,10 @@ const initScoring = _ => {
 }
 
 const ChargeStationType = {
-    DOCKED_ENGAGED : "DockedEngaged",
-    DOCKED : "Docked",
+    DOCKED_ENGAGED: "DockedEngaged",
+    DOCKED: "Docked",
     ATTEMPTED: "ATTEMPTED",
+    PARKED: "Parked",
     NONE: "None"
 }
 
@@ -49,7 +50,7 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
             LeftCommunity: false,
             ChargeStation: ChargeStationType.NONE,
         },
-        Teleop : {
+        Teleop: {
             Scored : initScoring(),
             Attempted: initScoring(),
             Accuracy: -1,
