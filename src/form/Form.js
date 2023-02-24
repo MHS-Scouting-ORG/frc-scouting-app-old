@@ -879,6 +879,64 @@ class Form extends React.Component{
 
             apiUpdateTeamMatch('2023hiho', teamNum, matchKey,  {
                 Autonomous: {
+                    //Scored: initScoring(),
+                    //Attempted: initScoring(),
+                    LeftCommunity: false,
+                    //ChargeStation: ChargeStationType.NONE,
+                },
+                Teleop: {
+                    //Scored: initScoring(),
+                    //Attempted: initScoring(),
+                    //ChargeStation: ChargeStationType.NONE,
+                    //EndGame: ChargeStationType.NONE,
+                    EndGameTally: {
+                        Start: 0,
+                        End: 0
+                    },
+                    RankingPts: [],
+                    ScoringTotal: {
+                        Total: 0,
+                        GridPoints: 0,
+                        GridScoringByPlacement: {
+                            High: 0,
+                            Mid: 0,
+                            Low: 0
+                        },
+                        Cones: 0,
+                        Cubes: 0,
+                    },
+                    DriveStrength: "",
+                    DriveSpeed: 0,
+                    ConesAccuracy: {
+                        High: 0,
+                        Mid: 0,
+                        Low: 0,
+                        Overall: 0
+                    },
+                    CubesAccuracy: {
+                        High: 0,
+                        Mid: 0,
+                        Low: 0,
+                        Overall: 0
+        
+                    },
+                    SmartPlacement: false,
+        
+                },
+                Comments: "",
+                Penalties: {
+                    Fouls: 0,
+                    Tech: 0,
+                    Yellow: 0,
+                    Red: 0,
+                    Disabled: false,
+                    DQ: false,
+                    BrokenBot: false
+                }
+        
+            }
+        )
+                /*Autonomous: {
                     Scored : {
                         Cones: {
                             Upper: Number(highAutoCones),
@@ -942,12 +1000,12 @@ class Form extends React.Component{
                         Disabled: true,
                         DQ: true,
                         BrokenBot: true   
-                    }
+                    } 
                 },
                 SmartPlacement: Boolean(smartPlacement),
                 Comments: String(comments),
                 IntakeFrom: [] 
-            })
+            }) */
                   /*  data:{
             
             TeamId: this.state.teamNumber.substring(3, this.state.teamNumber.length),
