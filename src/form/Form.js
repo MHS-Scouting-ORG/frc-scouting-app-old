@@ -9,7 +9,7 @@ import { getRegionals, getTeamsInRegional, } from "../api/bluealliance";
 import TextBox from './TextBox';
 import Headers from './Header';
 import StationTimer from './StationTimer';
-import { apiAddTeam, apiCreateTeamMatchEntry, apiSubscribeToMatchUpdates, apiUpdateTeamMatch } from '../api';
+import { apiCreateTeamMatchEntry, apiUpdateTeamMatch } from '../api';
 import { ConsoleLogger } from '@aws-amplify/core';
 import { ChargeStationType, RankingPtsOpts } from '../api/builder';
 
@@ -94,6 +94,7 @@ class Form extends React.Component {
             rankingPts: 0,
             rankingState: ' ',
             bonusVal: [' ', ' '],
+            bonusState: '',
             pentalyVal: [' ', ' ', ' ', ' ', ' '],
             dropDownVal: ['', '', '', '', ''],
             counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -772,12 +773,12 @@ class Form extends React.Component {
             chargeStationPts = 8;
         } else {
             chargeStationPts = 0;
-        }
+        } 
 
         if (chargeStationAuto === '') {
             incompleteForm = true;
             windowAlertMsg = windowAlertMsg + "\nWhat charge station the robot did"
-        }
+        } 
 
         if (mobility === ' ') {
             mobilityPts = 0;
@@ -904,7 +905,7 @@ class Form extends React.Component {
                         }
                     },
                     LeftCommunity: Boolean(mobility),
-                    ChargeStation: ChargeStationType.NONE,
+                    //ChargeStation: String(chargeStationAuto),
                 },
 
                 Teleop: {
@@ -934,12 +935,12 @@ class Form extends React.Component {
                             Lower: Number(lowCubesTeleAttempted),
                         }
                     },
-
+                    //EndGame: String(endGameUsed),
                     EndGameTally: {
                         Start: Number(endGameStart),
                         End: Number(endGameEnd)
                     },
-                    
+                    //RankingPts: Number(ranking),
                     ScoringTotal: {
                         Total: Number(points),
                         GridPoints: Number(totalGridPts),

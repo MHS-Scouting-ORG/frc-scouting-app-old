@@ -18,6 +18,7 @@ const ChargeStationType = {
     DOCKED_ENGAGED: "DockedEngaged",
     DOCKED: "Docked",
     ATTEMPTED: "ATTEMPTED",
+    PARKED: "Parked",
     NONE: "None"
 }
 
@@ -72,7 +73,6 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
         Teleop: {
             Scored: initScoring(),
             Attempted: initScoring(),
-            ChargeStation: ChargeStationType.NONE,
             EndGame: ChargeStationType.NONE,
             EndGameTally: {
                 Start: 0,
