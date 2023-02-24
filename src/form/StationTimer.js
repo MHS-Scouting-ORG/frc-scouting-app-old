@@ -31,7 +31,9 @@ class StationTimer extends React.Component{
     }
     
     stopTimer(event) {
+        const time = document.getElementById("time");
         this.props.stopButton(event, this.props.place);
+        time.value = parseInt(Math.round((this.state.timer + .1) * 10) / 10);
         this.setState({stop: true, debounce: 0});
     }
 
@@ -46,8 +48,8 @@ class StationTimer extends React.Component{
             <div>
                 <label>{this.props.label}</label>
                 <input type='number' onChange={this.timeChanged} id="time"/>
-                <button /* value={this.props.state} */ onClick={this.runTimer}>Start</button>
                 <br></br>
+                <button /* value={this.props.state} */ onClick={this.runTimer}>Start</button>
                 <button /* value={this.props.state} */ onClick={this.stopTimer}>Stop</button>
             </div>
         )

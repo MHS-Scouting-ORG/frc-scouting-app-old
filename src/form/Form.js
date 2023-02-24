@@ -89,7 +89,6 @@ class Form extends React.Component {
             override: false,
             endGameVal: ['', '', ''],
             chargeStationValAuto: '',
-            endGameTimer: 0.0,
             whoWon: '',
             checkedWhoWon: [' ', ' '],
             rankingPts: 0,
@@ -449,12 +448,13 @@ class Form extends React.Component {
 
     stopTimer(event) {
         let endGameTimerState = this.state.endGameTimer
-        console.log(endGameTimerState)
         endGameTimerState = parseInt(Math.round(event.target.value + .1) * 10) / 10;
+        console.log(endGameTimerState)
         return true;
     }
 
     timeChanged(event) {
+        console.log("yo")
         let endGameTimerState = this.state.endGameTimer
         if (event.target.value === '') {
             endGameTimerState = 0;
@@ -1040,6 +1040,7 @@ class Form extends React.Component {
                 {this.makeCounterBox("Mid Cones Attempted: ", 22)}
                 {this.makeCounterBox("Low Cones Attempted: ", 23)}
                 <br></br>
+                {/*this.makeChargeStationTimer("Charge Station Timer: ")*/}
                 {this.makeEndGameDropDown()}
                 {this.makeEndGameStartEndBox()}
                 <br></br>
