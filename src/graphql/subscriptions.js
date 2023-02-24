@@ -52,22 +52,52 @@ export const onCreateTeamMatch = /* GraphQL */ `
         ChargeStation
       }
       Teleop {
-        Accuracy
+        Accuracy {
+          High
+          Mid
+          Low
+          Overall
+        }
         RankingPts
         ChargeStation
-        Penalties {
-          Fouls
-          Tech
-          Yellow
-          Red
-          Disabled
-          DQ
-          BrokenBot
+        EndGame
+        EndGameTally {
+          Start
+          End
         }
+        ScoringTotal {
+          Total
+          GridPoints
+          Cones
+          Cubes
+        }
+        DriveStrength
+        DriveSpeed
+        ConesAccuracy {
+          High
+          Mid
+          Low
+          Overall
+        }
+        CubesAccuracy {
+          High
+          Mid
+          Low
+          Overall
+        }
+        SmartPlacement
       }
-      SmartPlacement
       Comments
-      IntakeFrom
+      Penalties {
+        Fouls
+        Tech
+        Yellow
+        Red
+        Disabled
+        DQ
+        BrokenBot
+      }
+      Priorities
       createdAt
       updatedAt
     }
@@ -88,22 +118,52 @@ export const onUpdateTeamMatch = /* GraphQL */ `
         ChargeStation
       }
       Teleop {
-        Accuracy
+        Accuracy {
+          High
+          Mid
+          Low
+          Overall
+        }
         RankingPts
         ChargeStation
-        Penalties {
-          Fouls
-          Tech
-          Yellow
-          Red
-          Disabled
-          DQ
-          BrokenBot
+        EndGame
+        EndGameTally {
+          Start
+          End
         }
+        ScoringTotal {
+          Total
+          GridPoints
+          Cones
+          Cubes
+        }
+        DriveStrength
+        DriveSpeed
+        ConesAccuracy {
+          High
+          Mid
+          Low
+          Overall
+        }
+        CubesAccuracy {
+          High
+          Mid
+          Low
+          Overall
+        }
+        SmartPlacement
       }
-      SmartPlacement
       Comments
-      IntakeFrom
+      Penalties {
+        Fouls
+        Tech
+        Yellow
+        Red
+        Disabled
+        DQ
+        BrokenBot
+      }
+      Priorities
       createdAt
       updatedAt
     }
@@ -124,22 +184,52 @@ export const onDeleteTeamMatch = /* GraphQL */ `
         ChargeStation
       }
       Teleop {
-        Accuracy
+        Accuracy {
+          High
+          Mid
+          Low
+          Overall
+        }
         RankingPts
         ChargeStation
-        Penalties {
-          Fouls
-          Tech
-          Yellow
-          Red
-          Disabled
-          DQ
-          BrokenBot
+        EndGame
+        EndGameTally {
+          Start
+          End
         }
+        ScoringTotal {
+          Total
+          GridPoints
+          Cones
+          Cubes
+        }
+        DriveStrength
+        DriveSpeed
+        ConesAccuracy {
+          High
+          Mid
+          Low
+          Overall
+        }
+        CubesAccuracy {
+          High
+          Mid
+          Low
+          Overall
+        }
+        SmartPlacement
       }
-      SmartPlacement
       Comments
-      IntakeFrom
+      Penalties {
+        Fouls
+        Tech
+        Yellow
+        Red
+        Disabled
+        DQ
+        BrokenBot
+      }
+      Priorities
       createdAt
       updatedAt
     }

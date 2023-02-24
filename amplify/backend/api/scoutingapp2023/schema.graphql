@@ -22,6 +22,27 @@ enum ChargeStationType {
   Docked
   Attempted
   None
+  Parked
+}
+
+enum RankingPtsOpts {
+  Win
+  Tie
+  Loss
+  SustainabilityBonus
+  ActivationBonus
+}
+
+enum PriorityOpts {
+  Low
+  Mid
+  Upper
+  Cones
+  Cubes
+  ChargeStation
+  Defense
+  SingleSubstation
+  DoubleStation
 }
 
 type ScorePos {
@@ -45,20 +66,54 @@ type AutonomousType {
 type PenaltiesType {
   Fouls: Int
   Tech: Int
-  Yellow: Int
-  Red: Int
+  Yellow: Boolean
+  Red: Boolean
   Disabled: Boolean
   DQ: Boolean
   BrokenBot: Boolean
 }
 
+type Accuracy {
+  High: Int
+  Mid: Int
+  Low: Int
+  Overall: Int
+}
+
+type ScoringComponentType {
+  High: Int
+  Mid: Int
+  Low: Int
+}
+
+type ScoringTotalType {
+  Total: Int
+  GridPoints: Int
+  GridScoringByPlacement: ScoringComponentType
+  Cones: Int
+  Cubes: Int
+}
+
+type EndGameTally {
+  Start: Int
+  End: Int
+}
+
 type TeleopType {
   Scored: Scoring!
   Attempted: Scoring!
-  Accuracy: Int
-  RankingPts: Int
+  Accuracy: Accuracy
+  RankingPts: [RankingPtsOpts]
   ChargeStation: ChargeStationType
-  Penalties: PenaltiesType
+  EndGame: ChargeStationType
+  EndGameTally: EndGameTally
+  ScoringTotal: ScoringTotalType
+  DriveStrength: String
+  DriveSpeed: String
+  ConesAccuracy: Accuracy
+  CubesAccuracy: Accuracy
+  SmartPlacement: Boolean
+
 }
 
 type TeamMatch @model @auth(rules : [{ allow: private, provider: iam}]) {
@@ -69,7 +124,8 @@ type TeamMatch @model @auth(rules : [{ allow: private, provider: iam}]) {
   Regional: String! @index
   Autonomous: AutonomousType!
   Teleop: TeleopType!
-  SmartPlacement: Boolean
   Comments: String
-  IntakeFrom: [IntakeType]
+  Penalties: PenaltiesType
+  Priorities: PriorityOpts
+
 }
