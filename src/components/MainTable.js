@@ -220,28 +220,29 @@ const renderRowSubComponent = ({ row }) => {
             ConeAcc: x.ConeAccuracy !== null ? x.ConeAccuracy.toFixed(2) : '',
             CubeAcc: x.CubeAccurary !== null ? x.CubeAccuracy.toFixed(2) : '',
             AutoPlacement: x.AutoPlacement,
-            Mobility: x.LeftCommunity,
+            Mobility: x.Autonomous.LeftCommunity,
             AutoUpperConePts: `${x.AutoHighConesScored}/${x.AutoHighConesScored + x.AutoHighConesAttempted}`,
             AutoUpperCubePts: `${x.AutoHighCubesScored}/${x.AutoHighCubesScored + x.AutoHighCubesAttempted}`,
             AutoMidConePts: `${x.AutoMidConesScored}/${x.AutoMidConesScored + x.AutoMidConesAttempted}`,
             AutoMidCubePts: `${x.AutoMidCubesScored}/${x.AutoMidCubesScored + x.AutoMidCubesAttempted}`,
             AutoLowConePts: `${x.AutoLowConesScored}/${x.AutoLowConesScored + x.AutoLowConesAttempted}`,
             AutoLowCubePts: `${x.AutoLowCubesScored}/${x.AutoLowCubesScored + x.AutoLowCubesScored}`,
-            AutoChargeStationPts: x.ChargeStation,
-            TeleUpperConePts: `${x.TeleHighConesScored}/${x.TeleHighConesScored + x.TeleHighConesAttempted}`,
+            AutoChargeStationPts: x.Autonomous.ChargeStation,
+            TeleUpperConePts: `${x.
+            }/${x.TeleHighConesScored + x.TeleHighConesAttempted}`,
             TeleUpperCubePts: `${x.TeleHighConesScored}/${x.TeleHighConesScored + x.TeleHighConesAttempted}`,
             TeleMidConePts: `${x.TeleMidConesScored}/${x.TeleMidConesScored + x.TeleMidConesAttempted}`,
             TeleMidCubePts: `${x.TeleMidCubesScored}/${x.TeleMidCubesScored + x.TeleMidCubesAttempted}`,
             TeleLowConePts: `${x.TeleLowConesScored}/${x.TeleLowConesScored + x.TeleLowConesAttempted}`,
             TeleLowCubePts: `${x.TeleLowCubesScored}/${x.TeleLowCubesScored + x.TeleLowCubesAttempted}`,
             TeleEndgame: x.EndGame !== undefined ? x.EndGame : '',
-            CSStart: x.EndGameStart !== undefined ? x.EndGameStart : '',
-            CSEnd: x.EndGameEnd !== undefined ? x.EndGameEnd : '',
+            CSStart: x.Teleop.EndGameTally.Start !== undefined ? x.Teleop.EndGameTally.Start : '',
+            CSEnd: x.Teleop.EndGameTally.End !== undefined ? x.Teleop.EndGameTally.End : '',
             EndComments: x.EndGameComments !== undefined ? x.EndGameComments.trim() : '',
-            DriveStrength: x.DriveStrength !== undefined ? x.DriveStrength : '',
-            DriveSpeed: x.DriveSpeed !== undefined ? x.DriveSpeed : '',
-            SmartPlacement: x.SmartPlacement,
-            NumberofFoulAndTech: x.Fouls !== undefined && x.TechFouls !== undefined ? `${x.Fouls} | ${x.TechFouls}` : '',
+            DriveStrength: x.Teleop.DriveStrength !== undefined ? x.Teleop.DriveStrength : '',
+            DriveSpeed: x.Teleop.DriveSpeed !== undefined ? x.Teleop.DriveSpeed : '',
+            SmartPlacement: x.Teleop.SmartPlacement,
+            NumberofFoulAndTech: x.Penalties.Fouls !== undefined && x.Penalties.TechFouls !== undefined ? `${x.Penalties.Fouls} | ${x.Penalties.TechFouls}` : '',
             Penalties: x.Penalties !== undefined && x.Penalties.filter(val => val.trim() !== '').length !== 0 ? x.Penalties.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
             */
             NumberOfRankingPoints: x.Teleop.RankingPts !== undefined ? x.Teleop.RankingPts : '',
@@ -266,26 +267,61 @@ const renderRowSubComponent = ({ row }) => {
 const renderRowSubComponentGrid = () => {
 //const gridStats = apiData.filter(x => x.Team === team.TeamNum)
   /*
-    const upperGridPts = calcUpperGrid(gridStats)
-    const upperGridAcc = calcUpperGridAcc(gridStats)
-    const upperConePts = calcUpperConeGrid(gridStats)
-    const upperConeAcc = calcUpperConeAcc(gridStats)
-    const upperCubePts = calcUpperCubeGrid(gridStats)
-    const upperCubeAcc = calcUpperCubeAcc(gridStats)
 
-    const midGridPts = calcMidGrid(gridStats)
-    const midGridAcc = calcMidGridAcc(gridStats)
-    const midConePts = calcMidConeGrid(gridStats)
-    const midConeAcc = calcMidConeAcc(gridStats)
-    const midCubePts = calcMidCubeGrid(gridStats)
-    const midCubeAcc = calcMidCubeAcc(gridStats)
+  const gridStats = apiData.filter(x => x.Team === `frc${row.values.TeamNumber}`)
 
-    const lowGridPts = calcLowGrid(gridStats)
-    const lowGridAcc = calcLowAcc(gridStats)
-    const lowConePts = calcLowConeGrid(gridStats)
-    const lowConeAcc = calcLowConeAcc(gridStats)
-    const lowCubePts = calcLowCubeGrid(gridStats)
-    const lowCubeAcc = calcLowCubeAcc(gridStats)
+  const upperGridPts = calcUpperGrid(gridStats)
+  const upperGridAcc = calcUpperGridAcc(gridStats)
+
+  const upperConePts = calcUpperConeGrid(gridStats)
+  const upperConeAcc = calcUpperConeAcc(gridStats)
+  const upperCubePts = calcUpperCubeGrid(gridStats)
+  const upperCubeAcc = calcUpperCubeAcc(gridStats)
+
+  const midGridPts = calcMidGrid(gridStats)
+  const midGridAcc = calcMidGridAcc(gridStats)
+
+  const midConePts = calcMidConeGrid(gridStats)
+  const midConeAcc = calcMidConeAcc(gridStats)
+  const midCubePts = calcMidCubeGrid(gridStats)
+  const midCubeAcc = calcMidCubeAcc(gridStats)
+
+  const lowGridPts = calcLowGrid(gridStats)
+  const lowGridAcc = calcLowAcc(gridStats)
+
+  const lowConePts = calcLowConeGrid(gridStats)
+  const lowConeAcc = calcLowConeAcc(gridStats)
+  const lowCubePts = calcLowCubeGrid(gridStats)
+  const lowCubeAcc = calcLowCubeAcc(gridStats)
+
+    return {
+      AvgUpper: calcUpperGrid(gridStats),
+      AvgUpperAcc: calcUpperGridAcc(gridStats),
+
+      AvgUpperCone: calcUpperConeGrid(gridStats),
+      AvgUpperConeAcc: calcUpperConeAcc(gridStats),
+      AvgUpperCube: calcUpperCubeGrid(gridStats), 
+      AvgUpperCubeAcc: calcUpperCubeAcc(gridStats),
+
+      AvgMid: calcMidGrid(gridStats),
+      AvgMidAcc: calcMidGridAcc(gridStats),
+
+      AvgMidCone: calcMidConeGrid(gridStats),
+      AvgMidConeAcc: calcMidConeAcc(gridStats),
+      AvgMidCube: calcMidCubeGrid(gridStats),
+      AvgMidCubeAcc: calcMidCubeAcc(gridStats),
+
+      AvgLower: calcLowGrid(gridStats),
+      AvgLowerAcc: calcLowAcc(gridStats),
+
+      AvgLowerCone: calcLowConeGrid(gridStats),
+      AvgLowerConeAcc: calcLowConeAcc(gridStats),
+      AvgLowerCube: calcLowCubeGrid(gridStats),
+      AvgLowerCubeAcc: calcLowCubeAcc(gridStats),
+
+    };
+  
+    
   */
     
   const dumTest = [
@@ -580,7 +616,7 @@ function tableHandler(row){
 
   //avg total points
   const calcAvgPoints = (arr) => { //average points
-    let individualPts = arr.map(val => val.TotalPoints);
+    let individualPts = arr.map(val => val.Teleop.ScoringTotal.Total);
     let totalPts = 0;
     for(let i = 0; i < individualPts.length; i++){
       totalPts = totalPts + individualPts[i]; //total pts
@@ -591,7 +627,7 @@ function tableHandler(row){
 
   //avg grid points
   const calcAvgGrid = (arr) => {
-    let individualPts = arr.map(val => val.TotalGridPoints);
+    let individualPts = arr.map(val => val.Teleop.ScoringTotal.GridPoints);
     let totalPts = 0;
     for(let i = 0; i < individualPts.length; i++){
       totalPts = totalPts + individualPts[i];
@@ -602,7 +638,7 @@ function tableHandler(row){
 
   //avg total cone and cube points and acc
   const calcTotalCones = (arr) => {
-    let totalCones = arr.map(val => val.ConeTotalPoints);
+    let totalCones = arr.map(val => val.Teleop.ScoringTotal.Cones);
     let sumTotalCones = 0;
     for(let i = 0; i < totalCones.length; i++){
       sumTotalCones = sumTotalCones + totalCones[i];
@@ -612,7 +648,7 @@ function tableHandler(row){
   }
 
   const calcTotalConesAcc = (arr) => {
-    let totalConesAcc = arr.map(val => val.ConesAccuracy);
+    let totalConesAcc = arr.map(val => val.Teleop.ConesAccuracy.Overall);
     let sumTotalConesAcc = 0;
     for(let i = 0; i < totalConesAcc.length; i++){
       sumTotalConesAcc = sumTotalConesAcc / totalConesAcc.length;
@@ -622,7 +658,7 @@ function tableHandler(row){
   }
 
   const calcTotalCubes = (arr) => {
-    let totalCubes = arr.map(val => val.CubeTotalPoints);
+    let totalCubes = arr.map(val => val.Teleop.ScoringTotal.Cubes);
     let sumTotalCubes = 0;
     for(let i = 0; i < totalCubes.length; i++){
       sumTotalCubes = sumTotalCubes + totalCubes[i];
@@ -632,7 +668,7 @@ function tableHandler(row){
   }
 
   const calcTotalCubesAcc = (arr) => {
-    let totalCubesAcc = arr.map(val => val.CubesAccuracy);
+    let totalCubesAcc = arr.map(val => val.Teleop.CubesAccuracy.Overall);
     let sumTotalCubesAcc = 0;
     for(let i = 0; i < totalCubesAcc.length; i++){
       sumTotalCubesAcc = sumTotalCubesAcc + totalCubesAcc[i];
@@ -643,7 +679,7 @@ function tableHandler(row){
 
   //avg UPPER grid stuff
   const calcUpperGrid = (arr) => {
-    let upper = arr.map(val => val.HighGridPoints);
+    let upper = arr.map(val => val.Teleop.ScoringTotal.GridScoringByPlacement.High);
     let sumUpper = 0;
     for(let i = 0; i < upper.length; i++){
       sumUpper = sumUpper + upper[i];
@@ -653,7 +689,7 @@ function tableHandler(row){
   }
 
   const calcUpperGridAcc = (arr) => {
-    let upperAcc = arr.map(val => val.HighAccuracy);
+    let upperAcc = arr.map(val => (val.Teleop.ConeAccuracy.High + val.Teleop.CubeAccuracy.High));
     let sumUpperAcc = 0;
     for(let i = 0; i < upperAcc.length; i++){
       sumUpperAcc = sumUpperAcc + upperAcc[i];
@@ -704,7 +740,7 @@ function tableHandler(row){
 
   //avg MID grid stuff
   const calcMidGrid = (arr) => {
-    let mid = arr.map(val => val.MidGridPoints);
+    let mid = arr.map(val => val.Teleop.ScoringTotal.GridScoringByPlacement.Mid);
     let sumMid = 0;
     for(let i = 0; i < mid.length; i++){
       sumMid = sumMid + mid.length[i];
@@ -714,7 +750,7 @@ function tableHandler(row){
   }
 
   const calcMidGridAcc = (arr) => {
-    let midAcc = arr.map(val => val.MidAccuracy);
+    let midAcc = arr.map(val => (val.Teleop.ConeAccuracy.Mid + val.Teleop.CubeAccuracy.Mid));
     let sumMidAcc = 0;
     for(let i = 0; i < midAcc.length; i++){
       sumMidAcc = sumMidAcc + midAcc[i];
@@ -765,7 +801,7 @@ function tableHandler(row){
 
   //avg LOW grid stuff
   const calcLowGrid = (arr) => {
-    let low = arr.map(val => (val.LowGridPoints));
+    let low = arr.map(val => val.Teleop.ScoringTotal.GridScoringByPlacement.Low);
     let sumLow = 0;
     for(let i = 0; i < low.length; i++){
       sumLow = sumLow + low[i];
@@ -775,7 +811,7 @@ function tableHandler(row){
   }
 
   const calcLowAcc = (arr) => {
-    let lowAcc = arr.map(val => val.LowAccuracy);
+    let lowAcc = arr.map(val => (val.Teleop.ConeAccuracy.Low + val.Teleop.CubeAccuracy.Low));
     let sumLowAcc = 0;
     for(let i = 0; i < lowAcc.length; i++){
       sumLowAcc = sumLowAcc + lowAcc[i];
@@ -827,13 +863,13 @@ function tableHandler(row){
   //charge station
   const calcChargeStation = (arr) => {  //for auto bc calculating endgame is a diff method
     let chargeStation = arr.map(val => {
-      if(val.ChargeStation === 'None' || val.ChargeStation === 'Attempted'){
+      if(val.Teleop.ChargeStation === 'None' || val.Teleop.ChargeStation === 'Attempted'){
         return 0;
       }
-      else if(val.ChargeStation === 'DockedNotEngaged'){
+      else if(val.Teleop.ChargeStation === 'DockedNotEngaged'){
         return 10;
       }
-      else if(val.ChargeStation === 'DockedEngage'){
+      else if(val.Teleop.ChargeStation === 'DockedEngage'){
         return 12;
       }
       else{
@@ -852,16 +888,16 @@ function tableHandler(row){
 
   const calcEndgame = (arr) => { //only for teleop
     let endgame = arr.map(val => {
-      if(val.EndGame === 'None' || val.EndGame === 'Attempted'){
+      if(val.Teleop.EndGame === 'None' || val.Teleop.EndGame === 'Attempted'){
         return 0;
       }
-      else if(val.EndGame === 'Parked'){
+      else if(val.Teleop.EndGame === 'Parked'){
         return 2;
       }
-      else if(val.EndGame === 'DockedNotEngaged'){
+      else if(val.Teleop.EndGame === 'DockedNotEngaged'){
         return 6;
       }
-      else if(val.EndGame === 'DockedEngage'){
+      else if(val.Teleop.EndGame === 'DockedEngage'){
         return 8;
       }
       else{
