@@ -91,7 +91,7 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
                 Cubes: 0,
             },
             DriveStrength: "",
-            DriveSpeed: 0,
+            DriveSpeed: "",
             ConesAccuracy: {
                 High: 0,
                 Mid: 0,
@@ -129,4 +129,4 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
  * ChargeStationType - enum of valid charge stations types
  * IntakeType - enum of valid intake types
  */
-export { ChargeStationType, IntakeType, buildMatchEntry as default }
+export { ChargeStationType, IntakeType, RankingPtsOpts, buildMatchEntry as default }
