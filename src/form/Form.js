@@ -935,7 +935,7 @@ class Form extends React.Component {
                             Lower: Number(lowCubesTeleAttempted),
                         }
                     },
-                    //EndGame: String(endGameUsed),
+                    EndGame: String(endGameUsed),
                     EndGameTally: {
                         Start: Number(endGameStart),
                         End: Number(endGameEnd)
