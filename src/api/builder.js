@@ -16,10 +16,10 @@ const initScoring = _ => {
 
 const PenaltyKinds = {
     YELLOW_CARD: "YellowCard",
-    RED_CARD: "RedCard", 
-    DISABLED: "Disabled", 
-    DQ: "DQ", 
-    BROKEN_BOT: "BrokenBot", 
+    RED_CARD: "RedCard",
+    DISABLED: "Disabled",
+    DQ: "DQ",
+    BROKEN_BOT: "BrokenBot",
     NO_SHOW: "NoShow",
     NONE: "None"
 
@@ -90,7 +90,7 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
                 Start: 0,
                 End: 0
             },
-            RankingPts: [],
+
             ScoringTotal: {
                 Total: 0,
                 GridPoints: 0,
@@ -120,6 +120,7 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
             SmartPlacement: false,
 
         },
+        RankingPts: [],
         Comments: "",
         Penalties: {
             Fouls: 0,
