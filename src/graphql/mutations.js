@@ -58,6 +58,7 @@ export const createTeamMatch = /* GraphQL */ `
       Team
       Regional
       Autonomous {
+        AutonomousPlacement
         LeftCommunity
         ChargeStation
       }
@@ -68,7 +69,6 @@ export const createTeamMatch = /* GraphQL */ `
           Low
           Overall
         }
-        RankingPts
         ChargeStation
         EndGame
         EndGameTally {
@@ -101,13 +101,10 @@ export const createTeamMatch = /* GraphQL */ `
       Penalties {
         Fouls
         Tech
-        Yellow
-        Red
-        Disabled
-        DQ
-        BrokenBot
+        Penalties
       }
       Priorities
+      RankingPts
       createdAt
       updatedAt
     }
@@ -125,6 +122,7 @@ export const updateTeamMatch = /* GraphQL */ `
       Team
       Regional
       Autonomous {
+        AutonomousPlacement
         LeftCommunity
         ChargeStation
       }
@@ -135,7 +133,6 @@ export const updateTeamMatch = /* GraphQL */ `
           Low
           Overall
         }
-        RankingPts
         ChargeStation
         EndGame
         EndGameTally {
@@ -168,13 +165,10 @@ export const updateTeamMatch = /* GraphQL */ `
       Penalties {
         Fouls
         Tech
-        Yellow
-        Red
-        Disabled
-        DQ
-        BrokenBot
+        Penalties
       }
       Priorities
+      RankingPts
       createdAt
       updatedAt
     }
@@ -192,6 +186,7 @@ export const deleteTeamMatch = /* GraphQL */ `
       Team
       Regional
       Autonomous {
+        AutonomousPlacement
         LeftCommunity
         ChargeStation
       }
@@ -202,7 +197,6 @@ export const deleteTeamMatch = /* GraphQL */ `
           Low
           Overall
         }
-        RankingPts
         ChargeStation
         EndGame
         EndGameTally {
@@ -235,13 +229,10 @@ export const deleteTeamMatch = /* GraphQL */ `
       Penalties {
         Fouls
         Tech
-        Yellow
-        Red
-        Disabled
-        DQ
-        BrokenBot
+        Penalties
       }
       Priorities
+      RankingPts
       createdAt
       updatedAt
     }
