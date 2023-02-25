@@ -17,7 +17,7 @@ const initScoring = _ => {
 const ChargeStationType = {
     DOCKED_ENGAGED: "DockedEngaged",
     DOCKED: "Docked",
-    ATTEMPTED: "ATTEMPTED",
+    ATTEMPTED: "Attempted",
     PARKED: "Parked",
     NONE: "None"
 }

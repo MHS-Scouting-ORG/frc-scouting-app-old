@@ -31,7 +31,7 @@ class EndGame extends React.Component{
                         <option value='DockedEngaged'>Docked & Engaged</option>
                         <option value='Docked'>Docked & Not Enaged</option>
                         <option value='Parked'>Parked</option>
-                        <option value='ATTEMPTED'>Attempted</option>
+                        <option value='Attempted'>Attempted</option>
                     </select>
                 </label>
             </div>

@@ -26,7 +26,7 @@ class ChargeStation extends React.Component{
                         <option value='None'>None</option>
                         <option value='DockedEngaged'>Docked & Engaged</option>
                         <option value='Docked'>Docked & Not Enaged</option>
-                        <option value='ATTEMPTED'>Attempted</option>
+                        <option value='Attempted'>Attempted</option>
                     </select>
                 </label>
             </div>

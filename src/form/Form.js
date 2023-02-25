@@ -61,6 +61,10 @@ class Form extends React.Component {
         this.smartPlacementChecked = this.smartPlacementChecked.bind(this);
         this.makeSmartPlacementBox = this.makeSmartPlacementBox.bind(this);
 
+        // TESTING this out
+        this.changeBooleanCheckBox = this.changeBooleanCheckBox.bind(this);
+        this.makeBooleanCheckBox = this.makeBooleanCheckBox.bind(this);
+
         this.bonusBoxChecked = this.bonusBoxChecked.bind(this);
         this.makeBonusBox = this.makeBonusBox.bind(this);
 
@@ -92,20 +96,19 @@ class Form extends React.Component {
             whoWon: '',
             checkedWhoWon: [' ', ' '],
             rankingPts: 0,
-            rankingState: ' ',
+            rankingState: ["","",""],
             bonusVal: [' ', ' '],
             bonusState: '',
             pentalyVal: [' ', ' ', ' ', ' ', ' '],
             dropDownVal: ['', '', '', '', ''],
             counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            smartPlacementVal: '',
+            //smartPlacementVal: false,
             strategyVal: [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-            mobilityVal: '',
+            //mobilityVal: false,
+            booleans: [false, false],
             totalPoints: 0,
             cubesAccuracy: 0,
             conesAccuracy: 0,
-
-
         }
     }
 
@@ -281,7 +284,7 @@ class Form extends React.Component {
                 whoWon[i] = label;
             }
 
-            if (whoWon[0] === ' ' && whoWon[1] === ' ') {
+            if (whoWon[0] === ' ' && whoWon[1] === ' ' && label === "Team Lose ") {
                 this.setState({ rankingPts: 0 });
                 this.setState({rankingState: "Lose"})
             }
@@ -319,12 +322,33 @@ class Form extends React.Component {
     }
 
     makeStrategyBox(name, i) {
+        
         return (
             <div>
                 <CheckBox
                     label={name}
                     changeCheckBoxState={this.strategyBox}
                     place={i}
+                  
+                />
+            </div>
+        )
+    }
+
+    changeBooleanCheckBox(i){
+        let booleanStates = this.state.booleans
+        booleanStates[i] = !booleanStates[i]
+    }
+
+    makeBooleanCheckBox(name,i){
+        let booleans = this.state.booleans;
+        return (
+            <div>
+                <CheckBox
+                    label={name}
+                    changeCheckBoxState={this.changeBooleanCheckBox}
+                    place={i}
+                    //checked={booleans[i]}
                 />
             </div>
         )
@@ -512,9 +536,9 @@ class Form extends React.Component {
     smartPlacementChecked(label) {
         let smartPlacementState = this.state.smartPlacementVal;
         if (smartPlacementState === label) {
-            smartPlacementState = ' ';
+            smartPlacementState = false;
         } else {
-            smartPlacementState = label;
+            smartPlacementState = true;
         }
     }
 
@@ -568,19 +592,26 @@ class Form extends React.Component {
     mobilityBoxClick(i, label) {
         let mobilityState = this.state.mobilityVal;
         if (mobilityState === label) {
-            mobilityState = ' ';
+            mobilityState = false;
         } else {
-            mobilityState = label;
+            mobilityState = true;
         }
     }
 
     makeMobilityBox(name, i) {
+        let mobilityState = this.state.mobilityVal;
+        if (mobilityState === name) {
+            mobilityState = true;
+        } else{
+            mobilityState = false;
+        }
         return (
             <div>
                 <CheckBox
                     label={name}
                     changeCheckBoxState={this.mobilityBoxClick}
                     place={i}
+                    checked={mobilityState}
                 />
             </div>
         )
@@ -671,15 +702,16 @@ class Form extends React.Component {
         let endGame = this.state.endGameVal;
         let endGameUsed = endGame[0];
         let endGameStart = endGame[1];
-        let endGameEnd = endGame[3];
+        let endGameEnd = endGame[2];
 
         let chargeStationAuto = this.state.chargeStationValAuto;
+        let booleans = this.state.booleans;
 
         let bonuses = this.state.bonusVal;
         let strats = this.state.strategyVal;
         let strategies = this.state.strategyVal;
         let penalties = this.state.pentalyVal;
-        let smartPlacement = this.state.smartPlacementVal;
+        let smartPlacement = booleans[1]; //this.state.smartPlacementVal;
 
         let counterVal = this.state.counterBoxVals;
 
@@ -724,7 +756,7 @@ class Form extends React.Component {
         let lowCubesAttempted = parseInt(counterVal[5]) + parseInt(counterVal[17]);
         let lowConesAttempted = parseInt(counterVal[11]) + parseInt(counterVal[23]);
 
-        let mobility = this.state.mobilityVal;
+        let mobility = booleans[0]; //this.state.mobilityVal;
 
         let endGamePts = 0;
         let chargeStationPts = 0;
@@ -750,7 +782,7 @@ class Form extends React.Component {
             windowAlertMsg = windowAlertMsg + "\nWhat charge station the robot did"
         } else {
             if (endGameUsed !== 'None') {
-                if (endGameUsed === 'ATTEMPTED') {
+                if (endGameUsed === 'Attemped') {
                     if (endGameStart === '') {
                         incompleteForm = true;
                         windowAlertMsg = windowAlertMsg + "\nWhat time the robot started charge station"
@@ -780,7 +812,7 @@ class Form extends React.Component {
             windowAlertMsg = windowAlertMsg + "\nWhat charge station the robot did"
         } 
 
-        if (mobility === ' ') {
+        if (mobility === false) {
             mobilityPts = 0;
         } else {
             mobilityPts = 2;
@@ -905,8 +937,8 @@ class Form extends React.Component {
                         }
                     },
                     LeftCommunity: Boolean(mobility),
-                    //ChargeStation: String(chargeStationAuto),
-                },
+                    ChargeStation: String(chargeStationAuto),
+                }, 
 
                 Teleop: {
                     Scored: {
@@ -981,7 +1013,10 @@ class Form extends React.Component {
                 }
 
             }
-            ) 
+            )
+            .then(data => {
+                console.log(data)
+            })
         }
         console.log(this.state);
     }
@@ -1019,7 +1054,7 @@ class Form extends React.Component {
                 {this.makeCounterBox("Mid Cones Attempted: ", 10)}
                 {this.makeCounterBox("Low Cones Attempted: ", 11)}
                 <br></br>
-                {this.makeMobilityBox("Mobility ")}
+                {this.makeBooleanCheckBox("Mobility ", 0)}{/*this.makeMobilityBox("Mobility ")*/}
                 <br></br>
                 {this.makeChargeStationAuto()}
                 <br></br>
@@ -1045,7 +1080,7 @@ class Form extends React.Component {
                 {this.makeEndGameDropDown()}
                 {this.makeEndGameStartEndBox()}
                 <br></br>
-                {this.makeSmartPlacementBox("Smart Placement ")}
+                {this.makeBooleanCheckBox("Smart Placement ", 1)}{/*this.makeSmartPlacementBox("Smart Placement ")*/}
                 <br></br>
                 {this.makeDropDownBox("Drive Strength: ", ["Weak", "Normal", "Strong"], 1)}
                 {this.makeDropDownBox("Drive Speed: ", ["Slow", "Fast", "Really Fast"], 2)}
@@ -1063,6 +1098,7 @@ class Form extends React.Component {
                 <h3>RANKING POINTS</h3>
                 {this.makeWhoWonBox("Team Won ", 0)}
                 {this.makeWhoWonBox("Team Tied ", 1)}
+                {this.makeWhoWonBox("Team Lose ", 2)}
                 {this.makeBonusBox("Activation ", 0)}
                 {this.makeBonusBox("Sustainability ", 1)}
                 <Headers display={this.state.rankingPts} bonus={this.state.bonusVal} />
