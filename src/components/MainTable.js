@@ -34,9 +34,9 @@ function MainTable(props) {
 
 
    useEffect(() => {
-    getMatchesForRegional(props.regional)
+    getMatchesForRegional('2023hiho', 'frc3881')
     .then(data => {
-      //console.log(data)
+      console.log(data)
     })
     //console.log((getMatchesForRegional('2023week0')))
   },[]) //debug purposes or test ^ 
@@ -55,7 +55,6 @@ function MainTable(props) {
     .then(data => {
       setApiData(data.data.teamMatchesByRegional.items)
       console.log(apiData) // same as console logging data
-      console.log(data)
       //console.log(data.data)
     })
     .catch(console.log.bind(console))
@@ -122,7 +121,7 @@ function MainTable(props) {
 
    useEffect(() => setAverages(oprData.map(team => {
     const teamStats = apiData.filter(x => x.Team === team.TeamNum)
-    //console.log(teamStats)
+    console.log(teamStats)
     /*
     const points = x.TotalPoints
     const avgPoints = calcAvgPoints(teamStats)
@@ -131,15 +130,15 @@ function MainTable(props) {
     const totalConeAcc = calcTotalConesAcc(teamStats)
     const totalCubePts = calcTotalCubes(teamStats)
     const totalCubeAcc = calcTotalCubeAcc(teamStats)
-    const priorities = getPriorities(teamStats)
     */
+    //const priorities = getPriorities(teamStats)
     //console.log(team)
 
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
       OPR: team.OPR,
-      Priorities: team.Priorities,
+      Priorities: team.Priorities,//priorities.join(', '),
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgGridPoints: team.AvgGridPoints,
@@ -244,7 +243,6 @@ const renderRowSubComponent = ({ row }) => {
             SmartPlacement: x.Teleop.SmartPlacement,
             NumberofFoulAndTech: x.Penalties.Fouls !== undefined && x.Penalties.TechFouls !== undefined ? `${x.Penalties.Fouls} | ${x.Penalties.TechFouls}` : '',
             Penalties: x.Penalties !== undefined && x.Penalties.filter(val => val.trim() !== '').length !== 0 ? x.Penalties.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
-            */
             NumberOfRankingPoints: x.Teleop.RankingPts !== undefined ? x.Teleop.RankingPts : '',
 
             Comments: x.Comments !== undefined ? x.Comments.trim() : '',
@@ -264,7 +262,7 @@ const renderRowSubComponent = ({ row }) => {
   );
 }
 
-const renderRowSubComponentGrid = () => {
+const renderRowSubComponentGrid = ({row}) => {
 //const gridStats = apiData.filter(x => x.Team === team.TeamNum)
   /*
 
@@ -273,26 +271,11 @@ const renderRowSubComponentGrid = () => {
   const upperGridPts = calcUpperGrid(gridStats)
   const upperGridAcc = calcUpperGridAcc(gridStats)
 
-  const upperConePts = calcUpperConeGrid(gridStats)
-  const upperConeAcc = calcUpperConeAcc(gridStats)
-  const upperCubePts = calcUpperCubeGrid(gridStats)
-  const upperCubeAcc = calcUpperCubeAcc(gridStats)
-
   const midGridPts = calcMidGrid(gridStats)
   const midGridAcc = calcMidGridAcc(gridStats)
 
-  const midConePts = calcMidConeGrid(gridStats)
-  const midConeAcc = calcMidConeAcc(gridStats)
-  const midCubePts = calcMidCubeGrid(gridStats)
-  const midCubeAcc = calcMidCubeAcc(gridStats)
-
   const lowGridPts = calcLowGrid(gridStats)
   const lowGridAcc = calcLowAcc(gridStats)
-
-  const lowConePts = calcLowConeGrid(gridStats)
-  const lowConeAcc = calcLowConeAcc(gridStats)
-  const lowCubePts = calcLowCubeGrid(gridStats)
-  const lowCubeAcc = calcLowCubeAcc(gridStats)
 
     return {
       AvgUpper: calcUpperGrid(gridStats),
@@ -367,7 +350,7 @@ const renderRowSubComponentGrid = () => {
   );
 }
 
-const renderRowSubComponentConeAccTable = () => {
+const renderRowSubComponentConeAccTable = ({row}) => {
   //const gridStats = apiData.filter(x => x.Team === team.TeamNum)
     /*
       const upperConeAcc = calcUpperConeAcc(gridStats)
@@ -401,7 +384,7 @@ const renderRowSubComponentConeAccTable = () => {
     );
   }
 
-  const renderRowSubComponentConePtsTable = () => {
+  const renderRowSubComponentConePtsTable = ({row}) => {
     //const gridStats = apiData.filter(x => x.Team === team.TeamNum)
       /*
         const upperConePts = calcUpperConeGrid(gridStats)
@@ -435,7 +418,7 @@ const renderRowSubComponentConeAccTable = () => {
       );
     }
 
-    const renderRowSubComponentCubeAccTable = () => {
+    const renderRowSubComponentCubeAccTable = ({row}) => {
       //const gridStats = apiData.filter(x => x.Team === team.TeamNum)
         /*
           const upperCubeAcc = calcUpperCubeAcc(gridStats)
@@ -469,7 +452,7 @@ const renderRowSubComponentConeAccTable = () => {
         );
       }
 
-      const renderRowSubComponentCubePtsTable = () => {
+      const renderRowSubComponentCubePtsTable = ({row}) => {
         //const gridStats = apiData.filter(x => x.Team === team.TeamNum)
           /*
             const upperConePts = calcUpperConeGrid(gridStats)
@@ -521,7 +504,7 @@ function tableHandler(row){
           maxWidth: "1200px"
         }}
         >
-          {renderRowSubComponentGrid ()}
+          {renderRowSubComponentGrid ({row})}
         </td>
       </tr>
       )
@@ -534,7 +517,7 @@ function tableHandler(row){
           maxWidth: "1200px"
         }}
         >
-          {renderRowSubComponentConeAccTable ()}
+          {renderRowSubComponentConeAccTable ({row})}
         </td>
       </tr>
       )
@@ -547,7 +530,7 @@ function tableHandler(row){
           maxWidth: "1200px"
         }}
         >
-          {renderRowSubComponentConePtsTable ()}
+          {renderRowSubComponentConePtsTable ({row})}
         </td>
       </tr>
       )
@@ -560,7 +543,7 @@ function tableHandler(row){
           maxWidth: "1200px"
         }}
         >
-          {renderRowSubComponentCubeAccTable ()}
+          {renderRowSubComponentCubeAccTable ({row})}
         </td>
       </tr>
       )
@@ -573,7 +556,7 @@ function tableHandler(row){
           maxWidth: "1200px"
         }}
         >
-          {renderRowSubComponentCubePtsTable ()}
+          {renderRowSubComponentCubePtsTable ({row})}
         </td>
       </tr>
       )
@@ -1071,29 +1054,8 @@ const data = React.useMemo(
         accessor: "DPR",
       },
       {
-        Header: "Defense",
-        accessor: "Defense",
-      },
-      {
         Header: "Penalties",
         accessor: "Penalties",
-      },
-      {
-        Header: "Comments",
-        accessor: "Comments",
-        Cell: ({row}) => {
-          return <div
-              style = {{
-                  minWidth: '300px',
-                  maxWidth: '300px',
-                  textAlign: 'left',
-                  padding: '5px',
-                  whiteSpace: 'break-spaces'
-              }}
-          >
-              {row.original.Comments}
-          </div>
-      }
       },
       {
         Header: "Grade",
@@ -1214,76 +1176,6 @@ const data = React.useMemo(
               </tr>
 
               {row.isExpanded ? tableHandler(row): null && console.log('fail')}
-                {/*() => {
-                  if(gridState === true){
-                    <tr>
-                      <td colSpan={visibleColumns.length}
-                      style = {{
-                        maxWidth: "1200px"
-                      }}
-                      >
-                        {renderRowSubComponentGrid ()}
-                      </td>
-                    </tr>
-                  }
-                  else if(setConeAccState === true){
-                    <tr>
-                      <td colSpan={visibleColumns.length}
-                      style = {{
-                        maxWidth: "1200px"
-                      }}
-                      >
-                        {renderRowSubComponentConeAccTable ()}
-                      </td>
-                    </tr>
-                  }
-                  else if(setConePtsState === true){
-                    <tr>
-                      <td colSpan={visibleColumns.length}
-                      style = {{
-                        maxWidth: "1200px"
-                      }}
-                      >
-                        {renderRowSubComponentConePtsTable ()}
-                      </td>
-                    </tr>
-                  }
-                  else if(setCubeAccState === true){
-                    <tr>
-                      <td colSpan={visibleColumns.length}
-                      style = {{
-                        maxWidth: "1200px"
-                      }}
-                      >
-                        {renderRowSubComponentCubeAccTable ()}
-                      </td>
-                    </tr>
-                  }
-                  else if(setCubePtsState === true){
-                    <tr>
-                      <td colSpan={visibleColumns.length}
-                      style = {{
-                        maxWidth: "1200px"
-                      }}
-                      >
-                        {renderRowSubComponentCubePtsTable ()}
-                      </td>
-                    </tr>
-                  }
-                  else if(setTeamState === true){
-                    <tr>
-                      <td colSpan={visibleColumns.length}
-                      style = {{
-                        maxWidth: "1200px"
-                      }}
-                      >
-                        {renderRowSubComponent ()}
-                      </td>
-                    </tr>
-                  }
-                  else{}
-                }
-              ) : null */}
                   </React.Fragment>
             )
           })} 

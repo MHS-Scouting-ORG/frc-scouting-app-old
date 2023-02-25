@@ -8,15 +8,15 @@ const ConePtsTable = (props) => {
     const columns = React.useMemo(
         () => [
             {
-                Header: 'Avg Upper',
+                Header: 'Avg Upper Cone Points',
                 accessor: 'AvgUpperCones'
             },
             {
-                Header: 'Avg Mid',
+                Header: 'Avg Mid Cone Points',
                 accessor: 'AvgMidCones'
             },
             {
-                Header: 'Avg Low',
+                Header: 'Avg Low Cone Points',
                 accessor: 'AvgLowCones'
             }
         ], []

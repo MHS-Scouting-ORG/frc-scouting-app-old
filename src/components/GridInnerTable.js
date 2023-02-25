@@ -17,24 +17,7 @@ function GridInnerTable(props) {
                     {
                         Header: 'Upper Acc',
                         accessor: 'AvgUpperAcc'
-                    },
-                    {
-                        Header: 'Upper Cone',
-                        accessor: 'AvgUpperCone'
-                    },
-                    {
-                        Header: 'Upper Cone Acc',
-                        accessor: 'AvgUpperConeAcc'
-                    },
-                    {
-                        Header: 'Upper Cube',
-                        accessor: 'AvgUpperCube'
-                    },
-                    {
-                        Header: 'Upper Cube Acc',
-                        accessor: 'AvgUpperCubeAcc'
-                    },
-                ]
+                    },]
             },
             {
                 Header: 'Mid Averages',
@@ -46,24 +29,7 @@ function GridInnerTable(props) {
                     {
                         Header: 'Mid Acc',
                         accessor: 'AvgMidAcc'
-                    },
-                    {
-                        Header: 'Mid Cone',
-                        accessor: 'AvgMidCone'
-                    },
-                    {
-                        Header: 'Mid Cone Acc',
-                        accessor: 'AvgMidConeAcc'
-                    },
-                    {
-                        Header: 'Avg Mid Cube',
-                        accessor: 'AvgMidCube'
-                    },
-                    {
-                        Header: 'Mid Cube Acc',
-                        accessor: 'AvgMidCubeAcc'
-                    },
-                ]
+                    },]
             },
             {
                 Header: 'Lower Averages',
@@ -75,24 +41,7 @@ function GridInnerTable(props) {
                     {
                         Header: 'Lower Acc',
                         accessor: 'AvgLowerAcc'
-                    },
-                    {
-                        Header: 'Lower Cone',
-                        accessor: 'AvgLowerCone'
-                    },
-                    {
-                        Header: 'Lower Cone Acc',
-                        accessor: 'AvgLowerConeAcc'
-                    },
-                    {
-                        Header: 'Lower Cube',
-                        accessor: 'AvgLowerCube'
-                    },
-                    {
-                        Header: 'Lower Cube Acc',
-                        accessor: 'AvgLowerCubeAcc'
-                    },
-                ]
+                    },]
             }
         ], []
     )

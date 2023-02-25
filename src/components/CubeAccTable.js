@@ -8,15 +8,15 @@ const CubeAccTable = (props) => {
     const columns = React.useMemo(
         () => [
             {
-                Header: 'Upper Acc',
+                Header: 'Upper Cube Acc',
                 accessor: 'UpperCubesAcc'
             },
             {
-                Header: 'Mid Acc',
+                Header: 'Mid Cube Acc',
                 accessor: 'MidCubesAcc'
             },
             {
-                Header: 'Low Acc',
+                Header: 'Low Cube Acc',
                 accessor: 'LowCubesAcc'
             }
         ], []
