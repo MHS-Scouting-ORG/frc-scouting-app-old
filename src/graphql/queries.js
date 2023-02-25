@@ -49,6 +49,7 @@ export const getTeamMatch = /* GraphQL */ `
       Team
       Regional
       Autonomous {
+        AutonomousPlacement
         LeftCommunity
         ChargeStation
       }
@@ -59,7 +60,6 @@ export const getTeamMatch = /* GraphQL */ `
           Low
           Overall
         }
-        RankingPts
         ChargeStation
         EndGame
         EndGameTally {
@@ -92,13 +92,10 @@ export const getTeamMatch = /* GraphQL */ `
       Penalties {
         Fouls
         Tech
-        Yellow
-        Red
-        Disabled
-        DQ
-        BrokenBot
+        Penalties
       }
       Priorities
+      RankingPts
       createdAt
       updatedAt
     }
@@ -128,11 +125,11 @@ export const listTeamMatches = /* GraphQL */ `
         Team
         Regional
         Autonomous {
+          AutonomousPlacement
           LeftCommunity
           ChargeStation
         }
         Teleop {
-          RankingPts
           ChargeStation
           EndGame
           DriveStrength
@@ -143,13 +140,10 @@ export const listTeamMatches = /* GraphQL */ `
         Penalties {
           Fouls
           Tech
-          Yellow
-          Red
-          Disabled
-          DQ
-          BrokenBot
+          Penalties
         }
         Priorities
+        RankingPts
         createdAt
         updatedAt
       }
@@ -179,11 +173,11 @@ export const teamMatchesByTeam = /* GraphQL */ `
         Team
         Regional
         Autonomous {
+          AutonomousPlacement
           LeftCommunity
           ChargeStation
         }
         Teleop {
-          RankingPts
           ChargeStation
           EndGame
           DriveStrength
@@ -194,13 +188,10 @@ export const teamMatchesByTeam = /* GraphQL */ `
         Penalties {
           Fouls
           Tech
-          Yellow
-          Red
-          Disabled
-          DQ
-          BrokenBot
+          Penalties
         }
         Priorities
+        RankingPts
         createdAt
         updatedAt
       }
@@ -230,11 +221,11 @@ export const teamMatchesByRegional = /* GraphQL */ `
         Team
         Regional
         Autonomous {
+          AutonomousPlacement
           LeftCommunity
           ChargeStation
         }
         Teleop {
-          RankingPts
           ChargeStation
           EndGame
           DriveStrength
@@ -245,13 +236,10 @@ export const teamMatchesByRegional = /* GraphQL */ `
         Penalties {
           Fouls
           Tech
-          Yellow
-          Red
-          Disabled
-          DQ
-          BrokenBot
+          Penalties
         }
         Priorities
+        RankingPts
         createdAt
         updatedAt
       }
