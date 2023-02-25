@@ -48,6 +48,7 @@ export const onCreateTeamMatch = /* GraphQL */ `
       Team
       Regional
       Autonomous {
+        AutonomousPlacement
         LeftCommunity
         ChargeStation
       }
@@ -58,7 +59,6 @@ export const onCreateTeamMatch = /* GraphQL */ `
           Low
           Overall
         }
-        RankingPts
         ChargeStation
         EndGame
         EndGameTally {
@@ -91,13 +91,10 @@ export const onCreateTeamMatch = /* GraphQL */ `
       Penalties {
         Fouls
         Tech
-        Yellow
-        Red
-        Disabled
-        DQ
-        BrokenBot
+        Penalties
       }
       Priorities
+      RankingPts
       createdAt
       updatedAt
     }
@@ -114,6 +111,7 @@ export const onUpdateTeamMatch = /* GraphQL */ `
       Team
       Regional
       Autonomous {
+        AutonomousPlacement
         LeftCommunity
         ChargeStation
       }
@@ -124,7 +122,6 @@ export const onUpdateTeamMatch = /* GraphQL */ `
           Low
           Overall
         }
-        RankingPts
         ChargeStation
         EndGame
         EndGameTally {
@@ -157,13 +154,10 @@ export const onUpdateTeamMatch = /* GraphQL */ `
       Penalties {
         Fouls
         Tech
-        Yellow
-        Red
-        Disabled
-        DQ
-        BrokenBot
+        Penalties
       }
       Priorities
+      RankingPts
       createdAt
       updatedAt
     }
@@ -180,6 +174,7 @@ export const onDeleteTeamMatch = /* GraphQL */ `
       Team
       Regional
       Autonomous {
+        AutonomousPlacement
         LeftCommunity
         ChargeStation
       }
@@ -190,7 +185,6 @@ export const onDeleteTeamMatch = /* GraphQL */ `
           Low
           Overall
         }
-        RankingPts
         ChargeStation
         EndGame
         EndGameTally {
@@ -223,13 +217,10 @@ export const onDeleteTeamMatch = /* GraphQL */ `
       Penalties {
         Fouls
         Tech
-        Yellow
-        Red
-        Disabled
-        DQ
-        BrokenBot
+        Penalties
       }
       Priorities
+      RankingPts
       createdAt
       updatedAt
     }
