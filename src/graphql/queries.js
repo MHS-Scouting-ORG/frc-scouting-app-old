@@ -88,6 +88,7 @@ export const getTeamMatch = /* GraphQL */ `
         }
         SmartPlacement
       }
+      IntFoo
       Comments
       Penalties {
         Fouls
@@ -136,6 +137,7 @@ export const listTeamMatches = /* GraphQL */ `
           DriveSpeed
           SmartPlacement
         }
+        IntFoo
         Comments
         Penalties {
           Fouls
@@ -184,6 +186,7 @@ export const teamMatchesByTeam = /* GraphQL */ `
           DriveSpeed
           SmartPlacement
         }
+        IntFoo
         Comments
         Penalties {
           Fouls
@@ -232,6 +235,7 @@ export const teamMatchesByRegional = /* GraphQL */ `
           DriveSpeed
           SmartPlacement
         }
+        IntFoo
         Comments
         Penalties {
           Fouls

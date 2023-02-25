@@ -119,7 +119,6 @@ type TeleopType {
   ConesAccuracy: Accuracy
   CubesAccuracy: Accuracy
   SmartPlacement: Boolean
-
 }
 
 type TeamMatch @model @auth(rules : [{ allow: private, provider: iam}]) {
