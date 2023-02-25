@@ -97,7 +97,6 @@ export const createTeamMatch = /* GraphQL */ `
         }
         SmartPlacement
       }
-      IntFoo
       Comments
       Penalties {
         Fouls
@@ -162,7 +161,6 @@ export const updateTeamMatch = /* GraphQL */ `
         }
         SmartPlacement
       }
-      IntFoo
       Comments
       Penalties {
         Fouls
@@ -227,7 +225,6 @@ export const deleteTeamMatch = /* GraphQL */ `
         }
         SmartPlacement
       }
-      IntFoo
       Comments
       Penalties {
         Fouls
