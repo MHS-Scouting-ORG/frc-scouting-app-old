@@ -15,7 +15,7 @@ const InnerTable = (props) => {
         }
     ) */
     const /*actual*/data = props.information; //information in summary table used to pass the data for each match
-    const deleteRow = props.delete;
+    //const deleteRow = props.delete;
     //const columnValues = Object.keys(actualData[0]);
 
     const columns = React.useMemo(
@@ -146,9 +146,8 @@ const InnerTable = (props) => {
               Header: 'Delete',
               Cell: ({ row }) => (
                 <span {...row.getToggleRowExpandedProps(
-                  <button onClick={deleteRow}> DELETE </button>
                 )}>
-                  Click to delete this row
+                  <button onClick={deleteRow}> DELETE </button>
                 </span>)
             },],
           //accessor: 'other',
