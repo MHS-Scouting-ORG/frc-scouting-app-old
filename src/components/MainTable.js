@@ -34,9 +34,9 @@ function MainTable(props) {
 
 
    useEffect(() => {
-    getMatchesForRegional('2023hiho', 'frc3881')
+    getMatchesForRegional('2023hiho', 'frc8615')
     .then(data => {
-      console.log(data)
+      console.log(data.data.teamMatchesByRegional.items[3])
     })
     //console.log((getMatchesForRegional('2023week0')))
   },[]) //debug purposes or test ^ 
@@ -121,7 +121,7 @@ function MainTable(props) {
 
    useEffect(() => setAverages(oprData.map(team => {
     const teamStats = apiData.filter(x => x.Team === team.TeamNum)
-    console.log(teamStats)
+    //console.log(teamStats)
     /*
     const points = x.TotalPoints
     const avgPoints = calcAvgPoints(teamStats)
@@ -213,38 +213,46 @@ const renderRowSubComponent = ({ row }) => {
         return {
             Match: x.id.substring(x.id.indexOf('_')+1),
             /* ================= all code in block does not exist yet within the data object
+
             Strategy: x.Priorities.filter(val => val.trim() !== '').length !== 0 ? x.Strategy.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
             TotalPts: x.Teleop.ScoringTotal.Total,
             GridPts: x.Teleop.ScoringTotal.GridPoints,
             ConeAcc: x.Teleop.ConesAccuracy.Overall !== null ? x.Teleop.ConesAccuracy.Overall.toFixed(2) : '',
             CubeAcc: x.Teleop.CubesAccuracy.Overall !== null ? x.Teleop.CubesAccuracy.Overall.toFixed(2) : '',
             //AutoPlacement: x.AutoPlacement,
-            Mobility: x.Autonomous.LeftCommunity,
+            */
+            Mobility: x.Autonomous.LeftCommunity === true ? `Achieved`: `Did Not`,
+            /*
             AutoUpperConePts: `${x.Autonomous.Scored.Cones.Upper}/${x.Autonomous.Scored.Cones.Upper + x.Autonomous.Attempted.Cones.Upper}`,
             AutoUpperCubePts: `${x.Autonomous.Scored.Cubes.Upper}/${x.Autonomous.Scored.Cubes.Upper + x.Autonomous.Attempted.Cubes.Upper}`,
             AutoMidConePts: `${x.Autonomous.Scored.Cones.Mid}/${x.Autonomous.Scored.Cones.Mid + x.Autonomous.Attempted.Cones.Mid}`,
             AutoMidCubePts: `${x.Autonomous.Scored.Cubes.Mid}/${x.Autonomous.Scored.Cubes.Mid + x.Autonomous.Attempted.Cubes.Mid}`,
             AutoLowConePts: `${x.Autonomous.Scored.Cones.Lower}/${x.Autonomous.Scored.Cones.Lower + x.Autonomous.Attempted.Cones.Lower}`,
             AutoLowCubePts: `${x.Autonomous.Scored.Cubes.Lower}/${x.Autonomous.Scored.Cubes.Lower + x.Autonomous.Attempted.Cubes.Lower}`,
+            */
             AutoChargeStationPts: x.Autonomous.ChargeStation,
+            /*
             TeleUpperConePts: `${x.Teleop.Scored.Cones.Upper}/${x.Teleop.Scored.Cones.Upper + x.Teleop.Attempted.Cones.Upper}`,
             TeleUpperCubePts: `${x.Teleop.Scored.Cubes.Upper}/${x.Teleop.Scored.Cubes.Upper + x.Teleop.Attempted.Cubes.Upper}`,
             TeleMidConePts: `${x.Teleop.Scored.Cones.Mid}/${x.Teleop.Scored.Cones.Mid + x.Teleop.Attempted.Cones.Mid}`,
             TeleMidCubePts: `${x.Teleop.Scored.Cubes.Mid}/${x.Teleop.Scored.Cubes.Mid + x.Teleop.Scored.Cubes.Mid}`,
             TeleLowConePts: `${x.Teleop.Scored.Cones.Lower}/${x.Teleop.Scored.Cones.Lower + x.Teleop.Attempted.Cones.Lower}`,
             TeleLowCubePts: `${x.Teleop.Scored.Cubes.Lower}/${x.Teleop.Scored.Cubes.Lower + x.Teleop.Attempted.Cubes.Lower}`,
+            */
             TeleEndgame: x.Teleop.EndGame !== undefined ? x.Teleop.EndGame : '',
+            /*
             CSStart: x.Teleop.EndGameTally.Start !== undefined ? x.Teleop.EndGameTally.Start : '',
             CSEnd: x.Teleop.EndGameTally.End !== undefined ? x.Teleop.EndGameTally.End : '',
+            */
             DriveStrength: x.Teleop.DriveStrength !== undefined ? x.Teleop.DriveStrength : '',
             DriveSpeed: x.Teleop.DriveSpeed !== undefined ? x.Teleop.DriveSpeed : '',
-            SmartPlacement: x.Teleop.SmartPlacement,
-            NumberofFoulAndTech: x.Penalties.Fouls !== undefined && x.Penalties.TechFouls !== undefined ? `${x.Penalties.Fouls} | ${x.Penalties.TechFouls}` : '',
-            Penalties: x.Penalties !== undefined && x.Penalties.filter(val => val.trim() !== '').length !== 0 ? x.Penalties.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
-            NumberOfRankingPoints: x.Teleop.RankingPts !== undefined ? x.Teleop.RankingPts : '',
+            SmartPlacement: x.Teleop.SmartPlacement === true ? `Achieved` : `Did Not`,
+            NumberOfFoulAndTech: x.Penalties.Fouls !== 0 && x.Penalties.Tech !== 0 ? `${x.Penalties.Fouls} | ${x.Penalties.Tech}` : ``,
+            //Penalties: x.Penalties !== undefined && x.Penalties.filter(val => val.trim() !== '').length !== 0 ? x.Penalties.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
+            //NumberOfRankingPoints: x.Teleop.RankingPts !== undefined ? x.Teleop.RankingPts : '',
 
             Comments: x.Comments !== undefined ? x.Comments.trim() : '',
-    //      //Email: x.email.substring(0, x.email.length-17), */
+       //     Email: x.email.substring(0, x.email.length-17), */
 
         };
     })
