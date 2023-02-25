@@ -31,6 +31,7 @@ function ExampleUI() {
       .catch(console.log.bind(console))
     apiSubscribeToMatchUpdates(data => {
       console.log(`update received ${JSON.stringify(data)}`)
+      console.log(data)
     })
   }, [])
 
