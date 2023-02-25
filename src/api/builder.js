@@ -57,7 +57,8 @@ const PriorityOpts = {
     CHARGESTATION: "ChargeStation",
     DEFENSE: "Defense",
     SINGLE_SUBSTATION: "SingleSubStation",
-    DOUBLE_STATION: "DoubleStation",
+    DOUBLE_STATION_SHUTE: "DoubleStationShute",
+    DOUBLE_STATION_SLIDNING_SHELVE: "DoubleStationSlidingShelve"
 }
 
 const buildMatchEntry = (regionalId, teamId, matchId) => {
@@ -127,6 +128,7 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
             Penalties: []
         },
         Priorities: PriorityOpts.DEFENSE,
+
 
 
     }

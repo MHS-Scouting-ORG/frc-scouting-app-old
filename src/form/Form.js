@@ -18,7 +18,7 @@ class Form extends React.Component {
   constructor(props) {
     super(props)
 
-    this.regional = props.regional
+    this.regional = props.regional;
 
     this.changeMatchType = this.changeMatchType.bind(this);
     this.changeMatchNumber = this.changeMatchNumber.bind(this);
@@ -47,10 +47,12 @@ class Form extends React.Component {
     this.changeChargeStation = this.changeChargeStation.bind(this);
     this.makeChargeStationAuto = this.makeChargeStationAuto.bind(this);
 
+    /*
     this.runTimer = this.runTimer.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
     this.timeChanged = this.timeChanged.bind(this);
     this.makeChargeStationTimer = this.makeChargeStationTimer.bind(this);
+    */
 
     this.buttonMinus = this.buttonMinus.bind(this);
     this.buttonPlus = this.buttonPlus.bind(this);
@@ -60,8 +62,10 @@ class Form extends React.Component {
     this.penaltyBoxChecked = this.penaltyBoxChecked.bind(this); 
     this.makePenaltyBox = this.makePenaltyBox.bind(this);
 
+    /*
     this.smartPlacementChecked = this.smartPlacementChecked.bind(this);
     this.makeSmartPlacementBox = this.makeSmartPlacementBox.bind(this);
+    */
 
     // TESTING this out
     this.changeBooleanCheckBox = this.changeBooleanCheckBox.bind(this);
@@ -70,8 +74,10 @@ class Form extends React.Component {
     this.bonusBoxChecked = this.bonusBoxChecked.bind(this);
     this.makeBonusBox = this.makeBonusBox.bind(this);
 
+    /*
     this.mobilityBoxClick = this.mobilityBoxClick.bind(this);
     this.makeMobilityBox = this.makeMobilityBox.bind(this);
+    */
 
     this.overrideChange = this.overrideChange.bind(this);
     this.makeOverrideBox = this.makeOverrideBox.bind(this);
@@ -83,7 +89,7 @@ class Form extends React.Component {
 
     this.state = {
       comments: '',
-      summaryComments: '',
+      //summaryComments: '',
       stationComments: '',
       matchType: '',
       elmNum: '',
@@ -101,7 +107,7 @@ class Form extends React.Component {
       rankingState: ["", "", ""],
       bonusVal: [' ', ' '],
       bonusState: '',
-      pentalyVal: [' ', ' ', ' ', ' ', ' '],
+      penaltyVal: [' ', ' ', ' ', ' ', ' '],
       dropDownVal: ['', '', '', '', ''],
       counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       //smartPlacementVal: false,
@@ -169,10 +175,10 @@ class Form extends React.Component {
   }
 
   async getMatchTeams() {
-    //console.log(this.state.matchType)// + this.state.elmNum + "m" + this.state.matchNumber)
-    let matchKey =  /*put this years event*//*/*/ "2022hiho"  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
+    this.regional = '2022hiho'  /* change event_key */
+    let matchKey =  /*put this years event*//*/*/ this.regional  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
     const teams = async () => {
-      await fetch('https://www.thebluealliance.com/api/v3/event/' + '2022hiho' /* change event_key*/ + '/matches', {
+      await fetch('https://www.thebluealliance.com/api/v3/event/' + this.regional  + '/matches', {
         mode: 'cors',
         headers: {
           'X-TBA-Auth-Key': 'TKWj89sH9nu6hwIza0zK91UQBRUaW5ETVJrZ7KhHOolwmuKxKqD3UkQMAoqHahsn'
@@ -269,11 +275,14 @@ class Form extends React.Component {
       if (label === 'Team Won ') {
         this.setState({ rankingPts: 2 });
         this.setState({ rankingState: "Win" });
-      }
-      else if (label === 'Team Tied ') {
+      } else if (label === 'Team Tied ') {
         this.setState({ rankingPts: 1 });
         this.setState({ rankingState: "Tie" });
+      } else if (label === 'Team Lose '){
+        this.setState({ rankingPts: 0})
+        this.setState({ rankingState: 'Loss'})
       }
+
       this.setState({ bonusVal: [' ', ' '] })
 
       let whoWon = this.state.checkedWhoWon
@@ -281,12 +290,11 @@ class Form extends React.Component {
       whoWon[i + 1] = ' ';
       if (whoWon[i] === label) {
         whoWon[i] = ' ';
-      }
-      else if (whoWon[i] === ' ') {
+      } else if (whoWon[i] === ' ') {
         whoWon[i] = label;
       }
 
-      if (whoWon[0] === ' ' && whoWon[1] === ' ' && label === "Team Lose ") {
+      if (whoWon[0] === ' ' && whoWon[1] === ' ') {
         this.setState({ rankingPts: 0 });
         this.setState({ rankingState: "Lose" })
       }
@@ -324,7 +332,6 @@ class Form extends React.Component {
   }
 
   makeStrategyBox(name, i) {
-
     return (
       <div>
         <CheckBox
@@ -343,7 +350,6 @@ class Form extends React.Component {
   }
 
   makeBooleanCheckBox(name, i) {
-    let booleans = this.state.booleans;
     return (
       <div>
         <CheckBox
@@ -405,7 +411,6 @@ class Form extends React.Component {
             <label> {"End Game Start: "}
               <input type="number" onChange={this.changeEndGameStartBox}></input>
             </label>
-            <TextBox title={'End Game Comment:'} subtitle={'EX: when they had to get on compared to rest of alliance, were they the one doing the balancing, did they mess up alliances balance, etc.'} commentState={event => { this.setState({ stationComments: event.target.value }) }} />
           </div>
         )
       } else if (endGame === 'Parked') {
@@ -422,7 +427,6 @@ class Form extends React.Component {
               <label> {"End Game End: "}
                 <input type="number" onChange={this.changeEndGameEndBox}></input>
               </label>
-              <TextBox title={'End Game Comment: '} subtitle={'EX: when they had to get on compared to rest of alliance, were they the one doing the balancing, did they mess up alliances balance, etc.'} commentState={event => { this.setState({ stationComments: event.target.value }) }} />
             </div>
           </div>
         )
@@ -461,6 +465,7 @@ class Form extends React.Component {
 
   //-------------------------------------------------------------------------------------------------------------//
 
+  /*
   runTimer(event) {
     console.log("starting")
     let endGameTimerState = this.state.endGameTimer
@@ -503,7 +508,7 @@ class Form extends React.Component {
         />
       </div>
     )
-  }
+  } */ 
 
   //-------------------------------------------------------------------------------------------------------------//
 
@@ -514,7 +519,7 @@ class Form extends React.Component {
   //-------------------------------------------------------------------------------------------------------------//
 
   penaltyBoxChecked(i, label) {
-    let penaltyStates = this.state.pentalyVal;
+    let penaltyStates = this.state.penaltyVal;
     if (penaltyStates[i] === label) {
       penaltyStates[i] = ' ';
     } else {
@@ -534,6 +539,7 @@ class Form extends React.Component {
     )
   }
 
+  /*
   smartPlacementChecked(label) {
     let smartPlacementState = this.state.smartPlacementVal;
     if (smartPlacementState === label) {
@@ -553,7 +559,7 @@ class Form extends React.Component {
         />
       </div>
     )
-  }
+  } */
 
   bonusBoxChecked(i, label) {
     let bonusState = this.state.bonusVal;
@@ -590,6 +596,7 @@ class Form extends React.Component {
     )
   }
 
+  /*
   mobilityBoxClick(i, label) {
     let mobilityState = this.state.mobilityVal;
     if (mobilityState === label) {
@@ -616,7 +623,7 @@ class Form extends React.Component {
         />
       </div>
     )
-  }
+  } */
 
   overrideChange(fill, filler) {
     this.setState({ override: !this.state.override });
@@ -685,11 +692,10 @@ class Form extends React.Component {
 
   async submitState() {
     let windowAlertMsg = 'Form is incomplete, you still need to fill out: ';
-    let matchKey = /*put this years event*//*/*/ "2022hiho"  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
+    let matchKey = /*put this years event*//*/*/ this.regional  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
     let teamNum = this.state.teamNumber;
 
     let comments = this.state.comments;
-    let summaryComments = this.state.summaryComments;
 
     let dropVal = this.state.dropDownVal;
     let autoPlacement = dropVal[0];
@@ -711,7 +717,7 @@ class Form extends React.Component {
     let bonuses = this.state.bonusVal;
     let strats = this.state.strategyVal;
     let strategies = this.state.strategyVal;
-    let penalties = this.state.pentalyVal;
+    let penalties = this.state.penaltyVal;
     let smartPlacement = booleans[1]; //this.state.smartPlacementVal;
 
     let counterVal = this.state.counterBoxVals;
@@ -1021,8 +1027,8 @@ class Form extends React.Component {
 //        .then(data => {
 //          console.log(data)
 //        })
-    }
     console.log(this.state);
+    }
   }
 
   //-------------------------------------------------------------------------------------------------------------//
@@ -1030,7 +1036,7 @@ class Form extends React.Component {
   render() {
     return (
       <div>
-        <h1> FORM  <img alt="" src={'./images/BLUETHUNDERLOGO_WHITE.png'} width="35px" height="35px"></img></h1>
+        <h1> <img alt="" src={'./images/BLUETHUNDERLOGO_WHITE.png'} width="35px" height="35px"></img>  CHARGE UP FORM  <img alt="" src={'./images/BLUETHUNDERLOGO_WHITE.png'} width="35px" height="35px"></img></h1>
         <button onClick={this.logState}> Check State </button>
         {this.makeMatchDropDown}
         <button onClick={this.getMatchTeams}>GET MATCH TEAM</button>
@@ -1116,7 +1122,7 @@ class Form extends React.Component {
         {this.makeStrategyBox("Charge Station ", 5)}
         {this.makeStrategyBox("Single Substation ", 6)}
         {this.makeStrategyBox("Double Substation Shute ", 7)}
-        {this.makeStrategyBox("Double Substation Silding Shelve ", 8)}
+        {this.makeStrategyBox("Double Substation Sliding Shelve ", 8)}
         <br></br>
         <p>How well is there defense if any?</p>
         <TextBox title={"💬Comments: "} commentState={this.setComment}></TextBox>

@@ -41,7 +41,6 @@ function AuthenticatedUI({ user }) {
 
   return (
     <div>
-      <img src={'./images/t-shirt Deisnv 2-01.png'} width= "500px" height= "600px"></img>
       <div>
         {/*user.username*/}
         <br />
