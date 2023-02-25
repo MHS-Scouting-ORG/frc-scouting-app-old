@@ -75,7 +75,7 @@ function Summary(){
           return {
               match: x.MatchId.substring(x.MatchId.indexOf('_')+1),
               //priorities: x.Priorities.filter(val => val.trim() !== '').length !== 0 ? x.Strategy.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
-              totalPoints: x.TotalPoints,
+              totalPoints: x.Teleop.ScoringTotal.Total,
               /*gridPts: x.LowHubAccuracy !== null ? x.LowHubAccuracy.toFixed(2) : '',
               lowGridAcc: x.lowGridAcc !== null ? x.lowGridAcc.toFixed(2) : '',
               midGridAcc: x.midGridAcc !== null ? x.midGridAcc.toFixed(2) : '',
