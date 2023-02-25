@@ -49,10 +49,58 @@ export const onCreateTeamMatch = /* GraphQL */ `
       Regional
       Autonomous {
         AutonomousPlacement
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         LeftCommunity
         ChargeStation
       }
       Teleop {
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         Accuracy {
           High
           Mid
@@ -68,6 +116,11 @@ export const onCreateTeamMatch = /* GraphQL */ `
         ScoringTotal {
           Total
           GridPoints
+          GridScoringByPlacement {
+            High
+            Mid
+            Low
+          }
           Cones
           Cubes
         }
@@ -87,7 +140,6 @@ export const onCreateTeamMatch = /* GraphQL */ `
         }
         SmartPlacement
       }
-      IntFoo
       Comments
       Penalties {
         Fouls
@@ -113,10 +165,58 @@ export const onUpdateTeamMatch = /* GraphQL */ `
       Regional
       Autonomous {
         AutonomousPlacement
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         LeftCommunity
         ChargeStation
       }
       Teleop {
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         Accuracy {
           High
           Mid
@@ -132,6 +232,11 @@ export const onUpdateTeamMatch = /* GraphQL */ `
         ScoringTotal {
           Total
           GridPoints
+          GridScoringByPlacement {
+            High
+            Mid
+            Low
+          }
           Cones
           Cubes
         }
@@ -151,7 +256,6 @@ export const onUpdateTeamMatch = /* GraphQL */ `
         }
         SmartPlacement
       }
-      IntFoo
       Comments
       Penalties {
         Fouls
@@ -177,10 +281,58 @@ export const onDeleteTeamMatch = /* GraphQL */ `
       Regional
       Autonomous {
         AutonomousPlacement
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         LeftCommunity
         ChargeStation
       }
       Teleop {
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         Accuracy {
           High
           Mid
@@ -196,6 +348,11 @@ export const onDeleteTeamMatch = /* GraphQL */ `
         ScoringTotal {
           Total
           GridPoints
+          GridScoringByPlacement {
+            High
+            Mid
+            Low
+          }
           Cones
           Cubes
         }
@@ -215,7 +372,6 @@ export const onDeleteTeamMatch = /* GraphQL */ `
         }
         SmartPlacement
       }
-      IntFoo
       Comments
       Penalties {
         Fouls
