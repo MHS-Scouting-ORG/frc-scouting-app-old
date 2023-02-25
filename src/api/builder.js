@@ -112,8 +112,8 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
         Penalties: {
             Fouls: 0,
             Tech: 0,
-            Yellow: 0,
-            Red: 0,
+            Yellow: false,
+            Red: false,
             Disabled: false,
             DQ: false,
             BrokenBot: false

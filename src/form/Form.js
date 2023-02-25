@@ -80,6 +80,8 @@ class Form extends React.Component {
         this.submitState = this.submitState.bind(this);
 
         this.state = {
+            ChargeStationType: '',
+            RankingPtsOpts: [],
             comments: '',
             summaryComments: '',
             stationComments: '',
@@ -94,12 +96,12 @@ class Form extends React.Component {
             endGameVal: ['', '', ''],
             chargeStationValAuto: '',
             whoWon: '',
-            checkedWhoWon: [' ', ' '],
+            //checkedWhoWon: [' ', ' '],
             rankingPts: 0,
-            rankingState: ["","",""],
+            rankingState: [" "," "," "],
             bonusVal: [' ', ' '],
             bonusState: '',
-            pentalyVal: [' ', ' ', ' ', ' ', ' '],
+            penatlyVal: [' ', ' ', ' ', ' ', ' '],
             dropDownVal: ['', '', '', '', ''],
             counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             //smartPlacementVal: false,
@@ -198,7 +200,7 @@ class Form extends React.Component {
     changeTeam(event) {
         this.setState({ teamNumber: event.target.value });
         let data = this.state.matchData;
-        let teamColor = 'blue';
+        let teamColor = 'red';
         let selectedTeam = event.target.value;
         data.alliances.blue.team_keys.map((team) => {
             if (team === selectedTeam) {
@@ -207,8 +209,8 @@ class Form extends React.Component {
         })
 
         let whoWon = '';
-        let wonState = this.state.whoWon;
-        if (wonState === '') {
+        //let wonState = this.state.whoWon;
+        /*if (wonState === '') {
             if (data.alliances.blue.score > data.alliances.red.score) {
                 wonState = 'blue';
             } else if (data.alliances.blue.score < data.alliances.red.score) {
@@ -222,17 +224,28 @@ class Form extends React.Component {
             whoWon = 'red';
         } else {
             whoWon = 'Tie';
+        }*/
+
+        if(data.alliances.blue.score > data.alliances.red.score){
+            whoWon = 'blue';
+        }
+        else if(data.alliances.blue.score < data.alliances.red.score){
+            whoWon = 'red';
+        }
+        else{
+            whoWon = 'tie'
         }
 
+        let rankingStates = this.state.RankingPtsOpts
         if (teamColor === whoWon) {
             this.setState({ rankingPts: 2 });
-            this.setState({rankingState: "Win"})
+            rankingStates[0] = 'Team Won';
         } else if (whoWon === 'Tie') {
             this.setState({ rankingPts: 1 });
-            this.setState({rankingState: "Tie"})
+            rankingStates[0] = "Team Tied";
         } else {
             this.setState({ rankingPts: 0 });
-            this.setState({rankingState: "Loss"})
+            rankingStates[0] = 'Team Lost';
         }
 
         this.setState({ whoWon: '' });
@@ -259,7 +272,7 @@ class Form extends React.Component {
     }
 
     whoWonClicked(i, label) {
-        let data = this.state.matchData;
+        /*let data = this.state.matchData;
         if (data === 'not found') {
             window.alert("PICK A TEAM FIRST");
         }
@@ -271,7 +284,11 @@ class Form extends React.Component {
             else if (label === 'Team Tied ') {
                 this.setState({ rankingPts: 1 });
                 this.setState({rankingState: "Tie"});
+            } else if(label = 'Team Lose '){
+                this.setState({ rankingPts: 0 });
+                this.setState({rankingState: "Loss"});
             }
+
             this.setState({ bonusVal: [' ', ' '] })
 
             let whoWon = this.state.checkedWhoWon
@@ -284,25 +301,55 @@ class Form extends React.Component {
                 whoWon[i] = label;
             }
 
-            if (whoWon[0] === ' ' && whoWon[1] === ' ' && label === "Team Lose ") {
-                this.setState({ rankingPts: 0 });
-                this.setState({rankingState: "Lose"})
+            if (whoWon[0] === ' ' && whoWon[1] === ' ') {
+                this.setState({rankingPts: 0 });
+                this.setState({rankingState: "Loss"})
             }
+        }*/
+
+        let data = this.state.matchData;
+        let rankingStates = this.state.RankingPtsOpts;
+        if(data === "not found"){
+            window.alert("PICK A TEAM FIRST");
+        }
+        else{
+            if(label === 'Team Won '){
+                this.setState({rankingPts: 2});
+            }
+            else if(label === 'Team Tied '){
+                this.setState({rankingPts: 1})
+            }
+            else if(label === 'Team Lost '){
+                this.setState({rankingPts: 0})
+            }
+
+            rankingStates[0] = label;
+            rankingStates[1] = '';
+            rankingStates[2] = '';
         }
     }
 
     makeWhoWonBox(name, i) {
-        let whoWon = this.state.checkedWhoWon;
+        /*let whoWon = this.state.checkedWhoWon;
         let checkVal;
         if (whoWon[i] === name) {
             checkVal = true;
         } else {
             checkVal = false;
+        }*/
+
+        let rankingStates = this.state.RankingPtsOpts;
+        let checkVal;
+        if(rankingStates[0] === name){
+            checkVal = true;
+        }
+        else{
+            checkVal = false;
         }
 
         return (
             <div>
-                <CheckBox
+               <CheckBox
                     label={name}
                     changeCheckBoxState={this.whoWonClicked}
                     place={i}
@@ -335,25 +382,6 @@ class Form extends React.Component {
         )
     }
 
-    changeBooleanCheckBox(i){
-        let booleanStates = this.state.booleans
-        booleanStates[i] = !booleanStates[i]
-    }
-
-    makeBooleanCheckBox(name,i){
-        let booleans = this.state.booleans;
-        return (
-            <div>
-                <CheckBox
-                    label={name}
-                    changeCheckBoxState={this.changeBooleanCheckBox}
-                    place={i}
-                    //checked={booleans[i]}
-                />
-            </div>
-        )
-    }
-
     //---------------------------------------------------------------------------------------------------------------//
 
     dropDownChanged(event, i) {
@@ -379,23 +407,23 @@ class Form extends React.Component {
     //--------------------------------------------------------------------------------------------------------------//
 
     changeEndGame(event) {
-        let endGame = Array(this.state.endGameVal);
+        let endGame = Array(this.state.ChargeStationType);
         endGame[0] = event.target.value;
-        this.setState({ endGameVal: endGame });
+        this.setState({ ChargeStationType: endGame });
     }
 
     changeEndGameStartBox(event) {
-        let endGame = this.state.endGameVal;
+        let endGame = this.state.ChargeStationType;
         endGame[1] = event.target.value;
     }
 
     changeEndGameEndBox(event) {
-        let endGame = this.state.endGameVal;
+        let endGame = this.state.ChargeStationType;
         endGame[2] = event.target.value;
     }
 
     makeEndGameStartEndBox() {
-        let endGameValues = this.state.endGameVal;
+        let endGameValues = this.state.ChargeStationType;
         let endGame = endGameValues[0];
         if (endGame !== "None" && endGame !== '') {
             if (endGame === "Attempted") {
@@ -443,9 +471,9 @@ class Form extends React.Component {
     }
 
     changeChargeStation(event) {
-        let chargeStation = this.state.chargeStationValAuto;
+        let chargeStation = this.state.ChargeStationType;
         chargeStation = event.target.value;
-        this.setState({ chargeStationValAuto: chargeStation });
+        this.setState({ ChargeStationType: chargeStation });
     }
 
     makeChargeStationAuto() {
@@ -512,8 +540,10 @@ class Form extends React.Component {
 
     //-------------------------------------------------------------------------------------------------------------//
 
+
+    //PENALTIES
     penaltyBoxChecked(i, label) {
-        let penaltyStates = this.state.pentalyVal;
+        let penaltyStates = this.state.penatlyVal;
         if (penaltyStates[i] === label) {
             penaltyStates[i] = ' ';
         } else {
@@ -556,25 +586,53 @@ class Form extends React.Component {
 
     bonusBoxChecked(i, label) {
         let bonusState = this.state.bonusVal;
-        if (bonusState[i] === label) {
+        /*if (bonusState[i] === 'Activation ') {
             this.setState({ rankingPts: this.state.rankingPts - 1 });
+            this.setState({rankingState: ' '})
         } else {
             this.setState({ rankingPts: this.state.rankingPts + 1 });
+            this.setState({rankingState: 'ActivationBonus'})
+        }
+
+        if (bonusState[i] === 'Sustainability ') {
+            this.setState({ rankingPts: this.state.rankingPts - 1 });
+            this.setState({rankingState: ' '})
+        } else {
+            this.setState({ rankingPts: this.state.rankingPts + 1 });
+            this.setState({rankingState: 'SustainabilityBonus'})
         }
 
         if (bonusState[i] === label) {
             bonusState[i] = ' ';
         } else {
             bonusState[i] = label;
+        }*/
+
+        let rankingStates = this.state.RankingPtsOpts;
+        if (rankingStates[i] === label) {
+            rankingStates[i] = ' ';
+            this.setState({rankingPts: this.state.rankingPts - 1})
+        } else {
+            rankingStates[i] = label;
+            this.setState({rankingPts: this.state.rankingPts + 1})
         }
     }
 
     makeBonusBox(name, i) {
-        let bonusState = this.state.bonusVal;
+        /*let bonusState = this.state.bonusVal;
         let checkedVal;
         if (bonusState[i] === name) {
             checkedVal = true;
         } else {
+            checkedVal = false;
+        }*/
+
+        let rankingStates = this.state.RankingPtsOpts;
+        let checkedVal;
+        if(rankingStates[i] === name){
+            checkedVal = true;
+        }
+        else {
             checkedVal = false;
         }
         return (
@@ -627,6 +685,25 @@ class Form extends React.Component {
                 <CheckBox
                     label={'Override '}
                     changeCheckBoxState={this.overrideChange}
+                />
+            </div>
+        )
+    }
+
+    changeBooleanCheckBox(i){
+        let booleanStates = this.state.booleans
+        booleanStates[i] = !booleanStates[i]
+    }
+
+    makeBooleanCheckBox(name,i){
+        let booleans = this.state.booleans;
+        return (
+            <div>
+                <CheckBox
+                    label={name}
+                    changeCheckBoxState={this.changeBooleanCheckBox}
+                    place={i}
+                    //checked={booleans[i]}
                 />
             </div>
         )
@@ -697,21 +774,21 @@ class Form extends React.Component {
         let doubleStation = dropVal[3];
 
         let ranking = this.state.rankingPts;
-        let rankingState = this.state.rankingState;
+        let rankingState = this.state.RankingPtsOpts;
 
-        let endGame = this.state.endGameVal;
+        let endGame = this.state.ChargeStationType;
         let endGameUsed = endGame[0];
         let endGameStart = endGame[1];
         let endGameEnd = endGame[2];
 
-        let chargeStationAuto = this.state.chargeStationValAuto;
+        let chargeStationAuto = this.state.ChargeStationType;
         let booleans = this.state.booleans;
 
         let bonuses = this.state.bonusVal;
         let strats = this.state.strategyVal;
         let strategies = this.state.strategyVal;
-        let penalties = this.state.pentalyVal;
-        let smartPlacement = booleans[1]; //this.state.smartPlacementVal;
+        let penalties = this.state.penatlyVal;
+        let smartPlacement = booleans[1];
 
         let counterVal = this.state.counterBoxVals;
 
@@ -756,7 +833,7 @@ class Form extends React.Component {
         let lowCubesAttempted = parseInt(counterVal[5]) + parseInt(counterVal[17]);
         let lowConesAttempted = parseInt(counterVal[11]) + parseInt(counterVal[23]);
 
-        let mobility = booleans[0]; //this.state.mobilityVal;
+        let mobility = booleans[0];
 
         let endGamePts = 0;
         let chargeStationPts = 0;
@@ -972,7 +1049,8 @@ class Form extends React.Component {
                         Start: Number(endGameStart),
                         End: Number(endGameEnd)
                     },
-                    //RankingPts: Number(ranking),
+                    RankingPts: String(rankingState),
+                    //RealRankingPts: Number(ranking),
                     ScoringTotal: {
                         Total: Number(points),
                         GridPoints: Number(totalGridPts),
@@ -987,16 +1065,16 @@ class Form extends React.Component {
                     DriveStrength: String(driveStrength),
                     DriveSpeed: String(driveSpeed),
                     ConesAccuracy: {
-                        High: Number(conesHighTeleAutoAccuracy),
-                        Mid: Number(conesMidTeleAutoAccuracy),
-                        Low: Number(conesLowTeleAutoAccuracy),
-                        Overall: Number(conesTeleAutoAccuracy)
+                        High: 90,
+                        Mid: 20,
+                        Low: 15,
+                        Overall: 60
                     },
                     CubesAccuracy: {
-                        High: Number(cubesHighTeleAutoAccuracy),
-                        Mid: Number(cubesMidTeleAutoAccuracy),
-                        Low: Number(cubesLowTeleAutoAccuracy),
-                        Overall: Number(cubesTeleAutoAccuracy)
+                        High: 75,
+                        Mid: 25,
+                        Low: 1,
+                        Overall: 40
 
                     },
                     SmartPlacement: Boolean(smartPlacement),
@@ -1005,11 +1083,11 @@ class Form extends React.Component {
                 Penalties: {
                     Fouls: Number(fouls),
                     Tech: Number(techFouls),
-                    Yellow: 0,
-                    Red: 0,
-                    Disabled: false,
-                    DQ: false,
-                    BrokenBot: false
+                    Yellow: true,
+                    Red: true,
+                    Disabled: true,
+                    DQ: true,
+                    BrokenBot: true
                 }
 
             }
@@ -1098,10 +1176,10 @@ class Form extends React.Component {
                 <h3>RANKING POINTS</h3>
                 {this.makeWhoWonBox("Team Won ", 0)}
                 {this.makeWhoWonBox("Team Tied ", 1)}
-                {this.makeWhoWonBox("Team Lose ", 2)}
-                {this.makeBonusBox("Activation ", 0)}
-                {this.makeBonusBox("Sustainability ", 1)}
-                <Headers display={this.state.rankingPts} bonus={this.state.bonusVal} />
+                {this.makeWhoWonBox("Team Lost ", 2)}
+                {this.makeBonusBox("Activation ", 1)}
+                {this.makeBonusBox("Sustainability ", 2)}
+                <Headers display={this.state.rankingPts} />
                 <br></br>
                 <h3>STRATEGY & PRIORITIES</h3>
                 {this.makeStrategyBox("Low Node ", 0)}
@@ -1112,7 +1190,7 @@ class Form extends React.Component {
                 {this.makeStrategyBox("Charge Station ", 5)}
                 {this.makeStrategyBox("Single Substation ", 6)}
                 {this.makeStrategyBox("Double Substation Shute ", 7)}
-                {this.makeStrategyBox("Double Substation Silding Shelve ", 8)}
+                {this.makeStrategyBox("Double Substation Silding Shelves ", 8)}
                 <br></br>
                 <p>How well is there defense if any?</p>
                 <TextBox title={"💬Comments: "} commentState={this.setComment}></TextBox>
