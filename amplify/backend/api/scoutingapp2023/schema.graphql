@@ -57,20 +57,27 @@ type Scoring {
 }
 
 type AutonomousType {
+  AutonomousPlacement: Int!
   Scored: Scoring!
   Attempted: Scoring!
-  LeftCommunity: Boolean
-  ChargeStation: ChargeStationType
+  LeftCommunity: Boolean!
+  ChargeStation: ChargeStationType!
+}
+
+enum PenaltyKinds {
+  YellowCard
+  RedCard
+  Disabled
+  DQ
+  BrokenBot
+  NoShow
+  None
 }
 
 type PenaltiesType {
   Fouls: Int
   Tech: Int
-  Yellow: Boolean
-  Red: Boolean
-  Disabled: Boolean
-  DQ: Boolean
-  BrokenBot: Boolean
+  Penalties: [PenaltyKinds]
 }
 
 type Accuracy {
@@ -103,7 +110,6 @@ type TeleopType {
   Scored: Scoring!
   Attempted: Scoring!
   Accuracy: Accuracy
-  RankingPts: [RankingPtsOpts]
   ChargeStation: ChargeStationType
   EndGame: ChargeStationType
   EndGameTally: EndGameTally
@@ -127,5 +133,6 @@ type TeamMatch @model @auth(rules : [{ allow: private, provider: iam}]) {
   Comments: String
   Penalties: PenaltiesType
   Priorities: PriorityOpts
+  RankingPts: [RankingPtsOpts]
 
 }

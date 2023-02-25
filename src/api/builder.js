@@ -14,11 +14,21 @@ const initScoring = _ => {
 
 }
 
+const PenaltyKinds = {
+    YELLOW_CARD: "YellowCard",
+    RED_CARD: "RedCard", 
+    DISABLED: "Disabled", 
+    DQ: "DQ", 
+    BROKEN_BOT: "BrokenBot", 
+    NO_SHOW: "NoShow",
+    NONE: "None"
+
+}
+
 const ChargeStationType = {
     DOCKED_ENGAGED: "DockedEngaged",
     DOCKED: "Docked",
-    ATTEMPTED: "Attempted",
-    PARKED: "Parked",
+    ATTEMPTED: "ATTEMPTED",
     NONE: "None"
 }
 
@@ -65,6 +75,7 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
         Team: teamId,
         Regional: regionalId,
         Autonomous: {
+            AutonomousPlacement: 0,
             Scored: initScoring(),
             Attempted: initScoring(),
             LeftCommunity: false,
@@ -73,6 +84,7 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
         Teleop: {
             Scored: initScoring(),
             Attempted: initScoring(),
+            ChargeStation: ChargeStationType.NONE,
             EndGame: ChargeStationType.NONE,
             EndGameTally: {
                 Start: 0,
@@ -91,7 +103,7 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
                 Cubes: 0,
             },
             DriveStrength: "",
-            DriveSpeed: "",
+            DriveSpeed: 0,
             ConesAccuracy: {
                 High: 0,
                 Mid: 0,
@@ -112,12 +124,10 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
         Penalties: {
             Fouls: 0,
             Tech: 0,
-            Yellow: 0,
-            Red: 0,
-            Disabled: false,
-            DQ: false,
-            BrokenBot: false
-        }
+            Penalties: []
+        },
+        Priorities: PriorityOpts.DEFENSE,
+
 
     }
 
@@ -129,4 +139,4 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
  * ChargeStationType - enum of valid charge stations types
  * IntakeType - enum of valid intake types
  */
-export { ChargeStationType, IntakeType, RankingPtsOpts, buildMatchEntry as default }
+export { ChargeStationType, IntakeType, PenaltyKinds, RankingPtsOpts, PriorityOpts, buildMatchEntry as default }
