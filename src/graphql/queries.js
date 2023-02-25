@@ -179,10 +179,58 @@ export const listTeamMatches = /* GraphQL */ `
         Regional
         Autonomous {
           AutonomousPlacement
+          Scored {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Attempted {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
           LeftCommunity
           ChargeStation
         }
         Teleop {
+          Scored {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Attempted {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
           Accuracy {
             High
             Mid
@@ -198,6 +246,11 @@ export const listTeamMatches = /* GraphQL */ `
           ScoringTotal {
             Total
             GridPoints
+            GridScoringByPlacement {
+              High
+              Mid
+              Low
+            }
             Cones
             Cubes
           }
@@ -255,10 +308,58 @@ export const teamMatchesByTeam = /* GraphQL */ `
         Regional
         Autonomous {
           AutonomousPlacement
+          Scored {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Attempted {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
           LeftCommunity
           ChargeStation
         }
         Teleop {
+          Scored {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Attempted {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
           Accuracy {
             High
             Mid
@@ -274,6 +375,11 @@ export const teamMatchesByTeam = /* GraphQL */ `
           ScoringTotal {
             Total
             GridPoints
+            GridScoringByPlacement {
+              High
+              Mid
+              Low
+            }
             Cones
             Cubes
           }
@@ -331,10 +437,58 @@ export const teamMatchesByRegional = /* GraphQL */ `
         Regional
         Autonomous {
           AutonomousPlacement
+          Scored {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Attempted {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
           LeftCommunity
           ChargeStation
         }
         Teleop {
+          Scored {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Attempted {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
           Accuracy {
             High
             Mid
@@ -350,6 +504,11 @@ export const teamMatchesByRegional = /* GraphQL */ `
           ScoringTotal {
             Total
             GridPoints
+            GridScoringByPlacement {
+              High
+              Mid
+              Low
+            }
             Cones
             Cubes
           }
