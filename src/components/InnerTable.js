@@ -144,11 +144,11 @@ const InnerTable = (props) => {
             },
             {
               Header: 'Delete',
-              Cell: ({ row }) => (
+              /*Cell: ({ row }) => (
                 <span {...row.getToggleRowExpandedProps(
                 )}>
                   <button onClick={deleteRow}> DELETE </button>
-                </span>)
+                </span>)*/
             },],
           //accessor: 'other',
         }
