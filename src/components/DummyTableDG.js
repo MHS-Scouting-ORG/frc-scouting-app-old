@@ -15,7 +15,7 @@ function DummyTableDG(props) {
   const [teamNum,setTeamNum] = useState([]) // team numbers frc{teamNumber}
   const [oprData,setOprData] = useState([]); //data of team ccwm opr and dpr
   const [averages,setAverages] = useState([]);
-  const [apiData, setApiData] = useState([]) //data retrieved
+  const [apiData,setApiData] = useState([]) //data retrieved
   const [gridState,setGridState] = useState(false); //differentiate between team and grid table
   const [oprList,setOprList] = useState([]);
   const [dprList,setDprList] = useState([]);
@@ -284,10 +284,6 @@ const data = React.useMemo(
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
       AvgGridPoints: team.AvgGridPoints,
-      /*AvgLow: team.AvgLow,
-      AvgMid: team.AvgMid,
-      AvgTop: team.AvgTop,
-      AvgAcc: team.AvgAcc,*/
       DPR: team.DPR,
       Defense: team.Defense,
       Penalties: team.Penalties
@@ -481,18 +477,6 @@ const data = React.useMemo(
                     </td>
                   </tr>
                   )) : null}
-
-                {/*row.isExpanded && gridState === true ? (
-                  <tr>
-                    <td colSpan={visibleColumns.length}
-                    style = {{
-                      maxWidth: "1200px"
-                    }}
-                    >
-                      {renderRowSubComponentGrid ({row})}
-                    </td>
-                  </tr>
-                ) : null*/}
 
                   </React.Fragment>
             )

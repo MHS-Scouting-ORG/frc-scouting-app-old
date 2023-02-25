@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTable, useSortBy } from 'react-table'
 
-const DumInnerTable = (props) => {
+const TeamInnerTable = (props) => {
 
     const data = props.information;
 
@@ -27,11 +27,11 @@ const DumInnerTable = (props) => {
                       accessor: 'GridPts',
                     },
                     {
-                        Header: 'Cone Acc',
+                        Header: '🔺 Acc',
                         accessor: 'ConeAcc'
                     },
                     {
-                        Header: 'Cube Acc',
+                        Header: '🟪 Acc',
                         accessor: 'CubeAcc'
                     },] 
             },
@@ -44,10 +44,10 @@ const DumInnerTable = (props) => {
                     },
                     {
                         Header: 'Mobility',
-                        accessor: 'mobility'
+                        accessor: 'Mobility'
                     },
                     {
-                        Header: 'Upper 🟪 Pts',
+                        Header: 'Upper 🔺 Pts',
                         accessor: 'AutoUpperConePts'
                     },
                     {
@@ -55,7 +55,7 @@ const DumInnerTable = (props) => {
                         accessor: 'AutoUpperCubePts'
                     },
                     {
-                        Header: 'Mid Cone Pts',
+                        Header: 'Mid 🔺 Pts',
                         accessor: 'AutoMidConePts'
                     },
                     {
@@ -63,7 +63,7 @@ const DumInnerTable = (props) => {
                       accessor: 'AutoMidCubePts'
                     },
                     {
-                        Header: 'Low Cone Pts',
+                        Header: 'Low 🔺 Pts',
                         accessor: 'AutoLowConePts'
                     },
                     {
@@ -79,10 +79,6 @@ const DumInnerTable = (props) => {
                 Header: 'Tele-Op',
                 columns: [
                     {
-                        Header: 'Grid Pts',
-                        accessor: 'TeleGridPts'
-                    },
-                    {
                         Header: 'Upper Cone Pts',
                         accessor: 'TeleUpperConePts'
                     },
@@ -91,7 +87,7 @@ const DumInnerTable = (props) => {
                       accessor: 'TeleUpperCubePts'
                     },
                     {
-                        Header: 'Mid Cone Pts',
+                        Header: 'Mid 🔺 Pts',
                         accessor: 'TeleMidConePts'
                     },
                     {
@@ -99,7 +95,7 @@ const DumInnerTable = (props) => {
                       accessor: 'TeleMidCubePts'
                     },
                     {
-                        Header: 'Low Cone Pts',
+                        Header: 'Low 🔺 Pts',
                         accessor: 'TeleLowConePts'
                     },
                     {
@@ -123,20 +119,8 @@ const DumInnerTable = (props) => {
                       accessor: 'EndComments',
                     },
                     {
-                      Header: 'Drive Strength',
-                      accessor: 'DriveStrength',
-                    },
-                    {
-                      Header: 'Drive Speed',
-                      accessor: 'DriveSpeed',
-                    },
-                    {
                       Header: 'Smart Placement',
                       accessor: 'SmartPlacement',
-                    },
-                    {
-                      Header: 'Intake From',
-                      accessor: 'IntakeFrom',
                     },
                     {
                       Header: 'Foul | Tech',
@@ -152,20 +136,32 @@ const DumInnerTable = (props) => {
                     },]
             },
             {
+              Header: 'Drive',
+              columns: [
+                    {
+                      Header: 'Drive Strength',
+                      accessor: 'DriveStrength',
+                    },
+                    {
+                      Header: 'Drive Speed',
+                      accessor: 'DriveSpeed',
+                    },]
+            },
+            {
               Header: 'Other',
               columns: [
-                {
-                  Header: 'Comments',
-                  accessor: 'Comments',
-                },
-                {
-                  Header: 'Scouter',
-                  accessor: 'Email',
-                },
-                {
-                  Header: 'Delete',
-                  accessor: 'Delete',
-                },],
+                    {
+                      Header: 'Comments',
+                      accessor: 'Comments',
+                    },
+                    {
+                      Header: 'Scouter',
+                      accessor: 'Email',
+                    },
+                    {
+                      Header: 'Delete',
+                      accessor: 'Delete',
+                    },],
               
             }
         ],[]
@@ -252,4 +248,4 @@ const DumInnerTable = (props) => {
 
 } 
 
-export default DumInnerTable;
+export default TeamInnerTable;
