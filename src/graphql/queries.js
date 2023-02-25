@@ -50,10 +50,58 @@ export const getTeamMatch = /* GraphQL */ `
       Regional
       Autonomous {
         AutonomousPlacement
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         LeftCommunity
         ChargeStation
       }
       Teleop {
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         Accuracy {
           High
           Mid
@@ -69,6 +117,11 @@ export const getTeamMatch = /* GraphQL */ `
         ScoringTotal {
           Total
           GridPoints
+          GridScoringByPlacement {
+            High
+            Mid
+            Low
+          }
           Cones
           Cubes
         }
@@ -130,10 +183,38 @@ export const listTeamMatches = /* GraphQL */ `
           ChargeStation
         }
         Teleop {
+          Accuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
           ChargeStation
           EndGame
+          EndGameTally {
+            Start
+            End
+          }
+          ScoringTotal {
+            Total
+            GridPoints
+            Cones
+            Cubes
+          }
           DriveStrength
           DriveSpeed
+          ConesAccuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
+          CubesAccuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
           SmartPlacement
         }
         Comments
@@ -178,10 +259,38 @@ export const teamMatchesByTeam = /* GraphQL */ `
           ChargeStation
         }
         Teleop {
+          Accuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
           ChargeStation
           EndGame
+          EndGameTally {
+            Start
+            End
+          }
+          ScoringTotal {
+            Total
+            GridPoints
+            Cones
+            Cubes
+          }
           DriveStrength
           DriveSpeed
+          ConesAccuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
+          CubesAccuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
           SmartPlacement
         }
         Comments
@@ -226,10 +335,38 @@ export const teamMatchesByRegional = /* GraphQL */ `
           ChargeStation
         }
         Teleop {
+          Accuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
           ChargeStation
           EndGame
+          EndGameTally {
+            Start
+            End
+          }
+          ScoringTotal {
+            Total
+            GridPoints
+            Cones
+            Cubes
+          }
           DriveStrength
           DriveSpeed
+          ConesAccuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
+          CubesAccuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
           SmartPlacement
         }
         Comments
