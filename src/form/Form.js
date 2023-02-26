@@ -107,7 +107,7 @@ class Form extends React.Component {
       rankingState: ["", "", ""],
       bonusVal: [' ', ' '],
       bonusState: '',
-      penaltyVal: [' ', ' ', ' ', ' ', ' '],
+      penaltyVal: [' ', ' ', ' ', ' ', ' ',' '],
       dropDownVal: ['', '', '', '', ''],
       counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       //smartPlacementVal: false,
@@ -314,7 +314,7 @@ class Form extends React.Component {
     }*/
 
     let data = this.state.matchData;
-    let rankingStates = this.state.rankingState;
+    let rankingStates = this.copyArray(this.state.rankingState);
     if(data === "not found"){
         window.alert("PICK A TEAM FIRST");
     }
@@ -333,6 +333,8 @@ class Form extends React.Component {
     rankingStates[0] = label;
     rankingStates[1] = '';
     rankingStates[2] = '';
+
+    this.setState({rankingState: rankingStates})
   }
 
   makeWhoWonBox(name, i) {
@@ -343,7 +345,6 @@ class Form extends React.Component {
     } else {
       checkVal = false;
     }
-
     return (
       <div>
         <CheckBox
@@ -356,40 +357,63 @@ class Form extends React.Component {
     )
   }
 
+  copyArray(Array){
+    let arrayCopy = [];
+    for(let i = 0; i < Array.length; i++){
+        arrayCopy.push(Array[i]);
+    }
+
+    return arrayCopy
+
+  }
+
   strategyBox(i, label) {
-    let strategyStates = this.state.strategyVal;
+    let strategyStates = this.copyArray(this.state.strategyVal);
     if (strategyStates[i] === label) {
       strategyStates[i] = ' ';
     } else {
       strategyStates[i] = label;
     }
+
+    this.setState({strategyVal: strategyStates})
   }
 
   makeStrategyBox(name, i) {
+    let strategyState = this.state.strategyVal;
+    let checkedVal;
+    if(strategyState[i] === name){
+        checkedVal = true;
+    } else {
+        checkedVal = false;
+    }
     return (
       <div>
         <CheckBox
           label={name}
           changeCheckBoxState={this.strategyBox}
           place={i}
-
+         checked={checkedVal}
         />
       </div>
     )
   }
 
   changeBooleanCheckBox(i) {
-    let booleanStates = this.state.booleans
+    let booleanStates = this.copyArray(this.state.booleans)
     booleanStates[i] = !booleanStates[i]
+    this.setState({booleans: booleanStates})
   }
 
   makeBooleanCheckBox(name, i) {
+    let booleanStates = this.state.booleans;
+    let checkedVal;
     return (
       <div>
         <CheckBox
           label={name}
           changeCheckBoxState={this.changeBooleanCheckBox}
           place={i}
+          checked={booleanStates[i]}
         />
       </div>
     )
@@ -553,21 +577,30 @@ class Form extends React.Component {
   //-------------------------------------------------------------------------------------------------------------//
 
   penaltyBoxChecked(i, label) {
-    let penaltyStates = this.state.penaltyVal;
+    let penaltyStates = this.copyArray(this.state.penaltyVal);
     if (penaltyStates[i] === label) {
       penaltyStates[i] = ' ';
     } else {
       penaltyStates[i] = label;
     }
+    this.setState({penaltyVal: penaltyStates})
   }
 
   makePenaltyBox(name, i) {
+    let penaltyStates = this.state.penaltyVal;
+    let checkedVal;
+    if(penaltyStates[i] === name){
+        checkedVal = true;
+    } else {
+        checkedVal = false
+    }
     return (
       <div>
         <CheckBox
           label={name}
           changeCheckBoxState={this.penaltyBoxChecked}
           place={i}
+          checked={checkedVal}
         />
       </div>
     )
@@ -596,36 +629,33 @@ class Form extends React.Component {
   } */
 
   bonusBoxChecked(i, label) {
-    let rankingState = this.state.rankingState;
-    if (rankingState[i] === label) {
+    let ranking = this.copyArray(this.state.rankingState);
+    if (ranking[i] === label) {
       this.setState({ rankingPts: this.state.rankingPts - 1 });
     } else {
       this.setState({ rankingPts: this.state.rankingPts + 1 });
     }
 
     
-    if (rankingState[i] === label) {
-      rankingState[i] = ' ';
+    if (ranking[i] === label) {
+      ranking[i] = ' ';
     } else {
-      rankingState[i] = label;
-    } 
+      ranking[i] = label;
+    }
+    
+    this.setState({rankingState: ranking})
   }
 
   makeBonusBox(name, i) {
     let rankingState = this.state.rankingState;
     let checkedVal;
-    if (rankingState[i] === name) {
-      checkedVal = true;
-    } else {
-      checkedVal = false;
-    }
     return (
       <div>
         <CheckBox
           label={name}
           changeCheckBoxState={this.bonusBoxChecked}
           place={i}
-          checked={checkedVal}
+          checked={rankingState[i]}
         />
       </div>
     )
@@ -665,11 +695,13 @@ class Form extends React.Component {
   }
 
   makeOverrideBox() {
+    let overrideState = this.state.override;
     return (
       <div>
         <CheckBox
-          label={'Override '}
+          label={"Overide "}
           changeCheckBoxState={this.overrideChange}
+          checked={overrideState}
         />
       </div>
     )
@@ -860,6 +892,27 @@ class Form extends React.Component {
       mobilityPts = 2;
     }
 
+   let penFinal = [];
+    for(let i = 0; i < penalties.length; i++){
+        let arr = penalties[i];
+        if(arr === 'Yellow Card '){
+            penFinal[i] = PenaltyKinds.YELLOW_CARD;
+        } else if(arr === 'Red Card '){
+            penFinal[i] = PenaltyKinds.RED_CARD;
+        } else if (arr === 'Disable '){
+            penFinal[i] = PenaltyKinds.DISABLED
+        } else if (arr === 'Disqualifed '){
+            penFinal[i] = PenaltyKinds.DQ
+        } else if(arr === 'Bot Broke '){
+            penFinal[i] = PenaltyKinds.BROKEN_BOT
+        } else if (arr === 'No Show '){
+            penFinal[i] = PenaltyKinds.NO_SHOW
+        } else {
+            penFinal[i] = PenaltyKinds.NONE;
+        }
+   }
+
+
     let highGridPoints = 6 * (highAutoCones + highAutoCubes) + 5 * (highTeleCones + highTeleCubes);
     let midGridPoints = 4 * (midAutoCones + midAutoCubes) + 3 * (midTeleCones + midTeleCubes);
     let lowGridPoints = 3 * (lowAutoCones + lowAutoCubes) + 2 * (lowTeleCones + lowTeleCubes);
@@ -981,7 +1034,9 @@ class Form extends React.Component {
         matchEntry.Teleop.Scored.Cubes.Mid=midTeleCubes
         matchEntry.Teleop.Scored.Cubes.Lower=lowTeleCubes
 
-        matchEntry.Penalties=penalties
+        matchEntry.Penalties.Fouls=fouls
+        matchEntry.Penalties.Tech=techFouls
+        matchEntry.Penalties.Penalties=penalties
         matchEntry.Priorities=strategies
         matchEntry.RankingPts=rankingState
 
@@ -1009,120 +1064,12 @@ class Form extends React.Component {
         matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.Low=lowGridPoints
 
         matchEntry.Teleop.SmartPlacement=smartPlacement
-        
+
         matchEntry.Comments=comments
 
-      //apiUpdateTeamMatch('2023hiho', teamNum, matchKey, {
-      //    Autonomous: {
-      //        Scored: {
-      //            Cones: {
-      //                Upper: Number(highAutoCones),
-      //                Mid: Number(midAutoCones),
-      //                Lower: Number(lowAutoCones),
-      //            },
-      //            Cubes: {
-      //                Upper: Number(highAutoCubes),
-      //                Mid: Number(midAutoCubes),
-      //                Lower: Number(lowAutoCubes),
-      //            }
-      //        },
-
-      //        Attempted: {
-      //            Cones: {
-      //                Upper: Number(highConesAutoAttempted),
-      //                Mid: Number(midConesAutoAttempted),
-      //                Lower: Number(lowConesAutoAttempted),
-      //            },
-      //            Cubes: {
-      //                Upper: Number(highCubesAutoAttempted),
-      //                Mid: Number(midCubesAutoAttempted),
-      //                Lower: Number(lowCubesAutoAttempted),
-      //            }
-      //        },
-      //        LeftCommunity: Boolean(mobility),
-      //        ChargeStation: String(chargeStationAuto),
-      //    }, 
-
-      //    Teleop: {
-      //        Scored: {
-      //            Cones: {
-      //                Upper: Number(highTeleCubes),
-      //                Mid: Number(midTeleCones),
-      //                Lower: Number(lowTeleCones),
-      //            },
-
-      //            Cubes: {
-      //                Upper: Number(highTeleCubes),
-      //                Mid: Number(midTeleCubes),
-      //                Lower: Number(lowTeleCubes),
-      //            },
-      //        },
-
-      //        Attempted: {
-      //            Cones: {
-      //                Upper: Number(highConesTeleAttempted),
-      //                Mid: Number(midConesTeleAttempted),
-      //                Lower: Number(lowConesTeleAttempted),
-      //            },
-      //            Cubes: {
-      //                Upper: Number(highCubesTeleAttempted),
-      //                Mid: Number(midCubesTeleAttempted),
-      //                Lower: Number(lowCubesTeleAttempted),
-      //            }
-      //        },
-      //        EndGame: String(endGameUsed),
-      //        EndGameTally: {
-      //            Start: Number(endGameStart),
-      //            End: Number(endGameEnd)
-      //        },
-      //        //RankingPts: Array(rankingStates),
-      //        //RealRankingPts: Number(ranking)
-      //        ScoringTotal: {
-      //            Total: Number(points),
-      //            GridPoints: Number(totalGridPts),
-      //            GridScoringByPlacement: {
-      //                High: Number(highGridPoints),
-      //                Mid: Number(midGridPoints),
-      //                Low: Number(lowGridPoints)
-      //            },
-      //            Cones: Number(conePts),
-      //            Cubes: Number(cubePts),
-      //        },
-      //        DriveStrength: String(driveStrength),
-      //        DriveSpeed: String(driveSpeed),
-      //        ConesAccuracy: {
-      //            High: Number(conesHighTeleAutoAccuracy),
-      //            Mid: Number(conesMidTeleAutoAccuracy),
-      //            Low: Number(conesLowTeleAutoAccuracy),
-      //            Overall: Number(conesTeleAutoAccuracy)
-      //        },
-      //        CubesAccuracy: {
-      //            High: Number(cubesHighTeleAutoAccuracy),
-      //            Mid: Number(cubesMidTeleAutoAccuracy),
-      //            Low: Number(cubesLowTeleAutoAccuracy),
-      //            Overall: Number(cubesTeleAutoAccuracy)
-
-      //        },
-      //        SmartPlacement: Boolean(smartPlacement),
-      //    },
-      //    Comments: String(comments),
-      //    Penalties: {
-      //        Fouls: Number(fouls),
-      //        Tech: Number(techFouls),
-      //        Yellow: 0,
-      //        Red: 0,
-      //        Disabled: false,
-      //        DQ: false,
-      //        BrokenBot: false
-      //    }
-
-      //}
-      //)
+     
 
       await apiUpdateTeamMatch(this.regional, teamNum, matchKey, matchEntry)
-//        .then(data => {
-//          console.log(data)
-//        })
     console.log(this.state);
     }
   }
@@ -1222,7 +1169,7 @@ class Form extends React.Component {
         {this.makeStrategyBox("Defense ", 9)}
         <br></br>
         <p>How well is there defense if any?</p>
-        <TextBox title={"💬Comments: "} commentState={this.setComment}></TextBox>
+        <TextBox title={"💬Comments: "} commentState={this.setComment} value={this.state.comments}></TextBox>
         <div>
           <button onClick={(evt) => { 
             evt.preventDefault()

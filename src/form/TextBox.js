@@ -8,7 +8,7 @@ function TextBox(props){
             <textarea onChange={props.commentState} row="4" cols='50'
                 style={{
                     wordWarp: 'normal',
-                }}
+                }} value={props.value}
             />
         </div>
     )
