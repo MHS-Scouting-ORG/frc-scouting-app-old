@@ -54,6 +54,7 @@ const PriorityOpts = {
     MID: "Mid",
     LOW: "Low",
     CONES: "Cones",
+    CUBES: "Cubes",
     CHARGESTATION: "ChargeStation",
     DEFENSE: "Defense",
     SINGLE_SUBSTATION: "SingleSubStation",
@@ -127,7 +128,7 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
             Tech: 0,
             Penalties: []
         },
-        Priorities: [PriorityOpts.DEFENSE],
+        Priorities: [ ],
 
 
     }
