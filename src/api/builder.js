@@ -130,7 +130,7 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
             Tech: 0,
             Penalties: []
         },
-        Priorities: [PriorityOpts.DEFENSE],
+        Priorities: [ ],
 
 
 
