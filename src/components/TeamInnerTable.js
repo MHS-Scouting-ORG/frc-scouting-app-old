@@ -71,7 +71,7 @@ const TeamInnerTable = (props) => {
                       accessor: 'AutoLowCubePts'
                     },
                     {
-                      Header: 'CS. Pts',
+                      Header: 'Charge Station',
                       accessor: 'AutoChargeStationPts'
                     },]
             },
@@ -103,7 +103,7 @@ const TeamInnerTable = (props) => {
                       accessor: 'TeleLowCubePts'
                     },
                     {
-                        Header: 'Endgame Pts',
+                        Header: 'Endgame',
                         accessor: 'TeleEndgame'
                     },
                     {
@@ -114,10 +114,6 @@ const TeamInnerTable = (props) => {
                       Header: 'CS End',
                       accessor: 'CSEnd',
                     },
-                    /*{
-                      Header: 'Endgame Comments',        TBD
-                      accessor: 'EndComments',
-                    }, */ 
                     {
                       Header: 'Smart Placement',
                       accessor: 'SmartPlacement',
@@ -179,7 +175,7 @@ const TeamInnerTable = (props) => {
 
        return (
     <div>
-      <table {...getTableProps()}>
+      <table style={{borderCollapse: "collapse"}}{...getTableProps()}>
 
         <thead>
           {
@@ -192,12 +188,10 @@ const TeamInnerTable = (props) => {
                     <th
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       style={{
-                        color: 'black',
-                        fontWeight: 'bold',
                         padding: '5px',
                         border: 'solid 1px black',
                         textAlign: 'center',
-                        background: 'aliceblue'
+                        background: 'steelblue',
                       }}
                     >
                       {column.render('Header')}
@@ -224,9 +218,8 @@ const TeamInnerTable = (props) => {
                           {...cell.getCellProps()}
                           style={{
                             padding: '5px',
-                            border: 'solid 1px grey',
+                            border: 'solid 1px black',
                             textAlign: 'center',
-                            background: 'black'
                           }}
                         >
                           {cell.render('Cell')}

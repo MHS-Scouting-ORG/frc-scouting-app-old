@@ -59,7 +59,7 @@ const {
 
    return (
 <div>
-  <table {...getTableProps()}>
+  <table style={{borderCollapse: "collapse"}} {...getTableProps()}>
 
     <thead>
       {

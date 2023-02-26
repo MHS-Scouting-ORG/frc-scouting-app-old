@@ -9,7 +9,6 @@ import MainTable from './components/MainTable';
 import { useEffect, useState } from 'react'
 import ExampleUI from './example'
 import { getRegionals, getTeamInfo } from './api/bluealliance'
-import DumInnerTable from './components/TeamInnerTable';
 import { ChargeStationType } from './api/builder';
 
 
@@ -62,8 +61,7 @@ function AuthenticatedUI({ user }) {
         <br />
       </div>*/}
       <MainTable regional = {regional} />
-        
-      {/*<Summary></Summary>*/}
+      
     </div>
     )
 

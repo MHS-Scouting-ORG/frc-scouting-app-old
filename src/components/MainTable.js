@@ -222,53 +222,50 @@ const renderRowSubComponent = ({ row }) => {
   const disp = t.map(x => {
         return {
             Match: x.id.substring(x.id.indexOf('_')+1),
-            Strategy: x.Priorities.filter(val => val.trim() !== '').length !== 0 ? x.Priorities.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
-            TotalPts: `${x.Teleop.ScoringTotal.Total}`,
-            GridPts: `${x.Teleop.ScoringTotal.GridPoints}`,
-            ConeAcc: x.Teleop.ConesAccuracy.Overall !== 0 ? `${x.Teleop.ConesAccuracy.Overall.toFixed(2)}` : '',
-            CubeAcc: x.Teleop.CubesAccuracy.Overall !== 0 ? `${x.Teleop.CubesAccuracy.Overall.toFixed(2)}` : '',
-            AutoPlacement: x.Autonomous.AutonomousPlacement !== 0 ? `${x.Autonomous.AutonomousPlacement}`: '',
-            Mobility: x.Autonomous.LeftCommunity === true ? `Yes`: `No`,
-            //works ^
-            AutoUpperConePts: x.Autonomous.Scored.Cones.Upper / (x.Autonomous.Scored.Cones.Upper + x.Autonomous.Attempted.Cones.Upper) /*!== NaN ? x.Autonomous.Scored.Cones.Upper / (x.Autonomous.Scored.Cones.Upper + x.Autonomous.Attempted.Cones.Upper) : '' */,
-            AutoUpperCubePts: x.Autonomous.Scored.Cubes.Upper / (x.Autonomous.Scored.Cubes.Upper + x.Autonomous.Attempted.Cubes.Upper) !== NaN ? x.Autonomous.Scored.Cubes.Upper / (x.Autonomous.Scored.Cubes.Upper + x.Autonomous.Attempted.Cubes.Upper) : '',
-            AutoMidConePts: x.Autonomous.Scored.Cones.Mid / (x.Autonomous.Scored.Cones.Mid + x.Autonomous.Attempted.Cones.Mid) !== NaN ? x.Autonomous.Scored.Cones.Mid / (x.Autonomous.Scored.Cones.Mid + x.Autonomous.Attempted.Cones.Mid) : '' ,
-            AutoMidCubePts: x.Autonomous.Scored.Cubes.Mid / (x.Autonomous.Scored.Cubes.Mid + x.Autonomous.Attempted.Cubes.Mid) !== NaN ? x.Autonomous.Scored.Cubes.Mid / (x.Autonomous.Scored.Cubes.Mid + x.Autonomous.Attempted.Cubes.Mid) : '',
-            AutoLowConePts: x.Autonomous.Scored.Cones.Lower / (x.Autonomous.Scored.Cones.Lower + x.Autonomous.Attempted.Cones.Lower) !== NaN ? x.Autonomous.Scored.Cones.Lower / (x.Autonomous.Scored.Cones.Lower + x.Autonomous.Attempted.Cones.Lower) : '',
-            AutoLowCubePts: x.Autonomous.Scored.Cubes.Lower / (x.Autonomous.Scored.Cubes.Lower + x.Autonomous.Attempted.Cubes.Lower) !== NaN ? x.Autonomous.Scored.Cubes.Lower / (x.Autonomous.Scored.Cubes.Lower + x.Autonomous.Attempted.Cubes.Lower) : '',
-            //still testing ^
+            // ================= all code in block does not exist yet within the data object
+            //Strategy: x.Priorities.filter(val => val.trim() !== '').length !== 0 ? x.Strategy.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
+            //TotalPts: x.Teleop.ScoringTotal.Total,
+            //GridPts: x.Teleop.ScoringTotal.GridPoints,
+            //ConeAcc: x.Teleop.ConesAccuracy.Overall !== null ? x.Teleop.ConesAccuracy.Overall.toFixed(2) : '',
+            //CubeAcc: x.Teleop.CubesAccuracy.Overall !== null ? x.Teleop.CubesAccuracy.Overall.toFixed(2) : '',
+            //AutoPlacement: x.Autonomous.AutonomousPlacement,
+            Mobility: x.Autonomous.LeftCommunity === true ? 'yes' : 'no',
+            //AutoUpperConePts: `${x.Autonomous.Scored.Cones.Upper}/${x.Autonomous.Scored.Cones.Upper + x.Autonomous.Attempted.Cones.Upper}`,
+            //AutoUpperCubePts: `${x.Autonomous.Scored.Cubes.Upper}/${x.Autonomous.Scored.Cubes.Upper + x.Autonomous.Attempted.Cubes.Upper}`,
+            //AutoMidConePts: `${x.Autonomous.Scored.Cones.Mid}/${x.Autonomous.Scored.Cones.Mid + x.Autonomous.Attempted.Cones.Mid}`,
+            //AutoMidCubePts: `${x.Autonomous.Scored.Cubes.Mid}/${x.Autonomous.Scored.Cubes.Mid + x.Autonomous.Attempted.Cubes.Mid}`,
+            //AutoLowConePts: `${x.Autonomous.Scored.Cones.Lower}/${x.Autonomous.Scored.Cones.Lower + x.Autonomous.Attempted.Cones.Lower}`,
+            //AutoLowCubePts: `${x.Autonomous.Scored.Cubes.Lower}/${x.Autonomous.Scored.Cubes.Lower + x.Autonomous.Attempted.Cubes.Lower}`,
             AutoChargeStationPts: x.Autonomous.ChargeStation,
-            //works ^
+            /*
             TeleUpperConePts: `${x.Teleop.Scored.Cones.Upper}/${x.Teleop.Scored.Cones.Upper + x.Teleop.Attempted.Cones.Upper}`,
             TeleUpperCubePts: `${x.Teleop.Scored.Cubes.Upper}/${x.Teleop.Scored.Cubes.Upper + x.Teleop.Attempted.Cubes.Upper}`,
             TeleMidConePts: `${x.Teleop.Scored.Cones.Mid}/${x.Teleop.Scored.Cones.Mid + x.Teleop.Attempted.Cones.Mid}`,
             TeleMidCubePts: `${x.Teleop.Scored.Cubes.Mid}/${x.Teleop.Scored.Cubes.Mid + x.Teleop.Scored.Cubes.Mid}`,
             TeleLowConePts: `${x.Teleop.Scored.Cones.Lower}/${x.Teleop.Scored.Cones.Lower + x.Teleop.Attempted.Cones.Lower}`,
             TeleLowCubePts: `${x.Teleop.Scored.Cubes.Lower}/${x.Teleop.Scored.Cubes.Lower + x.Teleop.Attempted.Cubes.Lower}`,
+            */
             TeleEndgame: x.Teleop.EndGame !== undefined ? x.Teleop.EndGame : '',
-            //still testing ^
+            /*
             CSStart: x.Teleop.EndGameTally.Start !== undefined ? x.Teleop.EndGameTally.Start : '',
             CSEnd: x.Teleop.EndGameTally.End !== undefined ? x.Teleop.EndGameTally.End : '',
-            //works ^
+            */
             DriveStrength: x.Teleop.DriveStrength !== undefined ? x.Teleop.DriveStrength : '',
-            DriveSpeed: x.Teleop.DriveSpeed !== "0" ? x.Teleop.DriveSpeed : '', 
-            //tbd ^
-            SmartPlacement: x.Teleop.SmartPlacement === true ? `Yes` : `No`,
-            //works
+            DriveSpeed: x.Teleop.DriveSpeed !== undefined ? x.Teleop.DriveSpeed : '',
+            SmartPlacement: x.Teleop.SmartPlacement === true ? `Achieved` : `Did Not`,
             NumberOfFoulAndTech: x.Penalties.Fouls !== 0 && x.Penalties.Tech !== 0 ? `${x.Penalties.Fouls} | ${x.Penalties.Tech}` : ``,
-            Penalties: x.Penalties.Penalties.filter(pen => pen !== undefined).length !== 0 ? `${x.Penalties.Penalties.filter(pen => pen !== undefined)}`:``, //!== undefined && x.Penalties.filter(val => val.trim() !== '').length !== 0 ? x.Penalties.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
-            //testing ^
-            //NumberOfRankingPoints: x.RankingPts !== undefined ? x.RankingPts : '',
-            //needs reworking
-            Comments: x.Comments !== undefined || "" ? x.Comments.trim() : '',
-            //Email: x.email.substring(0, x.email.length-17), */
-            //needs to be implemented later
+            //Penalties: x.Penalties !== undefined && x.Penalties.filter(val => val.trim() !== '').length !== 0 ? x.Penalties.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
+            //NumberOfRankingPoints: x.Teleop.RankingPts !== undefined ? x.Teleop.RankingPts : '',
+
+            Comments: x.Comments !== undefined ? x.Comments.trim() : '',
+       //     Email: x.email.substring(0, x.email.length-17), */
+
         };
     })
 
   return disp.length > 0 ?
   (<pre>
-    <div>{<TeamInnerTable information = {disp}/>} </div>
+    <div style={{maxWidth: "7000px", overflowX: "scroll", borderCollapse: "collapse", }}>{<TeamInnerTable information = {disp}/>} </div>
   </pre>)
   : (
     <div style={{
@@ -278,43 +275,48 @@ const renderRowSubComponent = ({ row }) => {
 }
 
 const renderRowSubComponentGrid = ({row}) => {
-  const t = apiData.filter(x => x.Team === `frc${row.values.TeamNumber}`)
-  //console.log(t)
+//const gridStats = apiData.filter(x => x.Team === team.TeamNum)
+  /*
 
-  const upperGridPts = calcUpperGrid(t)
-  const upperGridAcc = calcUpperGridAcc(t)
-  const midGridPts = calcMidGrid(t)
-  const midGridAcc = calcMidGridAcc(t)
-  const lowerGridPts = calcLowGrid(t)
-  const lowerGridAcc = calcLowAcc(t)
-  
-  const disp = {
-    //return {
-      AvgUpper: upperGridPts !== undefined ? `μ=${upperGridPts}` : '',
-      AvgUpperAcc: upperGridAcc !== undefined ? `μ=${upperGridAcc}` : '',
-      AvgMid: midGridPts !== undefined ? `μ=${midGridPts}` : '',
-      AvgMidAcc: midGridAcc !== undefined ? `μ=${midGridAcc}` : '',
-      AvgLower: lowerGridPts !== undefined ? `μ=${lowerGridPts}` : '',
-      AvgLowerAcc: lowerGridAcc !== undefined ? `μ=${lowerGridAcc}` : '',
-    }
-  //})
-  //testing ^
-    /*return {
+  const gridStats = apiData.filter(x => x.Team === `frc${row.values.TeamNumber}`)
+
+  const upperGridPts = calcUpperGrid(gridStats)
+  const upperGridAcc = calcUpperGridAcc(gridStats)
+
+  const midGridPts = calcMidGrid(gridStats)
+  const midGridAcc = calcMidGridAcc(gridStats)
+
+  const lowGridPts = calcLowGrid(gridStats)
+  const lowGridAcc = calcLowAcc(gridStats)
+
+    return {
+      AvgUpper: !isNan(upperGridPts) ? `μ=${upperGridPts}` : '',
+      AvgUpperAcc: !isNan(upperGridAcc) ? `μ=${upperGridAcc}` : '',
+
+      AvgUpperCone: !isNan(upperConePts) ? `μ=${upperConePts}` : '',
+      AvgUpperConeAcc: !isNan(upperConeAcc) ? `μ=${upperConeAcc}` : '',
       AvgUpperCube: !isNan(upperCubePts) ? `μ=${upperCubePts}` : '', 
       AvgUpperCubeAcc: !isNan(upperCubeAcc) ? `μ=${upperCubeAcc}` : '',
+
+      AvgMid: !isNan(midGridPts) ? `μ=${midGridPts}` : '',
+      AvgMidAcc: !isNan(midGridAcc) ? `μ=${midGridAcc}` : '',
+
       AvgMidCone: !isNan(midConePts) ? `μ=${midConePts}` : '',
       AvgMidCube: !isNan(midCubePts) ? `μ=${midCubePts}` : '',
       AvgMidCubeAcc: !isNan(midCubeAcc) ? `μ=${midCubeAcc}` : '',
+
+      AvgLower: !isNan(lowerGridPts) ? `μ=${lowerGridPts}` : '',
+      AvgLowerAcc: !isNan(lowerGridAcc) ? `μ=${lowerGridAcc}` : '',
+
       AvgLowerCone: !isNan(lowerConePts) ? `μ=${lowerConePts}` : '',
       AvgLowerConeAcc: !isNan(lowerConeAcc) ? `μ=${lowerConeAcc}` : '',
       AvgLowerCube: !isNan(lowerCubePts) ? `μ=${lowerCubePts}` : '',
       AvgLowerCubeAcc: !isNan(lowerCubeAcc) ? `μ=${lowerCubeAcc}` : '',
-
     };
       */
   return disp.length > 0 ?
   (<pre>
-    <div>{<GridInnerTable information = {disp}/>} </div>
+    <div>{<GridInnerTable information = {dum}/>} </div>
   </pre>)
   : (
     <div style={{
@@ -340,7 +342,7 @@ const renderRowSubComponentConeAccTable = ({row}) => {
 
     return disp.length > 0 ?
     (<pre>
-      <div>{<ConeAccTable information = {disp}/>} </div>
+      <div>{<ConeAccTable information = {dum}/>} </div>
     </pre>)
     : (
       <div style={{
@@ -365,7 +367,7 @@ const renderRowSubComponentConeAccTable = ({row}) => {
 
       return disp.length > 0 ?
       (<pre>
-        <div>{<ConePtsTable information = {disp}/>} </div>
+        <div>{<ConePtsTable information = {dum}/>} </div>
       </pre>)
       : (
         <div style={{
@@ -389,7 +391,7 @@ const renderRowSubComponentConeAccTable = ({row}) => {
       
         return disp.length > 0 ?
         (<pre>
-          <div>{<CubeAccTable information = {disp}/>} </div>
+          <div>{<CubeAccTable information = {dum}/>} </div>
         </pre>)
         : (
           <div style={{
@@ -413,7 +415,7 @@ const renderRowSubComponentConeAccTable = ({row}) => {
         
           return disp.length > 0 ?
           (<pre>
-            <div>{<CubePtsTable information = {disp}/>} </div>
+            <div>{<CubePtsTable information = {dum}/>} </div>
           </pre>)
           : (
             <div style={{
@@ -437,7 +439,7 @@ function tableHandler(row){
       <tr>
         <td colSpan={visibleColumns.length}
         style = {{
-          maxWidth: "1200px"
+          maxWidth: "10rem"
         }}
         >
           {renderRowSubComponentGrid ({row})}
@@ -1041,10 +1043,6 @@ const data = React.useMemo(
           </span>)
       },
       {
-        Header: "Avg CS Points",
-        accessor: "AvgCSPoints"
-      },
-      {
         Header: "DPR",
         accessor: "DPR",
       },
@@ -1076,34 +1074,49 @@ const data = React.useMemo(
   
   return (
     <div>
-
-      <h2>summary statistics 
-        <img src={"./images/charge.png"} width="350px" height= "500px"></img>
+      <h2>CHARGED UP STATISTICS  <img src={"./images/bluethundalogo.png"} width="100px" height= "100px"></img>
       </h2>
-
-      <p>
-          <strong>KEY</strong> 
-          <br/> "Avg" / μ = Average
-          <br/> σ = Standard Deviation
-          <br/> Acc = Accuracy
-      </p>
-      <p> Select checkboxes to choose which priorities to sort by. Then click on <strong>Grade</strong>. </p>
-      <br></br>
-      <List setList={setSortBy}/>
-      <br></br>
-      <br></br>
-      <img src={"./images/community.jpg"} width="400px" height="340px"
-          style={{
-              display: 'inline-block',
-              margin: '25px'
-          }}
-      ></img>
+      <table style={{ width:'1250px'}} >
+                <tbody>
+                    <tr>
+                        <td
+                            style={{
+                                minWidth: '750px'
+                            }}
+                        >
+                            <p> Select checkboxes to choose which priorities to sort by. Then click on <strong>Grade</strong>. </p>
+                            {<List setList={setSortBy}/>}
+                            <br/>
+                        </td>
+                        <td>
+                        <p style={{
+                            border: '2px solid black',
+                            maxWidth: '240px',
+                            display: 'inline-block',
+                            padding: '5px',
+                          }}>
+                          <strong>KEY</strong> 
+                          <br/> "Avg" / μ = Average
+                          <br/> σ = Standard Deviation
+                          <br/> Acc = Accuracy
+                      </p>
+                      <br></br>
+                      <img src={"./images/community.jpg"} width="300px" height="240px"
+                          style={{
+                              display: 'inline-block',
+                              margin: '25px'
+                          }}
+                        ></img>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
       <br></br>
 
       <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
       <br></br>
-      <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+      <table style={{ width:'1250px', borderCollapse: 'collapse', overflowX: "scroll" }} {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -1111,9 +1124,8 @@ const data = React.useMemo(
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   style={{
-                    background: 'aliceblue',
-                    color: 'black',
-                    fontWeight: 'bold',
+                    padding: '5px',
+                    textAlign: 'center',
                   }}
                 >
                   {column.render('Header')}
@@ -1146,7 +1158,7 @@ const data = React.useMemo(
                             gridStateHandler(false, true, true, false, false, false )
                             }
                         else if(cell.column.Header === "Avg Cube Points"){
-                            gridStateHandler(false, true, false, true, false, false )
+                            gridStateHandler(false, false, false, true, false, false )
                             }
                         else if(cell.column.Header === "Avg Cube Acc"){
                             gridStateHandler(false, false, false, false, true, false )
@@ -1159,9 +1171,9 @@ const data = React.useMemo(
 
                       {...cell.getCellProps()}
                       style={{
-                        padding: '10px',
-                        border: 'solid 1px gray',
-                        background: 'black',
+                        padding: '5px',
+                        border: 'solid 1px black',
+                        textAlign: 'center',
                       }}
                     >
                       {cell.render('Cell')}
@@ -1176,6 +1188,7 @@ const data = React.useMemo(
           })} 
         </tbody>
       </table>
+      <br></br>
     </div>
   )
 }
