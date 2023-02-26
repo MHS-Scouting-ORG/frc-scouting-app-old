@@ -949,6 +949,69 @@ class Form extends React.Component {
       console.log(penalties);
       await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey)
       const matchEntry = buildMatchEntry(this.regional,teamNum,matchKey)
+        matchEntry.Autonomous.Attempted.Cones.Upper=highConesAttempted
+        matchEntry.Autonomous.Attempted.Cones.Mid=midConesAttempted
+        matchEntry.Autonomous.Attempted.Cones.Lower=lowConesAttempted
+        matchEntry.Autonomous.Attempted.Cubes.Upper=highCubesAttempted
+        matchEntry.Autonomous.Attempted.Cubes.Mid=midCubesAttempted
+        matchEntry.Autonomous.Attempted.Cubes.Lower=lowCubesAttempted
+
+        matchEntry.Autonomous.Scored.Cones.Upper=highAutoCones
+        matchEntry.Autonomous.Scored.Cones.Mid=midAutoCones
+        matchEntry.Autonomous.Scored.Cones.Lower=lowAutoCones
+        matchEntry.Autonomous.Scored.Cubes.Upper=highAutoCubes
+        matchEntry.Autonomous.Scored.Cubes.Mid=midAutoCubes
+        matchEntry.Autonomous.Scored.Cubes.Lower=lowAutoCubes
+
+        matchEntry.Autonomous.AutonomousPlacement=autoPlacement
+        matchEntry.Autonomous.ChargeStation=chargeStationAuto
+        matchEntry.Autonomous.LeftCommunity=mobility
+
+        matchEntry.Teleop.Attempted.Cones.Upper=highConesTeleAttempted
+        matchEntry.Teleop.Attempted.Cones.Mid=midConesTeleAttempted
+        matchEntry.Teleop.Attempted.Cones.Lower=lowConesTeleAttempted
+        matchEntry.Teleop.Attempted.Cubes.Upper=highCubesTeleAttempted
+        matchEntry.Teleop.Attempted.Cubes.Mid=midCubesTeleAttempted
+        matchEntry.Teleop.Attempted.Cubes.Lower=lowCubesTeleAttempted
+
+        matchEntry.Teleop.Scored.Cones.Upper=highTeleCones
+        matchEntry.Teleop.Scored.Cones.Mid=midTeleCones
+        matchEntry.Teleop.Scored.Cones.Lower=lowTeleCones
+        matchEntry.Teleop.Scored.Cubes.Upper=highTeleCubes
+        matchEntry.Teleop.Scored.Cubes.Mid=midTeleCubes
+        matchEntry.Teleop.Scored.Cubes.Lower=lowTeleCubes
+
+        matchEntry.Penalties=penalties
+        matchEntry.Priorities=strategies
+        matchEntry.RankingPts=rankingState
+
+        matchEntry.Teleop.ChargeStation=endGameUsed
+        matchEntry.Teleop.EndGameTally.Start=endGameStart
+        matchEntry.Teleop.EndGameTally.End=endGameEnd
+
+        matchEntry.Teleop.DriveSpeed=driveSpeed
+        matchEntry.Teleop.DriveStrength=driveStrength
+
+        matchEntry.Teleop.ConesAccuracy.High=conesHighTeleAutoAccuracy
+        matchEntry.Teleop.ConesAccuracy.Mid=conesMidTeleAutoAccuracy
+        matchEntry.Teleop.ConesAccuracy.Low=conesLowTeleAutoAccuracy
+
+        matchEntry.Teleop.CubesAccuracy.High=cubesHighTeleAutoAccuracy
+        matchEntry.Teleop.CubesAccuracy.Mid=cubesMidTeleAutoAccuracy
+        matchEntry.Teleop.CubesAccuracy.Low=cubesLowTeleAutoAccuracy
+
+        matchEntry.Teleop.ScoringTotal.Total=points
+        matchEntry.Teleop.ScoringTotal.Cones=conePts
+        matchEntry.Teleop.ScoringTotal.Cubes=cubePts
+        matchEntry.Teleop.ScoringTotal.GridPoints=totalGridPts
+        matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.High=highGridPoints
+        matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.Mid=midGridPoints
+        matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.Low=lowGridPoints
+
+        matchEntry.Teleop.SmartPlacement=smartPlacement
+        
+        matchEntry.Comments=comments
+
       //apiUpdateTeamMatch('2023hiho', teamNum, matchKey, {
       //    Autonomous: {
       //        Scored: {
