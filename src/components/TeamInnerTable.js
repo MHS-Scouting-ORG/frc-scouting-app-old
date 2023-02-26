@@ -79,7 +79,7 @@ const TeamInnerTable = (props) => {
                 Header: 'Tele-Op',
                 columns: [
                     {
-                        Header: 'Upper Cone Pts',
+                        Header: 'Upper 🔺 Pts',
                         accessor: 'TeleUpperConePts'
                     },
                     {
@@ -114,10 +114,10 @@ const TeamInnerTable = (props) => {
                       Header: 'CS End',
                       accessor: 'CSEnd',
                     },
-                    {
-                      Header: 'Endgame Comments',
+                    /*{
+                      Header: 'Endgame Comments',        TBD
                       accessor: 'EndComments',
-                    },
+                    }, */ 
                     {
                       Header: 'Smart Placement',
                       accessor: 'SmartPlacement',
