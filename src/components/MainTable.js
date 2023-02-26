@@ -34,9 +34,9 @@ function MainTable(props) {
 
 
    useEffect(() => {
-    getMatchesForRegional('2023hiho', 'frc3881')
+    getMatchesForRegional('2023hiho', 'frc8615')
     .then(data => {
-      console.log(data)
+      console.log(data.data.teamMatchesByRegional.items[3])
     })
     //console.log((getMatchesForRegional('2023week0')))
   },[]) //debug purposes or test ^ 
@@ -121,7 +121,7 @@ function MainTable(props) {
 
    useEffect(() => setAverages(oprData.map(team => {
     const teamStats = apiData.filter(x => x.Team === team.TeamNum)
-    console.log(teamStats)
+    //console.log(teamStats)
     /*
     const points = x.TotalPoints
     const avgPoints = calcAvgPoints(teamStats)
