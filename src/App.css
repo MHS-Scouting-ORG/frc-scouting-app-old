@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  display: grid;
+  grid-template-rows: fit-content(7000px) minmax(max-content, 80vh) fit-content(7000px);
+  grid-template-areas: "header"
+     "main"
+     "footer"
 }
 
 .App-logo {

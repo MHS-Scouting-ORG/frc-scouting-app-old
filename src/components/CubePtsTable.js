@@ -33,7 +33,7 @@ const CubePtsTable = (props) => {
     
        return (
     <div>
-      <table {...getTableProps()}>
+      <table style={{borderCollapse: "collapse"}} {...getTableProps()}>
     
         <thead>
           {
@@ -46,12 +46,10 @@ const CubePtsTable = (props) => {
                     <th
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       style={{
-                        color: 'black',
-                        fontWeight: 'bold',
                         padding: '5px',
                         border: 'solid 1px black',
                         textAlign: 'center',
-                        background: 'aliceblue'
+                        background: 'steelblue',
                       }}
                     >
                       {column.render('Header')}
@@ -78,9 +76,8 @@ const CubePtsTable = (props) => {
                           {...cell.getCellProps()}
                           style={{
                             padding: '5px',
-                            border: 'solid 1px grey',
+                            border: 'solid 1px black',
                             textAlign: 'center',
-                            background: 'black'
                           }}
                         >
                           {cell.render('Cell')}
