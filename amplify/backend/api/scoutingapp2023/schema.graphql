@@ -81,10 +81,10 @@ type PenaltiesType {
 }
 
 type Accuracy {
-  High: Int
-  Mid: Int
-  Low: Int
-  Overall: Int
+  High: Float
+  Mid: Float
+  Low: Float
+  Overall: Float
 }
 
 type ScoringComponentType {
