@@ -28,7 +28,8 @@ const PenaltyKinds = {
 const ChargeStationType = {
     DOCKED_ENGAGED: "DockedEngaged",
     DOCKED: "Docked",
-    ATTEMPTED: "ATTEMPTED",
+    ATTEMPTED: "Attempted",
+    Parked: "Parked",
     NONE: "None"
 }
 

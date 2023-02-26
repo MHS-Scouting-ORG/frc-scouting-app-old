@@ -87,7 +87,7 @@ class Form extends React.Component {
 
     this.submitState = this.submitState.bind(this);
 
-    this.state = {
+    this.state = { 
       comments: '',
       //summaryComments: '',
       stationComments: '',
@@ -206,7 +206,7 @@ class Form extends React.Component {
   changeTeam(event) {
     this.setState({ teamNumber: event.target.value });
     let data = this.state.matchData;
-    let teamColor = 'blue';
+    let teamColor = 'red';
     let selectedTeam = event.target.value;
     data.alliances.blue.team_keys.map((team) => {
       if (team === selectedTeam) {
@@ -215,8 +215,8 @@ class Form extends React.Component {
     })
 
     let whoWon = '';
-    let wonState = this.state.whoWon;
-    if (wonState === '') {
+    //let wonState = this.state.whoWon;
+    /*if (wonState === '') {
       if (data.alliances.blue.score > data.alliances.red.score) {
         wonState = 'blue';
       } else if (data.alliances.blue.score < data.alliances.red.score) {
@@ -230,22 +230,32 @@ class Form extends React.Component {
       whoWon = 'red';
     } else {
       whoWon = 'Tie';
+    }*/
+
+    if(data.alliances.blue.score > data.alliances.red.score) {
+        whoWon = 'blue';
+    } else if (data.alliances.blue.score < data.alliances.red.score) {
+        whoWon = 'red';
+    } else {
+        whoWon = 'Tie';
     }
+
+    let rankingStates = this.state.rankingState;
 
     if (teamColor === whoWon) {
       this.setState({ rankingPts: 2 });
-      this.setState({ rankingState: "Win" })
+      rankingStates[0] = "Team Won ";
     } else if (whoWon === 'Tie') {
       this.setState({ rankingPts: 1 });
-      this.setState({ rankingState: "Tie" })
+      rankingStates[0] = "Team Tied ";
     } else {
       this.setState({ rankingPts: 0 });
-      this.setState({ rankingState: "Loss" })
+      rankingStates[0] = "Team Lost ";
     }
 
-    this.setState({ whoWon: '' });
-    this.setState({ checkedWhoWon: [' ', ' '] });
-    this.setState({ bonusVal: [' ', ' '] });
+    this.setState({ whoWon: whoWon});
+    //this.setState({ checkedWhoWon: [' ', ' '] });
+    //this.setState({ bonusVal: [' ', ' '] });
   }
 
   makeTeamDropdown() {
@@ -267,8 +277,8 @@ class Form extends React.Component {
   }
 
   whoWonClicked(i, label) {
-    let data = this.state.matchData;
-    if (data === 'not found') {
+    //let data = this.state.matchData;
+    /*if (data === 'not found') {
       window.alert("PICK A TEAM FIRST");
     }
     else {
@@ -298,13 +308,34 @@ class Form extends React.Component {
         this.setState({ rankingPts: 0 });
         this.setState({ rankingState: "Lose" })
       }
+    }*/
+
+    let data = this.state.matchData;
+    let rankingStates = this.state.rankingState;
+    if(data === "not found"){
+        window.alert("PICK A TEAM FIRST");
     }
+    else{
+        if(label === "Team Won "){
+            this.setState({ rankingPts: 2})
+        }
+        else if(label === "Team Tied "){
+            this.setState({ rankingPts: 1})
+        }
+        else if(label === "Team Lost "){
+            this.setState({ rankingPts: 0})
+        }
+    }
+
+    rankingStates[0] = label;
+    rankingStates[1] = '';
+    rankingStates[2] = '';
   }
 
   makeWhoWonBox(name, i) {
-    let whoWon = this.state.checkedWhoWon;
+    let rankingStates = this.state.rankingState;
     let checkVal;
-    if (whoWon[i] === name) {
+    if (rankingStates[0] === name) {
       checkVal = true;
     } else {
       checkVal = false;
@@ -562,24 +593,25 @@ class Form extends React.Component {
   } */
 
   bonusBoxChecked(i, label) {
-    let bonusState = this.state.bonusVal;
-    if (bonusState[i] === label) {
+    let rankingState = this.state.rankingState;
+    if (rankingState[i] === label) {
       this.setState({ rankingPts: this.state.rankingPts - 1 });
     } else {
       this.setState({ rankingPts: this.state.rankingPts + 1 });
     }
 
-    if (bonusState[i] === label) {
-      bonusState[i] = ' ';
+    
+    if (rankingState[i] === label) {
+      rankingState[i] = ' ';
     } else {
-      bonusState[i] = label;
-    }
+      rankingState[i] = label;
+    } 
   }
 
   makeBonusBox(name, i) {
-    let bonusState = this.state.bonusVal;
+    let rankingState = this.state.rankingState;
     let checkedVal;
-    if (bonusState[i] === name) {
+    if (rankingState[i] === name) {
       checkedVal = true;
     } else {
       checkedVal = false;
@@ -703,7 +735,7 @@ class Form extends React.Component {
     let driveSpeed = dropVal[2];
     let doubleStation = dropVal[3];
 
-    let ranking = this.state.rankingPts;
+    //let ranking = this.state.rankingPts;
     let rankingState = this.state.rankingState;
 
     let endGame = this.state.endGameVal;
@@ -916,7 +948,7 @@ class Form extends React.Component {
     } else if (incompleteForm === false || override === true) {
       console.log(penalties);
       await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey)
-      const matchEntry = buildMatchEntry()
+      const matchEntry = buildMatchEntry(this.regional,teamNum,matchKey)
       //apiUpdateTeamMatch('2023hiho', teamNum, matchKey, {
       //    Autonomous: {
       //        Scored: {
@@ -980,7 +1012,8 @@ class Form extends React.Component {
       //            Start: Number(endGameStart),
       //            End: Number(endGameEnd)
       //        },
-      //        //RankingPts: Number(ranking),
+      //        //RankingPts: Array(rankingStates),
+      //        //RealRankingPts: Number(ranking)
       //        ScoringTotal: {
       //            Total: Number(points),
       //            GridPoints: Number(totalGridPts),
@@ -1108,10 +1141,10 @@ class Form extends React.Component {
         <h3>RANKING POINTS</h3>
         {this.makeWhoWonBox("Team Won ", 0)}
         {this.makeWhoWonBox("Team Tied ", 1)}
-        {this.makeWhoWonBox("Team Lose ", 2)}
-        {this.makeBonusBox("Activation ", 0)}
-        {this.makeBonusBox("Sustainability ", 1)}
-        <Headers display={this.state.rankingPts} bonus={this.state.bonusVal} />
+        {this.makeWhoWonBox("Team Lost ", 2)}
+        {this.makeBonusBox("Activation ", 1)}
+        {this.makeBonusBox("Sustainability ", 2)}
+        <Headers display={this.state.rankingPts} />
         <br></br>
         <h3>STRATEGY & PRIORITIES</h3>
         {this.makeStrategyBox("Low Node ", 0)}
