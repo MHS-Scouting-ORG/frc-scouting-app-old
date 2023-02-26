@@ -314,7 +314,7 @@ class Form extends React.Component {
     }*/
 
     let data = this.state.matchData;
-    let rankingStates = this.copyArray(this.state.rankingState);
+    let rankingStates = /*this.copyArray*/(this.state.rankingState);
     if(data === "not found"){
         window.alert("PICK A TEAM FIRST");
     }
@@ -328,13 +328,19 @@ class Form extends React.Component {
         else if(label === "Team Lost "){
             this.setState({ rankingPts: 0})
         }
+        
+        if(rankingStates[0] ===  label){
+          rankingStates[0] = '';
+        }
+        else if(rankingStates[0] === ''){
+          rankingStates[0] = label;
+        }
+
+        rankingStates[1] = '';
+        rankingStates[2] = '';
+
+        this.setState({rankingState: rankingStates})
     }
-
-    rankingStates[0] = label;
-    rankingStates[1] = '';
-    rankingStates[2] = '';
-
-    this.setState({rankingState: rankingStates})
   }
 
   makeWhoWonBox(name, i) {
@@ -649,13 +655,19 @@ class Form extends React.Component {
   makeBonusBox(name, i) {
     let rankingState = this.state.rankingState;
     let checkedVal;
+    if(rankingState[i] === name){
+      checkedVal = true;
+    }
+    else{
+      checkedVal = false;
+    }
     return (
       <div>
         <CheckBox
           label={name}
           changeCheckBoxState={this.bonusBoxChecked}
           place={i}
-          checked={rankingState[i]}
+          checked={checkedVal}
         />
       </div>
     )
@@ -768,7 +780,7 @@ class Form extends React.Component {
     let autoPlacement = dropVal[0];
     let driveStrength = dropVal[1];
     let driveSpeed = dropVal[2];
-    let doubleStation = dropVal[3];
+    //let doubleStation = dropVal[3];
 
     //let ranking = this.state.rankingPts;
     let rankingState = this.state.rankingState;
@@ -892,7 +904,7 @@ class Form extends React.Component {
       mobilityPts = 2;
     }
 
-   let penFinal = [];
+    let penFinal = [];
     for(let i = 0; i < penalties.length; i++){
         let arr = penalties[i];
         if(arr === 'Yellow Card '){
@@ -910,9 +922,110 @@ class Form extends React.Component {
         } else {
             penFinal[i] = PenaltyKinds.NONE;
         }
-   }
+    }
+
+    //*
+    let stratFinal = [];
+    for(let i = 0; i < penalties.length; i++){
+      let strategy = strategies[i];
+      if(strategy === "Low Node "){
+        stratFinal[i] = PriorityOpts.LOW_NODE;
+      }
+      else if(strategy === "Mid Node "){
+        stratFinal[i] = PriorityOpts.MID_NODE;
+      }
+      else if(strategy === "High Node "){
+        stratFinal[i] = PriorityOpts.HIGH_NODE;
+      }
+      else if(strategy === "Cubes "){
+        stratFinal[i] = PriorityOpts.CUBES;
+      }
+      else if(strategy === "Cones "){
+        stratFinal[i] = PriorityOpts.CONES;
+      }
+      else if(strategy === "Charge Station "){
+        stratFinal[i] = PriorityOpts.CHARGESTATION;
+      }
+      else if(strategy === "Single Substation "){
+        stratFinal[i] = PriorityOpts.SINGLE_SUBSTATION;
+      }
+      else if(strategy === "Double Substation Shute "){
+        stratFinal[i] = PriorityOpts.DOUBLE_STATION_SHUTE;
+      }
+      else if(strategy === "Double Substation Sliding Shelves "){
+        stratFinal[i] = PriorityOpts.DOUBLE_STATION_SLIDNING_SHELVE;
+      }
+      else if(strategy === "Defense "){
+        stratFinal[i] = PriorityOpts.DEFENSE;
+      }
+    }
+    //*/
+    /*
+        {this.makeStrategyBox("Low Node ", 0)}
+        {this.makeStrategyBox("Mid Node ", 1)}
+        {this.makeStrategyBox("High Node ", 2)}
+        {this.makeStrategyBox("Cubes ", 3)}
+        {this.makeStrategyBox("Cones ", 4)}
+        {this.makeStrategyBox("Charge Station ", 5)}
+        {this.makeStrategyBox("Single Substation ", 6)}
+        {this.makeStrategyBox("Double Substation Shute ", 7)}
+        {this.makeStrategyBox("Double Substation Sliding Shelves ", 8)}
+        {this.makeStrategyBox("Defense ", 9)}
+    */
+
+    let rankFinal = [];
+    for(let i = 0; i < rankingState.length; i++){
+      let rankOp = rankingState[i];
+      if(rankOp === "Team Won "){
+        rankFinal[i] = RankingPtsOpts.WIN;
+      }
+      else if(rankOp === "Team Tied "){
+        rankFinal[i] = RankingPtsOpts.TIE;
+      }
+      else if(rankOp === "Team Lost "){
+        rankFinal[i] = RankingPtsOpts.LOSS;
+      }
+      else if(rankOp === "Sustainability "){
+        rankFinal[i] = RankingPtsOpts.SUSTAINABILITY_BONUS;
+      }
+      else if(rankOp === "Activation "){
+        rankFinal[i] = RankingPtsOpts.ACTIVATION_BONUS;
+      }
+    }
+
+    let intakeFinal = [];
+    //for(let i = 0; i < rankingState)
 
 
+    function setChargeStationType(chargeStation){
+      if(chargeStation === 'None'){
+        return ChargeStationType.NONE;
+      }
+      else if(chargeStation === 'DockedEngaged'){
+        return ChargeStationType.DOCKED_ENGAGED;
+      }
+      else if(chargeStation === 'Docked'){
+        return ChargeStationType.DOCKED;
+      }
+      else if(chargeStation === 'Parked'){
+        return ChargeStationType.Parked;
+      }
+      else if(chargeStation === 'Attempted'){
+        return ChargeStationType.ATTEMPTED;
+      }
+    }
+
+    let chargeTeleFinal = setChargeStationType(endGameUsed);
+    let chargeAutoFinal = setChargeStationType(chargeStationAuto);
+    //endGameUsed
+    //chargeStationAuto
+    /*
+    <option value='None'>None</option>
+    <option value='DockedEngaged'>Docked & Engaged</option>
+    <option value='Docked'>Docked & Not Enaged</option>
+    <option value='Parked'>Parked</option>
+    <option value='Attempted'>Attempted</option>
+    */
     let highGridPoints = 6 * (highAutoCones + highAutoCubes) + 5 * (highTeleCones + highTeleCubes);
     let midGridPoints = 4 * (midAutoCones + midAutoCubes) + 3 * (midTeleCones + midTeleCubes);
     let lowGridPoints = 3 * (lowAutoCones + lowAutoCubes) + 2 * (lowTeleCones + lowTeleCubes);
@@ -1002,6 +1115,12 @@ class Form extends React.Component {
       console.log(penalties);
       await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey)
       const matchEntry = buildMatchEntry(this.regional,teamNum,matchKey)
+        //matchEntry.name=''
+        //matchEntry.description=''
+
+        //AUTONOMOUS MATCH ENTREES
+        matchEntry.Autonomous.AutonomousPlacement=autoPlacement
+        
         matchEntry.Autonomous.Attempted.Cones.Upper=highConesAttempted
         matchEntry.Autonomous.Attempted.Cones.Mid=midConesAttempted
         matchEntry.Autonomous.Attempted.Cones.Lower=lowConesAttempted
@@ -1016,9 +1135,16 @@ class Form extends React.Component {
         matchEntry.Autonomous.Scored.Cubes.Mid=midAutoCubes
         matchEntry.Autonomous.Scored.Cubes.Lower=lowAutoCubes
 
-        matchEntry.Autonomous.AutonomousPlacement=autoPlacement
-        matchEntry.Autonomous.ChargeStation=chargeStationAuto
         matchEntry.Autonomous.LeftCommunity=mobility
+        matchEntry.Autonomous.ChargeStation=chargeAutoFinal
+
+        //TELEOP MATCH ENTREES
+        matchEntry.Teleop.Scored.Cones.Upper=highTeleCones
+        matchEntry.Teleop.Scored.Cones.Mid=midTeleCones
+        matchEntry.Teleop.Scored.Cones.Lower=lowTeleCones
+        matchEntry.Teleop.Scored.Cubes.Upper=highTeleCubes
+        matchEntry.Teleop.Scored.Cubes.Mid=midTeleCubes
+        matchEntry.Teleop.Scored.Cubes.Lower=lowTeleCubes
 
         matchEntry.Teleop.Attempted.Cones.Upper=highConesTeleAttempted
         matchEntry.Teleop.Attempted.Cones.Mid=midConesTeleAttempted
@@ -1027,47 +1153,50 @@ class Form extends React.Component {
         matchEntry.Teleop.Attempted.Cubes.Mid=midCubesTeleAttempted
         matchEntry.Teleop.Attempted.Cubes.Lower=lowCubesTeleAttempted
 
-        matchEntry.Teleop.Scored.Cones.Upper=highTeleCones
-        matchEntry.Teleop.Scored.Cones.Mid=midTeleCones
-        matchEntry.Teleop.Scored.Cones.Lower=lowTeleCones
-        matchEntry.Teleop.Scored.Cubes.Upper=highTeleCubes
-        matchEntry.Teleop.Scored.Cubes.Mid=midTeleCubes
-        matchEntry.Teleop.Scored.Cubes.Lower=lowTeleCubes
+        //matchEntry.Teleop.ChargeStation=chargeTeleFinal
+        matchEntry.Teleop.EndGame=chargeTeleFinal
+        matchEntry.Teleop.EndGameTally.Start=endGameStart//
+        matchEntry.Teleop.EndGameTally.End=endGameEnd//
 
-        matchEntry.Penalties.Fouls=fouls
-        matchEntry.Penalties.Tech=techFouls
-        matchEntry.Penalties.Penalties=penalties
-        matchEntry.Priorities=strategies
-        matchEntry.RankingPts=rankingState
-
-        matchEntry.Teleop.ChargeStation=endGameUsed
-        matchEntry.Teleop.EndGameTally.Start=endGameStart
-        matchEntry.Teleop.EndGameTally.End=endGameEnd
-
-        matchEntry.Teleop.DriveSpeed=driveSpeed
-        matchEntry.Teleop.DriveStrength=driveStrength
-
-        matchEntry.Teleop.ConesAccuracy.High=conesHighTeleAutoAccuracy
-        matchEntry.Teleop.ConesAccuracy.Mid=conesMidTeleAutoAccuracy
-        matchEntry.Teleop.ConesAccuracy.Low=conesLowTeleAutoAccuracy
-
-        matchEntry.Teleop.CubesAccuracy.High=cubesHighTeleAutoAccuracy
-        matchEntry.Teleop.CubesAccuracy.Mid=cubesMidTeleAutoAccuracy
-        matchEntry.Teleop.CubesAccuracy.Low=cubesLowTeleAutoAccuracy
-
+        //SCORING TOTAL
         matchEntry.Teleop.ScoringTotal.Total=points
-        matchEntry.Teleop.ScoringTotal.Cones=conePts
-        matchEntry.Teleop.ScoringTotal.Cubes=cubePts
         matchEntry.Teleop.ScoringTotal.GridPoints=totalGridPts
+
         matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.High=highGridPoints
         matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.Mid=midGridPoints
         matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.Low=lowGridPoints
 
+        matchEntry.Teleop.ScoringTotal.Cones=conePts
+        matchEntry.Teleop.ScoringTotal.Cubes=cubePts
+
+        //DRIVE
+        matchEntry.Teleop.DriveStrength=driveStrength
+        matchEntry.Teleop.DriveSpeed=driveSpeed
+
         matchEntry.Teleop.SmartPlacement=smartPlacement
+
+        //CONE ACCURACIES
+        matchEntry.Teleop.ConesAccuracy.High=conesHighTeleAutoAccuracy
+        matchEntry.Teleop.ConesAccuracy.Mid=conesMidTeleAutoAccuracy
+        matchEntry.Teleop.ConesAccuracy.Low=conesLowTeleAutoAccuracy
+        matchEntry.Teleop.ConesAccuracy.Overall=conesTeleAutoAccuracy
+
+        //CUBE ACCURACIES
+        matchEntry.Teleop.CubesAccuracy.High=cubesHighTeleAutoAccuracy
+        matchEntry.Teleop.CubesAccuracy.Mid=cubesMidTeleAutoAccuracy
+        matchEntry.Teleop.CubesAccuracy.Low=cubesLowTeleAutoAccuracy
+        matchEntry.Teleop.CubesAccuracy.Overall=cubesTeleAutoAccuracy
+
+        //MATCH DETAILS
+        matchEntry.RankingPts=rankFinal;
 
         matchEntry.Comments=comments
 
-     
+        matchEntry.Penalties.Fouls=fouls
+        matchEntry.Penalties.Tech=techFouls
+        matchEntry.Penalties.Penalties=penFinal;
+
+        matchEntry.Priorities=stratFinal;
 
       await apiUpdateTeamMatch(this.regional, teamNum, matchKey, matchEntry)
     console.log(this.state);
@@ -1165,7 +1294,7 @@ class Form extends React.Component {
         {this.makeStrategyBox("Charge Station ", 5)}
         {this.makeStrategyBox("Single Substation ", 6)}
         {this.makeStrategyBox("Double Substation Shute ", 7)}
-        {this.makeStrategyBox("Double Substation Sliding Shelve ", 8)}
+        {this.makeStrategyBox("Double Substation Sliding Shelves ", 8)}
         {this.makeStrategyBox("Defense ", 9)}
         <br></br>
         <p>How well is there defense if any?</p>
