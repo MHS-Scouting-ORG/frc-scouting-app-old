@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { apiSubscribeToMatchUpdates, apiCreateTeamMatchEntry, apiListTeams, apiAddTeam, apiGetTeam, getMatchesForRegional, apiUpdateTeamMatch } from './api/index'
 import { getRegionals, getTeamsInRegional } from './api/bluealliance'
-import buildMatchEntry from './api/builder'
+import buildMatchEntry, { PriorityOpts } from './api/builder'
 
 function ExampleUI() {
   const [teams, setTeams] = useState([])
@@ -30,8 +30,9 @@ function ExampleUI() {
       .then(data => setTeamsInHawaiiRegional(data))
       .catch(console.log.bind(console))
     apiSubscribeToMatchUpdates(data => {
-      console.log(`update received ${JSON.stringify(data)}`)
+      //console.log(`update received ${JSON.stringify(data)}`)
       console.log(data)
+
     })
   }, [])
 
@@ -55,18 +56,23 @@ function ExampleUI() {
   const runTest = () => {
     getMatchesForRegional("fooRegional", 0)
       .then(data => {
-        console.log(data)
+        //console.log(data)
+
       })
       .catch(err => {
         console.log(`get matches error ${JSON.stringify(err)}`)
       })
     apiCreateTeamMatchEntry("2023hiho", "frc2443", matchId)
       .then(_ => {
-          return apiUpdateTeamMatch("2023hiho", "frc2443", matchId, buildMatchEntry("2023hiho", "frc2443", matchId))
+          const matchEntry = buildMatchEntry("2023hiho", "frc2443", matchId)
+          matchEntry.Priorities.push(PriorityOpts.CONES)
+          console.log(matchEntry)
+          return apiUpdateTeamMatch("2023hiho", "frc2443", matchId, matchEntry)
+
       })
 
       .then(data => {
-        console.log(data)
+        //console.log(data)
         setMatchId(matchId + 1)
       })
       .catch(err => {
