@@ -33,7 +33,7 @@ const TeamInnerTable = (props) => {
                     {
                         Header: '🟪 Acc',
                         accessor: 'CubeAcc'
-                    },] 
+                    },], 
             },
             {
                 Header: 'Autonomous',

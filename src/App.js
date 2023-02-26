@@ -60,7 +60,7 @@ function AuthenticatedUI({ user }) {
         {user.username}
         <br />
       </div>*/}
-      <MainTable regional = {regional} />
+      <MainTable regional = {'2022hiho'} />
       
     </div>
     )
