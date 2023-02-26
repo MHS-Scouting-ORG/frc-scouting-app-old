@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { apiSubscribeToMatchUpdates, apiCreateTeamMatchEntry, apiListTeams, apiAddTeam, apiGetTeam, getMatchesForRegional, apiUpdateTeamMatch } from './api/index'
 import { getRegionals, getTeamsInRegional } from './api/bluealliance'
-import buildMatchEntry, { PriorityOpts } from './api/builder'
+import buildMatchEntry, { PriorityOpts, generateRandomEntry } from './api/builder'
 
 function ExampleUI() {
   const [teams, setTeams] = useState([])
@@ -54,6 +54,8 @@ function ExampleUI() {
   }
 
   const runTest = () => {
+    const args = ["2023hiho", "frc2443", matchId]
+
     getMatchesForRegional("fooRegional", 0)
       .then(data => {
         //console.log(data)
@@ -62,12 +64,12 @@ function ExampleUI() {
       .catch(err => {
         console.log(`get matches error ${JSON.stringify(err)}`)
       })
-    apiCreateTeamMatchEntry("2023hiho", "frc2443", matchId)
+    apiCreateTeamMatchEntry(...args)
       .then(_ => {
-          const matchEntry = buildMatchEntry("2023hiho", "frc2443", matchId)
-          matchEntry.Priorities.push(PriorityOpts.CONES)
-          console.log(matchEntry)
-          return apiUpdateTeamMatch("2023hiho", "frc2443", matchId, matchEntry)
+        const matchEntry = generateRandomEntry(...args)
+        matchEntry.Priorities.push(PriorityOpts.CONES)
+        console.log(matchEntry)
+        return apiUpdateTeamMatch(...args, matchEntry)
 
       })
 
