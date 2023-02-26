@@ -214,6 +214,12 @@ const generateRandomEntry = function (regionId, teamId, matchId) {
     DriveSpeed: Math.random() * 10,
     CubesAccuracy: zeroAccuracy(),
     ConesAccuracy: zeroAccuracy(),
+    EndGameTally: {
+      Start: 0,
+      End: 0
+    },
+
+
     ScoringTotal: {
       Total: 0,
       GridPoints: 0,
