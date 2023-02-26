@@ -55,6 +55,7 @@ const PriorityOpts = {
     MID: "Mid",
     LOW: "Low",
     CONES: "Cones",
+    CUBES: "Cubes",
     CHARGESTATION: "ChargeStation",
     DEFENSE: "Defense",
     SINGLE_SUBSTATION: "SingleSubStation",

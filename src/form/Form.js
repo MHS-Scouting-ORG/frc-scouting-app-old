@@ -111,12 +111,15 @@ class Form extends React.Component {
       dropDownVal: ['', '', '', '', ''],
       counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       //smartPlacementVal: false,
-      strategyVal: [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+      strategyVal: [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
       //mobilityVal: false,
       booleans: [false, false],
       totalPoints: 0,
+      totalGrid: 0,
       cubesAccuracy: 0,
       conesAccuracy: 0,
+      cubesPts: 0,
+      conesPts: 0,
     }
   }
 
@@ -880,20 +883,17 @@ class Form extends React.Component {
 
     let totalGridPts = highGridPoints + midGridPoints + lowGridPoints;
 
-    let cubeHighAccuracy = 100 * (highAutoCubes + highTeleCubes) / (highCubesAttempted + highConesAttempted);
-    let cubeMidAccuracy = 100 * (midAutoCubes + midTeleCubes) / (midCubesAttempted + midConesAttempted);
-    let cubeLowAccuracy = 100 * (lowAutoCubes + lowTeleCubes) / (lowCubesAttempted + lowConesAttempted);
-
-
-
     let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesAttempted));
     let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesAttempted));
 
 
     this.setState({
       totalPoints: points,
+      totalGrid: totalGridPts,
       cubesAccuracy: cubesTeleAutoAccuracy,
       conesAccuracy: conesTeleAutoAccuracy,
+      cubesPts: cubePts,
+      conesPts: conePts
 
     })
 
@@ -1156,6 +1156,7 @@ class Form extends React.Component {
         {this.makeStrategyBox("Single Substation ", 6)}
         {this.makeStrategyBox("Double Substation Shute ", 7)}
         {this.makeStrategyBox("Double Substation Sliding Shelve ", 8)}
+        {this.makeStrategyBox("Defense ", 9)}
         <br></br>
         <p>How well is there defense if any?</p>
         <TextBox title={"💬Comments: "} commentState={this.setComment}></TextBox>
