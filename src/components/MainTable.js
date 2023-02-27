@@ -241,7 +241,7 @@ const renderRowSubComponent = ({ row }) => {
             Match: x.id.substring(x.id.indexOf('_')+1),
             Strategy: x.Priorities.filter(val => val != undefined && val.trim() !== '').length !== 0 ? x.Priorities.filter(val => val != undefined && val.trim() !== '').map(val => val.trim()).join(', ') : '',
             TotalPts: (x.Teleop.ScoringTotal.Total !== 0)  ? x.Teleop.ScoringTotal.Total : '',
-            GridPts: x.Teleop.ScoringTotal.GridPoints !== 0 ? x.Teleop.ScoringTotal.Total : '',
+            GridPts: x.Teleop.ScoringTotal.GridPoints !== 0 ? x.Teleop.ScoringTotal.GridPoints : '',
             ConeAcc: x.Teleop.ConesAccuracy.Overall !== 0 ? x.Teleop.ConesAccuracy.Overall.toFixed(2) : '',
             CubeAcc: x.Teleop.CubesAccuracy.Overall !== 0 ? x.Teleop.CubesAccuracy.Overall.toFixed(2) : '',
             AutoPlacement: x.Autonomous.AutonomousPlacement !== 0 ? x.Autonomous.AutonomousPlacement : '',
@@ -664,9 +664,9 @@ function tableHandler(row){
     const indivTeleCSDocked = arr.filter(val => val.Teleop.ChargeStation === "Docked")
     const indivTeleCSDockedPts = indivTeleCSDocked.length * 6
     const indivTeleCSDockedEng = arr.filter(val => val.Teleop.ChargeStation === "DockedAndEngaged")
-    const indivTeleCSDockedEngPts = indivTeleCSDockedEng.length * 10
+    const indivTeleCSDockedEngPts = indivTeleCSDockedEng.length * 8
     const indivAutoCSDocked = arr.filter(val => val.Autonomous.ChargeStation === "Docked")
-    const indivAutoCSDockedPts = indivAutoCSDocked.length * 8
+    const indivAutoCSDockedPts = indivAutoCSDocked.length * 10
     const indivAutoCSDockedEng = arr.filter(val => val.Autonomous.ChargeStation === "DockedAndEngaged")
     const indivAutoCSDockedEngPts = indivAutoCSDockedEng.length * 12
 
@@ -1007,7 +1007,8 @@ const data = React.useMemo(
         Cell: ({ row }) => (
           <div
               style = {{
-                  whiteSpace: 'normal',
+                minWidth:'150px',
+                whiteSpace:'normal',
               }}
           >
             {row.original.Priorities}
@@ -1073,6 +1074,16 @@ const data = React.useMemo(
       {
         Header: "Penalties",
         accessor: "Penalties",
+        Cell: ({ row }) => (
+          <div
+              style = {{
+                minWidth:'50px',
+                whiteSpace: 'normal',
+              }}
+          >
+            {row.original.Penalties}
+          </div>
+        )
       },
       {
         Header: "Grade",

@@ -16,7 +16,16 @@ const TeamInnerTable = (props) => {
                     },
                     {
                         Header: 'Priorities/Strategies',
-                        accessor: 'Strategy'
+                        accessor: 'Strategy',
+                        Cell: ({row}) => {
+                          return <div
+                            style={{
+                              minWidth:'200px',
+                              //overflowWrap: 'normal',
+                              whiteSpace: 'normal',
+                            }}
+                          >{row.original.Strategy}</div>
+                        }
                     },
                     {
                         Header: 'Total Pts',
@@ -149,6 +158,14 @@ const TeamInnerTable = (props) => {
                     {
                       Header: 'Comments',
                       accessor: 'Comments',
+                      Cell: ({row}) => {
+                        return <div
+                          style={{
+                            minWidth:'350px',
+                            whiteSpace: 'normal',
+                          }}
+                        >{row.original.Comments}</div>
+                      }
                     },
                     {
                       Header: 'Scouter',
@@ -175,7 +192,7 @@ const TeamInnerTable = (props) => {
 
        return (
     <div>
-      <table style={{borderCollapse: 'collapse', }}{...getTableProps()}>
+      <table style={{borderCollapse: 'collapse'}}{...getTableProps()}>
 
         <thead>
           {
