@@ -1,7 +1,6 @@
 .App {
   text-align: center;
   display: grid;
-  grid-template-rows: fit-content(7000px) minmax(max-content, 80vh) fit-content(7000px);
   grid-template-areas: "header"
      "main"
      "footer"
@@ -19,13 +18,12 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #434a56;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
 }
 

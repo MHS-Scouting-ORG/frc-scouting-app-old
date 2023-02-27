@@ -24,7 +24,7 @@ class List extends React.Component{
 
     render(){
         return(
-            <div>
+            <div style={{fontSize: '18px'}}>
                 <Checkbox value = "Grid Points" changeState={this.addOnColumnSort}></Checkbox>
                 <Checkbox value = "Cone Points" changeState={this.addOnColumnSort}></Checkbox>
                 <Checkbox value = "Accurate Cone Placement" changeState={this.addOnColumnSort}></Checkbox>

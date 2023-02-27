@@ -175,7 +175,7 @@ const TeamInnerTable = (props) => {
 
        return (
     <div>
-      <table style={{borderCollapse: "collapse"}}{...getTableProps()}>
+      <table style={{borderCollapse: 'collapse', }}{...getTableProps()}>
 
         <thead>
           {
@@ -189,9 +189,9 @@ const TeamInnerTable = (props) => {
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       style={{
                         padding: '5px',
-                        border: 'solid 1px black',
+                        border: 'solid 1px gainsboro',
                         textAlign: 'center',
-                        background: 'steelblue',
+                        background: '#64809B',
                       }}
                     >
                       {column.render('Header')}
@@ -218,7 +218,7 @@ const TeamInnerTable = (props) => {
                           {...cell.getCellProps()}
                           style={{
                             padding: '5px',
-                            border: 'solid 1px black',
+                            borderBlock: 'solid 1px gainsboro',
                             textAlign: 'center',
                           }}
                         >

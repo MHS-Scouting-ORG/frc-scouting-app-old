@@ -47,9 +47,9 @@ const CubePtsTable = (props) => {
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       style={{
                         padding: '5px',
-                        border: 'solid 1px black',
+                        border: 'solid 1px gainsboro',
                         textAlign: 'center',
-                        background: 'steelblue',
+                        background: '#64809B',
                       }}
                     >
                       {column.render('Header')}
@@ -76,7 +76,7 @@ const CubePtsTable = (props) => {
                           {...cell.getCellProps()}
                           style={{
                             padding: '5px',
-                            border: 'solid 1px black',
+                            borderBlock: 'solid 1px gainsboro',
                             textAlign: 'center',
                           }}
                         >

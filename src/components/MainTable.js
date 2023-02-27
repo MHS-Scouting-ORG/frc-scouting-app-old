@@ -122,15 +122,15 @@ function MainTable(props) {
    useEffect(() => setAverages(oprData.map(team => {
     const teamStats = apiData.filter(x => x.Team === team.TeamNum)
     //console.log(teamStats)
-    /*
-    const points = x.TotalPoints
-    const avgPoints = calcAvgPoints(teamStats)
-    const avgGridPoints = calcAvgGridPoints(teamStats)
-    const totalConePts = calcTotalCones(teamStats)
-    const totalConeAcc = calcTotalConesAcc(teamStats)
-    const totalCubePts = calcTotalCubes(teamStats)
-    const totalCubeAcc = calcTotalCubeAcc(teamStats)
-    */
+    
+    //const points = x.TotalPoints
+    //const avgPoints = calcAvgPoints(teamStats)
+    //const avgGridPoints = calcAvgGridPoints(teamStats)
+    //const totalConePts = calcTotalCones(teamStats)
+    //const totalConeAcc = calcTotalConesAcc(teamStats)
+    //const totalCubePts = calcTotalCubes(teamStats)
+    //const totalCubeAcc = calcTotalCubeAcc(teamStats)
+    
     //const priorities = getPriorities(teamStats)
     //console.log(team)
 
@@ -140,7 +140,7 @@ function MainTable(props) {
       OPR: team.OPR,
       Priorities: team.Priorities,//priorities.join(', '),
       CCWM: team.CCWM, 
-      AvgPoints: team.AvgPoints,
+      //AvgPoints: avgPoints !== 0 && isNaN(avgPoints) !== true ? avgPoints : '',
       AvgGridPoints: team.AvgGridPoints,
       AvgConePts: team.AvgConePts,
       AvgConeAcc: team.AvgConeAcc,
@@ -211,7 +211,7 @@ const renderRowSubComponent = ({ row }) => {
   console.log(t.map(x => x.RankingPts))
     const disp = t.map(x => {
         return {
-            Match: x.id.substring(x.id.indexOf('_')+1),
+            Match: x.id,
             // ================= all code in block does not exist yet within the data object
             //Strategy: x.Priorities.filter(val => val.trim() !== '').length !== 0 ? x.Strategy.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
             //TotalPts: x.Teleop.ScoringTotal.Total,
@@ -237,7 +237,7 @@ const renderRowSubComponent = ({ row }) => {
             //CSStart: x.Teleop.EndGameTally.Start !== undefined ? x.Teleop.EndGameTally.Start : '',
             //CSEnd: x.Teleop.EndGameTally.End !== undefined ? x.Teleop.EndGameTally.End : '',
             DriveStrength: x.Teleop.DriveStrength !== undefined ? x.Teleop.DriveStrength : '',
-            DriveSpeed: x.Teleop.DriveSpeed !== undefined ? x.Teleop.DriveSpeed : '',
+            DriveSpeed: x.Teleop.DriveSpeed !== undefined ? x.Teleop.DriveSpeed: '',
             SmartPlacement: x.Teleop.SmartPlacement === true ? 'yes' : 'no',
             NumberOfFoulAndTech: x.Penalties.Fouls !== 0 || x.Penalties.Tech !== 0 ? `${x.Penalties.Fouls} | ${x.Penalties.Tech}` : '0 | 0',
             //Penalties: x.Penalties.Penalties !== undefined && x.Penalties.Penalties.filter(val => val.trim() !== '').length !== 0 ? x.Penalties.Penalties.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
@@ -250,7 +250,7 @@ const renderRowSubComponent = ({ row }) => {
 
   return disp.length > 0 ?
   (<pre>
-    <div style={{maxWidth: "7000px", overflowX: "scroll", borderCollapse: "collapse", }}>{<TeamInnerTable information = {disp}/>} </div>
+    <div style={{maxWidth: "100rem", overflowX: "scroll", borderCollapse: "collapse", }}>{<TeamInnerTable information = {disp}/>} </div>
   </pre>)
   : (
     <div style={{
@@ -966,8 +966,10 @@ const data = React.useMemo(
         Header: "Team #",
         accessor: "TeamNumber",
         Cell: ({ row }) => (
-          <span {...row.getToggleRowExpandedProps()}>
+          <span{...row.getToggleRowExpandedProps()}>
+            <div style={{fontWeight: 'bold', fontSize: '17px', }}>
               {row.values.TeamNumber}
+            </div>
           </span>
           )
       },
@@ -1072,37 +1074,39 @@ const data = React.useMemo(
   
   return (
     <div>
-      <h2>CHARGED UP STATISTICS  <img src={"./images/bluethundalogo.png"} width="100px" height= "100px"></img>
-      </h2>
-      <table style={{ width:'1250px'}} >
+      <h1>CHARGED UP STATISTICS  <img src={"./images/bluethundalogo.png"} width="75px" height= "75px"></img>
+      </h1>
+            <table style={{ width:'1250px'}} >
                 <tbody>
                     <tr>
                         <td
                             style={{
-                                minWidth: '750px'
+                                minWidth: '750px',
+                                textAlign: 'left',
                             }}
                         >
-                            <p> Select checkboxes to choose which priorities to sort by. Then click on <strong>Grade</strong>. </p>
+                            <p style={{fontSize: '18px'}}> Select checkboxes to choose which priorities to sort by. Then click on <strong>Grade</strong>. </p>
                             {<List setList={setSortBy}/>}
                             <br/>
                         </td>
                         <td>
                         <p style={{
-                            border: '2px solid black',
-                            maxWidth: '240px',
+                            textAlign: 'center',
+                            border: '2px solid white',
+                            maxWidth: '600px',
                             display: 'inline-block',
                             padding: '5px',
+                            fontSize: '20px',
                           }}>
-                          <strong>KEY</strong> 
+                          <strong>KEY:</strong> 
                           <br/> "Avg" / μ = Average
                           <br/> σ = Standard Deviation
                           <br/> Acc = Accuracy
                       </p>
-                      <br></br>
-                      <img src={"./images/community.jpg"} width="300px" height="240px"
+                      <img src={"./images/community.jpg"} width="260px" height="240px"
                           style={{
                               display: 'inline-block',
-                              margin: '25px'
+                              padding: '10px',
                           }}
                         ></img>
                         </td>
@@ -1110,20 +1114,23 @@ const data = React.useMemo(
                 </tbody>
             </table>
 
-      <br></br>
 
       <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
       <br></br>
-      <table style={{ width:'1250px', borderCollapse: 'collapse', overflowX: "scroll" }} {...getTableProps()}>
+      <br></br>
+      <table style={{ width:'1250px', borderCollapse: 'collapse', overflowX: 'scroll', }} {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
+                
+                
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   style={{
-                    padding: '5px',
+                    padding: '8px',
                     textAlign: 'center',
+                    background: '#78797A',
                   }}
                 >
                   {column.render('Header')}
@@ -1169,8 +1176,8 @@ const data = React.useMemo(
 
                       {...cell.getCellProps()}
                       style={{
-                        padding: '5px',
-                        border: 'solid 1px black',
+                        padding: '8px',
+                        borderBlock: 'solid 2px #78797A',
                         textAlign: 'center',
                       }}
                     >
