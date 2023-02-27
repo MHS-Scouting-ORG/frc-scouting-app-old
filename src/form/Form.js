@@ -804,43 +804,129 @@ class Form extends React.Component {
     let fouls = parseInt(counterVal[24]);
     let techFouls = parseInt(counterVal[25]);
 
+    /*
+    
+        <p>🟪Cubes Scored</p>
+        {this.makeCounterBox("High Cubes Made: ", 0)}
+        {this.makeCounterBox("Mid Cubes Made: ", 1)}
+        {this.makeCounterBox("Low Cubes Made: ", 2)}
+        <p>🟪Cubes Attempted</p>
+        {this.makeCounterBox("High Cubes Attempted: ", 3)}
+        {this.makeCounterBox("Mid Cubes Attempted: ", 4)}
+        {this.makeCounterBox("Low Cubes Attempted: ", 5)}
+        <p>🔺Cones Scored</p>
+        {this.makeCounterBox("High Cones Made: ", 6)}
+        {this.makeCounterBox("Mid Cones Made: ", 7)}
+        {this.makeCounterBox("Low Cones Made: ", 8)}
+        <p>🔺Cones Attempted</p>
+        {this.makeCounterBox("High Cones Attempted: ", 9)}
+        {this.makeCounterBox("Mid Cones Attempted: ", 10)}
+        {this.makeCounterBox("Low Cones Attempted: ", 11)}
+        <br></br>
+        {this.makeBooleanCheckBox("Mobility ", 0)}{/*this.makeMobilityBox("Mobility ")*//*}
+        <br></br>
+        {this.makeChargeStationAuto()}
+        <br></br>
+        <h3>TELE-OP</h3>
+        <p>🟪Cubes Scored</p>
+        {this.makeCounterBox("High Cubes Made: ", 12)}
+        {this.makeCounterBox("Mid Cubes Made: ", 13)}
+        {this.makeCounterBox("Low Cubes Made: ", 14)}
+        <p>🟪Cubes Attempted</p>
+        {this.makeCounterBox("High Cubes Attempted: ", 15)}
+        {this.makeCounterBox("Mid Cubes Attempted: ", 16)}
+        {this.makeCounterBox("Low Cubes Attempted: ", 17)}
+        <p>🔺Cones Scored</p>
+        {this.makeCounterBox("High Cones Made: ", 18)}
+        {this.makeCounterBox("Mid Cones Made: ", 19)}
+        {this.makeCounterBox("Low Cones Made: ", 20)}
+        <p>🔺Cones Attempted</p>
+        {this.makeCounterBox("High Cones Attempted: ", 21)}
+        {this.makeCounterBox("Mid Cones Attempted: ", 22)}
+        {this.makeCounterBox("Low Cones Attempted: ", 23)}
+    */
+
+    /*-------------------------------------------------------------SETTING SCORING VARIABLES--------------------------------------------------------------*/
+
+
+    //AUTONOMOUS-----------------------------------------
+
+    //Auto Cubes & Cones Scoring
     let highAutoCubes = parseInt(counterVal[0]);
     let midAutoCubes = parseInt(counterVal[1]);
     let lowAutoCubes = parseInt(counterVal[2]);
     let highAutoCones = parseInt(counterVal[6]);
     let midAutoCones = parseInt(counterVal[7]);
     let lowAutoCones = parseInt(counterVal[8]);
+    //Auto Cubes & Cones Attempted
+    let highCubesAutoAttempted = parseInt(counterVal[3]);
+    let midCubesAutoAttempted = parseInt(counterVal[4]);
+    let lowCubesAutoAttempted = parseInt(counterVal[5]);
+    let highConesAutoAttempted = parseInt(counterVal[9]);
+    let midConesAutoAttempted = parseInt(counterVal[10]);
+    let lowConesAutoAttempted = parseInt(counterVal[11]);
 
+
+    //TELEOP-----------------------------------------------
+
+    //Tele Cubes & Cones Scoring
     let highTeleCubes = parseInt(counterVal[12]);
     let midTeleCubes = parseInt(counterVal[13]);
     let lowTeleCubes = parseInt(counterVal[14]);
     let highTeleCones = parseInt(counterVal[18]);
     let midTeleCones = parseInt(counterVal[19]);
     let lowTeleCones = parseInt(counterVal[20]);
-
-    let highCubesAutoAttempted = parseInt(counterVal[3]);
-    let midCubesAutoAttempted = parseInt(counterVal[4]);
-    let lowCubesAutoAttempted = parseInt(counterVal[5]);
+    //Tele Cubes & Cones Attempted
     let highCubesTeleAttempted = parseInt(counterVal[15]);
     let midCubesTeleAttempted = parseInt(counterVal[16]);
     let lowCubesTeleAttempted = parseInt(counterVal[17]);
-
-    let highConesAutoAttempted = parseInt(counterVal[9]);
-    let midConesAutoAttempted = parseInt(counterVal[10]);
-    let lowConesAutoAttempted = parseInt(counterVal[11]);
     let highConesTeleAttempted = parseInt(counterVal[21]);
     let midConesTeleAttempted = parseInt(counterVal[22]);
     let lowConesTeleAttempted = parseInt(counterVal[23]);
 
+
+    //OVERALL ATTEMPTED----------------------------------------------------------------------------------
+    let highCubesAttempted = highCubesAutoAttempted + highCubesTeleAttempted;
+    let highConesAttempted = highConesAutoAttempted + highConesTeleAttempted;
+    let midCubesAttempted = midCubesAutoAttempted + midConesTeleAttempted;
+    let midConesAttempted = midConesAutoAttempted + midConesTeleAttempted;
+    let lowCubesAttempted = lowCubesAutoAttempted + lowCubesTeleAttempted;
+    let lowConesAttempted = lowConesAutoAttempted + lowConesTeleAttempted;
+
     let cubesAttempted = parseInt(counterVal[3]) + parseInt(counterVal[4]) + parseInt(counterVal[5]) + parseInt(counterVal[15]) + parseInt(counterVal[16]) + parseInt(counterVal[17]);
     let conesAttempted = parseInt(counterVal[9]) + parseInt(counterVal[10]) + parseInt(counterVal[11]) + parseInt(counterVal[21]) + parseInt(counterVal[22]) + parseInt(counterVal[23]);
 
-    let highCubesAttempted = parseInt(counterVal[3]) + parseInt(counterVal[15]);
-    let highConesAttempted = parseInt(counterVal[9]) + parseInt(counterVal[21]);
-    let midCubesAttempted = parseInt(counterVal[4]) + parseInt(counterVal[16]);
-    let midConesAttempted = parseInt(counterVal[10]) + parseInt(counterVal[22]);
-    let lowCubesAttempted = parseInt(counterVal[5]) + parseInt(counterVal[17]);
-    let lowConesAttempted = parseInt(counterVal[11]) + parseInt(counterVal[23]);
+
+
+
+    /*----------------------------------------------------POINT CALCULATIONS----------------------------------------------------------*/
+    //TOTALS
+    let highGridPoints = 6 * (highAutoCones + highAutoCubes) + 5 * (highTeleCones + highTeleCubes);
+    let midGridPoints = 4 * (midAutoCones + midAutoCubes) + 3 * (midTeleCones + midTeleCubes);
+    let lowGridPoints = 3 * (lowAutoCones + lowAutoCubes) + 2 * (lowTeleCones + lowTeleCubes);
+    let autoPoints = 6 * (highAutoCones + highAutoCubes) + 4 * (midAutoCones + midAutoCubes) + 3 * (lowAutoCones + lowAutoCubes);
+    let telePoints = 5 * (highTeleCones + highTeleCubes) + 3 * (midTeleCones + midTeleCubes) + 2 * (lowTeleCones + lowTeleCubes);
+    let points = (chargeStationPts + endGamePts + mobilityPts) + autoPoints + telePoints;
+    let cubePts = (highAutoCubes * 6) + (highTeleCubes * 5) + (midAutoCubes * 4) + (midTeleCubes * 3) + (lowAutoCubes * 3) + (lowTeleCubes * 2);
+    let conePts = (highAutoCones * 6) + (highTeleCones * 5) + (midAutoCones * 4) + (midTeleCones * 3) + (lowAutoCones * 3) + (lowTeleCones * 2);
+    //HIGH ACCURACIES
+    let cubesHighTeleAutoAccuracy = 100 * ((highAutoCubes + highTeleCubes) / (highCubesAttempted));
+    let conesHighTeleAutoAccuracy = 100 * ((highAutoCones + highTeleCones) / (highConesAttempted));
+    let highAccuracy = 100 * ((conesHighTeleAutoAccuracy + cubesHighTeleAutoAccuracy) / (highCubesAttempted + highConesAttempted));
+    //MID ACCURACIES
+    let cubesMidTeleAutoAccuracy = 100 * ((midAutoCubes + midTeleCubes) / (midCubesAttempted));
+    let conesMidTeleAutoAccuracy = 100 * ((midAutoCones + midTeleCones) / (midConesAttempted));
+    let midAccuracy = 100 * ((cubesMidTeleAutoAccuracy + conesMidTeleAutoAccuracy) / (midCubesAttempted + midConesAttempted));
+    //LOW ACCURACIES
+    let cubesLowTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes) / (lowCubesAttempted));
+    let conesLowTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones) / (lowConesAttempted));
+    let lowAccuracy = 100 * ((cubesLowTeleAutoAccuracy + conesLowTeleAutoAccuracy) / (lowCubesAttempted + lowConesAttempted));
+
+    let totalGridPts = highGridPoints + midGridPoints + lowGridPoints;
+
+    let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesAttempted));
+    let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesAttempted));
+
 
     let mobility = booleans[0]; //this.state.mobilityVal;
 
@@ -854,7 +940,7 @@ class Form extends React.Component {
     let override = this.state.override;
 
     if (endGameUsed === 'DockedEngaged') {
-      endGamePts = 10;
+      endGamePts = 8;
     } else if (endGameUsed === "Docked") {
       endGamePts = 6;
     } else if (endGameUsed === 'Parked') {
@@ -888,7 +974,7 @@ class Form extends React.Component {
     if (chargeStationAuto === 'DockedEngaged') {
       chargeStationPts = 12;
     } else if (chargeStationAuto === "Docked") {
-      chargeStationPts = 8;
+      chargeStationPts = 10;
     } else {
       chargeStationPts = 0;
     }
@@ -1026,6 +1112,10 @@ class Form extends React.Component {
     <option value='Parked'>Parked</option>
     <option value='Attempted'>Attempted</option>
     */
+
+    /*
+    //POINT CALCULATIONS
+
     let highGridPoints = 6 * (highAutoCones + highAutoCubes) + 5 * (highTeleCones + highTeleCubes);
     let midGridPoints = 4 * (midAutoCones + midAutoCubes) + 3 * (midTeleCones + midTeleCubes);
     let lowGridPoints = 3 * (lowAutoCones + lowAutoCubes) + 2 * (lowTeleCones + lowTeleCubes);
@@ -1051,7 +1141,7 @@ class Form extends React.Component {
 
     let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesAttempted));
     let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesAttempted));
-
+*/
 
     this.setState({
       totalPoints: points,
