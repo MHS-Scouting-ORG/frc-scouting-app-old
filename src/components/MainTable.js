@@ -269,7 +269,7 @@ const renderRowSubComponent = ({ row }) => {
             Match: x.id.substring(x.id.indexOf('_')+1),
             Strategy: x.Priorities.filter(val => val != undefined && val.trim() !== '').length !== 0 ? x.Priorities.filter(val => val != undefined && val.trim() !== '').map(val => val.trim()).join(', ') : '',
             TotalPts: (x.Teleop.ScoringTotal.Total !== 0)  ? x.Teleop.ScoringTotal.Total : '',
-            GridPts: x.Teleop.ScoringTotal.GridPoints !== 0 ? x.Teleop.ScoringTotal.Total : '',
+            GridPts: x.Teleop.ScoringTotal.GridPoints !== 0 ? x.Teleop.ScoringTotal.GridPoints : '',
             ConeAcc: x.Teleop.ConesAccuracy.Overall !== 0 ? x.Teleop.ConesAccuracy.Overall.toFixed(2) : '',
             CubeAcc: x.Teleop.CubesAccuracy.Overall !== 0 ? x.Teleop.CubesAccuracy.Overall.toFixed(2) : '',
             AutoPlacement: x.Autonomous.AutonomousPlacement !== 0 ? x.Autonomous.AutonomousPlacement : '',
@@ -307,7 +307,7 @@ const renderRowSubComponent = ({ row }) => {
 
   return disp.length > 0 ?
   (<pre>
-    <div style={{maxWidth: "7000px", overflowX: "scroll", borderCollapse: "collapse", }}>{<TeamInnerTable information = {disp}/>} </div>
+    <div style={{maxWidth: "100rem", overflowX: "scroll", borderCollapse: "collapse", }}>{<TeamInnerTable information = {disp}/>} </div>
   </pre>)
   : (
     <div style={{
@@ -990,8 +990,10 @@ const data = React.useMemo(
         Header: "Team #",
         accessor: "TeamNumber",
         Cell: ({ row }) => (
-          <span {...row.getToggleRowExpandedProps()}>
+          <span{...row.getToggleRowExpandedProps()}>
+            <div style={{fontWeight: 'bold', fontSize: '17px', }}>
               {row.values.TeamNumber}
+            </div>
           </span>
           )
       },
@@ -1001,7 +1003,8 @@ const data = React.useMemo(
         Cell: ({ row }) => (
           <div
               style = {{
-                  whiteSpace: 'normal',
+                minWidth:'150px',
+                whiteSpace:'normal',
               }}
           >
             {row.original.Priorities}
@@ -1071,6 +1074,16 @@ const data = React.useMemo(
       {
         Header: "Penalties",
         accessor: "Penalties",
+        Cell: ({ row }) => (
+          <div
+              style = {{
+                minWidth:'50px',
+                whiteSpace: 'normal',
+              }}
+          >
+            {row.original.Penalties}
+          </div>
+        )
       },
       {
         Header: "Grade",
@@ -1096,37 +1109,39 @@ const data = React.useMemo(
   
   return (
     <div>
-      <h2>CHARGED UP STATISTICS  <img src={"./images/bluethundalogo.png"} width="100px" height= "100px"></img>
-      </h2>
-      <table style={{ width:'1250px'}} >
+      <h1>CHARGED UP STATISTICS  <img src={"./images/bluethundalogo.png"} width="75px" height= "75px"></img>
+      </h1>
+            <table style={{ width:'1250px'}} >
                 <tbody>
                     <tr>
                         <td
                             style={{
-                                minWidth: '750px'
+                                minWidth: '750px',
+                                textAlign: 'left',
                             }}
                         >
-                            <p> Select checkboxes to choose which priorities to sort by. Then click on <strong>Grade</strong>. </p>
+                            <p style={{fontSize: '18px'}}> Select checkboxes to choose which priorities to sort by. Then click on <strong>Grade</strong>. </p>
                             {<List setList={setSortBy}/>}
                             <br/>
                         </td>
                         <td>
                         <p style={{
-                            border: '2px solid black',
-                            maxWidth: '240px',
+                            textAlign: 'center',
+                            border: '2px solid white',
+                            maxWidth: '600px',
                             display: 'inline-block',
                             padding: '5px',
+                            fontSize: '20px',
                           }}>
-                          <strong>KEY</strong> 
+                          <strong>KEY:</strong> 
                           <br/> "Avg" / μ = Average
                           <br/> σ = Standard Deviation
                           <br/> Acc = Accuracy
                       </p>
-                      <br></br>
-                      <img src={"./images/community.jpg"} width="300px" height="240px"
+                      <img src={"./images/community.jpg"} width="260px" height="240px"
                           style={{
                               display: 'inline-block',
-                              margin: '25px'
+                              padding: '10px',
                           }}
                         ></img>
                         </td>
@@ -1134,20 +1149,23 @@ const data = React.useMemo(
                 </tbody>
             </table>
 
-      <br></br>
 
       <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
       <br></br>
-      <table style={{ width:'1250px', borderCollapse: 'collapse', overflowX: "scroll" }} {...getTableProps()}>
+      <br></br>
+      <table style={{ width:'1250px', borderCollapse: 'collapse', overflowX: 'scroll', }} {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
+                
+                
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   style={{
-                    padding: '5px',
+                    padding: '8px',
                     textAlign: 'center',
+                    background: '#78797A',
                   }}
                 >
                   {column.render('Header')}
@@ -1193,8 +1211,8 @@ const data = React.useMemo(
 
                       {...cell.getCellProps()}
                       style={{
-                        padding: '5px',
-                        border: 'solid 1px black',
+                        padding: '8px',
+                        borderBlock: 'solid 2px #78797A',
                         textAlign: 'center',
                       }}
                     >

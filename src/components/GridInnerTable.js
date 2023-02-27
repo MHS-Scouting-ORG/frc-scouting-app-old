@@ -72,12 +72,11 @@ const {
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   style={{
-                    color: 'black',
                     fontWeight: 'bold',
                     padding: '5px',
-                    border: 'solid 1px black',
+                    border: 'solid 1px gainsboro',
                     textAlign: 'center',
-                    background: 'aliceblue'
+                    background: '#64809B'
                   }}
                 >
                   {column.render('Header')}
@@ -104,9 +103,8 @@ const {
                       {...cell.getCellProps()}
                       style={{
                         padding: '5px',
-                        border: 'solid 1px grey',
+                        borderBlock: 'solid 1px gainsboro',
                         textAlign: 'center',
-                        background: 'black'
                       }}
                     >
                       {cell.render('Cell')}
