@@ -9,15 +9,15 @@ const ConePtsTable = (props) => {
         () => [
             {
                 Header: 'Avg Upper Cone Points',
-                accessor: 'AvgUpperCones'
+                accessor: 'AvgUpperCone'
             },
             {
                 Header: 'Avg Mid Cone Points',
-                accessor: 'AvgMidCones'
+                accessor: 'AvgMidCone'
             },
             {
                 Header: 'Avg Low Cone Points',
-                accessor: 'AvgLowCones'
+                accessor: 'AvgLowCone'
             }
         ], []
     )

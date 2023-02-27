@@ -127,7 +127,7 @@ const TeamInnerTable = (props) => {
                       accessor: 'Penalties',
                     },
                     {
-                      Header: '# RP',
+                      Header: 'Ranking Points',
                       accessor: 'NumberOfRankingPoints',
                     },]
             },

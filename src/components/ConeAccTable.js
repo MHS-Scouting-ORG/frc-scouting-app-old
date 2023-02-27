@@ -9,15 +9,15 @@ const ConeAccTable = (props) => {
         () => [
             {
                 Header: 'Upper Cone Acc',
-                accessor: 'UpperConeAcc'
+                accessor: 'AvgUpperConeAcc'
             },
             {
                 Header: 'Mid Cone Acc',
-                accessor: 'MidConeAcc'
+                accessor: 'AvgMidConeAcc'
             },
             {
                 Header: 'Low Cone Acc',
-                accessor: 'LowConeAcc'
+                accessor: 'AvgLowerConeAcc'
             }
         ], []
     )
