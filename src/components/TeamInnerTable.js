@@ -56,11 +56,11 @@ const TeamInnerTable = (props) => {
                         accessor: 'Mobility'
                     },
                     {
-                        Header: 'Upper 🔺 Pts',
+                        Header: 'Upper 🔺 ',
                         accessor: 'AutoUpperConePts'
                     },
                     {
-                        Header: 'Upper 🟪 Pts',
+                        Header: 'Upper 🟪 ',
                         accessor: 'AutoUpperCubePts'
                     },
                     {
@@ -68,15 +68,15 @@ const TeamInnerTable = (props) => {
                         accessor: 'AutoMidConePts'
                     },
                     {
-                      Header: 'Mid 🟪 Pts',
+                      Header: 'Mid 🟪 ',
                       accessor: 'AutoMidCubePts'
                     },
                     {
-                        Header: 'Low 🔺 Pts',
+                        Header: 'Low 🔺 ',
                         accessor: 'AutoLowConePts'
                     },
                     {
-                      Header: 'Low 🟪 Pts',
+                      Header: 'Low 🟪 ',
                       accessor: 'AutoLowCubePts'
                     },
                     {
@@ -88,27 +88,27 @@ const TeamInnerTable = (props) => {
                 Header: 'Tele-Op',
                 columns: [
                     {
-                        Header: 'Upper 🔺 Pts',
+                        Header: 'Upper 🔺 ',
                         accessor: 'TeleUpperConePts'
                     },
                     {
-                      Header: 'Upper 🟪 Pts',
+                      Header: 'Upper 🟪 ',
                       accessor: 'TeleUpperCubePts'
                     },
                     {
-                        Header: 'Mid 🔺 Pts',
+                        Header: 'Mid 🔺 ',
                         accessor: 'TeleMidConePts'
                     },
                     {
-                      Header: 'Mid 🟪 Pts',
+                      Header: 'Mid 🟪 ',
                       accessor: 'TeleMidCubePts'
                     },
                     {
-                        Header: 'Low 🔺 Pts',
+                        Header: 'Low 🔺 ',
                         accessor: 'TeleLowConePts'
                     },
                     {
-                      Header: 'Low 🟪 Pts',
+                      Header: 'Low 🟪 ',
                       accessor: 'TeleLowCubePts'
                     },
                     {
@@ -136,7 +136,7 @@ const TeamInnerTable = (props) => {
                       accessor: 'Penalties',
                     },
                     {
-                      Header: '# RP',
+                      Header: 'Ranking Points',
                       accessor: 'NumberOfRankingPoints',
                     },]
             },

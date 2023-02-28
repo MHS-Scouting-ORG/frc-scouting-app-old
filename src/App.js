@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 import { Amplify, Auth } from 'aws-amplify'
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
@@ -7,9 +7,9 @@ import MainTable from './components/MainTable';
 
 
 import { useEffect, useState } from 'react'
-import ExampleUI from './example'
-import { getRegionals, getTeamInfo } from './api/bluealliance'
-import { ChargeStationType } from './api/builder';
+//import ExampleUI from './example'
+//import { getRegionals, getTeamInfo } from './api/bluealliance'
+//import { ChargeStationType } from './api/builder';
 
 
 const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
@@ -21,14 +21,14 @@ Amplify.configure(awsconfig)
 
 
 function AuthenticatedUI({ user }) {
-  const [regional, setRegional] = useState()
+  //const [regional, setRegional] = useState()
   //console.log(user)
-  useEffect(() => {
+  /*useEffect(() => {
     getRegionals() 
     .then(data => {
       setRegional(data[0].key)
     })
-  })
+  }) */
   /*const [teamInfo, setTeamInfo] = useState({})
   useEffect(() => {
     getTeamInfo()
