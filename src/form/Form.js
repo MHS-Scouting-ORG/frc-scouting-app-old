@@ -38,6 +38,9 @@ class Form extends React.Component {
     this.dropDownChanged = this.dropDownChanged.bind(this);
     this.makeDropDownBox = this.makeDropDownBox.bind(this);
 
+    //this.autoPlacmentChanged = this.autoPlacmentChanged(this);
+    //this.makeAutoPlacement = this.makeAutoPlacement(this);
+
     this.changeEndGame = this.changeEndGame.bind(this);
     this.makeEndGameDropDown = this.makeEndGameDropDown.bind(this);
     this.changeEndGameStartBox = this.changeEndGameStartBox.bind(this);
@@ -109,6 +112,7 @@ class Form extends React.Component {
       bonusState: '',
       penaltyVal: [' ', ' ', ' ', ' ', ' ',' '],
       dropDownVal: ['', '', '', '', ''],
+      //autoPlacement: 0,
       counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       //smartPlacementVal: false,
       strategyVal: [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -412,7 +416,6 @@ class Form extends React.Component {
 
   makeBooleanCheckBox(name, i) {
     let booleanStates = this.state.booleans;
-    let checkedVal;
     return (
       <div>
         <CheckBox
@@ -429,7 +432,7 @@ class Form extends React.Component {
 
   dropDownChanged(event, i) {
     let dropDownStates = this.state.dropDownVal;
-    dropDownStates[i] = event.target.value
+    dropDownStates[i] = event.target.value;
   }
 
 
@@ -446,6 +449,25 @@ class Form extends React.Component {
       </div>
     )
   }
+
+  /*
+  autoPlacmentChanged(event){
+    let autoPlacementState = this.state.autoPlacement;
+    autoPlacementState = event.target.value;
+  }
+
+  makeAutoPlacement(title, option, i){
+    return(
+      <div>
+        <DropDown
+          title={title}
+          choices={option}
+          place={i}
+          setState={this.autoPlacmentChanged}
+        />
+      </div>
+    )
+  }*/
 
   //--------------------------------------------------------------------------------------------------------------//
 
@@ -778,9 +800,11 @@ class Form extends React.Component {
 
     let dropVal = this.state.dropDownVal;
     let autoPlacement = dropVal[0];
-    let driveStrength = dropVal[1];
-    let driveSpeed = dropVal[2];
+    let driveStrength = dropVal[0];
+    let driveSpeed = dropVal[1];
     //let doubleStation = dropVal[3];
+
+    //let autoPlacement = this.state.autoPlacement;
 
     //let ranking = this.state.rankingPts;
     let rankingState = this.state.rankingState;
@@ -896,7 +920,10 @@ class Form extends React.Component {
     let cubesAttempted = parseInt(counterVal[3]) + parseInt(counterVal[4]) + parseInt(counterVal[5]) + parseInt(counterVal[15]) + parseInt(counterVal[16]) + parseInt(counterVal[17]);
     let conesAttempted = parseInt(counterVal[9]) + parseInt(counterVal[10]) + parseInt(counterVal[11]) + parseInt(counterVal[21]) + parseInt(counterVal[22]) + parseInt(counterVal[23]);
 
-
+    // INTIZLE SCORE--------------------------------------------------------------------------------------------
+    let chargeStationPts = 0;
+    let endGamePts = 0;
+    let mobilityPts = 0;
 
 
     /*----------------------------------------------------POINT CALCULATIONS----------------------------------------------------------*/
@@ -930,9 +957,9 @@ class Form extends React.Component {
 
     let mobility = booleans[0]; //this.state.mobilityVal;
 
-    let endGamePts = 0;
-    let chargeStationPts = 0;
-    let mobilityPts = 0;
+    //let endGamePts = 0;
+    //let chargeStationPts = 0;
+    //let mobilityPts = 0;
 
     let incompleteForm = false;
     let incompletePriorities = true;
@@ -987,7 +1014,7 @@ class Form extends React.Component {
     if (mobility === false) {
       mobilityPts = 0;
     } else {
-      mobilityPts = 2;
+      mobilityPts = 3;
     }
 
     let penFinal = [];
@@ -1298,7 +1325,7 @@ class Form extends React.Component {
   render() {
     return (
       <div>
-        <h1> <img alt="" src={'./images/BLUETHUNDERLOGO_WHITE.png'} width="35px" height="35px"></img>  CHARGE UP FORM  <img alt="" src={'./images/BLUETHUNDERLOGO_WHITE.png'} width="35px" height="35px"></img></h1>
+        <h2> <img alt="" src={'./images/BLUETHUNDERLOGO_WHITE.png'} width="20px" height="20px"></img>  CHARGE UP FORM  <img alt="" src={'./images/BLUETHUNDERLOGO_WHITE.png'} width="20px" height="20px"></img> </h2>
         <button onClick={this.logState}> Check State </button>
         {this.makeMatchDropDown}
         <button onClick={this.getMatchTeams}>GET MATCH TEAM</button>
