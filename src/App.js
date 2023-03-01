@@ -46,7 +46,7 @@ function AuthenticatedUI({ user }) {
         <br />
         {/*JSON.stringify(teamInfo)*/}
       </div>
-        <ExampleUI />
+        {/*<ExampleUI />*/}
           <Form regional="2023hiho" />
       {/*(() => {
         if(regional){
