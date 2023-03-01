@@ -23,8 +23,15 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
-    ]
+      "react-app/jest",
+      "eslint:recommended"
+    ],
+    "rules" : {
+      "complexity":"warn",
+      "no-shadow" : "warn",
+      "no-unneeded-ternary": "warn",
+      "prefer-const": "warn"
+    }
   },
   "browserslist": {
     "production": [

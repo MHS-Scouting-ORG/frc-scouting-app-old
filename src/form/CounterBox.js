@@ -5,7 +5,7 @@ class CounterBox extends React.Component{
         super(props);
         this.buttonMinus = this.buttonMinus.bind(this);
         this.buttonPlus = this.buttonPlus.bind(this);
-        this.counterChanged = this.counterChanged.bind(this);
+        this.counterChanged = this.counterChanged.bind(this)
         this.state = {
             count: 0
         }
