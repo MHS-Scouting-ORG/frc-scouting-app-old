@@ -90,7 +90,7 @@ const PriorityOpts = {
     CUBES: "Cubes",
     CHARGESTATION: "ChargeStation",
     DEFENSE: "Defense",
-    SINGLE_SUBSTATION: "SingleSubStation",
+    SINGLE_SUBSTATION: "SingleSubstation",
     DOUBLE_STATION: "DoubleStation",
 }
 

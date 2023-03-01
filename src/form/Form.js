@@ -747,7 +747,7 @@ class Form extends React.Component {
 
   counterBoxChanged(event, i) {
     let counterStates = this.state.counterBoxVals;
-    if (event.target.value === '') {
+    if (event.target.value === '' || event.target.value == null) {
       counterStates[i] = 0
     }
     else {
