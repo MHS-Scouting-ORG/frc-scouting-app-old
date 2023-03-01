@@ -115,7 +115,7 @@ class Form extends React.Component {
       //autoPlacement: 0,
       counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       //smartPlacementVal: false,
-      strategyVal: [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+      strategyVal: [null, null, null, null, null, null, null, null, null, null],//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
       //mobilityVal: false,
       booleans: [false, false],
       totalPoints: 0,
@@ -260,6 +260,8 @@ class Form extends React.Component {
       rankingStates[0] = "Team Lost ";
     }
 
+    rankingStates[1] = '';
+    rankingStates[2] = '';
     this.setState({ whoWon: whoWon});
     //this.setState({ checkedWhoWon: [' ', ' '] });
     //this.setState({ bonusVal: [' ', ' '] });
@@ -800,8 +802,8 @@ class Form extends React.Component {
 
     let dropVal = this.state.dropDownVal;
     let autoPlacement = dropVal[0];
-    let driveStrength = dropVal[0];
-    let driveSpeed = dropVal[1];
+    let driveStrength = dropVal[1];
+    let driveSpeed = dropVal[2];
     //let doubleStation = dropVal[3];
 
     //let autoPlacement = this.state.autoPlacement;
@@ -818,7 +820,7 @@ class Form extends React.Component {
     let booleans = this.state.booleans;
 
     let bonuses = this.state.bonusVal;
-    let strats = this.state.strategyVal;
+    let strats = this.state.strategyVal.slice();
     let strategies = this.state.strategyVal;
     let penalties = this.state.penaltyVal;
     let smartPlacement = booleans[1]; //this.state.smartPlacementVal;
@@ -920,7 +922,7 @@ class Form extends React.Component {
     let cubesAttempted = parseInt(counterVal[3]) + parseInt(counterVal[4]) + parseInt(counterVal[5]) + parseInt(counterVal[15]) + parseInt(counterVal[16]) + parseInt(counterVal[17]);
     let conesAttempted = parseInt(counterVal[9]) + parseInt(counterVal[10]) + parseInt(counterVal[11]) + parseInt(counterVal[21]) + parseInt(counterVal[22]) + parseInt(counterVal[23]);
 
-    // INTIZLE SCORE--------------------------------------------------------------------------------------------
+    // INITIALIZE SCORE--------------------------------------------------------------------------------------------
     let chargeStationPts = 0;
     let endGamePts = 0;
     let mobilityPts = 0;
@@ -928,22 +930,29 @@ class Form extends React.Component {
 
     /*----------------------------------------------------POINT CALCULATIONS----------------------------------------------------------*/
     //TOTALS
+/*
+    //Row Grid Points
     let highGridPoints = 6 * (highAutoCones + highAutoCubes) + 5 * (highTeleCones + highTeleCubes);
     let midGridPoints = 4 * (midAutoCones + midAutoCubes) + 3 * (midTeleCones + midTeleCubes);
     let lowGridPoints = 3 * (lowAutoCones + lowAutoCubes) + 2 * (lowTeleCones + lowTeleCubes);
+
+    //OVERALL POINTS
     let autoPoints = 6 * (highAutoCones + highAutoCubes) + 4 * (midAutoCones + midAutoCubes) + 3 * (lowAutoCones + lowAutoCubes);
     let telePoints = 5 * (highTeleCones + highTeleCubes) + 3 * (midTeleCones + midTeleCubes) + 2 * (lowTeleCones + lowTeleCubes);
     let points = (chargeStationPts + endGamePts + mobilityPts) + autoPoints + telePoints;
     let cubePts = (highAutoCubes * 6) + (highTeleCubes * 5) + (midAutoCubes * 4) + (midTeleCubes * 3) + (lowAutoCubes * 3) + (lowTeleCubes * 2);
     let conePts = (highAutoCones * 6) + (highTeleCones * 5) + (midAutoCones * 4) + (midTeleCones * 3) + (lowAutoCones * 3) + (lowTeleCones * 2);
+
     //HIGH ACCURACIES
     let cubesHighTeleAutoAccuracy = 100 * ((highAutoCubes + highTeleCubes) / (highCubesAttempted));
     let conesHighTeleAutoAccuracy = 100 * ((highAutoCones + highTeleCones) / (highConesAttempted));
     let highAccuracy = 100 * ((conesHighTeleAutoAccuracy + cubesHighTeleAutoAccuracy) / (highCubesAttempted + highConesAttempted));
+    
     //MID ACCURACIES
     let cubesMidTeleAutoAccuracy = 100 * ((midAutoCubes + midTeleCubes) / (midCubesAttempted));
     let conesMidTeleAutoAccuracy = 100 * ((midAutoCones + midTeleCones) / (midConesAttempted));
     let midAccuracy = 100 * ((cubesMidTeleAutoAccuracy + conesMidTeleAutoAccuracy) / (midCubesAttempted + midConesAttempted));
+
     //LOW ACCURACIES
     let cubesLowTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes) / (lowCubesAttempted));
     let conesLowTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones) / (lowConesAttempted));
@@ -953,7 +962,7 @@ class Form extends React.Component {
 
     let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesAttempted));
     let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesAttempted));
-
+*/
 
     let mobility = booleans[0]; //this.state.mobilityVal;
 
@@ -1037,18 +1046,18 @@ class Form extends React.Component {
         }
     }
 
-    //*
+    /*
     let stratFinal = [];
-    for(let i = 0; i < penalties.length; i++){
+    for(let i = 0; i < strategies.length; i++){
       let strategy = strategies[i];
       if(strategy === "Low Node "){
-        stratFinal[i] = PriorityOpts.LOW_NODE;
+        stratFinal[i] = PriorityOpts.LOW;
       }
       else if(strategy === "Mid Node "){
-        stratFinal[i] = PriorityOpts.MID_NODE;
+        stratFinal[i] = PriorityOpts.MID;
       }
       else if(strategy === "High Node "){
-        stratFinal[i] = PriorityOpts.HIGH_NODE;
+        stratFinal[i] = PriorityOpts.HIGH;
       }
       else if(strategy === "Cubes "){
         stratFinal[i] = PriorityOpts.CUBES;
@@ -1071,8 +1080,63 @@ class Form extends React.Component {
       else if(strategy === "Defense "){
         stratFinal[i] = PriorityOpts.DEFENSE;
       }
+    }*/
+
+
+    let stratFinal = [];
+    for(let i = 0; i < strategies.length; i++){
+      let strategy = strategies[i];
+      if(strategy === "Low Node "){
+        stratFinal.push(PriorityOpts.LOW);
+      }
+      else if(strategy === "Mid Node "){
+        stratFinal.push(PriorityOpts.MID);
+      }
+      else if(strategy === "High Node "){
+        stratFinal.push(PriorityOpts.HIGH);
+      }
+      else if(strategy === "Cubes "){
+        stratFinal.push(PriorityOpts.CUBES);
+      }
+      else if(strategy === "Cones "){
+        stratFinal.push(PriorityOpts.CONES);
+      }
+      else if(strategy === "Charge Station "){
+        stratFinal.push(PriorityOpts.CHARGESTATION);
+      }
+      else if(strategy === "Single Substation "){
+        stratFinal.push(PriorityOpts.SINGLE_SUBSTATION);
+      }
+      else if(strategy === "Double Substation Shute "){
+        stratFinal.push(PriorityOpts.DOUBLE_STATION_SHUTE);
+      }
+      else if(strategy === "Double Substation Sliding Shelves "){
+        stratFinal.push(PriorityOpts.DOUBLE_STATION_SLIDNING_SHELVE);
+      }
+      else if(strategy === "Defense "){
+        stratFinal.push(PriorityOpts.DEFENSE);
+      }
     }
-    //*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*let stratSuperFinal = []
+
+    for(i = 0; i < stratFinal.length; i++){
+      if(stratFinal[i] )
+    }*/
+
+    //console.log(stratFinal)
     /*
         {this.makeStrategyBox("Low Node ", 0)}
         {this.makeStrategyBox("Mid Node ", 1)}
@@ -1140,7 +1204,7 @@ class Form extends React.Component {
     <option value='Attempted'>Attempted</option>
     */
 
-    /*
+    ///*
     //POINT CALCULATIONS
 
     let highGridPoints = 6 * (highAutoCones + highAutoCubes) + 5 * (highTeleCones + highTeleCubes);
@@ -1148,7 +1212,7 @@ class Form extends React.Component {
     let lowGridPoints = 3 * (lowAutoCones + lowAutoCubes) + 2 * (lowTeleCones + lowTeleCubes);
     let autoPoints = 6 * (highAutoCones + highAutoCubes) + 4 * (midAutoCones + midAutoCubes) + 3 * (lowAutoCones + lowAutoCubes);
     let telePoints = 5 * (highTeleCones + highTeleCubes) + 3 * (midTeleCones + midTeleCubes) + 2 * (lowTeleCones + lowTeleCubes);
-    let points = (chargeStationPts + endGamePts + mobilityPts) + autoPoints + telePoints;
+    let points = chargeStationPts + endGamePts + mobilityPts + autoPoints + telePoints;
     let cubePts = (highAutoCubes * 6) + (highTeleCubes * 5) + (midAutoCubes * 4) + (midTeleCubes * 3) + (lowAutoCubes * 3) + (lowTeleCubes * 2);
     let conePts = (highAutoCones * 6) + (highTeleCones * 5) + (midAutoCones * 4) + (midTeleCones * 3) + (lowAutoCones * 3) + (lowTeleCones * 2);
 
@@ -1168,7 +1232,7 @@ class Form extends React.Component {
 
     let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesAttempted));
     let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesAttempted));
-*/
+//*/
 
     this.setState({
       totalPoints: points,
@@ -1229,7 +1293,7 @@ class Form extends React.Component {
     if (incompleteForm === true && override === false) {
       window.alert(windowAlertMsg);
     } else if (incompleteForm === false || override === true) {
-      console.log(penalties);
+      //console.log(penalties);
       await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey)
       const matchEntry = buildMatchEntry(this.regional,teamNum,matchKey)
         //matchEntry.name=''
@@ -1313,10 +1377,16 @@ class Form extends React.Component {
         matchEntry.Penalties.Tech=techFouls
         matchEntry.Penalties.Penalties=penFinal;
 
+        // console.log(stratFinal);
+        // console.log(PriorityOpts.HIGH)
+        // console.log(PriorityOpts.SINGLE_SUBSTATION)
+        // console.log(PriorityOpts.DOUBLE_STATION_SHUTE)
         matchEntry.Priorities=stratFinal;
 
-      await apiUpdateTeamMatch(this.regional, teamNum, matchKey, matchEntry)
-    console.log(this.state);
+      /*await */apiUpdateTeamMatch(this.regional, teamNum, matchKey, matchEntry)
+    //console.log(this.state);
+
+    // console.log(this.regional,teamNum,matchKey,matchEntry)
     }
   }
 
