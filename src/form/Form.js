@@ -495,7 +495,7 @@ class Form extends React.Component {
         return (
           <div>
             <label> {"End Game Start: "}
-              <input type="number" onChange={this.changeEndGameStartBox}></input>
+              <input style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
             </label>
           </div>
         )
@@ -506,12 +506,12 @@ class Form extends React.Component {
           <div>
             <div>
               <label> {"End Game Start: "}
-                <input type="number" onChange={this.changeEndGameStartBox}></input>
+                <input style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
               </label>
             </div>
             <div>
               <label> {"End Game End: "}
-                <input type="number" onChange={this.changeEndGameEndBox}></input>
+                <input style={{width: '10%'}} type="number" onChange={this.changeEndGameEndBox}></input>
               </label>
             </div>
           </div>
@@ -1325,21 +1325,21 @@ class Form extends React.Component {
   render() {
     return (
       <div>
-        <h2> <img alt="" src={'./images/BLUETHUNDERLOGO_WHITE.png'} width="20px" height="20px"></img>  CHARGE UP FORM  <img alt="" src={'./images/BLUETHUNDERLOGO_WHITE.png'} width="20px" height="20px"></img> </h2>
+        <h2> CHARGED UP FORM  <img alt="" src={'./images/BLUETHUNDERLOGO_WHITE.png'} width="50px" height="50px"></img> </h2>
         <button onClick={this.logState}> Check State </button>
         {this.makeMatchDropDown}
         <button onClick={this.getMatchTeams}>GET MATCH TEAM</button>
         <br></br>
         {this.makeTeamDropdown()}
         <br></br>
-        <h3>AUTONOMOUS</h3>
+        <h3>AUTONOMOUS:</h3>
         <img alt="" src={'./images/auto placement.jpg'} width="250px" height="260px"></img>
-        {this.makeDropDownBox("Auto Placement On Community: ", [1, 2, 3, 4, 5, 6], 0)}
+        {this.makeDropDownBox("Auto Placement: ", [1, 2, 3, 4, 5, 6], 0)}
         <br></br>
         <p>🟪Cubes Scored</p>
         {this.makeCounterBox("High Cubes Made: ", 0)}
-        {this.makeCounterBox("Mid Cubes Made: ", 1)}
-        {this.makeCounterBox("Low Cubes Made: ", 2)}
+        {this.makeCounterBox("Mid Cubes Made:  ", 1)}
+        {this.makeCounterBox("Low Cubes Made:  ", 2)}
         <p>🟪Cubes Attempted</p>
         {this.makeCounterBox("High Cubes Attempted: ", 3)}
         {this.makeCounterBox("Mid Cubes Attempted: ", 4)}
@@ -1357,7 +1357,7 @@ class Form extends React.Component {
         <br></br>
         {this.makeChargeStationAuto()}
         <br></br>
-        <h3>TELE-OP</h3>
+        <h3>TELE-OP:</h3>
         <p>🟪Cubes Scored</p>
         {this.makeCounterBox("High Cubes Made: ", 12)}
         {this.makeCounterBox("Mid Cubes Made: ", 13)}
@@ -1379,12 +1379,12 @@ class Form extends React.Component {
         {this.makeEndGameDropDown()}
         {this.makeEndGameStartEndBox()}
         <br></br>
-        {this.makeBooleanCheckBox("Smart Placement ", 1)}{/*this.makeSmartPlacementBox("Smart Placement ")*/}
+        {this.makeBooleanCheckBox("Smart Placement (creates links) ", 1)}{/*this.makeSmartPlacementBox("Smart Placement ")*/}
         <br></br>
         {this.makeDropDownBox("Drive Strength: ", ["Weak", "Normal", "Strong"], 1)}
         {this.makeDropDownBox("Drive Speed: ", ["Slow", "Fast", "Really Fast"], 2)}
         <br></br>
-        <h3>PENALTIES</h3>
+        <h3>PENALTIES:</h3>
         {this.makeCounterBox("Fouls: ", 24)}
         {this.makeCounterBox("Tech Fouls: ", 25)}
         {this.makePenaltyBox("Yellow Card ", 0)}
@@ -1394,7 +1394,7 @@ class Form extends React.Component {
         {this.makePenaltyBox("Bot Broke ", 4)}
         {this.makePenaltyBox("No Show ", 5)}
         <br></br>
-        <h3>RANKING POINTS</h3>
+        <h3>RANKING POINTS:</h3>
         {this.makeWhoWonBox("Team Won ", 0)}
         {this.makeWhoWonBox("Team Tied ", 1)}
         {this.makeWhoWonBox("Team Lost ", 2)}
@@ -1402,7 +1402,7 @@ class Form extends React.Component {
         {this.makeBonusBox("Sustainability ", 2)}
         <Headers display={this.state.rankingPts} />
         <br></br>
-        <h3>STRATEGY & PRIORITIES</h3>
+        <h3>STRATEGY & PRIORITIES:</h3>
         {this.makeStrategyBox("Low Node ", 0)}
         {this.makeStrategyBox("Mid Node ", 1)}
         {this.makeStrategyBox("High Node ", 2)}
@@ -1414,19 +1414,21 @@ class Form extends React.Component {
         {this.makeStrategyBox("Double Substation Sliding Shelves ", 8)}
         {this.makeStrategyBox("Defense ", 9)}
         <br></br>
-        <p>How well is there defense if any?</p>
         <TextBox title={"💬Comments: "} commentState={this.setComment} value={this.state.comments}></TextBox>
+        
         <div>
+          <br></br>
           <button onClick={(evt) => { 
             evt.preventDefault()
             this.submitState()
               .then(console.log.bind(console))
                 .catch(console.log.bind(console))
           }
-          }>Submit</button>
+          }>SUBMIT</button>
         </div>
         <p> ONLY CLICK IF NOTHING ELSE CAN BE FILLED </p>
         {this.makeOverrideBox()}
+        <br></br>
       </div>
     )
   }
