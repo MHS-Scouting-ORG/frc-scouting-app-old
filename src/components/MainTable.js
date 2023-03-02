@@ -70,13 +70,13 @@ function MainTable(props) {
       setOprList(oData)
       setDprList(dData)
       setCcwmList(cData) 
-      console.log(teamsData)
     })
     .catch(console.log.bind(console))
    },[teamsData])
 
    useEffect(() => setTableData(teamsData.map(team => {
     const teamStats = apiData.filter(x => x.Team === team.TeamNum)
+    console.log(teamStats)
     
     const points = teamStats.map(x => x.Teleop.ScoringTotal.Total) //for deviation
     const gridPoints = teamStats.map(x => x.Teleop.ScoringTotal.GridPoints)
@@ -95,6 +95,7 @@ function MainTable(props) {
 
     const priorities = getPriorities(teamStats)
     const penalties = getPenalties(teamStats)
+
     const upperGridPts = calcUpperGrid(teamStats)
     const upperGridAcc = calcUpperGridAcc(teamStats)
     const midGridPts = calcMidGrid(teamStats)
@@ -126,10 +127,10 @@ function MainTable(props) {
       AvgPoints: avgPoints !== 0 && isNaN(avgPoints) !== true ? `μ=${avgPoints}, σ=${calcDeviation(points, avgPoints)}` : '', 
       AvgGridPoints: avgGridPoints !== 0 && isNaN(avgGridPoints) !== true ? `μ=${avgGridPoints}, σ=${calcDeviation(gridPoints, avgGridPoints)}` : '',
       AvgCSPoints: avgCSPoints !== 0 && isNaN(avgCSPoints) !== true ? avgCSPoints : '',
-      AvgConePts: avgConePoints !== 0 && isNaN(avgConePoints) !== true ? `μ=${avgConePoints}, σ=${calcDeviation(conePts, avgConePoints)}` : '', 
-      AvgConeAcc: avgConeAcc !== 0 && isNaN(avgConeAcc) !== true ? `μ=${avgConeAcc}, σ=${calcDeviation(coneAcc, avgConeAcc)}` : '', 
-      AvgCubePts: avgCubePoints !== 0 && isNaN(avgCubePoints) !== true ? `μ=${avgCubePoints}, σ=${calcDeviation(cubePts, avgCubePoints)}c` : '', 
-      AvgCubeAcc: avgCubeAcc !== 0 && isNaN(avgCubeAcc) !== true ? `μ=${avgCubeAcc}, σ=${calcDeviation(cubeAcc, avgCubeAcc)}` : '', 
+      AvgConePts: avgConePoints !== 0 /*&&*/|| isNaN(avgConePoints) !== true ? `μ=${avgConePoints}, σ=${calcDeviation(conePts, avgConePoints)}` : 'fail', 
+      AvgConeAcc: avgConeAcc !== 0 /*&&*/|| isNaN(avgConeAcc) !== true ? `μ=${avgConeAcc}, σ=${calcDeviation(coneAcc, avgConeAcc)}` : '', 
+      AvgCubePts: avgCubePoints !== 0 /*&&*/|| isNaN(avgCubePoints) !== true ? `μ=${avgCubePoints}, σ=${calcDeviation(cubePts, avgCubePoints)}c` : '', 
+      AvgCubeAcc: avgCubeAcc !== 0 /*&&*/|| isNaN(avgCubeAcc) !== true ? `μ=${avgCubeAcc}, σ=${calcDeviation(cubeAcc, avgCubeAcc)}` : '', 
       DPR: dprList[team.TeamNum] ? (dprList[team.TeamNum]).toFixed(2) : null, 
       Penalties: penalties.join(', '),
 
@@ -155,7 +156,6 @@ function MainTable(props) {
       AvgUpperCubePts: upperCubePts,
       AvgMidCubePts: midCubePts,
       AvgLowerCubePts: lowerCubePts,
-      
     }
   })), [teamsData, oprList, dprList, ccwmList])
 
@@ -193,8 +193,8 @@ const getTeams = async () => {
 const renderRowSubComponent = ({ row }) => {
   const t = apiData.filter(x => x.Team === `frc${row.values.TeamNumber}`)
   const disp = t.map(x => {
-    const penalties = getPenalties(t)
-    const rankingPts = getRankingPts(t)
+    const penalties = x.Penalties.Penalties.filter(x => x != 'None') 
+    const rankingPts = x.RankingPts.filter(x => x != 'None' || '',)
         return {
             Match: x.id.substring(x.id.indexOf('_')+1),
             Strategy: x.Priorities.filter(val => val != undefined && val.trim() !== '').length !== 0 ? x.Priorities.filter(val => val != undefined && val.trim() !== '').map(val => val.trim()).join(', ') : '',
@@ -226,9 +226,8 @@ const renderRowSubComponent = ({ row }) => {
             NumberOfFoulAndTech: x.Penalties.Fouls !== 0 && x.Penalties.Tech !== 0 ? `${x.Penalties.Fouls} | ${x.Penalties.Tech}` : ``,
             Penalties: penalties.join(', '),
             NumberOfRankingPoints: rankingPts.join(', '),
-
+            
             Comments: x.Comments !== undefined ? x.Comments.trim() : '',
-            //Email: x.email.substring(0, x.email.length-17),                   //implement scouter email
         };
     })
 
@@ -293,7 +292,7 @@ const renderRowSubComponentConeAccTable = ({row}) => {
 
   const renderRowSubComponentConePtsTable = ({row}) => {
     const g = tableData.filter(x => x.TeamNumber === row.values.TeamNumber)
-      
+      console.log(g)
       const disp = g.map(x => {
       return {
         AvgUpperCone: x.AvgUpperConePts !== 0 ? `μ=${x.AvgUpperConePts}` : '',
@@ -466,13 +465,8 @@ function tableHandler(row){
   }
 
   const getPenalties = (arr) => {
-    let pen = arr.map(teamObj => teamObj.Penalties.Penalties).reduce((a,b) => a.concat(b), []).filter((item) => item.trim() !== '')
+    let pen = arr.map(teamObj => teamObj.Penalties.Penalties).reduce((a,b) => a.concat(b), []).filter((item) => item.trim() !== 'None')
     return uniqueArr(pen) 
-  }
-  
-  const getRankingPts = (arr) => {
-    let rk = arr.map(teamObj => teamObj.RankingPts).reduce((a,b) => a.concat(b), []).filter((item) => item.trim() !== '')
-    return uniqueArr(rk) 
   }
 
   //avg total points
@@ -498,6 +492,7 @@ function tableHandler(row){
   }
   
   const calcAvgConePts = (arr) => {
+    console.log(`calcAVGConePts ${JSON.stringify(arr)}`)
     let indivConePts = arr.map(val => val.Teleop.ScoringTotal != null ? val.Teleop.ScoringTotal.Cones : 0)
     let totalConePts = 0
     for(let i = 0; i < indivConePts.length; i++){
@@ -506,7 +501,7 @@ function tableHandler(row){
     let avgConePts = totalConePts / indivConePts
     return avgConePts.toFixed(3)
   }
-
+ 
   const calcAvgConeAcc = (arr) => {
     let indivConeAcc = arr.map(val => val.Teleop.ConesAccuracy != null ? val.Teleop.ConesAccuracy.Overall : 0)
     let totalConeAcc = 0
@@ -538,7 +533,7 @@ function tableHandler(row){
   }
 
   const calcAvgCS = (arr) => {
-    console.log(`calcAvCs ${JSON.stringify(arr)}`)
+    //console.log(`calcAvCs ${JSON.stringify(arr)}`)
     const indivTeleCSDocked = arr.filter(val => val.Teleop.EndGame === "Docked")
     const indivTeleCSDockedPts = indivTeleCSDocked.length * 6
     const indivTeleCSDockedEng = arr.filter(val => val.Teleop.EndGame === "DockedEngaged")
@@ -574,7 +569,7 @@ function tableHandler(row){
   }
 
   const calcUpperConeGrid = (arr) => {  
-    let upper = arr.map(val => (val.Autonomous.Scored.Cones.Upper + val.Teleop.Scored.Cones.Upper) != null ?(val.Autonomous.Scored.Cones.Upper + val.Teleop.Scored.Cones.Upper) : 0);
+    let upper = arr.map(val => (val.Autonomous.Scored.Cones.Upper + val.Teleop.Scored.Cones.Upper) != null ? (val.Autonomous.Scored.Cones.Upper + val.Teleop.Scored.Cones.Upper) : 0);
     let sumUpper = 0;
     for(let i = 0; i < upper.length; i++){
       sumUpper = sumUpper + upper[i];      

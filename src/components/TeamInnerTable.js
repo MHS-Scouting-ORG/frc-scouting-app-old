@@ -174,16 +174,7 @@ const TeamInnerTable = (props) => {
                           }}
                         >{row.original.Comments}</div>
                       }
-                    },
-                    {
-                      Header: 'Scouter',
-                      accessor: 'Email',
-                    },
-                    {
-                      Header: 'Delete',
-                      accessor: 'Delete',
                     },],
-              
             }
         ],[]
     )
