@@ -127,10 +127,10 @@ function MainTable(props) {
       AvgPoints: avgPoints !== 0 && isNaN(avgPoints) !== true ? `μ=${avgPoints}, σ=${calcDeviation(points, avgPoints)}` : '', 
       AvgGridPoints: avgGridPoints !== 0 && isNaN(avgGridPoints) !== true ? `μ=${avgGridPoints}, σ=${calcDeviation(gridPoints, avgGridPoints)}` : '',
       AvgCSPoints: avgCSPoints !== 0 && isNaN(avgCSPoints) !== true ? avgCSPoints : '',
-      AvgConePts: avgConePoints !== 0 /*&&*/|| isNaN(avgConePoints) !== true ? `μ=${avgConePoints}, σ=${calcDeviation(conePts, avgConePoints)}` : 'fail', 
-      AvgConeAcc: avgConeAcc !== 0 /*&&*/|| isNaN(avgConeAcc) !== true ? `μ=${avgConeAcc}, σ=${calcDeviation(coneAcc, avgConeAcc)}` : '', 
-      AvgCubePts: avgCubePoints !== 0 /*&&*/|| isNaN(avgCubePoints) !== true ? `μ=${avgCubePoints}, σ=${calcDeviation(cubePts, avgCubePoints)}c` : '', 
-      AvgCubeAcc: avgCubeAcc !== 0 /*&&*/|| isNaN(avgCubeAcc) !== true ? `μ=${avgCubeAcc}, σ=${calcDeviation(cubeAcc, avgCubeAcc)}` : '', 
+      AvgConePts: avgConePoints !== 0 && isNaN(avgConePoints) !== true ? `μ=${avgConePoints}, σ=${calcDeviation(conePts, avgConePoints)}` : '', 
+      AvgConeAcc: avgConeAcc !== 0 && isNaN(avgConeAcc) !== true ? `μ=${avgConeAcc}, σ=${calcDeviation(coneAcc, avgConeAcc)}` : '', 
+      AvgCubePts: avgCubePoints !== 0 && isNaN(avgCubePoints) !== true ? `μ=${avgCubePoints}, σ=${calcDeviation(cubePts, avgCubePoints)}` : '', 
+      AvgCubeAcc: avgCubeAcc !== 0 && isNaN(avgCubeAcc) !== true ? `μ=${avgCubeAcc}, σ=${calcDeviation(cubeAcc, avgCubeAcc)}` : '', 
       DPR: dprList[team.TeamNum] ? (dprList[team.TeamNum]).toFixed(2) : null, 
       Penalties: penalties.join(', '),
 
@@ -198,8 +198,8 @@ const renderRowSubComponent = ({ row }) => {
         return {
             Match: x.id.substring(x.id.indexOf('_')+1),
             Strategy: x.Priorities.filter(val => val != undefined && val.trim() !== '').length !== 0 ? x.Priorities.filter(val => val != undefined && val.trim() !== '').map(val => val.trim()).join(', ') : '',
-            TotalPts: (x.Teleop.ScoringTotal.Total !== 0)  ? x.Teleop.ScoringTotal.Total : '',
-            GridPts: x.Teleop.ScoringTotal.GridPoints !== 0 ? x.Teleop.ScoringTotal.GridPoints : '',
+            TotalPts: x.Teleop.ScoringTotal.Total !== null  ? x.Teleop.ScoringTotal.Total : '',
+            GridPts: x.Teleop.ScoringTotal.GridPoints !== null ? x.Teleop.ScoringTotal.GridPoints : '',
             ConeAcc: x.Teleop.ConesAccuracy.Overall !== 0 && x.Teleop.ConesAccuracy.Overall !== null ? (x.Teleop.ConesAccuracy.Overall.toFixed(2)) : '',
             CubeAcc: x.Teleop.CubesAccuracy.Overall !== 0 && x.Teleop.CubesAccuracy.Overall !== null ? x.Teleop.CubesAccuracy.Overall.toFixed(2) : '',
             AutoPlacement: x.Autonomous.AutonomousPlacement !== 0 ? x.Autonomous.AutonomousPlacement : '',
@@ -492,13 +492,12 @@ function tableHandler(row){
   }
   
   const calcAvgConePts = (arr) => {
-    console.log(`calcAVGConePts ${JSON.stringify(arr)}`)
-    let indivConePts = arr.map(val => val.Teleop.ScoringTotal != null ? val.Teleop.ScoringTotal.Cones : 0)
+    let indivConePts = arr.map(val => val.Teleop.ScoringTotal.Cones != null ? val.Teleop.ScoringTotal.Cones : 0)
     let totalConePts = 0
     for(let i = 0; i < indivConePts.length; i++){
       totalConePts = totalConePts + indivConePts[i];
     }
-    let avgConePts = totalConePts / indivConePts
+    let avgConePts = totalConePts / indivConePts.length
     return avgConePts.toFixed(3)
   }
  
@@ -508,7 +507,7 @@ function tableHandler(row){
     for(let i = 0; i < indivConeAcc.length; i++){
       totalConeAcc = totalConeAcc + indivConeAcc[i]
     }
-    let avgConeAcc = totalConeAcc / indivConeAcc
+    let avgConeAcc = totalConeAcc / indivConeAcc.length
     return avgConeAcc.toFixed(3)
   }
 
@@ -518,7 +517,7 @@ function tableHandler(row){
     for(let i = 0; i < indivCubePts.length; i++){
       totalCubePts = totalCubePts + indivCubePts[i]
     }
-    let avgCubePts = totalCubePts / indivCubePts
+    let avgCubePts = totalCubePts / indivCubePts.length
     return avgCubePts.toFixed(3)
   }
 
@@ -528,12 +527,11 @@ function tableHandler(row){
     for(let i = 0; i < indivCubeAcc.length; i++){
       totalCubeAcc = totalCubeAcc + indivCubeAcc[i]
     }
-    let avgCubeAcc = totalCubeAcc / indivCubeAcc
+    let avgCubeAcc = totalCubeAcc / indivCubeAcc.length
     return avgCubeAcc.toFixed(3)
   }
 
   const calcAvgCS = (arr) => {
-    //console.log(`calcAvCs ${JSON.stringify(arr)}`)
     const indivTeleCSDocked = arr.filter(val => val.Teleop.EndGame === "Docked")
     const indivTeleCSDockedPts = indivTeleCSDocked.length * 6
     const indivTeleCSDockedEng = arr.filter(val => val.Teleop.EndGame === "DockedEngaged")
@@ -569,7 +567,7 @@ function tableHandler(row){
   }
 
   const calcUpperConeGrid = (arr) => {  
-    let upper = arr.map(val => (val.Autonomous.Scored.Cones.Upper + val.Teleop.Scored.Cones.Upper) != null ? (val.Autonomous.Scored.Cones.Upper + val.Teleop.Scored.Cones.Upper) : 0);
+    let upper = arr.map(val => (val.Autonomous.Scored.Cones.Upper + val.Teleop.Scored.Cones.Upper) != null ? ((val.Autonomous.Scored.Cones.Upper * 6) + (val.Teleop.Scored.Cones.Upper * 5)) : 0);
     let sumUpper = 0;
     for(let i = 0; i < upper.length; i++){
       sumUpper = sumUpper + upper[i];      
@@ -589,7 +587,7 @@ function tableHandler(row){
   }
 
   const calcUpperCubeGrid = (arr) => { 
-    let upper = arr.map(val => (val.Autonomous.Scored.Cubes.Upper + val.Teleop.Scored.Cubes.Upper) != null ? (val.Autonomous.Scored.Cubes.Upper + val.Teleop.Scored.Cubes.Upper) : 0);
+    let upper = arr.map(val => (val.Autonomous.Scored.Cubes.Upper + val.Teleop.Scored.Cubes.Upper) != null ? ((val.Autonomous.Scored.Cubes.Upper * 6) + (val.Teleop.Scored.Cubes.Upper * 5)) : 0);
     let sumUpper = 0;
     for(let i = 0; i < upper.length; i++){
       sumUpper = sumUpper + upper[i];      
@@ -630,7 +628,7 @@ function tableHandler(row){
   }
 
   const calcMidConeGrid = (arr) => { 
-    let mid = arr.map(val => (val.Autonomous.Scored.Cones.Mid + val.Teleop.Scored.Cones.Mid) != null ? (val.Autonomous.Scored.Cones.Mid + val.Teleop.Scored.Cones.Mid) : 0);
+    let mid = arr.map(val => (val.Autonomous.Scored.Cones.Mid + val.Teleop.Scored.Cones.Mid) != null ? ((val.Autonomous.Scored.Cones.Mid * 4) + (val.Teleop.Scored.Cones.Mid * 3)) : 0);
     let sumMid = 0;
     for(let i = 0; i < mid.length; i++){
       sumMid = sumMid + mid[i];      
@@ -650,7 +648,7 @@ function tableHandler(row){
   }
 
   const calcMidCubeGrid = (arr) => { 
-    let mid = arr.map(val => (val.Autonomous.Scored.Cubes.Mid + val.Teleop.Scored.Cubes.Mid) != null ? (val.Autonomous.Scored.Cubes.Mid + val.Teleop.Scored.Cubes.Mid) : 0);
+    let mid = arr.map(val => (val.Autonomous.Scored.Cubes.Mid + val.Teleop.Scored.Cubes.Mid) != null ? ((val.Autonomous.Scored.Cubes.Mid * 4) + (val.Teleop.Scored.Cubes.Mid * 3)) : 0);
     let sumMid = 0;
     for(let i = 0; i < mid.length; i++){
       sumMid = sumMid + mid[i];      
@@ -690,7 +688,7 @@ function tableHandler(row){
   }
 
   const calcLowConeGrid = (arr) => { 
-    let low = arr.map(val => (val.Autonomous.Scored.Cones.Lower + val.Teleop.Scored.Cones.Lower) != null ? (val.Autonomous.Scored.Cones.Lower + val.Teleop.Scored.Cones.Lower) : 0);
+    let low = arr.map(val => (val.Autonomous.Scored.Cones.Lower + val.Teleop.Scored.Cones.Lower) != null ? ((val.Autonomous.Scored.Cones.Lower * 3) + (val.Teleop.Scored.Cones.Lower * 2)) : 0);
     let sumLow = 0;
     for(let i = 0; i < low.length; i++){
       sumLow = sumLow + low[i];      
@@ -710,7 +708,7 @@ function tableHandler(row){
   }
 
   const calcLowCubeGrid = (arr) => { 
-    let low = arr.map(val => (val.Autonomous.Scored.Cubes.Lower + val.Teleop.Scored.Cubes.Lower) != null ? (val.Autonomous.Scored.Cubes.Lower + val.Teleop.Scored.Cubes.Lower) : 0);
+    let low = arr.map(val => (val.Autonomous.Scored.Cubes.Lower + val.Teleop.Scored.Cubes.Lower) != null ? ((val.Autonomous.Scored.Cubes.Lower * 3) + (val.Teleop.Scored.Cubes.Lower * 2)) : 0);
     let sumLow = 0;
     for(let i = 0; i < low.length; i++){
       sumLow = sumLow + low[i];      
