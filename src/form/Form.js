@@ -1452,7 +1452,7 @@ class Form extends React.Component {
         {this.makeBooleanCheckBox("Smart Placement ", 1)}{/*this.makeSmartPlacementBox("Smart Placement ")*/}
         <br></br>
         {this.makeDropDownBox("Drive Strength: ", ["Weak", "Normal", "Strong"], 1)}
-        {this.makeDropDownBox("Drive Speed: ", ["Slow", "Fast", "Really Fast"], 2)}
+        {this.makeDropDownBox("Drive Speed: ", ["Slow", "Normal", "Fast"], 2)}
         <br></br>
         <h3>PENALTIES</h3>
         {this.makeCounterBox("Fouls: ", 24)}
