@@ -8,11 +8,11 @@ import CounterBox from './CounterBox';
 //import { getRegionals, getTeamsInRegional, } from "../api/bluealliance";
 import TextBox from './TextBox';
 import Headers from './Header';
-import StationTimer from './StationTimer';
+//import StationTimer from './StationTimer';
 import { apiCreateTeamMatchEntry, apiUpdateTeamMatch } from '../api';
 //import { ConsoleLogger } from '@aws-amplify/core';
 //import { ChargeStationType, RankingPtsOpts } from '../api/builder';
-import buildMatchEntry, { ChargeStationType, IntakeType, PenaltyKinds, RankingPtsOpts, PriorityOpts } from '../api/builder'
+import buildMatchEntry, { ChargeStationType, PenaltyKinds, RankingPtsOpts, PriorityOpts } from '../api/builder'
 
 class Form extends React.Component {
   constructor(props) {
@@ -112,10 +112,10 @@ class Form extends React.Component {
       bonusState: '',
       penaltyVal: [' ', ' ', ' ', ' ', ' ',' '],
       dropDownVal: ['', '', '', '', ''],
-      //autoPlacement: 0,
+      autoPlacement: 0,
       counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       //smartPlacementVal: false,
-      strategyVal: [null, null, null, null, null, null, null, null, null, null],//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+      strategyVal: [null, null, null, null, null, null, null, null, null],//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
       //mobilityVal: false,
       booleans: [false, false],
       totalPoints: 0,
@@ -496,6 +496,7 @@ class Form extends React.Component {
       if (endGame === "Attempted") {
         return (
           <div>
+            <p>Match Timer EX:125 (1:25)</p>
             <label> {"End Game Start: "}
               <input style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
             </label>
@@ -507,6 +508,7 @@ class Form extends React.Component {
         return (
           <div>
             <div>
+            <p>Match Timer EX:125 (1:25) </p>
               <label> {"End Game Start: "}
                 <input style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
               </label>
@@ -819,7 +821,7 @@ class Form extends React.Component {
     let chargeStationAuto = this.state.chargeStationValAuto;
     let booleans = this.state.booleans;
 
-    let bonuses = this.state.bonusVal;
+    //let bonuses = this.state.bonusVal;
     let strats = this.state.strategyVal.slice();
     let strategies = this.state.strategyVal;
     let penalties = this.state.penaltyVal;
@@ -912,12 +914,12 @@ class Form extends React.Component {
 
 
     //OVERALL ATTEMPTED----------------------------------------------------------------------------------
-    let highCubesAttempted = highCubesAutoAttempted + highCubesTeleAttempted;
-    let highConesAttempted = highConesAutoAttempted + highConesTeleAttempted;
-    let midCubesAttempted = midCubesAutoAttempted + midConesTeleAttempted;
-    let midConesAttempted = midConesAutoAttempted + midConesTeleAttempted;
-    let lowCubesAttempted = lowCubesAutoAttempted + lowCubesTeleAttempted;
-    let lowConesAttempted = lowConesAutoAttempted + lowConesTeleAttempted;
+    let highCubesAttempted = highCubesAutoAttempted + highCubesTeleAttempted + highTeleCubes + highAutoCubes;
+    let highConesAttempted = highConesAutoAttempted + highConesTeleAttempted + highTeleCones + highAutoCones;
+    let midCubesAttempted = midCubesAutoAttempted + midCubesTeleAttempted + midTeleCubes + midAutoCubes;
+    let midConesAttempted = midConesAutoAttempted + midConesTeleAttempted + midTeleCones + midAutoCones;
+    let lowCubesAttempted = lowCubesAutoAttempted + lowCubesTeleAttempted + lowTeleCubes + lowAutoCubes;
+    let lowConesAttempted = lowConesAutoAttempted + lowConesTeleAttempted + lowTeleCones + lowTeleCones;
 
     let cubesAttempted = parseInt(counterVal[3]) + parseInt(counterVal[4]) + parseInt(counterVal[5]) + parseInt(counterVal[15]) + parseInt(counterVal[16]) + parseInt(counterVal[17]);
     let conesAttempted = parseInt(counterVal[9]) + parseInt(counterVal[10]) + parseInt(counterVal[11]) + parseInt(counterVal[21]) + parseInt(counterVal[22]) + parseInt(counterVal[23]);
@@ -962,7 +964,7 @@ class Form extends React.Component {
 
     let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesAttempted));
     let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesAttempted));
-*/
+//*/
 
     let mobility = booleans[0]; //this.state.mobilityVal;
 
@@ -1082,7 +1084,7 @@ class Form extends React.Component {
       }
     }*/
 
-
+//JASON NEEDS TO FIX THE GRAPHQL
     let stratFinal = [];
     for(let i = 0; i < strategies.length; i++){
       let strategy = strategies[i];
@@ -1093,7 +1095,7 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.MID);
       }
       else if(strategy === "High Node "){
-        stratFinal.push(PriorityOpts.HIGH);
+        stratFinal.push("Upper")//PriorityOpts.HIGH);
       }
       else if(strategy === "Cubes "){
         stratFinal.push(PriorityOpts.CUBES);
@@ -1105,13 +1107,10 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.CHARGESTATION);
       }
       else if(strategy === "Single Substation "){
-        stratFinal.push(PriorityOpts.SINGLE_SUBSTATION);
+        stratFinal.push("SingleSubstation")//PriorityOpts.SINGLE_SUBSTATION);
       }
-      else if(strategy === "Double Substation Shute "){
-        stratFinal.push(PriorityOpts.DOUBLE_STATION_SHUTE);
-      }
-      else if(strategy === "Double Substation Sliding Shelves "){
-        stratFinal.push(PriorityOpts.DOUBLE_STATION_SLIDNING_SHELVE);
+      else if(strategy === "Double Substation "){
+        stratFinal.push("DoubleStation")//PriorityOpts.DOUBLE_STATION_SHUTE);
       }
       else if(strategy === "Defense "){
         stratFinal.push(PriorityOpts.DEFENSE);
@@ -1170,7 +1169,7 @@ class Form extends React.Component {
       }
     }
 
-    let intakeFinal = [];
+    //let intakeFinal = [];
     //for(let i = 0; i < rankingState)
 
 
@@ -1204,7 +1203,7 @@ class Form extends React.Component {
     <option value='Attempted'>Attempted</option>
     */
 
-    ///*
+    
     //POINT CALCULATIONS
 
     let highGridPoints = 6 * (highAutoCones + highAutoCubes) + 5 * (highTeleCones + highTeleCubes);
@@ -1216,17 +1215,17 @@ class Form extends React.Component {
     let cubePts = (highAutoCubes * 6) + (highTeleCubes * 5) + (midAutoCubes * 4) + (midTeleCubes * 3) + (lowAutoCubes * 3) + (lowTeleCubes * 2);
     let conePts = (highAutoCones * 6) + (highTeleCones * 5) + (midAutoCones * 4) + (midTeleCones * 3) + (lowAutoCones * 3) + (lowTeleCones * 2);
 
-    let cubesHighTeleAutoAccuracy = 100 * ((highAutoCubes + highTeleCubes) / (highCubesAttempted));
+    let cubesHighTeleAutoAccuracy = 100 * ((highAutoCubes + highTeleCubes) / (highCubesAttempted ));
     let conesHighTeleAutoAccuracy = 100 * ((highAutoCones + highTeleCones) / (highConesAttempted));
-    let highAccuracy = 100 * ((conesHighTeleAutoAccuracy + cubesHighTeleAutoAccuracy) / (highCubesAttempted + highConesAttempted));
+    //let highAccuracy = 100 * ((conesHighTeleAutoAccuracy + cubesHighTeleAutoAccuracy) / (highCubesAttempted + highConesAttempted));
 
     let cubesMidTeleAutoAccuracy = 100 * ((midAutoCubes + midTeleCubes) / (midCubesAttempted));
     let conesMidTeleAutoAccuracy = 100 * ((midAutoCones + midTeleCones) / (midConesAttempted));
-    let midAccuracy = 100 * ((cubesMidTeleAutoAccuracy + conesMidTeleAutoAccuracy) / (midCubesAttempted + midConesAttempted));
+    //let midAccuracy = 100 * ((cubesMidTeleAutoAccuracy + conesMidTeleAutoAccuracy) / (midCubesAttempted + midConesAttempted));
 
     let cubesLowTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes) / (lowCubesAttempted));
     let conesLowTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones) / (lowConesAttempted));
-    let lowAccuracy = 100 * ((cubesLowTeleAutoAccuracy + conesLowTeleAutoAccuracy) / (lowCubesAttempted + lowConesAttempted));
+    //let lowAccuracy = 100 * ((cubesLowTeleAutoAccuracy + conesLowTeleAutoAccuracy) / (lowCubesAttempted + lowConesAttempted));
 
     let totalGridPts = highGridPoints + midGridPoints + lowGridPoints;
 
@@ -1368,6 +1367,8 @@ class Form extends React.Component {
         matchEntry.Teleop.CubesAccuracy.Low=cubesLowTeleAutoAccuracy
         matchEntry.Teleop.CubesAccuracy.Overall=cubesTeleAutoAccuracy
 
+        //TOTAL ACCURACIES
+
         //MATCH DETAILS
         matchEntry.RankingPts=rankFinal;
 
@@ -1480,9 +1481,8 @@ class Form extends React.Component {
         {this.makeStrategyBox("Cones ", 4)}
         {this.makeStrategyBox("Charge Station ", 5)}
         {this.makeStrategyBox("Single Substation ", 6)}
-        {this.makeStrategyBox("Double Substation Shute ", 7)}
-        {this.makeStrategyBox("Double Substation Sliding Shelves ", 8)}
-        {this.makeStrategyBox("Defense ", 9)}
+        {this.makeStrategyBox("Double Substation ", 7)}
+        {this.makeStrategyBox("Defense ", 8)}
         <br></br>
         <TextBox title={"💬Comments: "} commentState={this.setComment} value={this.state.comments}></TextBox>
         

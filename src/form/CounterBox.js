@@ -53,7 +53,7 @@ class CounterBox extends React.Component{
             <div> 
                 <label>{this.props.label}</label>
                 <button value={this.props.state} onClick={this.buttonMinus}>-</button>
-                <input style={{width: '10%', textAlign: 'center'}} type='number' min='0' id={this.props.place} onChange={this.counterChanged}/>
+                <input style={{width: '10%', textAlign: 'center'}} type='number' min='0' id={this.props.place} onChange={this.counterChanged} readOnly='true'/>
                 <button value={this.props.state} onClick={this.buttonPlus}>+</button>
                 
                 

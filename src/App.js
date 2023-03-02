@@ -1,11 +1,11 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 import { Amplify, Auth } from 'aws-amplify'
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import awsconfig from './aws-exports'
 import { useEffect, useState } from 'react'
-import ExampleUI from './example'
-import { getRegionals, getTeamInfo } from './api/bluealliance'
+//import ExampleUI from './example'
+//import { getRegionals, getTeamInfo } from './api/bluealliance'
 import Form from './form/Form';
 
 
@@ -17,7 +17,7 @@ awsconfig.oauth.redirectSignOut = redirectSignOutUri[parseInt(process.env.REACT_
 Amplify.configure(awsconfig)
 
 
-function AuthenticatedUI({ user }) {
+function AuthenticatedUI({ user }) {/*
   //console.log(user)
   const [regional, setRegional] = useState()
   useEffect(() => {
@@ -25,7 +25,7 @@ function AuthenticatedUI({ user }) {
     .then(data => {
       setRegional(data[0].key)
     })
-  })
+  })*/
 
   /*const [teamInfo, setTeamInfo] = useState({})
   useEffect(() => {
