@@ -134,6 +134,14 @@ const TeamInnerTable = (props) => {
                     {
                       Header: 'Penalties',
                       accessor: 'Penalties',
+                      Cell: ({row}) => {
+                        return <div
+                          style={{
+                            minWidth:'300px',
+                            whiteSpace: 'normal',
+                          }}
+                        >{row.original.Penalties}</div>
+                      }
                     },
                     {
                       Header: 'Ranking Points',
