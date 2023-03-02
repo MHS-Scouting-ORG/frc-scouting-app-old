@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  display: grid;
+  grid-template-areas: "header"
+     "main"
+     "footer"
 }
 
 .App-logo {
@@ -14,7 +18,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #434a56;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
