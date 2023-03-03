@@ -74,9 +74,9 @@ function MainTable(props) {
     .catch(console.log.bind(console))
    },[teamsData])
 
-   useEffect(() => setTableData(teamsData.map(team => {
+   useEffect(() => setTableData(teamsData.map(team => { //'big' or whole data array that is used for table
     const teamStats = apiData.filter(x => x.Team === team.TeamNum)
-    console.log(teamStats)
+    //console.log(teamStats)
     
     const points = teamStats.map(x => x.Teleop.ScoringTotal.Total) //for deviation
     const gridPoints = teamStats.map(x => x.Teleop.ScoringTotal.GridPoints)
@@ -85,10 +85,17 @@ function MainTable(props) {
     const coneAcc = teamStats.map(x => x.Teleop.ConesAccuracy.Overall)
     const cubeAcc = teamStats.map(x => x.Teleop.CubesAccuracy.Overall)
 
+    const mGridPoints = tableData.filter(x => x.TeamNumber === team.TeamNumber).map(x => x.AvgGridPoints.substring(2,8))
+    const mConePoints = tableData.filter(x => x.TeamNumber === team.TeamNumber).map(x => x.AvgConePts.substring(2,8))
+    const mConeAcc = tableData.filter(x => x.TeamNumber === team.TeamNumber).map(x => x.AvgConeAcc.substring(2,8)) // for sorts
+    const mCubePoints = tableData.filter(x => x.TeamNumber === team.TeamNumber).map(x => x.AvgCubePts.substring(2,8))
+    const mCubeAcc = tableData.filter(x => x.TeamNumber === team.TeamNumber).map(x => x.AvgCubeAcc.substring(2,8))
+    const mCSPoints = tableData.filter(x => x.TeamNumber === team.TeamNumber).map(x => x.AvgCSPoints)
+
     const avgPoints = calcAvgPoints(teamStats)
     const avgGridPoints = calcAvgGrid(teamStats)
     const avgConePoints = calcAvgConePts(teamStats)
-    const avgConeAcc = calcAvgConeAcc(teamStats)
+    const avgConeAcc = calcAvgConeAcc(teamStats) //tableData
     const avgCubePoints = calcAvgCubePts(teamStats)
     const avgCubeAcc = calcAvgCubeAcc(teamStats)
     const avgCSPoints = calcAvgCS(teamStats)
@@ -118,6 +125,21 @@ function MainTable(props) {
     const upperCubePts = calcUpperCubeGrid(teamStats)
     const midCubePts = calcMidCubeGrid(teamStats)
     const lowerCubePts = calcLowCubeGrid(teamStats)
+
+    const maxGridPoints = getMax(tableData.map(team => team.AvgGridPoints.substring(2,8)))
+    const maxConePoints = getMax(tableData.map(team => team.AvgConePts.substring(2,8)))
+    const maxConeAcc = getMax(tableData.map(team => team.AvgConeAcc.substring(2,8))) //for sorts
+    const maxCubePoints = getMax(tableData.map(team => team.AvgCubePts.substring(2,8)))
+    const maxCubeAcc = getMax(tableData.map(team => team.AvgCubeAcc.substring(2,8)))
+    const maxCSPoints = getMax(tableData.map(team => team.AvgCSPoints))
+
+    const rGridPoints = mGridPoints / maxGridPoints
+    const rConePoints = mConePoints / maxConePoints
+    const rConeAcc = mConeAcc / maxConeAcc //for sorts
+    const rCubePoints = mCubePoints / maxCubePoints
+    const rCubeAcc = mCubeAcc / maxCubeAcc
+    const rCSPoints = mCSPoints / maxCSPoints
+    
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
@@ -136,7 +158,7 @@ function MainTable(props) {
 
       AvgUpper: upperGridPts,
       AvgUpperAcc: upperGridAcc,
-      AvgMid: midGridPts,
+      AvgMid: midGridPts, //for inner tables
       AvgMidAcc: midGridAcc,
       AvgLower: lowerGridPts,
       AvgLowerAcc: lowerGridAcc,
@@ -156,6 +178,13 @@ function MainTable(props) {
       AvgUpperCubePts: upperCubePts,
       AvgMidCubePts: midCubePts,
       AvgLowerCubePts: lowerCubePts,
+
+      NGridPoints: isNaN(rGridPoints) !== true ? rGridPoints : 0,
+      NConePoints: isNaN(rConePoints) !== true ? rConePoints : 0, 
+      NConeAccuracy: isNaN(rConeAcc) !== true ? rConeAcc : 0, //for sorts
+      NCubePoints: isNaN(rCubePoints) !== true ? rCubePoints : 0, 
+      NCubeAccuracy: isNaN(rCubeAcc) !== true ? rCubeAcc : 0,
+      NChargeStation: isNaN(rCSPoints) !== true ? rCSPoints : 0,
     }
   })), [teamsData, oprList, dprList, ccwmList])
 
@@ -179,8 +208,14 @@ const getTeams = async () => {
           AvgCSPoints: 0,
           DPR: "",
           Penalties: "",
-
           TeamNum: `frc${obj.team_number}`,
+
+          NGridPoints: 0,
+          NConePoints: 0, 
+          NConeAccuracy: 0, 
+          NCubePoints: 0, 
+          NCubeAccuracy: 0, 
+          NChargeStation: 0,
         }
 
         return teamNumObj
@@ -226,7 +261,6 @@ const renderRowSubComponent = ({ row }) => {
             NumberOfFoulAndTech: x.Penalties.Fouls !== 0 && x.Penalties.Tech !== 0 ? `${x.Penalties.Fouls} | ${x.Penalties.Tech}` : ``,
             Penalties: penalties.join(', '),
             NumberOfRankingPoints: rankingPts.join(', '),
-            
             Comments: x.Comments !== undefined ? x.Comments.trim() : '',
         };
     })
@@ -366,7 +400,7 @@ function gridStateHandler(bool, bool2, bool3, bool4, bool5, bool6){
   setTeamState(bool6)
 }
 
-function tableHandler(row){
+function tableHandler(row){ //handles which state and inner table should be shown
     if(gridState === true){
       return (
       <tr>
@@ -767,11 +801,15 @@ function tableHandler(row){
     const devi = Math.sqrt(sumDistance() / (distance.length));
     return devi.toFixed(3); //rounds standard deviation to thousandths
   }
+  
+  const getMax = (arr) => {
+    return arr.sort((a, b) => b - a).shift();
+  } 
 
 // ======================================= !TABLE HERE! ===========================================
 const data = React.useMemo(
   () => tableData.map(team => {
-    const grade = calcColumnSort(sortBy,team.NGridPoints,team.NConePoints,team.NConeAccuracy,team.NCubePoints,team.NCubeAccuracy,team.NChargeStation)
+    const grade = calcColumnSort(sortBy, team.NGridPoints, team.NConePoints, team.NConeAccuracy, team.NCubePoints, team.NCubeAccuracy, team.NChargeStation)
     
     return {
       TeamNumber: team.TeamNumber,
@@ -1001,7 +1039,7 @@ const data = React.useMemo(
                   return (   
                     <td
                       
-                      onClick={() => {
+                      onClick={() => { //calls and returns parameters for inner tables
                         if(cell.column.Header === "Avg Grid Points"){
                           gridStateHandler(true, false, false, false, false, false)
                           }
