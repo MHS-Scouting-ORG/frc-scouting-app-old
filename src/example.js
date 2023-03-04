@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { apiSubscribeToMatchUpdates, apiCreateTeamMatchEntry, apiListTeams, apiAddTeam, apiGetTeam, getMatchesForRegional } from './api/index'
-import { getRegionals, getTeamsInRegional } from './api/bluealliance'
-
+import { apiSubscribeToMatchUpdates, apiCreateTeamMatchEntry, apiListTeams, getMatchesForRegional, apiUpdateTeamMatch } from './api/index'
+//import { getRegionals, getTeamsInRegional } from './api/bluealliance'
+import { PriorityOpts, generateRandomEntry } from './api/builder'
 
 function ExampleUI() {
   const [teams, setTeams] = useState([])
-  const [newTeam, setNewTeam] = useState(-1)
-  const [regionals, setRegionals] = useState([])
-  const [teamsInHawaiiRegional, setTeamsInHawaiiRegional] = useState([])
+//  const [newTeam, setNewTeam] = useState(-1)
+//  const [regionals, setRegionals] = useState([])
+//  const [teamsInHawaiiRegional, setTeamsInHawaiiRegional] = useState([])
   const [regional, setRegional] = useState("")
   const [team, setTeam] = useState("")
   const [match, setMatch] = useState("")
@@ -23,45 +23,58 @@ function ExampleUI() {
 
         console.log(`get teams error ${JSON.stringify(err)}`)
       })
-    getRegionals()
-      .then(data => setRegionals(data))
-      .catch(console.log.bind(console))
-    getTeamsInRegional('2023hiho')
-      .then(data => setTeamsInHawaiiRegional(data))
-      .catch(console.log.bind(console))
+//    getRegionals()
+//      .then(data => setRegionals(data))
+//      .catch(console.log.bind(console))
+//    getTeamsInRegional('2023hiho')
+//      .then(data => setTeamsInHawaiiRegional(data))
+//      .catch(console.log.bind(console))
     apiSubscribeToMatchUpdates(data => {
-      console.log(`update received ${JSON.stringify(data)}`)
+      //console.log(`update received ${JSON.stringify(data)}`)
+      console.log(data)
+
     })
   }, [])
 
 
-  const doApiPush = function () {
-    apiAddTeam({ id: newTeam, name: "Foo Name" })
-      .then(_ => {
-        console.log('Push successful')
-        return apiListTeams()
-      })
-      .then(data => {
-        setTeams(data.data.listTeams.items)
-      })
-      .catch(err => {
-        console.log(`add teams error ${JSON.stringify(err)}`)
-      })
-      
-
-  }
+//  const doApiPush = function () {
+//    apiAddTeam({ id: newTeam, name: "Foo Name" })
+//      .then(_ => {
+//        console.log('Push successful')
+//        return apiListTeams()
+//      })
+//      .then(data => {
+//        setTeams(data.data.listTeams.items)
+//      })
+//      .catch(err => {
+//        console.log(`add teams error ${JSON.stringify(err)}`)
+//      })
+//
+//
+//  }
 
   const runTest = () => {
+    const args = ["2023hiho", "frc2443", matchId]
+
     getMatchesForRegional("fooRegional", 0)
       .then(data => {
-        console.log(data)
+        //console.log(data)
+
       })
       .catch(err => {
         console.log(`get matches error ${JSON.stringify(err)}`)
       })
-    apiCreateTeamMatchEntry("2443hio","frc2443", matchId)
-      .then(data => {
-        console.log(data)
+    apiCreateTeamMatchEntry(...args)
+      .then(_ => {
+        const matchEntry = generateRandomEntry(...args)
+        matchEntry.Priorities.push(PriorityOpts.CONES)
+        console.log(matchEntry)
+        return apiUpdateTeamMatch(...args, matchEntry)
+
+      })
+
+      .then(_ => {
+        //console.log(data)
         setMatchId(matchId + 1)
       })
       .catch(err => {
@@ -69,47 +82,12 @@ function ExampleUI() {
         setMatchId(matchId + 1)
 
       })
-    
-  }
 
-  const displayRegionals = _ => {
-    return (
-      <div>
-        <ul>
-          {(_ => regionals.map(regional => <li>{`${regional.key} - ${regional.city}`}</li>))()}
-        </ul>
-      </div>
-    )
-  }
-
-  const displayTeamsInHawaiiRegional = _ => {
-    return (
-      <div>
-        <ul>
-          {(_ => teamsInHawaiiRegional.map(team => <li>{`${team.key} - ${team.team_number}`}</li>))()}
-        </ul>
-      </div>
-    )
-
-  }
-
-  const formCreateNewTeam = _ => {
-    return (
-       <form>
-        <input type="text" onChange={evt => setNewTeam(evt.target.value)}></input>
-        <button type="submit" onClick={evt => {
-          evt.preventDefault()
-          doApiPush()
-        }
-        }>Add Team</button>
-      </form>
-      
-    )
   }
 
   const formCreateNewTeamMatch = _ => {
     return (
-       <form style={{display:"block"}}>
+      <form style={{ display: "block" }}>
         <input id="regional" type="text" onChange={evt => setRegional(evt.target.value)}></input>
         <label htmlFor="regional">regional</label>
         <input id="team" type="text" onChange={evt => setTeam(evt.target.value)}></input>
@@ -128,7 +106,7 @@ function ExampleUI() {
         }
         }>Add Team</button>
       </form>
-      
+
     )
   }
 
@@ -141,7 +119,7 @@ function ExampleUI() {
         })()
       }</ul></div>
       {formCreateNewTeamMatch()}
-     <button onClick={evt => runTest()}>DoTest</button>
+      <button onClick={evt => runTest()}>DoTest</button>
     </div>)
 
 

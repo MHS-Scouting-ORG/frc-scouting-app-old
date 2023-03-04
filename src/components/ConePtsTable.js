@@ -9,15 +9,15 @@ const ConePtsTable = (props) => {
         () => [
             {
                 Header: 'Avg Upper Cone Points',
-                accessor: 'AvgUpperCones'
+                accessor: 'AvgUpperCone'
             },
             {
                 Header: 'Avg Mid Cone Points',
-                accessor: 'AvgMidCones'
+                accessor: 'AvgMidCone'
             },
             {
                 Header: 'Avg Low Cone Points',
-                accessor: 'AvgLowCones'
+                accessor: 'AvgLowCone'
             }
         ], []
     )
@@ -33,7 +33,7 @@ const ConePtsTable = (props) => {
     
        return (
     <div>
-      <table {...getTableProps()}>
+      <table style={{borderCollapse: "collapse"}} {...getTableProps()}>
     
         <thead>
           {
@@ -46,12 +46,10 @@ const ConePtsTable = (props) => {
                     <th
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       style={{
-                        color: 'black',
-                        fontWeight: 'bold',
                         padding: '5px',
-                        border: 'solid 1px black',
+                        border: 'solid 1px gainboro',
                         textAlign: 'center',
-                        background: 'aliceblue'
+                        background: '#64809B',
                       }}
                     >
                       {column.render('Header')}
@@ -78,9 +76,8 @@ const ConePtsTable = (props) => {
                           {...cell.getCellProps()}
                           style={{
                             padding: '5px',
-                            border: 'solid 1px grey',
+                            borderBlock: 'solid 1px gainsboro',
                             textAlign: 'center',
-                            background: 'black'
                           }}
                         >
                           {cell.render('Cell')}

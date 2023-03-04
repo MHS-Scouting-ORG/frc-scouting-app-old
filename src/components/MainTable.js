@@ -1,59 +1,62 @@
-import { StopReplicationToReplicaRequestFilterSensitiveLog } from "@aws-sdk/client-secrets-manager";
+
 import React, { useEffect, useState } from "react"
 import { useExpanded, useTable, useSortBy, useGlobalFilter } from "react-table"
-import { apiGetTeam, apiListTeams, getMatchesForRegional} from "../api";
-import { getTeamsInRegional, getTeamInfo, getOprs } from "../api/bluealliance";
+import { getMatchesForRegional} from "../api";
+import { getTeamsInRegional, getOprs } from "../api/bluealliance";
 import TeamInnerTable from "./TeamInnerTable";
 import GridInnerTable from './GridInnerTable';
 import GlobalFilter from "./GlobalFilter";
-import { ConsoleLogger } from "@aws-amplify/core";
 import List from "./List";
 
 function MainTable(props) {
+  const regional = props.regional
 
   const [tableData,setTableData] = useState([]); //data on table
   const [teamsData,setTeamsData] = useState([]); //data of teams
-  const [teamNum,setTeamNum] = useState([]) // team numbers frc{teamNumber}
-  const [oprData,setOprData] = useState([]); //data of team ccwm opr and dpr
-  const [averages,setAverages] = useState([]);
-  const [apiData, setApiData] = useState([]) //data retrieved
-  const [gridState,setGridState] = useState(false); //differentiate between team and grid table
+  const [apiData, setApiData] = useState([]) //data retrieved 
+
+  const [gridState,setGridState] = useState(false); 
+  const [teamState,setTeamState] = useState(false); 
+  const [conePtsState,setConePtsState] = useState(false); 
+  const [coneAccState,setConeAccState] = useState(false); 
+  const [cubePtsState,setCubePtsState] = useState(false); 
+  const [cubeAccState,setCubeAccState] = useState(false);  
+  //states for innerTables ^
+
   const [oprList,setOprList] = useState([]);
   const [dprList,setDprList] = useState([]);
   const [ccwmList,setCcwmList] = useState([]);
+  //separate variables for filtering ^
+
   const [sortBy,setSortBy] = useState([]);
 
 
    useEffect(() => {
-    getMatchesForRegional(props.regional)
+    getMatchesForRegional(regional)
     .then(data => {
-      //console.log(data)
+      console.log(data.data.teamMatchesByRegional.items)
     })
-    //console.log((getMatchesForRegional('2023week0')))
   },[]) //debug purposes or test ^ 
   
    useEffect(() => { // sets team numbers of objects
     getTeams()
       .then(data => {
-        setTeamsData(data) 
-        //console.log(data)
+        setTeamsData(data)
       })
       .catch(console.log.bind(console))
    },[]) 
 
-   useEffect(() => {
-    getMatchesForRegional('2023hiho')
+   useEffect(() => { //debug, reference, or test
+    getMatchesForRegional(regional)
     .then(data => {
       setApiData(data.data.teamMatchesByRegional.items)
-      console.log(apiData) // same as console logging data
-      console.log(data)
-      //console.log(data.data)
+      //console.log(data.data)                   
     })
     .catch(console.log.bind(console))
-  }, [teamsData]) //get matches form regional for state variable and use state to be filtered and used
+  }, [teamsData]) 
 
-   useEffect(() => {     //set opr data and convert to list and filter data structure to find opr dpr and ccwm 
-    getOprs('2022hiho')
+   useEffect(() => {     //set opr data
+    getOprs(regional)
     .then(data => { 
       const oprDataArr = Object.values(data)
       const cData = oprDataArr[0] //ccwm 
@@ -63,112 +66,126 @@ function MainTable(props) {
       setOprList(oData)
       setDprList(dData)
       setCcwmList(cData) 
-
-      //console.log(data) // whole list of ccwm, dpr, and opr
     })
     .catch(console.log.bind(console))
    },[teamsData])
 
-   useEffect(() => setTeamNum(teamsData.map(team => {
-    return {
-      TeamNumber: team.TeamNumber,
-      Matches: team.Matches,
-      Priorities: team.Priorities,
-      OPR: oprList[team.TeamNum],    
-      CCWM: ccwmList[team.TeamNum], 
-      AvgPoints: team.AvgPoints,
-      AvgGridPoints: team.AvgGridPoints,
-      AvgConePts: team.AvgConePts,
-      AvgConeAcc: team.AvgConeAcc,
-      AvgCubePts: team.AvgCubePts,
-      AvgCubeAcc: team.AvgCubeAcc,
-      DPR: dprList[team.TeamNum],
-      Defense: team.Defense,
-      Penalties: team.Penalties,
-
-      TeamNum: `frc${team.TeamNumber}`
-    }
-    
-   })),[teamsData, ccwmList, dprList, oprList]) 
-
-   useEffect(() => setOprData(teamNum.map(team => {
-    return {
-      TeamNumber: team.TeamNumber,
-      Priorities: team.Priorities,
-      OPR: oprList[team.TeamNum] ? (oprList[team.TeamNum]).toFixed(2) : null,    
-      CCWM: ccwmList[team.TeamNum] ? (ccwmList[team.TeamNum]).toFixed(2) : null, 
-      AvgPoints: team.AvgPoints,
-      AvgGridPoints: team.AvgGridPoints,
-      AvgConePts: team.AvgConePts,
-      AvgConeAcc: team.AvgConeAcc,
-      AvgCubePts: team.AvgCubePts,
-      AvgCubeAcc: team.AvgCubeAcc,
-      DPR: dprList[team.TeamNum] ? (dprList[team.TeamNum]).toFixed(2) : null ,
-      Defense: team.Defense,
-      Penalties: team.Penalties,
-
-      TeamNum: team.TeamNum
-    }
-   })), [teamsData, teamNum, ccwmList, dprList, oprList])
-
-   useEffect(() => setAverages(oprData.map(team => {
+   useEffect(() => setTableData(teamsData.map(team => { //'big' or whole data array that is used for table
     const teamStats = apiData.filter(x => x.Team === team.TeamNum)
     //console.log(teamStats)
-    /*
-    const points = x.TotalPoints
+    
+    const points = teamStats.map(x => x.Teleop.ScoringTotal.Total) //for deviation
+    const gridPoints = teamStats.map(x => x.Teleop.ScoringTotal.GridPoints)
+    const conePts = teamStats.map(x => x.Teleop.ScoringTotal.Cones)
+    const cubePts = teamStats.map(x => x.Teleop.ScoringTotal.Cubes)
+    const coneAcc = teamStats.map(x => x.Teleop.ConesAccuracy.Overall)
+    const cubeAcc = teamStats.map(x => x.Teleop.CubesAccuracy.Overall)
+
+    const mGridPoints = tableData.filter(x => x.TeamNumber === team.TeamNumber).map(x => x.AvgGridPoints.substring(2,8))
+    const mConePoints = tableData.filter(x => x.TeamNumber === team.TeamNumber).map(x => x.AvgConePts.substring(2,8))
+    const mConeAcc = tableData.filter(x => x.TeamNumber === team.TeamNumber).map(x => x.AvgConeAcc.substring(2,8)) // for sorts
+    const mCubePoints = tableData.filter(x => x.TeamNumber === team.TeamNumber).map(x => x.AvgCubePts.substring(2,8))
+    const mCubeAcc = tableData.filter(x => x.TeamNumber === team.TeamNumber).map(x => x.AvgCubeAcc.substring(2,8))
+    const mCSPoints = tableData.filter(x => x.TeamNumber === team.TeamNumber).map(x => x.AvgCSPoints)
+
     const avgPoints = calcAvgPoints(teamStats)
-    const avgGridPoints = calcAvgGridPoints(teamStats)
-    const totalConePts = calcTotalCones(teamStats)
-    const totalConeAcc = calcTotalConesAcc(teamStats)
-    const totalCubePts = calcTotalCubes(teamStats)
-    const totalCubeAcc = calcTotalCubeAcc(teamStats)
+    const avgGridPoints = calcAvgGrid(teamStats)
+    const avgConePoints = calcAvgConePts(teamStats)
+    const avgConeAcc = calcAvgConeAcc(teamStats) //tableData
+    const avgCubePoints = calcAvgCubePts(teamStats)
+    const avgCubeAcc = calcAvgCubeAcc(teamStats)
+    const avgCSPoints = calcAvgCS(teamStats)
+
     const priorities = getPriorities(teamStats)
-    */
-    //console.log(team)
+    const penalties = getPenalties(teamStats)
 
+    const upperGridPts = calcUpperGrid(teamStats)
+    const upperGridAcc = calcUpperGridAcc(teamStats)
+    const midGridPts = calcMidGrid(teamStats)
+    const midGridAcc = calcMidGridAcc(teamStats)
+    const lowerGridPts = calcLowGrid(teamStats)
+    const lowerGridAcc = calcLowAcc(teamStats)
+
+    const upperConeAcc = calcUpperConeAcc(teamStats)
+    const midConeAcc = calcMidConeAcc(teamStats)
+    const lowerConeAcc = calcLowConeAcc(teamStats)
+
+    const upperConePts = calcUpperConeGrid(teamStats)
+    const midConePts = calcMidConeGrid(teamStats)
+    const lowerConePts = calcLowConeGrid(teamStats)
+
+    const upperCubeAcc = calcUpperCubeAcc(teamStats)
+    const midCubeAcc = calcMidCubeAcc(teamStats)
+    const lowerCubeAcc = calcLowCubeAcc(teamStats)
+
+    const upperCubePts = calcUpperCubeGrid(teamStats)
+    const midCubePts = calcMidCubeGrid(teamStats)
+    const lowerCubePts = calcLowCubeGrid(teamStats)
+
+    const maxGridPoints = getMax(tableData.map(team => team.AvgGridPoints.substring(2,8)))
+    const maxConePoints = getMax(tableData.map(team => team.AvgConePts.substring(2,8)))
+    const maxConeAcc = getMax(tableData.map(team => team.AvgConeAcc.substring(2,8))) //for sorts
+    const maxCubePoints = getMax(tableData.map(team => team.AvgCubePts.substring(2,8)))
+    const maxCubeAcc = getMax(tableData.map(team => team.AvgCubeAcc.substring(2,8)))
+    const maxCSPoints = getMax(tableData.map(team => team.AvgCSPoints))
+
+    const rGridPoints = mGridPoints / maxGridPoints
+    const rConePoints = mConePoints / maxConePoints
+    const rConeAcc = mConeAcc / maxConeAcc //for sorts
+    const rCubePoints = mCubePoints / maxCubePoints
+    const rCubeAcc = mCubeAcc / maxCubeAcc
+    const rCSPoints = mCSPoints / maxCSPoints
+    
     return {
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
-      OPR: team.OPR,
-      Priorities: team.Priorities,
-      CCWM: team.CCWM, 
-      AvgPoints: team.AvgPoints,
-      AvgGridPoints: team.AvgGridPoints,
-      AvgConePts: team.AvgConePts,
-      AvgConeAcc: team.AvgConeAcc,
-      AvgCubePts: team.AvgCubePts,
-      AvgCubeAcc: team.AvgCubeAcc,
-      DPR: team.DPR,
-      Defense: team.Defense,
-      Penalties: team.Penalties,
+      OPR: oprList[team.TeamNum] ? (oprList[team.TeamNum]).toFixed(2) : null,
+      Priorities: priorities.join(', '),
+      CCWM: ccwmList[team.TeamNum] ? (ccwmList[team.TeamNum]).toFixed(2) : null, 
+      AvgPoints: avgPoints !== 0 && isNaN(avgPoints) !== true ? `μ=${avgPoints}, σ=${calcDeviation(points, avgPoints)}` : '', 
+      AvgGridPoints: avgGridPoints !== 0 && isNaN(avgGridPoints) !== true ? `μ=${avgGridPoints}, σ=${calcDeviation(gridPoints, avgGridPoints)}` : '',
+      AvgCSPoints: avgCSPoints !== 0 && isNaN(avgCSPoints) !== true ? avgCSPoints : '',
+      AvgConePts: avgConePoints !== 0 && isNaN(avgConePoints) !== true ? `μ=${avgConePoints}, σ=${calcDeviation(conePts, avgConePoints)}` : '', 
+      AvgConeAcc: avgConeAcc !== 0 && isNaN(avgConeAcc) !== true ? `μ=${avgConeAcc}, σ=${calcDeviation(coneAcc, avgConeAcc)}` : '', 
+      AvgCubePts: avgCubePoints !== 0 && isNaN(avgCubePoints) !== true ? `μ=${avgCubePoints}, σ=${calcDeviation(cubePts, avgCubePoints)}` : '', 
+      AvgCubeAcc: avgCubeAcc !== 0 && isNaN(avgCubeAcc) !== true ? `μ=${avgCubeAcc}, σ=${calcDeviation(cubeAcc, avgCubeAcc)}` : '', 
+      DPR: dprList[team.TeamNum] ? (dprList[team.TeamNum]).toFixed(2) : null, 
+      Penalties: penalties.join(', '),
 
-      TeamNum: team.TeamNum
+      AvgUpper: upperGridPts,
+      AvgUpperAcc: upperGridAcc,
+      AvgMid: midGridPts, //for inner tables
+      AvgMidAcc: midGridAcc,
+      AvgLower: lowerGridPts,
+      AvgLowerAcc: lowerGridAcc,
+
+      AvgUpperConeAcc: upperConeAcc,
+      AvgMidConeAcc: midConeAcc,
+      AvgLowerConeAcc: lowerConeAcc,
+
+      AvgUpperConePts: upperConePts,
+      AvgMidConePts: midConePts,
+      AvgLowerConePts: lowerConePts,
+
+      AvgUpperCubeAcc: upperCubeAcc,
+      AvgMidCubeAcc: midCubeAcc,
+      AvgLowerCubeAcc: lowerCubeAcc,
+
+      AvgUpperCubePts: upperCubePts,
+      AvgMidCubePts: midCubePts,
+      AvgLowerCubePts: lowerCubePts,
+
+      NGridPoints: isNaN(rGridPoints) !== true ? rGridPoints : 0,
+      NConePoints: isNaN(rConePoints) !== true ? rConePoints : 0, 
+      NConeAccuracy: isNaN(rConeAcc) !== true ? rConeAcc : 0, //for sorts
+      NCubePoints: isNaN(rCubePoints) !== true ? rCubePoints : 0, 
+      NCubeAccuracy: isNaN(rCubeAcc) !== true ? rCubeAcc : 0,
+      NChargeStation: isNaN(rCSPoints) !== true ? rCSPoints : 0,
     }
-  })), [teamsData, teamNum, oprData])
+  })), [teamsData, oprList, dprList, ccwmList])
 
-  useEffect(() => setTableData(averages.map(team => {
-    return {
-      TeamNumber: team.TeamNumber,
-      Matches: team.Matches,
-      OPR: team.OPR,
-      Priorities: team.Priorities,
-      CCWM: team.CCWM, 
-      AvgPoints: team.AvgPoints,
-      AvgGridPoints: team.AvgGridPoints,
-      AvgConePts: team.AvgConePts,
-      AvgConeAcc: team.AvgConeAcc,
-      AvgCubePts: team.AvgCubePts,
-      AvgCubeAcc: team.AvgCubeAcc,
-      DPR: team.DPR,
-      Defense: team.Defense,
-      Penalties: team.Penalties,
-
-      TeamNum: team.TeamNum
-    }
-  })),[teamsData, teamNum, oprData, averages]) 
-// ================================================ !CALC HERE! ========================
 const getTeams = async () => {
-   return await (getTeamsInRegional('2022hiho'))
+   return await (getTeamsInRegional(regional))
     .catch(err => console.log(err))
     .then(data => {
       return data.map(obj => {
@@ -184,11 +201,17 @@ const getTeams = async () => {
           AvgConeAcc: 0,
           AvgCubePts: 0,
           AvgCubeAcc: 0,
+          AvgCSPoints: 0,
           DPR: "",
-          Defense: '',
           Penalties: "",
+          TeamNum: `frc${obj.team_number}`,
 
-          TeamNum: "",
+          NGridPoints: 0,
+          NConePoints: 0, 
+          NConeAccuracy: 0, 
+          NCubePoints: 0, 
+          NCubeAccuracy: 0, 
+          NChargeStation: 0,
         }
 
         return teamNumObj
@@ -196,57 +219,51 @@ const getTeams = async () => {
     })
     .catch(err => console.log(err))
 }
-// ================================= !CHANGE HERE TO USE DATA FROM API! ===========
+
+// ================================= !MINI/INNER TABLES! ===========
 const renderRowSubComponent = ({ row }) => {
   const t = apiData.filter(x => x.Team === `frc${row.values.TeamNumber}`)
-  console.log(t)
-  console.log(t.map(x => x.RankingPts))
-    const disp = t.map(x => {
+  const disp = t.map(x => {
+    const penalties = x.Penalties.Penalties.filter(x => x != 'None') 
+    const rankingPts = x.RankingPts.filter(x => x != 'None' || '',)
         return {
             Match: x.id.substring(x.id.indexOf('_')+1),
-            /* ================= all code in block does not exist yet within the data object
-            Strategy: x.Priorities.filter(val => val.trim() !== '').length !== 0 ? x.Strategy.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
-            TotalPts: x.TotalPoints,
-            GridPts: x.TotalGridPoints,
-            ConeAcc: x.ConeAccuracy !== null ? x.ConeAccuracy.toFixed(2) : '',
-            CubeAcc: x.CubeAccurary !== null ? x.CubeAccuracy.toFixed(2) : '',
-            AutoPlacement: x.AutoPlacement,
-            Mobility: x.Autonomous.LeftCommunity,
-            AutoUpperConePts: `${x.AutoHighConesScored}/${x.AutoHighConesScored + x.AutoHighConesAttempted}`,
-            AutoUpperCubePts: `${x.AutoHighCubesScored}/${x.AutoHighCubesScored + x.AutoHighCubesAttempted}`,
-            AutoMidConePts: `${x.AutoMidConesScored}/${x.AutoMidConesScored + x.AutoMidConesAttempted}`,
-            AutoMidCubePts: `${x.AutoMidCubesScored}/${x.AutoMidCubesScored + x.AutoMidCubesAttempted}`,
-            AutoLowConePts: `${x.AutoLowConesScored}/${x.AutoLowConesScored + x.AutoLowConesAttempted}`,
-            AutoLowCubePts: `${x.AutoLowCubesScored}/${x.AutoLowCubesScored + x.AutoLowCubesScored}`,
+            Strategy: x.Priorities.filter(val => val != undefined && val.trim() !== '').length !== 0 ? x.Priorities.filter(val => val != undefined && val.trim() !== '').map(val => val.trim()).join(', ') : '',
+            TotalPts: x.Teleop.ScoringTotal.Total !== null  ? x.Teleop.ScoringTotal.Total : '',
+            GridPts: x.Teleop.ScoringTotal.GridPoints !== null ? x.Teleop.ScoringTotal.GridPoints : '',
+            ConeAcc: x.Teleop.ConesAccuracy.Overall !== 0 && x.Teleop.ConesAccuracy.Overall !== null ? (x.Teleop.ConesAccuracy.Overall.toFixed(2)) : '',
+            CubeAcc: x.Teleop.CubesAccuracy.Overall !== 0 && x.Teleop.CubesAccuracy.Overall !== null ? x.Teleop.CubesAccuracy.Overall.toFixed(2) : '',
+            AutoPlacement: x.Autonomous.AutonomousPlacement !== 0 ? x.Autonomous.AutonomousPlacement : '',
+            Mobility: x.Autonomous.LeftCommunity === true ? 'yes' : 'no',
+            AutoUpperConePts: `${x.Autonomous.Scored.Cones.Upper}/${x.Autonomous.Scored.Cones.Upper + x.Autonomous.Attempted.Cones.Upper}`,
+            AutoUpperCubePts: `${x.Autonomous.Scored.Cubes.Upper}/${x.Autonomous.Scored.Cubes.Upper + x.Autonomous.Attempted.Cubes.Upper}`,
+            AutoMidConePts: `${x.Autonomous.Scored.Cones.Mid}/${x.Autonomous.Scored.Cones.Mid + x.Autonomous.Attempted.Cones.Mid}`,
+            AutoMidCubePts: `${x.Autonomous.Scored.Cubes.Mid}/${x.Autonomous.Scored.Cubes.Mid + x.Autonomous.Attempted.Cubes.Mid}`,
+            AutoLowConePts: `${x.Autonomous.Scored.Cones.Lower}/${x.Autonomous.Scored.Cones.Lower + x.Autonomous.Attempted.Cones.Lower}`,
+            AutoLowCubePts: `${x.Autonomous.Scored.Cubes.Lower}/${x.Autonomous.Scored.Cubes.Lower + x.Autonomous.Attempted.Cubes.Lower}`,
             AutoChargeStationPts: x.Autonomous.ChargeStation,
-            TeleUpperConePts: `${x.
-            }/${x.TeleHighConesScored + x.TeleHighConesAttempted}`,
-            TeleUpperCubePts: `${x.TeleHighConesScored}/${x.TeleHighConesScored + x.TeleHighConesAttempted}`,
-            TeleMidConePts: `${x.TeleMidConesScored}/${x.TeleMidConesScored + x.TeleMidConesAttempted}`,
-            TeleMidCubePts: `${x.TeleMidCubesScored}/${x.TeleMidCubesScored + x.TeleMidCubesAttempted}`,
-            TeleLowConePts: `${x.TeleLowConesScored}/${x.TeleLowConesScored + x.TeleLowConesAttempted}`,
-            TeleLowCubePts: `${x.TeleLowCubesScored}/${x.TeleLowCubesScored + x.TeleLowCubesAttempted}`,
-            TeleEndgame: x.EndGame !== undefined ? x.EndGame : '',
-            CSStart: x.Teleop.EndGameTally.Start !== undefined ? x.Teleop.EndGameTally.Start : '',
-            CSEnd: x.Teleop.EndGameTally.End !== undefined ? x.Teleop.EndGameTally.End : '',
-            EndComments: x.EndGameComments !== undefined ? x.EndGameComments.trim() : '',
+            TeleUpperConePts: `${x.Teleop.Scored.Cones.Upper}/${x.Teleop.Scored.Cones.Upper + x.Teleop.Attempted.Cones.Upper}`,
+            TeleUpperCubePts: `${x.Teleop.Scored.Cubes.Upper}/${x.Teleop.Scored.Cubes.Upper + x.Teleop.Attempted.Cubes.Upper}`,
+            TeleMidConePts: `${x.Teleop.Scored.Cones.Mid}/${x.Teleop.Scored.Cones.Mid + x.Teleop.Attempted.Cones.Mid}`,
+            TeleMidCubePts: `${x.Teleop.Scored.Cubes.Mid}/${x.Teleop.Scored.Cubes.Mid + x.Teleop.Scored.Cubes.Mid}`,
+            TeleLowConePts: `${x.Teleop.Scored.Cones.Lower}/${x.Teleop.Scored.Cones.Lower + x.Teleop.Attempted.Cones.Lower}`,
+            TeleLowCubePts: `${x.Teleop.Scored.Cubes.Lower}/${x.Teleop.Scored.Cubes.Lower + x.Teleop.Attempted.Cubes.Lower}`,
+            TeleEndgame: x.Teleop.EndGame !== undefined ? x.Teleop.EndGame : '',
+            CSStart: x.Teleop.EndGameTally.Start !== 0 ? x.Teleop.EndGameTally.Start : '',
+            CSEnd: x.Teleop.EndGameTally.End !== 0 ? x.Teleop.EndGameTally.End : '',
             DriveStrength: x.Teleop.DriveStrength !== undefined ? x.Teleop.DriveStrength : '',
-            DriveSpeed: x.Teleop.DriveSpeed !== undefined ? x.Teleop.DriveSpeed : '',
-            SmartPlacement: x.Teleop.SmartPlacement,
-            NumberofFoulAndTech: x.Penalties.Fouls !== undefined && x.Penalties.TechFouls !== undefined ? `${x.Penalties.Fouls} | ${x.Penalties.TechFouls}` : '',
-            Penalties: x.Penalties !== undefined && x.Penalties.filter(val => val.trim() !== '').length !== 0 ? x.Penalties.filter(val => val.trim() !== '').map(val => val.trim()).join(', ') : '',
-            */
-            NumberOfRankingPoints: x.Teleop.RankingPts !== undefined ? x.Teleop.RankingPts : '',
-
+            DriveSpeed: x.Teleop.DriveSpeed !== "0" ? x.Teleop.DriveSpeed : '',
+            SmartPlacement: x.Teleop.SmartPlacement === true ? `yes` : `no`,
+            NumberOfFoulAndTech: x.Penalties.Fouls !== 0 && x.Penalties.Tech !== 0 ? `${x.Penalties.Fouls} | ${x.Penalties.Tech}` : ``,
+            Penalties: penalties.join(', '),
+            NumberOfRankingPoints: rankingPts.join(', '),
             Comments: x.Comments !== undefined ? x.Comments.trim() : '',
-    //      Email: x.email.substring(0, x.email.length-17), */
-
         };
     })
 
   return disp.length > 0 ?
   (<pre>
-    <div>{<TeamInnerTable information = {disp}/>} </div>
+    <div style={{maxWidth: "100rem", overflowX: "scroll", borderCollapse: "collapse", }}>{<TeamInnerTable information = {disp}/>} </div>
   </pre>)
   : (
     <div style={{
@@ -255,101 +272,24 @@ const renderRowSubComponent = ({ row }) => {
   );
 }
 
-const renderRowSubComponentGrid = () => {
-//const gridStats = apiData.filter(x => x.Team === team.TeamNum)
-  /*
-
-  const gridStats = apiData.filter(x => x.Team === `frc${row.values.TeamNumber}`)
-
-  const upperGridPts = calcUpperGrid(gridStats)
-  const upperGridAcc = calcUpperGridAcc(gridStats)
-
-  const upperConePts = calcUpperConeGrid(gridStats)
-  const upperConeAcc = calcUpperConeAcc(gridStats)
-  const upperCubePts = calcUpperCubeGrid(gridStats)
-  const upperCubeAcc = calcUpperCubeAcc(gridStats)
-
-  const midGridPts = calcMidGrid(gridStats)
-  const midGridAcc = calcMidGridAcc(gridStats)
-
-  const midConePts = calcMidConeGrid(gridStats)
-  const midConeAcc = calcMidConeAcc(gridStats)
-  const midCubePts = calcMidCubeGrid(gridStats)
-  const midCubeAcc = calcMidCubeAcc(gridStats)
-
-  const lowGridPts = calcLowGrid(gridStats)
-  const lowGridAcc = calcLowAcc(gridStats)
-
-  const lowConePts = calcLowConeGrid(gridStats)
-  const lowConeAcc = calcLowConeAcc(gridStats)
-  const lowCubePts = calcLowCubeGrid(gridStats)
-  const lowCubeAcc = calcLowCubeAcc(gridStats)
-
-    return {
-      AvgUpper: calcUpperGrid(gridStats),
-      AvgUpperAcc: calcUpperGridAcc(gridStats),
-
-      AvgUpperCone: calcUpperConeGrid(gridStats),
-      AvgUpperConeAcc: calcUpperConeAcc(gridStats),
-      AvgUpperCube: calcUpperCubeGrid(gridStats), 
-      AvgUpperCubeAcc: calcUpperCubeAcc(gridStats),
-
-      AvgMid: calcMidGrid(gridStats),
-      AvgMidAcc: calcMidGridAcc(gridStats),
-
-      AvgMidCone: calcMidConeGrid(gridStats),
-      AvgMidConeAcc: calcMidConeAcc(gridStats),
-      AvgMidCube: calcMidCubeGrid(gridStats),
-      AvgMidCubeAcc: calcMidCubeAcc(gridStats),
-
-      AvgLower: calcLowGrid(gridStats),
-      AvgLowerAcc: calcLowAcc(gridStats),
-
-      AvgLowerCone: calcLowConeGrid(gridStats),
-      AvgLowerConeAcc: calcLowConeAcc(gridStats),
-      AvgLowerCube: calcLowCubeGrid(gridStats),
-      AvgLowerCubeAcc: calcLowCubeAcc(gridStats),
-
-    };
+const renderRowSubComponentGrid = ({row}) => {
+  const g = tableData.filter(x => x.TeamNumber === row.values.TeamNumber )
   
-    
-  */
-    
-  const dumTest = [
-    {
-      AvgLower: 0,
-      AvgMid: 1,
-      AvgUpper: 2,
-
-      AvgLowerAcc: 4,
-      AvgMidAcc: 5,
-      AvgUpperAcc: 6,
-    }, 
-    {
-      AvgLower: 7,
-      AvgMid: 8,
-      AvgUpper: 9,
-
-      AvgLowerAcc: 10,
-      AvgMidAcc: 11,
-      AvgUpperAcc: 12,
-    },/* {}, {} */]
-
-  const dum = dumTest.map(x => {
-    return {
-      AvgLower: x.AvgLower,
-      AvgMid: x.AvgMid,
-      AvgUpper: x.AvgUpper,
-
-      AvgLowerAcc: x.AvgLowerAcc,
-      AvgMidAcc: x.AvgMidAcc,
-      AvgUpperAcc: x.AvgUpperAcc,
-    }
-  })
-
-  return dum.length > 0 ?
+    const disp = g.map(x => {
+      return {
+        AvgUpper: x.AvgUpper !== 0 ? `μ=${x.AvgUpper}` : '',
+        AvgUpperAcc: x.AvgUpperAcc !== 0 ? `μ=${x.AvgUpperAcc}` : '',
+        AvgMid: x.AvgMid !== 0 ? `μ=${x.AvgMid}` : '',
+        AvgMidAcc: x.AvgMidAcc !== 0 ? `μ=${x.AvgMidAcc}` : '',
+        AvgLower: x.AvgLower !== 0 ? `μ=${x.AvgLower}` : '',
+        AvgLowerAcc: x.AvgLowerAcc !== 0 ? `μ=${x.AvgLowerAcc}` : '',
+      };
+   })
+  
+      
+  return disp !== undefined ?
   (<pre>
-    <div>{<GridInnerTable information = {dum}/>} </div>
+    <div>{<GridInnerTable information = {disp}/>} </div>
   </pre>)
   : (
     <div style={{
@@ -358,28 +298,200 @@ const renderRowSubComponentGrid = () => {
   );
 }
 
-function gridStateHandler(bool){
+const renderRowSubComponentConeAccTable = ({row}) => {
+  const g = tableData.filter(x => x.TeamNumber === row.values.TeamNumber )
+
+  const disp = g.map(x => {
+    return {
+        AvgUpperConeAcc:  x.AvgUpperConeAcc !== 0 ? `μ=${x.AvgUpperConeAcc}` : '',
+        AvgMidConeAcc: x.AvgMidConeAcc !== 0 ? `μ=${x.AvgMidConeAcc}` : '',
+        AvgLowerConeAcc: x.AvglowerConeAcc !== 0? `μ=${x.AvgLowerConeAcc}` : '',
+      }
+    })
+
+    return disp !== undefined ?
+    (<pre>
+      <div>{<ConeAccTable information = {disp}/>} </div>
+    </pre>)
+    : (
+      <div style={{
+        padding: '5px',
+    }}> No data collected. </div>
+    );
+  }
+
+  const renderRowSubComponentConePtsTable = ({row}) => {
+    const g = tableData.filter(x => x.TeamNumber === row.values.TeamNumber)
+      console.log(g)
+      const disp = g.map(x => {
+      return {
+        AvgUpperCone: x.AvgUpperConePts !== 0 ? `μ=${x.AvgUpperConePts}` : '',
+        AvgMidCone: x.AvgMidConePts !== 0 ? `μ=${x.AvgMidConePts}` : '',
+        AvgLowCone: x.AvgLowerConePts !== 0 ? `μ=${x.AvgLowerConePts}` : '',
+      }
+    })
+
+      return disp !== undefined ?
+      (<pre>
+        <div>{<ConePtsTable information = {disp}/>} </div>
+      </pre>)
+      : (
+        <div style={{
+          padding: '5px',
+      }}> No data collected. </div>
+      );
+    }
+
+    const renderRowSubComponentCubeAccTable = ({row}) => {
+      const g = tableData.filter(x => x.TeamNumber === row.values.TeamNumber)
+      
+      const disp = g.map(x => { 
+        return {
+          UpperCubesAcc: x.AvgUpperCubeAcc !== 0 ? `μ=${x.AvgUpperCubeAcc}` : '',
+          MidCubesAcc: x.AvgMidCubeAcc !== 0 ? `μ=${x.AvgMidCubeAcc}` : '',
+          LowCubesAcc: x.AvgLowerCubeAcc !== 0 ? `μ=${x.AvgLowerCubeAcc}` : '',
+      }
+    })
+      
+        return disp !== undefined ?
+        (<pre>
+          <div>{<CubeAccTable information = {disp}/>} </div>
+        </pre>)
+        : (
+          <div style={{
+            padding: '5px',
+        }}> No data collected. </div>
+        );
+      }
+
+      const renderRowSubComponentCubePtsTable = ({row}) => {
+        const g = tableData.filter(x => x.TeamNumber === row.values.TeamNumber)
+        
+        const disp = g.map(x => {
+          return {
+            AvgUpperCubes: x.AvgUpperCubePts !== 0 ? `μ=${x.AvgUpperCubePts}` : '',
+            AvgMidCubes: x.AvgMidCubePts !== 0 ? `μ=${x.AvgMidCubePts}` : '',
+            AvgLowCubes: x.AvgLowerCubePts !== 0 ? `μ=${x.AvgLowerCubePts}` : '',
+
+        }
+      })  
+        
+          return disp !== undefined ?
+          (<pre>
+            <div>{<CubePtsTable information = {disp}/>} </div>
+          </pre>)
+          : (
+            <div style={{
+              padding: '5px',
+          }}> No data collected. </div>
+          );
+        }
+
+function gridStateHandler(bool, bool2, bool3, bool4, bool5, bool6){
   setGridState(bool)
 }
 
-//methods for what needs to be shown on summary table, accessors are from form people
-  
-//gets max of array
-  const getMax = (arr) => { 
-    return arr.sort((a, b) => b - a).shift();
-  }
+function tableHandler(row){ //handles which state and inner table should be shown
+    if(gridState === true){
+      return (
+      <tr>
+        <td colSpan={visibleColumns.length}
+        style = {{
+          maxWidth: "10rem"
+        }}
+        >
+          {renderRowSubComponentGrid ({row})}
+        </td>
+      </tr>
+      )
+    }
+    else if(coneAccState === true){
+      return (
+      <tr>
+        <td colSpan={visibleColumns.length}
+        style = {{
+          maxWidth: "1200px"
+        }}
+        >
+          {renderRowSubComponentConeAccTable ({row})}
+        </td>
+      </tr>
+      )
+    }
+    else if(conePtsState === true){
+      return (
+      <tr>
+        <td colSpan={visibleColumns.length}
+        style = {{
+          maxWidth: "1200px"
+        }}
+        >
+          {renderRowSubComponentConePtsTable ({row})}
+        </td>
+      </tr>
+      )
+    }
+    else if(cubeAccState === true){
+      return (
+      <tr>
+        <td colSpan={visibleColumns.length}
+        style = {{
+          maxWidth: "1200px"
+        }}
+        >
+          {renderRowSubComponentCubeAccTable ({row})}
+        </td>
+      </tr>
+      )
+    }
+    else if(cubePtsState === true){
+      return (
+      <tr>
+        <td colSpan={visibleColumns.length}
+        style = {{
+          maxWidth: "1200px"
+        }}
+        >
+          {renderRowSubComponentCubePtsTable ({row})}
+        </td>
+      </tr>
+      )
+    }
+    else if(teamState === true){
+      return (
+      <tr>
+        <td colSpan={visibleColumns.length}
+        style = {{
+          maxWidth: "1200px"
+        }}
+        >
+          {renderRowSubComponent ({row})}
+        </td>
+      </tr>
+      )
+    }
+    else{console.log('error in tablehandler or nothing shown')}
+  } 
 
-  //displays priorities
-  const getPriorities = (arr) => {
-    let pri = arr.map(teamObj => teamObj.Strategy).reduce((a,b) => a.concat(b), []).filter((item) => item.trim() !== '');
-    return uniqueArr(pri);
-  }
+// ================================================ !CALC HERE! ========================
+
+//methods for what needs to be shown on summary table, accessors are from form people
 
   const uniqueArr = (arr) => {  
     const a = arr.map(x => x.trim());
       return a.filter((item, index) => {
           return a.indexOf(item, 0) === index;
       })
+  }
+
+  const getPriorities = (arr) => {
+    let pri = arr.map(teamObj => teamObj.Priorities).reduce((a,b) => a.concat(b), []).filter((item) => item != undefined && item.trim() !== '');
+    return uniqueArr(pri);
+  }
+
+  const getPenalties = (arr) => {
+    let pen = arr.map(teamObj => teamObj.Penalties.Penalties).reduce((a,b) => a.concat(b), []).filter((item) => item.trim() !== 'None')
+    return uniqueArr(pen) 
   }
 
   //avg total points
@@ -395,7 +507,7 @@ function gridStateHandler(bool){
 
   //avg grid points
   const calcAvgGrid = (arr) => {
-    let individualPts = arr.map(val => val.Teleop.ScoringTotal.GridPoints);
+    let individualPts = arr.map(val => val.Teleop.ScoringTotal != null ? val.Teleop.ScoringTotal.GridPoints : 0);
     let totalPts = 0;
     for(let i = 0; i < individualPts.length; i++){
       totalPts = totalPts + individualPts[i];
@@ -403,51 +515,64 @@ function gridStateHandler(bool){
     let avgGridPts = totalPts / individualPts.length;
     return avgGridPts.toFixed(3);
   }
-
-  //avg total cone and cube points and acc
-  const calcTotalCones = (arr) => {
-    let totalCones = arr.map(val => val.Teleop.ScoringTotal.Cones);
-    let sumTotalCones = 0;
-    for(let i = 0; i < totalCones.length; i++){
-      sumTotalCones = sumTotalCones + totalCones[i];
+  
+  const calcAvgConePts = (arr) => {
+    let indivConePts = arr.map(val => val.Teleop.ScoringTotal.Cones != null ? val.Teleop.ScoringTotal.Cones : 0)
+    let totalConePts = 0
+    for(let i = 0; i < indivConePts.length; i++){
+      totalConePts = totalConePts + indivConePts[i];
     }
-    let avgTotalCones = sumTotalCones / totalCones.length;
-    return avgTotalCones.toFixed(3);
+    let avgConePts = totalConePts / indivConePts.length
+    return avgConePts.toFixed(3)
+  }
+ 
+  const calcAvgConeAcc = (arr) => {
+    let indivConeAcc = arr.map(val => val.Teleop.ConesAccuracy != null ? val.Teleop.ConesAccuracy.Overall : 0)
+    let totalConeAcc = 0
+    for(let i = 0; i < indivConeAcc.length; i++){
+      totalConeAcc = totalConeAcc + indivConeAcc[i]
+    }
+    let avgConeAcc = totalConeAcc / indivConeAcc.length
+    return avgConeAcc.toFixed(3)
   }
 
-  const calcTotalConesAcc = (arr) => {
-    let totalConesAcc = arr.map(val => val.Teleop.ConesAccuracy.Overall);
-    let sumTotalConesAcc = 0;
-    for(let i = 0; i < totalConesAcc.length; i++){
-      sumTotalConesAcc = sumTotalConesAcc / totalConesAcc.length;
+  const calcAvgCubePts = (arr) => {
+    let indivCubePts = arr.map(val => val.Teleop.ScoringTotal != null ? val.Teleop.ScoringTotal.Cubes: 0)
+    let totalCubePts = 0
+    for(let i = 0; i < indivCubePts.length; i++){
+      totalCubePts = totalCubePts + indivCubePts[i]
     }
-    let avgTotalConesAcc = sumTotalConesAcc / totalConesAcc.length;
-    return avgTotalConesAcc.toFixed(3);
+    let avgCubePts = totalCubePts / indivCubePts.length
+    return avgCubePts.toFixed(3)
   }
 
-  const calcTotalCubes = (arr) => {
-    let totalCubes = arr.map(val => val.Teleop.ScoringTotal.Cubes);
-    let sumTotalCubes = 0;
-    for(let i = 0; i < totalCubes.length; i++){
-      sumTotalCubes = sumTotalCubes + totalCubes[i];
+  const calcAvgCubeAcc = (arr) => {
+    let indivCubeAcc = arr.map(val => val.Teleop.CubesAccuracy != null ? val.Teleop.CubesAccuracy.Overall: 0)
+    let totalCubeAcc = 0
+    for(let i = 0; i < indivCubeAcc.length; i++){
+      totalCubeAcc = totalCubeAcc + indivCubeAcc[i]
     }
-    let avgTotalCubes = sumTotalCubes / totalCubes.length;
-    return avgTotalCubes.toFixed(3);
+    let avgCubeAcc = totalCubeAcc / indivCubeAcc.length
+    return avgCubeAcc.toFixed(3)
   }
 
-  const calcTotalCubesAcc = (arr) => {
-    let totalCubesAcc = arr.map(val => val.Teleop.CubesAccuracy.Overall);
-    let sumTotalCubesAcc = 0;
-    for(let i = 0; i < totalCubesAcc.length; i++){
-      sumTotalCubesAcc = sumTotalCubesAcc + totalCubesAcc[i];
-    }
-    let avgTotalCubesAcc = sumTotalCubesAcc / totalCubesAcc.length;
-    return avgTotalCubesAcc.toFixed(3);
+  const calcAvgCS = (arr) => {
+    const indivTeleCSDocked = arr.filter(val => val.Teleop.EndGame === "Docked")
+    const indivTeleCSDockedPts = indivTeleCSDocked.length * 6
+    const indivTeleCSDockedEng = arr.filter(val => val.Teleop.EndGame === "DockedEngaged")
+    const indivTeleCSDockedEngPts = indivTeleCSDockedEng.length * 8
+    const indivAutoCSDocked = arr.filter(val => val.Autonomous.ChargeStation === "Docked")
+    const indivAutoCSDockedPts = indivAutoCSDocked.length * 10
+    const indivAutoCSDockedEng = arr.filter(val => val.Autonomous.ChargeStation === "DockedEngaged")
+    const indivAutoCSDockedEngPts = indivAutoCSDockedEng.length * 12
+
+    const totalCSPts = indivTeleCSDockedPts + indivTeleCSDockedEngPts + indivAutoCSDockedPts + indivAutoCSDockedEngPts 
+    const avgCSPts = totalCSPts / (arr.length)
+    return avgCSPts
   }
 
-  //avg UPPER grid stuff
   const calcUpperGrid = (arr) => {
-    let upper = arr.map(val => val.Teleop.ScoringTotal.GridScoringByPlacement.High);
+    let upper = arr.map(val => val.Teleop.ScoringTotal.GridScoringByPlacement.High != null ? val.Teleop.ScoringTotal.GridScoringByPlacement.High: 0);
     let sumUpper = 0;
     for(let i = 0; i < upper.length; i++){
       sumUpper = sumUpper + upper[i];
@@ -457,7 +582,7 @@ function gridStateHandler(bool){
   }
 
   const calcUpperGridAcc = (arr) => {
-    let upperAcc = arr.map(val => (val.Teleop.ConeAccuracy.High + val.Teleop.CubeAccuracy.High));
+    let upperAcc = arr.map(val => (val.Teleop.ConesAccuracy.High + val.Teleop.CubesAccuracy.High) != null ? (val.Teleop.ConesAccuracy.High + val.Teleop.CubesAccuracy.High) : 0);
     let sumUpperAcc = 0;
     for(let i = 0; i < upperAcc.length; i++){
       sumUpperAcc = sumUpperAcc + upperAcc[i];
@@ -467,17 +592,17 @@ function gridStateHandler(bool){
   }
 
   const calcUpperConeGrid = (arr) => {  
-    let upper = arr.map(val => (val.AutoHighConesScored + val.TeleHighConesScored));
+    let upper = arr.map(val => (val.Autonomous.Scored.Cones.Upper + val.Teleop.Scored.Cones.Upper) != null ? ((val.Autonomous.Scored.Cones.Upper * 6) + (val.Teleop.Scored.Cones.Upper * 5)) : 0);
     let sumUpper = 0;
     for(let i = 0; i < upper.length; i++){
-      sumUpper = sumUpper + upper[i];      //sum of upper grid
+      sumUpper = sumUpper + upper[i];      
     }
     let avgUpperCone = sumUpper / upper.length;
-    return avgUpperCone.toFixed(3);       //avg of upper grid (rounds to .000)
+    return avgUpperCone.toFixed(3);      
   }
 
   const calcUpperConeAcc = (arr) => { 
-    let upperAcc = arr.map(val => val.HighConesAccuracy);
+    let upperAcc = arr.map(val => val.Teleop.ConesAccuracy.High != null ? val.Teleop.ConesAccuracy.High : 0);
     let sumUpperAcc = 0;
     for(let i = 0; i < upperAcc.length; i++){
       sumUpperAcc = sumUpperAcc + upperAcc[i];  
@@ -487,38 +612,38 @@ function gridStateHandler(bool){
   }
 
   const calcUpperCubeGrid = (arr) => { 
-    let upper = arr.map(val => (val.AutoHighCubesScored + val.TeleHighCubesScored));
+    let upper = arr.map(val => (val.Autonomous.Scored.Cubes.Upper + val.Teleop.Scored.Cubes.Upper) != null ? ((val.Autonomous.Scored.Cubes.Upper * 6) + (val.Teleop.Scored.Cubes.Upper * 5)) : 0);
     let sumUpper = 0;
     for(let i = 0; i < upper.length; i++){
-      sumUpper = sumUpper + upper[i];      //sum of upper grid
+      sumUpper = sumUpper + upper[i];      
     }
     let avgUpperCube = sumUpper / upper.length;
-    return avgUpperCube.toFixed(3);       //avg of upper grid (rounds to .000)
+    return avgUpperCube.toFixed(3);       
   }
 
   const calcUpperCubeAcc = (arr) => { 
-    let upperAcc = arr.map(val => val.HighCubesAccuracy);
+    let upperAcc = arr.map(val => val.Teleop.CubesAccuracy.High != null ? val.Teleop.CubesAccuracy.High : 0);
     let sumUpperAcc = 0;
     for(let i = 0; i < upperAcc.length; i++){
       sumUpperAcc = sumUpperAcc + upperAcc[i];  
     }
-    let avgUpperCubeAcc = sumUpperAcc / upperAcc.length;  //avg acc of mid
+    let avgUpperCubeAcc = sumUpperAcc / upperAcc.length; 
     return avgUpperCubeAcc.toFixed(3); 
   }
 
-  //avg MID grid stuff
+ 
   const calcMidGrid = (arr) => {
-    let mid = arr.map(val => val.Teleop.ScoringTotal.GridScoringByPlacement.Mid);
+    let mid = arr.map(val => val.Teleop.ScoringTotal.GridScoringByPlacement.Mid != null ? val.Teleop.ScoringTotal.GridScoringByPlacement.Mid : 0);
     let sumMid = 0;
     for(let i = 0; i < mid.length; i++){
-      sumMid = sumMid + mid.length[i];
+      sumMid = sumMid + mid[i];
     }
     let avgMid = sumMid / mid.length;
     return avgMid.toFixed(3);
   }
 
   const calcMidGridAcc = (arr) => {
-    let midAcc = arr.map(val => (val.Teleop.ConeAccuracy.Mid + val.Teleop.CubeAccuracy.Mid));
+    let midAcc = arr.map(val => (val.Teleop.ConesAccuracy.Mid + val.Teleop.CubesAccuracy.Mid) != null ? (val.Teleop.ConesAccuracy.Mid + val.Teleop.CubesAccuracy.Mid) : 0);
     let sumMidAcc = 0;
     for(let i = 0; i < midAcc.length; i++){
       sumMidAcc = sumMidAcc + midAcc[i];
@@ -527,49 +652,48 @@ function gridStateHandler(bool){
     return avgMidAcc.toFixed(3);
   }
 
-  const calcMidConeGrid = (arr) => { //automidmade & auto telemidmade accessor from form (tbd since idk what they made it)
-    let mid = arr.map(val => (val.AutoMidConesScored + val.TeleMidConesScored));
+  const calcMidConeGrid = (arr) => { 
+    let mid = arr.map(val => (val.Autonomous.Scored.Cones.Mid + val.Teleop.Scored.Cones.Mid) != null ? ((val.Autonomous.Scored.Cones.Mid * 4) + (val.Teleop.Scored.Cones.Mid * 3)) : 0);
     let sumMid = 0;
     for(let i = 0; i < mid.length; i++){
-      sumMid = sumMid + mid[i];      //sum of mid grid
+      sumMid = sumMid + mid[i];      
     }
     let avgMidCone = sumMid / mid.length;
-    return avgMidCone.toFixed(3);       //avg of mid grid (rounds to .000)
+    return avgMidCone.toFixed(3);       
   }
 
   const calcMidConeAcc = (arr) => { 
-    let midAcc = arr.map(val => val.MidConeAccuracy);
+    let midAcc = arr.map(val => val.Teleop.ConesAccuracy.Mid != null ? val.Teleop.ConesAccuracy.Mid : 0);
     let sumMidAcc = 0;
     for(let i = 0; i < midAcc.length; i++){
       sumMidAcc = sumMidAcc + midAcc[i];  
     }
-    let avgMidConeAcc = sumMidAcc / midAcc.length;  //avg acc of mid
+    let avgMidConeAcc = sumMidAcc / midAcc.length;  
     return avgMidConeAcc.toFixed(3); 
   }
 
-  const calcMidCubeGrid = (arr) => { //automidmade & auto telemidmade accessor from form (tbd since idk what they made it)
-    let mid = arr.map(val => (val.AutoMidCubesScored + val.TeleMidCubesScored));
+  const calcMidCubeGrid = (arr) => { 
+    let mid = arr.map(val => (val.Autonomous.Scored.Cubes.Mid + val.Teleop.Scored.Cubes.Mid) != null ? ((val.Autonomous.Scored.Cubes.Mid * 4) + (val.Teleop.Scored.Cubes.Mid * 3)) : 0);
     let sumMid = 0;
     for(let i = 0; i < mid.length; i++){
-      sumMid = sumMid + mid[i];      //sum of mid grid
+      sumMid = sumMid + mid[i];      
     }
     let avgMidCube = sumMid / mid.length;
-    return avgMidCube.toFixed(3);       //avg of mid grid (rounds to .000)
+    return avgMidCube.toFixed(3);       
   }
 
   const calcMidCubeAcc = (arr) => { 
-    let midAcc = arr.map(val => val.MidCubesAccuracy);
+    let midAcc = arr.map(val => val.Teleop.CubesAccuracy.Mid != null ? val.Teleop.CubesAccuracy.Mid : 0);
     let sumMidAcc = 0;
     for(let i = 0; i < midAcc.length; i++){
       sumMidAcc = sumMidAcc + midAcc[i];  
     }
-    let avgMidCubeAcc = sumMidAcc / midAcc.length;  //avg acc of mid
+    let avgMidCubeAcc = sumMidAcc / midAcc.length;  
     return avgMidCubeAcc.toFixed(3); 
   }
 
-  //avg LOW grid stuff
   const calcLowGrid = (arr) => {
-    let low = arr.map(val => val.Teleop.ScoringTotal.GridScoringByPlacement.Low);
+    let low = arr.map(val => val.Teleop.ScoringTotal.GridScoringByPlacement.Low != null ? val.Teleop.ScoringTotal.GridScoringByPlacement.Low : 0);
     let sumLow = 0;
     for(let i = 0; i < low.length; i++){
       sumLow = sumLow + low[i];
@@ -579,107 +703,53 @@ function gridStateHandler(bool){
   }
 
   const calcLowAcc = (arr) => {
-    let lowAcc = arr.map(val => (val.Teleop.ConeAccuracy.Low + val.Teleop.CubeAccuracy.Low));
+    let lowAcc = arr.map(val => (val.Teleop.ConesAccuracy.Low + val.Teleop.CubesAccuracy.Low) != null ? (val.Teleop.ConesAccuracy.Low + val.Teleop.CubesAccuracy.Low) : 0);
     let sumLowAcc = 0;
     for(let i = 0; i < lowAcc.length; i++){
       sumLowAcc = sumLowAcc + lowAcc[i];
     }
-    let avgLowAcc = sumLowAcc + lowAcc.length;
+    let avgLowAcc = sumLowAcc / lowAcc.length;
     return avgLowAcc.toFixed(3);
   }
 
-  const calcLowConeGrid = (arr) => { //autolowmade & auto telelowmade accessor from form (tbd since idk what they made it)
-    let low = arr.map(val => (val.AutoLowConesScored + val.TeleLowConesScored));
+  const calcLowConeGrid = (arr) => { 
+    let low = arr.map(val => (val.Autonomous.Scored.Cones.Lower + val.Teleop.Scored.Cones.Lower) != null ? ((val.Autonomous.Scored.Cones.Lower * 3) + (val.Teleop.Scored.Cones.Lower * 2)) : 0);
     let sumLow = 0;
     for(let i = 0; i < low.length; i++){
-      sumLow = sumLow + low[i];      //sum of low grid
+      sumLow = sumLow + low[i];      
     }
     let avgLowCone = sumLow / low.length;
-    return avgLowCone.toFixed(3);       //avg of low grid (rounds to .000)
+    return avgLowCone.toFixed(3);       
   }
 
   const calcLowConeAcc = (arr) => { 
-    let lowAcc = arr.map(val => val.LowConesAccuracy);
+    let lowAcc = arr.map(val => val.Teleop.ConesAccuracy.Low != null ? val.Teleop.ConesAccuracy.Low : 0);
     let sumLowAcc = 0;
     for(let i = 0; i < lowAcc.length; i++){
       sumLowAcc = sumLowAcc + lowAcc[i];  
     }
-    let avgLowConeAcc = sumLowAcc / lowAcc.length;  //avg acc of low
+    let avgLowConeAcc = sumLowAcc / lowAcc.length;  
     return avgLowConeAcc.toFixed(3); 
   }
 
   const calcLowCubeGrid = (arr) => { 
-    let low = arr.map(val => (val.AutoLowCubesScored + val.TeleLowCubesScored));
+    let low = arr.map(val => (val.Autonomous.Scored.Cubes.Lower + val.Teleop.Scored.Cubes.Lower) != null ? ((val.Autonomous.Scored.Cubes.Lower * 3) + (val.Teleop.Scored.Cubes.Lower * 2)) : 0);
     let sumLow = 0;
     for(let i = 0; i < low.length; i++){
-      sumLow = sumLow + low[i];      //sum of low grid
+      sumLow = sumLow + low[i];      
     }
     let avgLowCube = sumLow / low.length;
-    return avgLowCube.toFixed(3);       //avg of low grid (rounds to .000)
+    return avgLowCube.toFixed(3);       
   }
 
   const calcLowCubeAcc = (arr) => { 
-    let lowAcc = arr.map(val => val.LowCubesAccuracy);
+    let lowAcc = arr.map(val => val.Teleop.CubesAccuracy.Low != null ? val.Teleop.CubesAccuracy.Low : 0);
     let sumLowAcc = 0;
     for(let i = 0; i < lowAcc.length; i++){
       sumLowAcc = sumLowAcc + lowAcc[i];  
     }
-    let avgLowCubeAcc = sumLowAcc / lowAcc.length;  //avg acc of low
+    let avgLowCubeAcc = sumLowAcc / lowAcc.length; 
     return avgLowCubeAcc.toFixed(3); 
-  }
-
-  //charge station
-  const calcChargeStation = (arr) => {  //for auto bc calculating endgame is a diff method
-    let chargeStation = arr.map(val => {
-      if(val.Teleop.ChargeStation === 'None' || val.Teleop.ChargeStation === 'Attempted'){
-        return 0;
-      }
-      else if(val.Teleop.ChargeStation === 'DockedNotEngaged'){
-        return 10;
-      }
-      else if(val.Teleop.ChargeStation === 'DockedEngage'){
-        return 12;
-      }
-      else{
-        return 0;
-      }
-    });
-
-    let sumChargeStation = 0;
-    for(let i = 0; i < chargeStation.length; i++){
-      sumChargeStation = sumChargeStation + chargeStation[i];
-    }
-
-    let avgChargeStation = sumChargeStation / chargeStation.length;
-    return avgChargeStation.toFixed(3);
-  }
-
-  const calcEndgame = (arr) => { //only for teleop
-    let endgame = arr.map(val => {
-      if(val.Teleop.EndGame === 'None' || val.Teleop.EndGame === 'Attempted'){
-        return 0;
-      }
-      else if(val.Teleop.EndGame === 'Parked'){
-        return 2;
-      }
-      else if(val.Teleop.EndGame === 'DockedNotEngaged'){
-        return 6;
-      }
-      else if(val.Teleop.EndGame === 'DockedEngage'){
-        return 8;
-      }
-      else{
-        return 0;
-      }
-    });
-
-    let sumEndgame = 0;
-    for(let i = 0; i < endgame.length; i++){
-      sumEndgame = sumEndgame + endgame[i];
-    }
-
-    let avgEndgame = sumEndgame / endgame.length;
-    return avgEndgame.toFixed(3);
   }
 
   const calcColumnSort = (arr,gridPts,conePts,coneAcc,cubePts,cubeAcc,charge) => {
@@ -722,28 +792,30 @@ function gridStateHandler(bool){
     const devi = Math.sqrt(sumDistance() / (distance.length));
     return devi.toFixed(3); //rounds standard deviation to thousandths
   }
-
+  
+  const getMax = (arr) => {
+    return arr.sort((a, b) => b - a).shift();
+  } 
 
 // ======================================= !TABLE HERE! ===========================================
 const data = React.useMemo(
   () => tableData.map(team => {
-    const grade = calcColumnSort(sortBy,team.NGridPoints,team.NConePoints,team.NConeAccuracy,team.NCubePoints,team.NCubeAccuracy,team.NChargeStation)
+    const grade = calcColumnSort(sortBy, team.NGridPoints, team.NConePoints, team.NConeAccuracy, team.NCubePoints, team.NCubeAccuracy, team.NChargeStation)
     
     return {
-
       TeamNumber: team.TeamNumber,
       Matches: team.Matches,
       OPR: team.OPR,
       Priorities: team.Priorities,
       CCWM: team.CCWM, 
       AvgPoints: team.AvgPoints,
+      AvgCSPoints: team.AvgCSPoints,
       AvgGridPoints: team.AvgGridPoints,
       AvgConePts: team.AvgConePts,
       AvgConeAcc: team.AvgConeAcc,
       AvgCubePts: team.AvgCubePts,
       AvgCubeAcc: team.AvgCubeAcc,
       DPR: team.DPR,
-      Defense: team.Defense,
       Penalties: team.Penalties,
       SumPriorities: grade !== 0.000 ? grade : "",
 
@@ -755,7 +827,7 @@ const data = React.useMemo(
       NChargeStation: team.NChargeStation,
 
     }
-  }) , [tableData]
+  }) , [tableData, sortBy]
 ) 
 
   const columns = React.useMemo(
@@ -764,8 +836,10 @@ const data = React.useMemo(
         Header: "Team #",
         accessor: "TeamNumber",
         Cell: ({ row }) => (
-          <span {...row.getToggleRowExpandedProps()}>
+          <span{...row.getToggleRowExpandedProps()}>
+            <div style={{fontWeight: 'bold', fontSize: '17px', }}>
               {row.values.TeamNumber}
+            </div>
           </span>
           )
       },
@@ -775,10 +849,11 @@ const data = React.useMemo(
         Cell: ({ row }) => (
           <div
               style = {{
-                  whiteSpace: 'normal',
+                minWidth:'150px',
+                whiteSpace:'normal',
               }}
           >
-              {row.original.Priorities}
+            {row.original.Priorities}
           </div>
         )
       },
@@ -793,6 +868,10 @@ const data = React.useMemo(
       {
         Header: "Avg Points",
         accessor: "AvgPoints",
+      },
+      {
+        Header: "Avg CS Points",
+        accessor: "AvgCSPoints"
       },
       {
         Header: "Avg Grid Points",
@@ -829,6 +908,16 @@ const data = React.useMemo(
       {
         Header: "Penalties",
         accessor: "Penalties",
+        Cell: ({ row }) => (
+          <div
+              style = {{
+                minWidth:'50px',
+                whiteSpace: 'normal',
+              }}
+          >
+            {row.original.Penalties}
+          </div>
+        )
       },
       {
         Header: "Comments",
@@ -871,44 +960,63 @@ const data = React.useMemo(
   
   return (
     <div>
+      <h1>CHARGED UP STATISTICS  <img src={"./images/bluethundalogo.png"} width="75px" height= "75px"></img>
+      </h1>
+            <table style={{ width:'1250px'}} >
+                <tbody>
+                    <tr>
+                        <td
+                            style={{
+                                minWidth: '750px',
+                                textAlign: 'left',
+                            }}
+                        >
+                            <p style={{fontSize: '18px'}}> Select checkboxes to choose which priorities to sort by. Then click on <strong>Grade</strong>. </p>
+                            {<List setList={setSortBy}/>}
+                            <br/>
+                        </td>
+                        <td>
+                        <p style={{
+                            textAlign: 'center',
+                            border: '2px solid white',
+                            maxWidth: '600px',
+                            display: 'inline-block',
+                            padding: '5px',
+                            fontSize: '20px',
+                          }}>
+                          <strong>KEY:</strong> 
+                          <br/> "Avg" / μ = Average
+                          <br/> σ = Standard Deviation
+                          <br/> Acc = Accuracy
+                      </p>
+                      <img src={"./images/community.jpg"} width="260px" height="240px"
+                          style={{
+                              display: 'inline-block',
+                              padding: '10px',
+                          }}
+                        ></img>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-      <h2>summary statistics 
-        <img src={"./images/charge.png"} width="350px" height= "500px"></img>
-      </h2>
-
-      <p>
-          <strong>KEY</strong> 
-          <br/> "Avg" / μ = Average
-          <br/> σ = Standard Deviation
-          <br/> Acc = Accuracy
-      </p>
-      <p> Select checkboxes to choose which priorities to sort by. Then click on <strong>Grade</strong>. </p>
-      <br></br>
-      <List setList={setSortBy}/>
-      <br></br>
-      <br></br>
-      <img src={"./images/community.jpg"} width="400px" height="340px"
-          style={{
-              display: 'inline-block',
-              margin: '25px'
-          }}
-      ></img>
-
-      <br></br>
 
       <GlobalFilter filter={globalFilter} set={setGlobalFilter}/>
       <br></br>
-      <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+      <br></br>
+      <table style={{ width:'1250px', borderCollapse: 'collapse', overflowX: 'scroll', }} {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
+                
+                
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   style={{
-                    background: 'aliceblue',
-                    color: 'black',
-                    fontWeight: 'bold',
+                    padding: '8px',
+                    textAlign: 'center',
+                    background: '#78797A',
                   }}
                 >
                   {column.render('Header')}
@@ -927,13 +1035,36 @@ const data = React.useMemo(
                   return (   
                     <td
                       
-                      onClick={() => {cell.column.Header === "Avg Grid Points" ? gridStateHandler(true) : gridStateHandler(false) }}
+                      onClick={() => { //calls and returns parameters for inner tables
+                        if(cell.column.Header === "Avg Grid Points"){
+                          gridStateHandler(true, false, false, false, false, false)
+                          }
+                        else if(cell.column.Header === "Team #"){
+                          gridStateHandler(false, false, false, false, false, true)
+                          }
+                        else if(cell.column.Header === "Avg Cone Points"){
+                          gridStateHandler(false, false, true, false, false, false )
+                          }
+                        else if(cell.column.Header === "Avg Cone Acc"){
+                            gridStateHandler(false, true, true, false, false, false )
+                            }
+                        else if(cell.column.Header === "Avg Cube Points"){
+                            gridStateHandler(false, false, false, true, false, false )
+                            }
+                        else if(cell.column.Header === "Avg Cube Acc"){
+                            gridStateHandler(false, false, false, false, true, false )
+                            }
+                        else {
+                          console.log('wrong cell or fail')
+                            }
+                        }
+                      }//cell.column.Header === "Avg Grid Points" ? gridStateHandler(true, false, false, false, false) : gridStateHandler(false) }}
 
                       {...cell.getCellProps()}
                       style={{
-                        padding: '10px',
-                        border: 'solid 1px gray',
-                        background: 'black',
+                        padding: '8px',
+                        borderBlock: 'solid 2px #78797A',
+                        textAlign: 'center',
                       }}
                     >
                       {cell.render('Cell')}
@@ -970,6 +1101,7 @@ const data = React.useMemo(
           })} 
         </tbody>
       </table>
+      <br></br>
     </div>
   )
 }

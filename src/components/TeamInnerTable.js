@@ -16,7 +16,16 @@ const TeamInnerTable = (props) => {
                     },
                     {
                         Header: 'Priorities/Strategies',
-                        accessor: 'Strategy'
+                        accessor: 'Strategy',
+                        Cell: ({row}) => {
+                          return <div
+                            style={{
+                              minWidth:'200px',
+                              //overflowWrap: 'normal',
+                              whiteSpace: 'normal',
+                            }}
+                          >{row.original.Strategy}</div>
+                        }
                     },
                     {
                         Header: 'Total Pts',
@@ -33,7 +42,7 @@ const TeamInnerTable = (props) => {
                     {
                         Header: '🟪 Acc',
                         accessor: 'CubeAcc'
-                    },] 
+                    },], 
             },
             {
                 Header: 'Autonomous',
@@ -47,11 +56,11 @@ const TeamInnerTable = (props) => {
                         accessor: 'Mobility'
                     },
                     {
-                        Header: 'Upper 🔺 Pts',
+                        Header: 'Upper 🔺 ',
                         accessor: 'AutoUpperConePts'
                     },
                     {
-                        Header: 'Upper 🟪 Pts',
+                        Header: 'Upper 🟪 ',
                         accessor: 'AutoUpperCubePts'
                     },
                     {
@@ -59,19 +68,19 @@ const TeamInnerTable = (props) => {
                         accessor: 'AutoMidConePts'
                     },
                     {
-                      Header: 'Mid 🟪 Pts',
+                      Header: 'Mid 🟪 ',
                       accessor: 'AutoMidCubePts'
                     },
                     {
-                        Header: 'Low 🔺 Pts',
+                        Header: 'Low 🔺 ',
                         accessor: 'AutoLowConePts'
                     },
                     {
-                      Header: 'Low 🟪 Pts',
+                      Header: 'Low 🟪 ',
                       accessor: 'AutoLowCubePts'
                     },
                     {
-                      Header: 'CS. Pts',
+                      Header: 'Charge Station',
                       accessor: 'AutoChargeStationPts'
                     },]
             },
@@ -79,31 +88,31 @@ const TeamInnerTable = (props) => {
                 Header: 'Tele-Op',
                 columns: [
                     {
-                        Header: 'Upper Cone Pts',
+                        Header: 'Upper 🔺 ',
                         accessor: 'TeleUpperConePts'
                     },
                     {
-                      Header: 'Upper 🟪 Pts',
+                      Header: 'Upper 🟪 ',
                       accessor: 'TeleUpperCubePts'
                     },
                     {
-                        Header: 'Mid 🔺 Pts',
+                        Header: 'Mid 🔺 ',
                         accessor: 'TeleMidConePts'
                     },
                     {
-                      Header: 'Mid 🟪 Pts',
+                      Header: 'Mid 🟪 ',
                       accessor: 'TeleMidCubePts'
                     },
                     {
-                        Header: 'Low 🔺 Pts',
+                        Header: 'Low 🔺 ',
                         accessor: 'TeleLowConePts'
                     },
                     {
-                      Header: 'Low 🟪 Pts',
+                      Header: 'Low 🟪 ',
                       accessor: 'TeleLowCubePts'
                     },
                     {
-                        Header: 'Endgame Pts',
+                        Header: 'Endgame',
                         accessor: 'TeleEndgame'
                     },
                     {
@@ -115,11 +124,7 @@ const TeamInnerTable = (props) => {
                       accessor: 'CSEnd',
                     },
                     {
-                      Header: 'Endgame Comments',
-                      accessor: 'EndComments',
-                    },
-                    {
-                      Header: 'Smart Placement',
+                      Header: 'Smart Placement (creates links)',
                       accessor: 'SmartPlacement',
                     },
                     {
@@ -129,9 +134,17 @@ const TeamInnerTable = (props) => {
                     {
                       Header: 'Penalties',
                       accessor: 'Penalties',
+                      Cell: ({row}) => {
+                        return <div
+                          style={{
+                            minWidth:'300px',
+                            whiteSpace: 'normal',
+                          }}
+                        >{row.original.Penalties}</div>
+                      }
                     },
                     {
-                      Header: '# RP',
+                      Header: 'Ranking Points',
                       accessor: 'NumberOfRankingPoints',
                     },]
             },
@@ -153,16 +166,15 @@ const TeamInnerTable = (props) => {
                     {
                       Header: 'Comments',
                       accessor: 'Comments',
-                    },
-                    {
-                      Header: 'Scouter',
-                      accessor: 'Email',
-                    },
-                    {
-                      Header: 'Delete',
-                      accessor: 'Delete',
+                      Cell: ({row}) => {
+                        return <div
+                          style={{
+                            minWidth:'350px',
+                            whiteSpace: 'normal',
+                          }}
+                        >{row.original.Comments}</div>
+                      }
                     },],
-              
             }
         ],[]
     )
@@ -179,7 +191,7 @@ const TeamInnerTable = (props) => {
 
        return (
     <div>
-      <table {...getTableProps()}>
+      <table style={{borderCollapse: 'collapse'}}{...getTableProps()}>
 
         <thead>
           {
@@ -192,12 +204,10 @@ const TeamInnerTable = (props) => {
                     <th
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       style={{
-                        color: 'black',
-                        fontWeight: 'bold',
                         padding: '5px',
-                        border: 'solid 1px black',
+                        border: 'solid 1px gainsboro',
                         textAlign: 'center',
-                        background: 'aliceblue'
+                        background: '#64809B',
                       }}
                     >
                       {column.render('Header')}
@@ -224,9 +234,8 @@ const TeamInnerTable = (props) => {
                           {...cell.getCellProps()}
                           style={{
                             padding: '5px',
-                            border: 'solid 1px grey',
+                            borderBlock: 'solid 1px gainsboro',
                             textAlign: 'center',
-                            background: 'black'
                           }}
                         >
                           {cell.render('Cell')}

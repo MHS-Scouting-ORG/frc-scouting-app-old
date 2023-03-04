@@ -49,17 +49,65 @@ export const getTeamMatch = /* GraphQL */ `
       Team
       Regional
       Autonomous {
+        AutonomousPlacement
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         LeftCommunity
         ChargeStation
       }
       Teleop {
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         Accuracy {
           High
           Mid
           Low
           Overall
         }
-        RankingPts
         ChargeStation
         EndGame
         EndGameTally {
@@ -69,6 +117,11 @@ export const getTeamMatch = /* GraphQL */ `
         ScoringTotal {
           Total
           GridPoints
+          GridScoringByPlacement {
+            High
+            Mid
+            Low
+          }
           Cones
           Cubes
         }
@@ -92,13 +145,10 @@ export const getTeamMatch = /* GraphQL */ `
       Penalties {
         Fouls
         Tech
-        Yellow
-        Red
-        Disabled
-        DQ
-        BrokenBot
+        Penalties
       }
       Priorities
+      RankingPts
       createdAt
       updatedAt
     }
@@ -128,28 +178,106 @@ export const listTeamMatches = /* GraphQL */ `
         Team
         Regional
         Autonomous {
+          AutonomousPlacement
+          Scored {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Attempted {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
           LeftCommunity
           ChargeStation
         }
         Teleop {
-          RankingPts
+          Scored {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Attempted {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Accuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
           ChargeStation
           EndGame
+          EndGameTally {
+            Start
+            End
+          }
+          ScoringTotal {
+            Total
+            GridPoints
+            GridScoringByPlacement {
+              High
+              Mid
+              Low
+            }
+            Cones
+            Cubes
+          }
           DriveStrength
           DriveSpeed
+          ConesAccuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
+          CubesAccuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
           SmartPlacement
         }
         Comments
         Penalties {
           Fouls
           Tech
-          Yellow
-          Red
-          Disabled
-          DQ
-          BrokenBot
+          Penalties
         }
         Priorities
+        RankingPts
         createdAt
         updatedAt
       }
@@ -179,28 +307,106 @@ export const teamMatchesByTeam = /* GraphQL */ `
         Team
         Regional
         Autonomous {
+          AutonomousPlacement
+          Scored {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Attempted {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
           LeftCommunity
           ChargeStation
         }
         Teleop {
-          RankingPts
+          Scored {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Attempted {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Accuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
           ChargeStation
           EndGame
+          EndGameTally {
+            Start
+            End
+          }
+          ScoringTotal {
+            Total
+            GridPoints
+            GridScoringByPlacement {
+              High
+              Mid
+              Low
+            }
+            Cones
+            Cubes
+          }
           DriveStrength
           DriveSpeed
+          ConesAccuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
+          CubesAccuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
           SmartPlacement
         }
         Comments
         Penalties {
           Fouls
           Tech
-          Yellow
-          Red
-          Disabled
-          DQ
-          BrokenBot
+          Penalties
         }
         Priorities
+        RankingPts
         createdAt
         updatedAt
       }
@@ -230,28 +436,106 @@ export const teamMatchesByRegional = /* GraphQL */ `
         Team
         Regional
         Autonomous {
+          AutonomousPlacement
+          Scored {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Attempted {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
           LeftCommunity
           ChargeStation
         }
         Teleop {
-          RankingPts
+          Scored {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Attempted {
+            Cones {
+              Upper
+              Mid
+              Lower
+            }
+            Cubes {
+              Upper
+              Mid
+              Lower
+            }
+          }
+          Accuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
           ChargeStation
           EndGame
+          EndGameTally {
+            Start
+            End
+          }
+          ScoringTotal {
+            Total
+            GridPoints
+            GridScoringByPlacement {
+              High
+              Mid
+              Low
+            }
+            Cones
+            Cubes
+          }
           DriveStrength
           DriveSpeed
+          ConesAccuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
+          CubesAccuracy {
+            High
+            Mid
+            Low
+            Overall
+          }
           SmartPlacement
         }
         Comments
         Penalties {
           Fouls
           Tech
-          Yellow
-          Red
-          Disabled
-          DQ
-          BrokenBot
+          Penalties
         }
         Priorities
+        RankingPts
         createdAt
         updatedAt
       }

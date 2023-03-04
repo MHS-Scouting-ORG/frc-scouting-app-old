@@ -48,17 +48,65 @@ export const onCreateTeamMatch = /* GraphQL */ `
       Team
       Regional
       Autonomous {
+        AutonomousPlacement
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         LeftCommunity
         ChargeStation
       }
       Teleop {
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         Accuracy {
           High
           Mid
           Low
           Overall
         }
-        RankingPts
         ChargeStation
         EndGame
         EndGameTally {
@@ -68,6 +116,11 @@ export const onCreateTeamMatch = /* GraphQL */ `
         ScoringTotal {
           Total
           GridPoints
+          GridScoringByPlacement {
+            High
+            Mid
+            Low
+          }
           Cones
           Cubes
         }
@@ -91,13 +144,10 @@ export const onCreateTeamMatch = /* GraphQL */ `
       Penalties {
         Fouls
         Tech
-        Yellow
-        Red
-        Disabled
-        DQ
-        BrokenBot
+        Penalties
       }
       Priorities
+      RankingPts
       createdAt
       updatedAt
     }
@@ -114,17 +164,65 @@ export const onUpdateTeamMatch = /* GraphQL */ `
       Team
       Regional
       Autonomous {
+        AutonomousPlacement
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         LeftCommunity
         ChargeStation
       }
       Teleop {
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         Accuracy {
           High
           Mid
           Low
           Overall
         }
-        RankingPts
         ChargeStation
         EndGame
         EndGameTally {
@@ -134,6 +232,11 @@ export const onUpdateTeamMatch = /* GraphQL */ `
         ScoringTotal {
           Total
           GridPoints
+          GridScoringByPlacement {
+            High
+            Mid
+            Low
+          }
           Cones
           Cubes
         }
@@ -157,13 +260,10 @@ export const onUpdateTeamMatch = /* GraphQL */ `
       Penalties {
         Fouls
         Tech
-        Yellow
-        Red
-        Disabled
-        DQ
-        BrokenBot
+        Penalties
       }
       Priorities
+      RankingPts
       createdAt
       updatedAt
     }
@@ -180,17 +280,65 @@ export const onDeleteTeamMatch = /* GraphQL */ `
       Team
       Regional
       Autonomous {
+        AutonomousPlacement
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         LeftCommunity
         ChargeStation
       }
       Teleop {
+        Scored {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
+        Attempted {
+          Cones {
+            Upper
+            Mid
+            Lower
+          }
+          Cubes {
+            Upper
+            Mid
+            Lower
+          }
+        }
         Accuracy {
           High
           Mid
           Low
           Overall
         }
-        RankingPts
         ChargeStation
         EndGame
         EndGameTally {
@@ -200,6 +348,11 @@ export const onDeleteTeamMatch = /* GraphQL */ `
         ScoringTotal {
           Total
           GridPoints
+          GridScoringByPlacement {
+            High
+            Mid
+            Low
+          }
           Cones
           Cubes
         }
@@ -223,13 +376,10 @@ export const onDeleteTeamMatch = /* GraphQL */ `
       Penalties {
         Fouls
         Tech
-        Yellow
-        Red
-        Disabled
-        DQ
-        BrokenBot
+        Penalties
       }
       Priorities
+      RankingPts
       createdAt
       updatedAt
     }

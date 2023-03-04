@@ -5,7 +5,7 @@ class Checkbox extends React.Component{
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            checked: false
+            checked: true
         }
     }
 
