@@ -1,6 +1,6 @@
 import { graphqlOperation, API } from 'aws-amplify'
 import { teamMatchesByRegional, getTeam, listTeams} from '../graphql/queries'
-import { deleteTeamMatch updateTeamMatch, createTeamMatch, createTeam, updateTeam } from '../graphql/mutations'
+import { deleteTeamMatch, updateTeamMatch, createTeamMatch, createTeam, updateTeam } from '../graphql/mutations'
 import { onCreateTeamMatch, onUpdateTeamMatch } from '../graphql/subscriptions'
 import  buildMatchEntry  from './builder'
 
