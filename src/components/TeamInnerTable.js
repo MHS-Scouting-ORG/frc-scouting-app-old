@@ -4,6 +4,7 @@ import { useTable, useSortBy } from 'react-table'
 const TeamInnerTable = (props) => {
 
     const data = props.information;
+    const deleteHandler = props.delete;
 
     const columns = React.useMemo(
         () => [
@@ -174,8 +175,25 @@ const TeamInnerTable = (props) => {
                           }}
                         >{row.original.Comments}</div>
                       }
-                    },],
-            }
+                    },
+                    {
+                      Header: 'Delete',
+                      Cell: ({row}) => {
+                        return <div>
+                          <button onClick={() => deleteHandler(row)}> DELETE </button>
+                        </div>
+                      }
+                    },
+                    {
+                      Header: 'Edit',
+                      Cell: ({row}) => {
+                        return <div>
+                          <button> EDIT </button>
+                        </div>
+                      }
+                    }
+                  ],
+            },
         ],[]
     )
 

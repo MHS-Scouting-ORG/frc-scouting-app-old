@@ -14,6 +14,7 @@ function MainTable(props) {
   const [tableData,setTableData] = useState([]); //data on table
   const [teamsData,setTeamsData] = useState([]); //data of teams
   const [apiData, setApiData] = useState([]) //data retrieved 
+  const [deletedData, setDeletedData] = useState([]); //stores deleted data
 
   const [gridState,setGridState] = useState(false); 
   const [teamState,setTeamState] = useState(false); 
@@ -49,11 +50,17 @@ function MainTable(props) {
    useEffect(() => { //debug, reference, or test
     getMatchesForRegional(regional)
     .then(data => {
-      setApiData(data.data.teamMatchesByRegional.items)
-      //console.log(data.data)                   
+      let setApi = data.data.teamMatchesByRegional.items;
+      deletedData.map(deletedRow => {
+        setApi = setApi.filter(x => x.id.substring(x.id.indexOf('_')+1) !== deletedData.original.Match)
+      })
+
+      setApiData(setApi)//data.data.teamMatchesByRegional.items)
+      //console.log(data.data)       
+
     })
     .catch(console.log.bind(console))
-  }, [teamsData]) 
+  }, [teamsData, deletedData]) 
 
    useEffect(() => {     //set opr data
     getOprs(regional)
@@ -71,9 +78,19 @@ function MainTable(props) {
    },[teamsData])
 
    useEffect(() => setTableData(teamsData.map(team => { //'big' or whole data array that is used for table
-    const teamStats = apiData.filter(x => x.Team === team.TeamNum)
-    //console.log(teamStats)
-    
+
+    //console.log(deletedData[0]);
+    let teamStats = apiData.filter(x => x.Team === team.TeamNum)/*.filter(x => x.id !== deletedData.map(del => {
+      console.log(del)
+      del.original.Match
+    }))//*/
+    deletedData.map(deletedRow => {
+      teamStats = teamStats.filter(x => x.id !== regional + "_" + deletedRow.original.Match)
+    });
+
+    console.log(teamStats)
+    //console.log(apiData);
+
     const points = teamStats.map(x => x.Teleop.ScoringTotal.Total) //for deviation
     const gridPoints = teamStats.map(x => x.Teleop.ScoringTotal.GridPoints)
     const conePts = teamStats.map(x => x.Teleop.ScoringTotal.Cones)
@@ -182,7 +199,7 @@ function MainTable(props) {
       NCubeAccuracy: isNaN(rCubeAcc) !== true ? rCubeAcc : 0,
       NChargeStation: isNaN(rCSPoints) !== true ? rCSPoints : 0,
     }
-  })), [teamsData, oprList, dprList, ccwmList])
+  })), [teamsData, oprList, dprList, ccwmList, deletedData])
 
 const getTeams = async () => {
    return await (getTeamsInRegional(regional))
@@ -220,13 +237,33 @@ const getTeams = async () => {
     .catch(err => console.log(err))
 }
 
+const handleDelete = (row) => {
+  console.log(row);
+  //setDeletedData([deletedData.length](row));
+  let deleted = deletedData;
+  setDeletedData(deletedData.concat(row));
+  console.log(deletedData);
+  //console.log(regional);
+  /*let array = [];
+  array[0] = row;
+  console.log(array);//*/
+  //console.log("CLICKED")
+}
+
 // ================================= !MINI/INNER TABLES! ===========
 const renderRowSubComponent = ({ row }) => {
-  const t = apiData.filter(x => x.Team === `frc${row.values.TeamNumber}`)
+  let t = apiData.filter(x => x.Team === `frc${row.values.TeamNumber}`)
+  
+  deletedData.map(deletedRow => {
+    t = t.filter(x => x.id.substring(x.id.indexOf('_')+1) !== deletedRow.original.Match) 
+  })
+
   const disp = t.map(x => {
+
     const penalties = x.Penalties.Penalties.filter(x => x != 'None') 
     const rankingPts = x.RankingPts.filter(x => x != 'None' || '',)
         return {
+            Team: x.Team,
             Match: x.id.substring(x.id.indexOf('_')+1),
             Strategy: x.Priorities.filter(val => val != undefined && val.trim() !== '').length !== 0 ? x.Priorities.filter(val => val != undefined && val.trim() !== '').map(val => val.trim()).join(', ') : '',
             TotalPts: x.Teleop.ScoringTotal.Total !== null  ? x.Teleop.ScoringTotal.Total : '',
@@ -263,7 +300,7 @@ const renderRowSubComponent = ({ row }) => {
 
   return disp.length > 0 ?
   (<pre>
-    <div style={{maxWidth: "100rem", overflowX: "scroll", borderCollapse: "collapse", }}>{<TeamInnerTable information = {disp}/>} </div>
+    <div style={{maxWidth: "100rem", overflowX: "scroll", borderCollapse: "collapse", }}>{<TeamInnerTable delete={handleDelete} information = {disp}/>} </div>
   </pre>)
   : (
     <div style={{
@@ -493,6 +530,13 @@ function tableHandler(row){ //handles which state and inner table should be show
     let pen = arr.map(teamObj => teamObj.Penalties.Penalties).reduce((a,b) => a.concat(b), []).filter((item) => item.trim() !== 'None')
     return uniqueArr(pen) 
   }
+
+  /*REMOVING DELETED DATA FROM CALCULATIONS
+
+  const removeDeleted = (arr) => {
+    //use arr and check with all instances of deleted data? idk bruh
+  }
+  //*/
 
   //avg total points
   const calcAvgPoints = (arr) => { //average points
