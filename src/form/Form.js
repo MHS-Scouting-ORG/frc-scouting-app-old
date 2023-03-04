@@ -1296,7 +1296,6 @@ class Form extends React.Component {
     } else if (incompleteForm === false || override === true) {
       //console.log(penalties);
       if (this.matchData) {
-        console.log("apple bottom jeans!")
         await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey)
       }
 
