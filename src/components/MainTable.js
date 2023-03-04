@@ -7,6 +7,7 @@ import TeamInnerTable from "./TeamInnerTable";
 import GridInnerTable from './GridInnerTable';
 import GlobalFilter from "./GlobalFilter";
 import List from "./List";
+import Modal from ".Modal";
 
 function MainTable(props) {
   const regional = props.regional
