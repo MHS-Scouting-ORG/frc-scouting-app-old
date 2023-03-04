@@ -16,7 +16,9 @@ import buildMatchEntry, { ChargeStationType, PenaltyKinds, RankingPtsOpts, Prior
 
 class Form extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+
+    this.matchData = props.matchData;
 
     this.regional = props.regional;
 
@@ -1293,7 +1295,11 @@ class Form extends React.Component {
       window.alert(windowAlertMsg);
     } else if (incompleteForm === false || override === true) {
       //console.log(penalties);
-      await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey)
+      if (this.matchData) {
+        console.log("apple bottom jeans!")
+        await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey)
+      }
+
       const matchEntry = buildMatchEntry(this.regional,teamNum,matchKey)
         //matchEntry.name=''
         //matchEntry.description=''
