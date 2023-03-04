@@ -59,10 +59,10 @@ const PenaltyKinds = {
 }
 
 const ChargeStationType = {
-  DOCKED_ENGAGED: "DockedEngaged",
-  DOCKED: "Docked",
-  ATTEMPTED: "ATTEMPTED",
-  NONE: "None"
+    DOCKED_ENGAGED: "DockedEngaged",
+    DOCKED: "Docked",
+    ATTEMPTED: "ATTEMPTED",
+    NONE: "None"
 }
 
 const IntakeType = {
@@ -83,15 +83,15 @@ const RankingPtsOpts = {
 }
 
 const PriorityOpts = {
-  HIGH: "High",
-  MID: "Mid",
-  LOW: "Low",
-  CONES: "Cones",
-  CUBES: "Cubes",
-  CHARGESTATION: "ChargeStation",
-  DEFENSE: "Defense",
-  SINGLE_SUBSTATION: "SingleSubStation",
-  DOUBLE_STATION: "DoubleStation",
+    HIGH: "High",
+    MID: "Mid",
+    LOW: "Low",
+    CONES: "Cones",
+    CUBES: "Cubes",
+    CHARGESTATION: "ChargeStation",
+    DEFENSE: "Defense",
+    SINGLE_SUBSTATION: "SingleSubstation",
+    DOUBLE_STATION: "DoubleStation",
 }
 
 const selectPropsFromEnum = function (enumVals) {
@@ -180,6 +180,7 @@ const buildMatchEntry = (regionalId, teamId, matchId) => {
       Penalties: []
     },
     Priorities: [],
+
 
 
   }
