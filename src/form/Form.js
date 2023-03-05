@@ -125,14 +125,15 @@ class Form extends React.Component {
     else {
       let m = this.matchData;
 
+      const [a, r, matchType, matchNumber] = m.id.match(/(.+)_([a-z]{1,2}[0-9]?)m([0-9+]{1,2})/)
 
       this.state = {
         comments: m.Comments,
         //summaryComments: '',
         stationComments: "", //UNUSED
-        matchType: "q" + (!isNan(Number(m.id.indexOf("_")+2)) ? m.id.indexOf("_"+2) : ''),
+        matchType, 
         elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : 0 ), //MATCH ELM NUMBER
-        matchNumber: m.id,
+        matchNumber,
         matchData: [],
         teamNumber: m.Team,
         teams: [],
