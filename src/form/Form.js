@@ -107,7 +107,7 @@ class Form extends React.Component {
         bonusVal: [' ', ' '],
         bonusState: '',
         penaltyVal: [' ', ' ', ' ', ' ', ' ',' '],
-        dropDownVal: ['', '', '', '', ''],
+        dropDownVal: ['', '', ''],
         //autoPlacement: 0,
         counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         //smartPlacementVal: false,
@@ -1002,7 +1002,7 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.MID);
       }
       else if(strategy === "High Node "){
-        stratFinal.push("Upper");
+        stratFinal.push("High");
       }
       else if(strategy === "Cubes "){
         stratFinal.push(PriorityOpts.CUBES);
