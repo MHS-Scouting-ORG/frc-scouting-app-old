@@ -132,27 +132,32 @@ class Form extends React.Component {
     else {
       let m = this.matchData;
 
+
       this.state = {
-        comments: m.comments,
+        comments: m.Comments,
         //summaryComments: '',
-        stationComments: m.stationComments,
-        matchType: m.matchType,
-        elmNum: m.elmNum,
-        matchNumber: m.matchNumber,
+        stationComments: "", //UNUSED
+        matchType: "q" + (!isNan(Number(m.id.indexOf("_")+2)) ? m.id.indexOf("_"+2) : ''),
+        elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : 0 ), //MATCH ELM NUMBER
+        matchNumber: m.id,
         matchData: [],
-        teamNumber: m.teamNumber,
+        teamNumber: m.Team,
         teams: [],
-        matchOverride: m.matchOverride,
-        override: m.override,
-        endGameVal: m.endGameVal,
-        chargeStationValAuto: m.chargeStationValAuto,
-        whoWon: m.whoWon,
-        checkedWhoWon: m.checkedWhoWon,
-        rankingPts: m.rankingPts,
-        rankingState: m.rankingState,
-        bonusVal: m.bonusVal,
-        bonusState: m.bonusState,
-        penaltyVal: m.penaltyVal,
+        matchOverride: false, //UNUSED
+        override: true, //OVERRIDE
+        endGameVal: [
+          /*0 - Tele Charge Station*/m.Teleop.ChargeStation,
+          /*1 - Endgame Start Time*/m.Teleop.EndGameTally.Start,
+          /*2 - Engame End Time*/m.Teleop.EndGameTally.End
+        ],
+        chargeStationValAuto: m.Autonomous.ChargeStation,
+        whoWon: '', //UNUSED
+        checkedWhoWon: ['',''], //UNUSED
+        rankingPts: 0, //UNUSED
+        rankingState: m.rankingState, //RANKING PTS STATES
+        bonusVal: '', //UNUSED
+        bonusState: ["",""], //UNUSED
+        penaltyVal: m.Priorities, 
         dropDownVal: [
           /*0 - AutoPlacement*/m.AutonomousPlacement,
           /*1 - driveStrength*/m.Teleop.DriveStrength,
@@ -191,13 +196,16 @@ class Form extends React.Component {
         //smartPlacementVal: false,
         strategyVal: m.strategyVal,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         //mobilityVal: false,
-        booleans: m.booleans,
-        totalPoints: m.totalPoints,
-        totalGrid: m.totalGrid,
-        cubesAccuracy: m.cubesAccuracy,
-        conesAccuracy: m.conesAccuracy,
-        cubesPts: m.cubesPts,
-        conesPts: m.conesPts,
+        booleans: [
+          /*0 - MobilityVal*/m.Autonomous.LeftCommunity,
+          /*1 - SmartPlacement*/m.Teleop.SmartPlacement
+        ],
+        totalPoints: m.Teleop.ScoringTotal.Total,
+        totalGrid: m.Teleop.ScoringTotal.GridPoints,
+        cubesAccuracy: m.Teleop.CubesAccuracy.Overall,
+        conesAccuracy: m.Teleop.ConesAccuracy.Overall,
+        cubesPts: m.Teleop.ScoringTotal.Cubes,
+        conesPts: m.Teleop.ScoringTotal.Cones,
       }
     }
   }
@@ -222,7 +230,7 @@ class Form extends React.Component {
 
   changeMatchNumber(event) {
     if (event.target.value !== 0) {
-      this.setState({ matchOverride: false })
+      this.setState({ override: false })
     }
     this.setState({ matchNumber: event.target.value });
     this.setState({ teams: ['team1', 'team2', 'team3', 'team4', 'team5', 'team6'] });
