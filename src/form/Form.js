@@ -151,7 +151,7 @@ class Form extends React.Component {
         rankingState: m.RankingPts, //RANKING PTS STATES
         bonusVal: '', //UNUSED
         bonusState: ["",""], //UNUSED
-        penaltyVal: m.Priorities, 
+        penaltyVal: m.Penalties.Penalties, 
         dropDownVal: [
           /*0 - AutoPlacement*/m.Autonomous.AutonomousPlacement,
           /*1 - driveStrength*/m.Teleop.DriveStrength,
@@ -188,7 +188,7 @@ class Form extends React.Component {
           /*25*/m.Penalties.Tech
         ],
         //smartPlacementVal: false,
-        strategyVal: m.strategyVal,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        strategyVal: m.Priorities,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         //mobilityVal: false,
         booleans: [
           /*0 - MobilityVal*/m.Autonomous.LeftCommunity,
