@@ -577,7 +577,7 @@ class Form extends React.Component {
           <div>
             <p>Match Timer EX:125 (1:25)</p>
             <label> {"End Game Start: "}
-              <input style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
+              <input value={this.state.endGameVal[1]} style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
             </label>
           </div>
         )
@@ -589,12 +589,12 @@ class Form extends React.Component {
             <div>
             <p>Match Timer EX:125 (1:25) </p>
               <label> {"End Game Start: "}
-                <input style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
+                <input value={this.state.endGameVal[1]} style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
               </label>
             </div>
             <div>
               <label> {"End Game End: "}
-                <input style={{width: '10%'}} type="number" onChange={this.changeEndGameEndBox}></input>
+                <input value={this.state.endGameVal[2]} style={{width: '10%'}} type="number" onChange={this.changeEndGameEndBox}></input>
               </label>
             </div>
           </div>
@@ -606,11 +606,13 @@ class Form extends React.Component {
   }
 
   makeEndGameDropDown() {
+    let endGameState = this.state.endGameVal
     return (
       <div>
         <EndGame
           changeEndGameUsed={this.changeEndGame}
           makeEndGameStartEndBox={this.makeEndGameStartEndBox}
+          value={endGameState}
         />
       </div>
     )
