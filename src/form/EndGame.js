@@ -6,7 +6,7 @@ class EndGame extends React.Component{
         this.changeEndGame = this.changeEndGame.bind(this);
         this.makeEndGameStartEndBox = this.makeEndGameStartEndBox.bind(this);
         this.state = {
-            changeEndGameUsed: props.changeEndGameUsed,
+            changeEndGameUsed: '',
         }
     }
 
