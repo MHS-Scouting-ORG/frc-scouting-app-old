@@ -263,10 +263,10 @@ const handleDelete = (row) => {
 const handleEdit = (row) => {
   setModalState(true);
   //console.log(row);
+  //console.log(apiData)
   let setModal = apiData;
-  setModal = setModal.filter(x => x.Team === row.original.Team).filter(team => team.id === regional + "_" + row.original.Match)
+  setModal = setModal.filter(x => x.Team === row.original.Team).filter(team => team.id === regional + "_" + row.original.Match);
   setModalData(setModal);
-  //console.log(modalData)
 }
 
 const modalClose = () => {

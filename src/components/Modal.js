@@ -9,12 +9,12 @@ class Modal extends React.Component{
 
     render(){
         //console.log("******** FROM MODAL *************");
-        //console.log(this.props.data)
+        console.log(this.props.data)
         if(this.props.onOff){
             return(
                 <div>
                     <Form regional={this.props.regional} matchData={this.props.data}></Form>
-                    <button onClick={() => this.props.offFunction()}></button>
+                    <button onClick={() => this.props.offFunction()}> FINISH EDIT </button>
                 </div>
             )
         }
