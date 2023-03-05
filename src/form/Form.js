@@ -5,7 +5,6 @@ import MatchDropDown from './MatchDropDown';
 import EndGame from './EndGame';
 import ChargeStation from './ChargeStation';
 import CounterBox from './CounterBox';
-//import { getRegionals, getTeamsInRegional, } from "../api/bluealliance";
 import TextBox from './TextBox';
 import Headers from './Header';
 //import StationTimer from './StationTimer';
@@ -13,6 +12,7 @@ import { apiCreateTeamMatchEntry, apiUpdateTeamMatch } from '../api';
 //import { ConsoleLogger } from '@aws-amplify/core';
 //import { ChargeStationType, RankingPtsOpts } from '../api/builder';
 import buildMatchEntry, { ChargeStationType, PenaltyKinds, RankingPtsOpts, PriorityOpts } from '../api/builder'
+import { getMatchesForRegional } from '../api/bluealliance';
 
 class Form extends React.Component {
   constructor(props) {
@@ -92,40 +92,113 @@ class Form extends React.Component {
 
     this.submitState = this.submitState.bind(this);
 
-    this.state = { 
-      comments: '',
-      //summaryComments: '',
-      stationComments: '',
-      matchType: '',
-      elmNum: '',
-      matchNumber: '',
-      matchData: 'not found',
-      teamNumber: ' ',
-      teams: ['team1', 'team2', 'team3', 'team4', 'team5', 'team6'],
-      matchOverride: false,
-      override: false,
-      endGameVal: ['', '', ''],
-      chargeStationValAuto: '',
-      whoWon: '',
-      checkedWhoWon: [' ', ' '],
-      rankingPts: 0,
-      rankingState: ["", "", ""],
-      bonusVal: [' ', ' '],
-      bonusState: '',
-      penaltyVal: [' ', ' ', ' ', ' ', ' ',' '],
-      dropDownVal: ['', '', '', '', ''],
-      autoPlacement: 0,
-      counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      //smartPlacementVal: false,
-      strategyVal: [null, null, null, null, null, null, null, null, null],//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-      //mobilityVal: false,
-      booleans: [false, false],
-      totalPoints: 0,
-      totalGrid: 0,
-      cubesAccuracy: 0,
-      conesAccuracy: 0,
-      cubesPts: 0,
-      conesPts: 0,
+    if (this.matchData === undefined) {
+      this.state = { 
+        comments: '',
+        //summaryComments: '',
+        stationComments: '',
+        matchType: '',
+        elmNum: '',
+        matchNumber: '',
+        matchData: 'not found',
+        teamNumber: ' ',
+        teams: ['team1', 'team2', 'team3', 'team4', 'team5', 'team6'],
+        matchOverride: false,
+        override: false,
+        endGameVal: ['', '', ''],
+        chargeStationValAuto: '',
+        whoWon: '',
+        checkedWhoWon: [' ', ' '],
+        rankingPts: 0,
+        rankingState: ["", "", ""],
+        bonusVal: [' ', ' '],
+        bonusState: '',
+        penaltyVal: [' ', ' ', ' ', ' ', ' ',' '],
+        dropDownVal: ['', '', '', '', ''],
+        //autoPlacement: 0,
+        counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //smartPlacementVal: false,
+        strategyVal: [null, null, null, null, null, null, null, null, null],//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        //mobilityVal: false,
+        booleans: [false, false],
+        totalPoints: 0,
+        totalGrid: 0,
+        cubesAccuracy: 0,
+        conesAccuracy: 0,
+        cubesPts: 0,
+        conesPts: 0,
+      }
+    }
+    else {
+      let m = this.matchData;
+
+      this.state = {
+        comments: m.comments,
+        //summaryComments: '',
+        stationComments: m.stationComments,
+        matchType: m.matchType,
+        elmNum: m.elmNum,
+        matchNumber: m.matchNumber,
+        matchData: [],
+        teamNumber: m.teamNumber,
+        teams: [],
+        matchOverride: m.matchOverride,
+        override: m.override,
+        endGameVal: m.endGameVal,
+        chargeStationValAuto: m.chargeStationValAuto,
+        whoWon: m.whoWon,
+        checkedWhoWon: m.checkedWhoWon,
+        rankingPts: m.rankingPts,
+        rankingState: m.rankingState,
+        bonusVal: m.bonusVal,
+        bonusState: m.bonusState,
+        penaltyVal: m.penaltyVal,
+        dropDownVal: [
+          /*0 - AutoPlacement*/m.AutonomousPlacement,
+          /*1 - driveStrength*/m.Teleop.DriveStrength,
+          /*2 - driveSpeed*/m.Teleop.DriveSpeed
+        ],
+        counterBoxVals: [
+          //AUTONOMOUS SCORING
+          /*0*/m.Autonomous.Scored.Cubes.Upper, 
+          /*1*/m.Autonomous.Scored.Cubes.Mid, 
+          /*2*/m.Autonomous.Scored.Cubes.Lower, 
+          /*3*/m.Autonomous.Attempted.Cubes.Upper, 
+          /*4*/m.Autonomous.Attempted.Cubes.Mid, 
+          /*5*/m.Autonomous.Attempted.Cubes.Lower, 
+          /*6*/m.Autonomous.Scored.Cones.Upper,
+          /*7*/m.Autonomous.Scored.Cones.Mid,
+          /*8*/m.Autonomous.Scored.Cones.Lower,
+          /*9*/m.Autonomous.Attempted.Cones.Upper,
+          /*10*/m.Autonomous.Attempted.Cones.Mid,
+          /*11*/m.Autonomous.Attempted.Cones.Lower,
+          //TELEOP SCORING
+          /*12*/m.Teleop.Scored.Cubes.Upper, 
+          /*13*/m.Teleop.Scored.Cubes.Mid, 
+          /*14*/m.Teleop.Scored.Cubes.Lower, 
+          /*15*/m.Teleop.Attempted.Cubes.Upper, 
+          /*16*/m.Teleop.Attempted.Cubes.Mid, 
+          /*17*/m.Teleop.Attempted.Cubes.Lower, 
+          /*18*/m.Teleop.Scored.Cones.Upper,
+          /*19*/m.Teleop.Scored.Cones.Mid,
+          /*20*/m.Teleop.Scored.Cones.Lower,
+          /*21*/m.Teleop.Attempted.Cones.Upper,
+          /*22*/m.Teleop.Attempted.Cones.Mid,
+          /*23*/m.Teleop.Attempted.Cones.Lower,
+          /*24*/m.Penalties.Fouls,
+          /*25*/m.Penalties.Tech
+        ],
+        //smartPlacementVal: false,
+        strategyVal: m.strategyVal,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        //mobilityVal: false,
+        booleans: m.booleans,
+        totalPoints: m.totalPoints,
+        totalGrid: m.totalGrid,
+        cubesAccuracy: m.cubesAccuracy,
+        conesAccuracy: m.conesAccuracy,
+        cubesPts: m.cubesPts,
+        conesPts: m.conesPts,
+      }
     }
   }
 
@@ -184,16 +257,17 @@ class Form extends React.Component {
   }
 
   async getMatchTeams() {
-    this.regional = '2022hiho'  /* change event_key */
+    //this.regional = '2022hiho'  /* change event_key */
     let matchKey =  /*put this years event*//*/*/ this.regional  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
     const teams = async () => {
+       /*
       await fetch('https://www.thebluealliance.com/api/v3/event/' + this.regional  + '/matches', {
         mode: 'cors',
         headers: {
           'X-TBA-Auth-Key': 'TKWj89sH9nu6hwIza0zK91UQBRUaW5ETVJrZ7KhHOolwmuKxKqD3UkQMAoqHahsn'
-        }
-      })
-        .then(response => response.json())
+        } */
+        getMatchesForRegional(this.regional)
+        //.then(response => response.json())
         .then(data => {
           data.map((matches) => {
             console.log(matches.key)
@@ -206,6 +280,7 @@ class Form extends React.Component {
           })
         })
         .catch(err => console.log(err))
+       
     }
     console.log(this.matchKey);
     console.log(this.matchData)
@@ -1118,18 +1193,6 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.DEFENSE);
       }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     /*let stratSuperFinal = []
 
