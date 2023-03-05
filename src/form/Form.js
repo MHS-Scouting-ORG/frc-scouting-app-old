@@ -124,6 +124,13 @@ class Form extends React.Component {
     }
     else {
       let m = this.matchData;
+      let rankingStates = m.RankingPts
+      if (rankingStates[1] === "ActivationBonus") {
+        rankingStates[1] = "Activation "
+      }
+      if (rankingStates[2] === "SustainabilityBonus") {
+        rankingStates[2] = "Sustainability "
+      }
 
       const [a, r, matchType, matchNumber] = m.id.match(/(.+)_([a-z]{1,2}[0-9]?)m([0-9+]{1,2})/)
 
@@ -148,7 +155,7 @@ class Form extends React.Component {
         whoWon: '', //UNUSED
         checkedWhoWon: ['',''], //UNUSED
         rankingPts: 0, //UNUSED
-        rankingState: m.RankingPts, //RANKING PTS STATES
+        rankingState: rankingStates, //RANKING PTS STATES
         bonusVal: '', //UNUSED
         bonusState: ["",""], //UNUSED
         penaltyVal: m.Penalties.Penalties, 
