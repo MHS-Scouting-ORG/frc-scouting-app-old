@@ -107,7 +107,7 @@ class Form extends React.Component {
         bonusVal: [' ', ' '],
         bonusState: '',
         penaltyVal: [' ', ' ', ' ', ' ', ' ',' '],
-        dropDownVal: ['', '', '', '', ''],
+        dropDownVal: ['', '', ''],
         //autoPlacement: 0,
         counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         //smartPlacementVal: false,
@@ -125,29 +125,34 @@ class Form extends React.Component {
     else {
       let m = this.matchData;
 
+
       this.state = {
-        comments: m.comments,
+        comments: m.Comments,
         //summaryComments: '',
-        stationComments: m.stationComments,
-        matchType: m.matchType,
-        elmNum: m.elmNum,
-        matchNumber: m.matchNumber,
+        stationComments: "", //UNUSED
+        matchType: "q" + (!isNan(Number(m.id.indexOf("_")+2)) ? m.id.indexOf("_"+2) : ''),
+        elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : 0 ), //MATCH ELM NUMBER
+        matchNumber: m.id,
         matchData: [],
-        teamNumber: m.teamNumber,
+        teamNumber: m.Team,
         teams: [],
-        matchOverride: m.matchOverride,
-        override: m.override,
-        endGameVal: m.endGameVal,
-        chargeStationValAuto: m.chargeStationValAuto,
-        whoWon: m.whoWon,
-        checkedWhoWon: m.checkedWhoWon,
-        rankingPts: m.rankingPts,
-        rankingState: m.rankingState,
-        bonusVal: m.bonusVal,
-        bonusState: m.bonusState,
-        penaltyVal: m.penaltyVal,
+        matchOverride: false, //UNUSED
+        override: true, //OVERRIDE
+        endGameVal: [
+          /*0 - Tele Charge Station*/m.Teleop.ChargeStation,
+          /*1 - Endgame Start Time*/m.Teleop.EndGameTally.Start,
+          /*2 - Engame End Time*/m.Teleop.EndGameTally.End
+        ],
+        chargeStationValAuto: m.Autonomous.ChargeStation,
+        whoWon: '', //UNUSED
+        checkedWhoWon: ['',''], //UNUSED
+        rankingPts: 0, //UNUSED
+        rankingState: m.rankingState, //RANKING PTS STATES
+        bonusVal: '', //UNUSED
+        bonusState: ["",""], //UNUSED
+        penaltyVal: m.Priorities, 
         dropDownVal: [
-          /*0 - AutoPlacement*/m.AutonomousPlacement,
+          /*0 - AutoPlacement*/m.Autonomous.AutonomousPlacement,
           /*1 - driveStrength*/m.Teleop.DriveStrength,
           /*2 - driveSpeed*/m.Teleop.DriveSpeed
         ],
@@ -184,13 +189,16 @@ class Form extends React.Component {
         //smartPlacementVal: false,
         strategyVal: m.strategyVal,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         //mobilityVal: false,
-        booleans: m.booleans,
-        totalPoints: m.totalPoints,
-        totalGrid: m.totalGrid,
-        cubesAccuracy: m.cubesAccuracy,
-        conesAccuracy: m.conesAccuracy,
-        cubesPts: m.cubesPts,
-        conesPts: m.conesPts,
+        booleans: [
+          /*0 - MobilityVal*/m.Autonomous.LeftCommunity,
+          /*1 - SmartPlacement*/m.Teleop.SmartPlacement
+        ],
+        totalPoints: m.Teleop.ScoringTotal.Total,
+        totalGrid: m.Teleop.ScoringTotal.GridPoints,
+        cubesAccuracy: m.Teleop.CubesAccuracy.Overall,
+        conesAccuracy: m.Teleop.ConesAccuracy.Overall,
+        cubesPts: m.Teleop.ScoringTotal.Cubes,
+        conesPts: m.Teleop.ScoringTotal.Cones,
       }
     }
   }
@@ -215,7 +223,7 @@ class Form extends React.Component {
 
   changeMatchNumber(event) {
     if (event.target.value !== 0) {
-      this.setState({ matchOverride: false })
+      this.setState({ override: false })
     }
     this.setState({ matchNumber: event.target.value });
     this.setState({ teams: ['team1', 'team2', 'team3', 'team4', 'team5', 'team6'] });
@@ -1002,7 +1010,7 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.MID);
       }
       else if(strategy === "High Node "){
-        stratFinal.push(PriorityOpts.HIGH);
+        stratFinal.push("High");
       }
       else if(strategy === "Cubes "){
         stratFinal.push(PriorityOpts.CUBES);
@@ -1047,17 +1055,13 @@ class Form extends React.Component {
     function setChargeStationType(chargeStation){
       if(chargeStation === 'None'){
         return ChargeStationType.NONE;
-      }
-      else if(chargeStation === 'DockedEngaged'){
+      } else if(chargeStation === 'DockedEngaged'){
         return ChargeStationType.DOCKED_ENGAGED;
-      }
-      else if(chargeStation === 'Docked'){
+      } else if(chargeStation === 'Docked'){
         return ChargeStationType.DOCKED;
-      }
-      else if(chargeStation === 'Parked'){
+      } else if(chargeStation === 'Parked'){
         return ChargeStationType.Parked;
-      }
-      else if(chargeStation === 'Attempted'){
+      } else if(chargeStation === 'Attempted'){
         return ChargeStationType.ATTEMPTED;
       }
     }
