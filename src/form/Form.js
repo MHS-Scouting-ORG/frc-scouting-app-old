@@ -683,7 +683,7 @@ class Form extends React.Component {
       <div>
         <ChargeStation
           changeChargeStationUsed={this.changeChargeStation}
-          value={chargeStationState[i]}
+          value={chargeStationState}
         />
       </div>
     )
