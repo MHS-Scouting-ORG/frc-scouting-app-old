@@ -115,7 +115,7 @@ class Form extends React.Component {
         bonusState: '',
         penaltyVal: [' ', ' ', ' ', ' ', ' ',' '],
         dropDownVal: ['', '', '', '', ''],
-        autoPlacement: 0,
+        //autoPlacement: 0,
         counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         //smartPlacementVal: false,
         strategyVal: [null, null, null, null, null, null, null, null, null],//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -158,7 +158,6 @@ class Form extends React.Component {
           /*1 - driveStrength*/m.Teleop.DriveStrength,
           /*2 - driveSpeed*/m.Teleop.DriveSpeed
         ],
-        autoPlacement: m.AutonomousPlacement,
         counterBoxVals: [
           //AUTONOMOUS SCORING
           /*0*/m.Autonomous.Scored.Cubes.Upper, 
@@ -186,6 +185,8 @@ class Form extends React.Component {
           /*21*/m.Teleop.Attempted.Cones.Upper,
           /*22*/m.Teleop.Attempted.Cones.Mid,
           /*23*/m.Teleop.Attempted.Cones.Lower,
+          /*24*/m.Penalties.Fouls,
+          /*25*/m.Penalties.Tech
         ],
         //smartPlacementVal: false,
         strategyVal: m.strategyVal,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
