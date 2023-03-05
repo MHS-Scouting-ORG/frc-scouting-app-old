@@ -7,7 +7,7 @@ class ChargeStation extends React.Component{
         this.changeChargeStation = this.changeChargeStation.bind(this);
 
         this.state ={
-            changeChargeStationUsed: ' ',
+            changeChargeStationUsed: props.changeChargeStationUsed,
         }
     }
 
