@@ -4,16 +4,14 @@ import Form from '../form/Form';
 class Modal extends React.Component{
     constructor(props){
         super(props);
-        console.log(this.props.data)
     }
-
     render(){
-        //console.log("******** FROM MODAL *************");
-        console.log(this.props.data)
         if(this.props.onOff){
+            const data = this.props.data[0]
+            console.log(data)
             return(
                 <div>
-                    <Form regional={this.props.regional} matchData={this.props.data}></Form>
+                    <Form regional={this.props.regional} matchData={data}></Form>
                     <button onClick={() => this.props.offFunction()}> FINISH EDIT </button>
                 </div>
             )

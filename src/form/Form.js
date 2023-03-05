@@ -52,13 +52,6 @@ class Form extends React.Component {
     this.changeChargeStation = this.changeChargeStation.bind(this);
     this.makeChargeStationAuto = this.makeChargeStationAuto.bind(this);
 
-    /*
-    this.runTimer = this.runTimer.bind(this);
-    this.stopTimer = this.stopTimer.bind(this);
-    this.timeChanged = this.timeChanged.bind(this);
-    this.makeChargeStationTimer = this.makeChargeStationTimer.bind(this);
-    */
-
     this.buttonMinus = this.buttonMinus.bind(this);
     this.buttonPlus = this.buttonPlus.bind(this);
     this.counterBoxChanged = this.counterBoxChanged.bind(this);
@@ -114,7 +107,7 @@ class Form extends React.Component {
         bonusVal: [' ', ' '],
         bonusState: '',
         penaltyVal: [' ', ' ', ' ', ' ', ' ',' '],
-        dropDownVal: ['', '', '', '', ''],
+        dropDownVal: ['', '', ''],
         //autoPlacement: 0,
         counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         //smartPlacementVal: false,
@@ -132,29 +125,34 @@ class Form extends React.Component {
     else {
       let m = this.matchData;
 
+
       this.state = {
-        comments: m.comments,
+        comments: m.Comments,
         //summaryComments: '',
-        stationComments: m.stationComments,
-        matchType: m.matchType,
-        elmNum: m.elmNum,
-        matchNumber: m.matchNumber,
+        stationComments: "", //UNUSED
+        matchType: "q" + (!isNan(Number(m.id.indexOf("_")+2)) ? m.id.indexOf("_"+2) : ''),
+        elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : 0 ), //MATCH ELM NUMBER
+        matchNumber: m.id,
         matchData: [],
-        teamNumber: m.teamNumber,
+        teamNumber: m.Team,
         teams: [],
-        matchOverride: m.matchOverride,
-        override: m.override,
-        endGameVal: m.endGameVal,
-        chargeStationValAuto: m.chargeStationValAuto,
-        whoWon: m.whoWon,
-        checkedWhoWon: m.checkedWhoWon,
-        rankingPts: m.rankingPts,
-        rankingState: m.rankingState,
-        bonusVal: m.bonusVal,
-        bonusState: m.bonusState,
-        penaltyVal: m.penaltyVal,
+        matchOverride: false, //UNUSED
+        override: true, //OVERRIDE
+        endGameVal: [
+          /*0 - Tele Charge Station*/m.Teleop.ChargeStation,
+          /*1 - Endgame Start Time*/m.Teleop.EndGameTally.Start,
+          /*2 - Engame End Time*/m.Teleop.EndGameTally.End
+        ],
+        chargeStationValAuto: m.Autonomous.ChargeStation,
+        whoWon: '', //UNUSED
+        checkedWhoWon: ['',''], //UNUSED
+        rankingPts: 0, //UNUSED
+        rankingState: m.rankingState, //RANKING PTS STATES
+        bonusVal: '', //UNUSED
+        bonusState: ["",""], //UNUSED
+        penaltyVal: m.Priorities, 
         dropDownVal: [
-          /*0 - AutoPlacement*/m.AutonomousPlacement,
+          /*0 - AutoPlacement*/m.Autonomous.AutonomousPlacement,
           /*1 - driveStrength*/m.Teleop.DriveStrength,
           /*2 - driveSpeed*/m.Teleop.DriveSpeed
         ],
@@ -191,13 +189,16 @@ class Form extends React.Component {
         //smartPlacementVal: false,
         strategyVal: m.strategyVal,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         //mobilityVal: false,
-        booleans: m.booleans,
-        totalPoints: m.totalPoints,
-        totalGrid: m.totalGrid,
-        cubesAccuracy: m.cubesAccuracy,
-        conesAccuracy: m.conesAccuracy,
-        cubesPts: m.cubesPts,
-        conesPts: m.conesPts,
+        booleans: [
+          /*0 - MobilityVal*/m.Autonomous.LeftCommunity,
+          /*1 - SmartPlacement*/m.Teleop.SmartPlacement
+        ],
+        totalPoints: m.Teleop.ScoringTotal.Total,
+        totalGrid: m.Teleop.ScoringTotal.GridPoints,
+        cubesAccuracy: m.Teleop.CubesAccuracy.Overall,
+        conesAccuracy: m.Teleop.ConesAccuracy.Overall,
+        cubesPts: m.Teleop.ScoringTotal.Cubes,
+        conesPts: m.Teleop.ScoringTotal.Cones,
       }
     }
   }
@@ -222,7 +223,7 @@ class Form extends React.Component {
 
   changeMatchNumber(event) {
     if (event.target.value !== 0) {
-      this.setState({ matchOverride: false })
+      this.setState({ override: false })
     }
     this.setState({ matchNumber: event.target.value });
     this.setState({ teams: ['team1', 'team2', 'team3', 'team4', 'team5', 'team6'] });
@@ -632,53 +633,6 @@ class Form extends React.Component {
 
   //-------------------------------------------------------------------------------------------------------------//
 
-  /*
-  runTimer(event) {
-    console.log("starting")
-    let endGameTimerState = this.state.endGameTimer
-    setInterval(() => {
-      if (this.stopTimer === true) {
-        return;
-      }
-      endGameTimerState = parseInt(Math.round(event.target.value + .1) * 10) / 10;
-    }, 100)
-  }
-
-  stopTimer(event) {
-    let endGameTimerState = this.state.endGameTimer
-    endGameTimerState = parseInt(Math.round(event.target.value + .1) * 10) / 10;
-    console.log(endGameTimerState)
-    return true;
-  }
-
-  timeChanged(event) {
-    console.log("yo")
-    let endGameTimerState = this.state.endGameTimer
-    if (event.target.value === '') {
-      endGameTimerState = 0;
-    }
-    else {
-      endGameTimerState = event.target.value;
-    }
-  }
-
-  makeChargeStationTimer(title) {
-    let endGameTimerState = this.state.endGameTimer
-    return (
-      <div>
-        <StationTimer
-          label={title}
-          setState={this.timeChanged}
-          state={endGameTimerState}
-          startButton={this.runTimer}
-          stopButton={this.stopTimer}
-        />
-      </div>
-    )
-  } */ 
-
-  //-------------------------------------------------------------------------------------------------------------//
-
   setComment(event) {
     this.setState({ comments: event.target.value });
   }
@@ -909,48 +863,6 @@ class Form extends React.Component {
     let fouls = parseInt(counterVal[24]);
     let techFouls = parseInt(counterVal[25]);
 
-    /*
-    
-        <p>🟪Cubes Scored</p>
-        {this.makeCounterBox("High Cubes Made: ", 0)}
-        {this.makeCounterBox("Mid Cubes Made: ", 1)}
-        {this.makeCounterBox("Low Cubes Made: ", 2)}
-        <p>🟪Cubes Attempted</p>
-        {this.makeCounterBox("High Cubes Attempted: ", 3)}
-        {this.makeCounterBox("Mid Cubes Attempted: ", 4)}
-        {this.makeCounterBox("Low Cubes Attempted: ", 5)}
-        <p>🔺Cones Scored</p>
-        {this.makeCounterBox("High Cones Made: ", 6)}
-        {this.makeCounterBox("Mid Cones Made: ", 7)}
-        {this.makeCounterBox("Low Cones Made: ", 8)}
-        <p>🔺Cones Attempted</p>
-        {this.makeCounterBox("High Cones Attempted: ", 9)}
-        {this.makeCounterBox("Mid Cones Attempted: ", 10)}
-        {this.makeCounterBox("Low Cones Attempted: ", 11)}
-        <br></br>
-        {this.makeBooleanCheckBox("Mobility ", 0)}{/*this.makeMobilityBox("Mobility ")*//*}
-        <br></br>
-        {this.makeChargeStationAuto()}
-        <br></br>
-        <h3>TELE-OP</h3>
-        <p>🟪Cubes Scored</p>
-        {this.makeCounterBox("High Cubes Made: ", 12)}
-        {this.makeCounterBox("Mid Cubes Made: ", 13)}
-        {this.makeCounterBox("Low Cubes Made: ", 14)}
-        <p>🟪Cubes Attempted</p>
-        {this.makeCounterBox("High Cubes Attempted: ", 15)}
-        {this.makeCounterBox("Mid Cubes Attempted: ", 16)}
-        {this.makeCounterBox("Low Cubes Attempted: ", 17)}
-        <p>🔺Cones Scored</p>
-        {this.makeCounterBox("High Cones Made: ", 18)}
-        {this.makeCounterBox("Mid Cones Made: ", 19)}
-        {this.makeCounterBox("Low Cones Made: ", 20)}
-        <p>🔺Cones Attempted</p>
-        {this.makeCounterBox("High Cones Attempted: ", 21)}
-        {this.makeCounterBox("Mid Cones Attempted: ", 22)}
-        {this.makeCounterBox("Low Cones Attempted: ", 23)}
-    */
-
     /*-------------------------------------------------------------SETTING SCORING VARIABLES--------------------------------------------------------------*/
 
 
@@ -1008,46 +920,8 @@ class Form extends React.Component {
 
 
     /*----------------------------------------------------POINT CALCULATIONS----------------------------------------------------------*/
-    //TOTALS
-/*
-    //Row Grid Points
-    let highGridPoints = 6 * (highAutoCones + highAutoCubes) + 5 * (highTeleCones + highTeleCubes);
-    let midGridPoints = 4 * (midAutoCones + midAutoCubes) + 3 * (midTeleCones + midTeleCubes);
-    let lowGridPoints = 3 * (lowAutoCones + lowAutoCubes) + 2 * (lowTeleCones + lowTeleCubes);
-
-    //OVERALL POINTS
-    let autoPoints = 6 * (highAutoCones + highAutoCubes) + 4 * (midAutoCones + midAutoCubes) + 3 * (lowAutoCones + lowAutoCubes);
-    let telePoints = 5 * (highTeleCones + highTeleCubes) + 3 * (midTeleCones + midTeleCubes) + 2 * (lowTeleCones + lowTeleCubes);
-    let points = (chargeStationPts + endGamePts + mobilityPts) + autoPoints + telePoints;
-    let cubePts = (highAutoCubes * 6) + (highTeleCubes * 5) + (midAutoCubes * 4) + (midTeleCubes * 3) + (lowAutoCubes * 3) + (lowTeleCubes * 2);
-    let conePts = (highAutoCones * 6) + (highTeleCones * 5) + (midAutoCones * 4) + (midTeleCones * 3) + (lowAutoCones * 3) + (lowTeleCones * 2);
-
-    //HIGH ACCURACIES
-    let cubesHighTeleAutoAccuracy = 100 * ((highAutoCubes + highTeleCubes) / (highCubesAttempted));
-    let conesHighTeleAutoAccuracy = 100 * ((highAutoCones + highTeleCones) / (highConesAttempted));
-    let highAccuracy = 100 * ((conesHighTeleAutoAccuracy + cubesHighTeleAutoAccuracy) / (highCubesAttempted + highConesAttempted));
-    
-    //MID ACCURACIES
-    let cubesMidTeleAutoAccuracy = 100 * ((midAutoCubes + midTeleCubes) / (midCubesAttempted));
-    let conesMidTeleAutoAccuracy = 100 * ((midAutoCones + midTeleCones) / (midConesAttempted));
-    let midAccuracy = 100 * ((cubesMidTeleAutoAccuracy + conesMidTeleAutoAccuracy) / (midCubesAttempted + midConesAttempted));
-
-    //LOW ACCURACIES
-    let cubesLowTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes) / (lowCubesAttempted));
-    let conesLowTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones) / (lowConesAttempted));
-    let lowAccuracy = 100 * ((cubesLowTeleAutoAccuracy + conesLowTeleAutoAccuracy) / (lowCubesAttempted + lowConesAttempted));
-
-    let totalGridPts = highGridPoints + midGridPoints + lowGridPoints;
-
-    let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesAttempted));
-    let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesAttempted));
-//*/
 
     let mobility = booleans[0]; //this.state.mobilityVal;
-
-    //let endGamePts = 0;
-    //let chargeStationPts = 0;
-    //let mobilityPts = 0;
 
     let incompleteForm = false;
     let incompletePriorities = true;
@@ -1125,42 +999,6 @@ class Form extends React.Component {
         }
     }
 
-    /*
-    let stratFinal = [];
-    for(let i = 0; i < strategies.length; i++){
-      let strategy = strategies[i];
-      if(strategy === "Low Node "){
-        stratFinal[i] = PriorityOpts.LOW;
-      }
-      else if(strategy === "Mid Node "){
-        stratFinal[i] = PriorityOpts.MID;
-      }
-      else if(strategy === "High Node "){
-        stratFinal[i] = PriorityOpts.HIGH;
-      }
-      else if(strategy === "Cubes "){
-        stratFinal[i] = PriorityOpts.CUBES;
-      }
-      else if(strategy === "Cones "){
-        stratFinal[i] = PriorityOpts.CONES;
-      }
-      else if(strategy === "Charge Station "){
-        stratFinal[i] = PriorityOpts.CHARGESTATION;
-      }
-      else if(strategy === "Single Substation "){
-        stratFinal[i] = PriorityOpts.SINGLE_SUBSTATION;
-      }
-      else if(strategy === "Double Substation Shute "){
-        stratFinal[i] = PriorityOpts.DOUBLE_STATION_SHUTE;
-      }
-      else if(strategy === "Double Substation Sliding Shelves "){
-        stratFinal[i] = PriorityOpts.DOUBLE_STATION_SLIDNING_SHELVE;
-      }
-      else if(strategy === "Defense "){
-        stratFinal[i] = PriorityOpts.DEFENSE;
-      }
-    }*/
-
 //JASON NEEDS TO FIX THE GRAPHQL
     let stratFinal = [];
     for(let i = 0; i < strategies.length; i++){
@@ -1172,7 +1010,7 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.MID);
       }
       else if(strategy === "High Node "){
-        stratFinal.push("Upper")//PriorityOpts.HIGH);
+        stratFinal.push("High");
       }
       else if(strategy === "Cubes "){
         stratFinal.push(PriorityOpts.CUBES);
@@ -1184,35 +1022,15 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.CHARGESTATION);
       }
       else if(strategy === "Single Substation "){
-        stratFinal.push("SingleSubstation")//PriorityOpts.SINGLE_SUBSTATION);
+        stratFinal.push(PriorityOpts.SINGLE_SUBSTATION);
       }
       else if(strategy === "Double Substation "){
-        stratFinal.push("DoubleStation")//PriorityOpts.DOUBLE_STATION_SHUTE);
+        stratFinal.push(PriorityOpts.DOUBLE_STATION);
       }
       else if(strategy === "Defense "){
         stratFinal.push(PriorityOpts.DEFENSE);
       }
     }
-
-    /*let stratSuperFinal = []
-
-    for(i = 0; i < stratFinal.length; i++){
-      if(stratFinal[i] )
-    }*/
-
-    //console.log(stratFinal)
-    /*
-        {this.makeStrategyBox("Low Node ", 0)}
-        {this.makeStrategyBox("Mid Node ", 1)}
-        {this.makeStrategyBox("High Node ", 2)}
-        {this.makeStrategyBox("Cubes ", 3)}
-        {this.makeStrategyBox("Cones ", 4)}
-        {this.makeStrategyBox("Charge Station ", 5)}
-        {this.makeStrategyBox("Single Substation ", 6)}
-        {this.makeStrategyBox("Double Substation Shute ", 7)}
-        {this.makeStrategyBox("Double Substation Sliding Shelves ", 8)}
-        {this.makeStrategyBox("Defense ", 9)}
-    */
 
     let rankFinal = [];
     for(let i = 0; i < rankingState.length; i++){
@@ -1234,24 +1052,16 @@ class Form extends React.Component {
       }
     }
 
-    //let intakeFinal = [];
-    //for(let i = 0; i < rankingState)
-
-
     function setChargeStationType(chargeStation){
       if(chargeStation === 'None'){
         return ChargeStationType.NONE;
-      }
-      else if(chargeStation === 'DockedEngaged'){
+      } else if(chargeStation === 'DockedEngaged'){
         return ChargeStationType.DOCKED_ENGAGED;
-      }
-      else if(chargeStation === 'Docked'){
+      } else if(chargeStation === 'Docked'){
         return ChargeStationType.DOCKED;
-      }
-      else if(chargeStation === 'Parked'){
+      } else if(chargeStation === 'Parked'){
         return ChargeStationType.Parked;
-      }
-      else if(chargeStation === 'Attempted'){
+      } else if(chargeStation === 'Attempted'){
         return ChargeStationType.ATTEMPTED;
       }
     }
