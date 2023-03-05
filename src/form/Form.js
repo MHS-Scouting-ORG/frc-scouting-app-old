@@ -152,7 +152,7 @@ class Form extends React.Component {
         bonusState: ["",""], //UNUSED
         penaltyVal: m.Priorities, 
         dropDownVal: [
-          /*0 - AutoPlacement*/m.AutonomousPlacement,
+          /*0 - AutoPlacement*/m.Autonomous.AutonomousPlacement,
           /*1 - driveStrength*/m.Teleop.DriveStrength,
           /*2 - driveSpeed*/m.Teleop.DriveSpeed
         ],
