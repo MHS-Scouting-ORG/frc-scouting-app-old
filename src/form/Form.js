@@ -1160,18 +1160,6 @@ class Form extends React.Component {
       }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     /*let stratSuperFinal = []
 
     for(i = 0; i < stratFinal.length; i++){
