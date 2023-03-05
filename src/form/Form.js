@@ -1055,17 +1055,13 @@ class Form extends React.Component {
     function setChargeStationType(chargeStation){
       if(chargeStation === 'None'){
         return ChargeStationType.NONE;
-      }
-      else if(chargeStation === 'DockedEngaged'){
+      } else if(chargeStation === 'DockedEngaged'){
         return ChargeStationType.DOCKED_ENGAGED;
-      }
-      else if(chargeStation === 'Docked'){
+      } else if(chargeStation === 'Docked'){
         return ChargeStationType.DOCKED;
-      }
-      else if(chargeStation === 'Parked'){
+      } else if(chargeStation === 'Parked'){
         return ChargeStationType.Parked;
-      }
-      else if(chargeStation === 'Attempted'){
+      } else if(chargeStation === 'Attempted'){
         return ChargeStationType.ATTEMPTED;
       }
     }
