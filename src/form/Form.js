@@ -148,7 +148,7 @@ class Form extends React.Component {
         whoWon: '', //UNUSED
         checkedWhoWon: ['',''], //UNUSED
         rankingPts: 0, //UNUSED
-        rankingState: m.rankingState, //RANKING PTS STATES
+        rankingState: m.RankingPts, //RANKING PTS STATES
         bonusVal: '', //UNUSED
         bonusState: ["",""], //UNUSED
         penaltyVal: m.Priorities, 
