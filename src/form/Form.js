@@ -91,10 +91,9 @@ class Form extends React.Component {
     this.setComment = this.setComment.bind(this);
 
     this.submitState = this.submitState.bind(this);
-    
-    if (!this.matchData) {
-      this.state = { 
 
+    if (this.matchData === undefined) {
+      this.state = { 
         comments: '',
         //summaryComments: '',
         stationComments: '',
@@ -128,6 +127,43 @@ class Form extends React.Component {
         conesAccuracy: 0,
         cubesPts: 0,
         conesPts: 0,
+      }
+    }
+    else {
+      this.state = {
+        comments: this.matchData.comments,
+        //summaryComments: '',
+        stationComments: this.matchData.stationComments,
+        matchType: this.matchData.matchType,
+        elmNum: this.matchData.elmNum,
+        matchNumber: this.matchData.matchNumber,
+        matchData: this.matchData.matchData,
+        teamNumber: this.matchData.teamNumber,
+        teams: this.matchData.teams,
+        matchOverride: this.matchData.matchOverride,
+        override: this.matchData.override,
+        endGameVal: this.matchData.endGameVal,
+        chargeStationValAuto: this.matchData.chargeStationValAuto,
+        whoWon: this.matchData.whoWon,
+        checkedWhoWon: this.matchData.checkedWhoWon,
+        rankingPts: this.matchData.rankingPts,
+        rankingState: this.matchData.rankingState,
+        bonusVal: this.matchData.bonusVal,
+        bonusState: this.matchData.bonusState,
+        penaltyVal: this.matchData.penaltyVal,
+        dropDownVal: this.matchData.dropDownVal,
+        autoPlacement: this.matchData.autoPlacement,
+        counterBoxVals: this.matchData.counterBoxVals,
+        //smartPlacementVal: false,
+        strategyVal: this.matchData.strategyVal,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        //mobilityVal: false,
+        booleans: this.matchData.booleans,
+        totalPoints: this.matchData.totalPoints,
+        totalGrid: this.matchData.totalGrid,
+        cubesAccuracy: this.matchData.cubesAccuracy,
+        conesAccuracy: this.matchData.conesAccuracy,
+        cubesPts: this.matchData.cubesPts,
+        conesPts: this.matchData.conesPts,
       }
     }
   }
