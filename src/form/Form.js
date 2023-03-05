@@ -12,7 +12,7 @@ import { apiCreateTeamMatchEntry, apiUpdateTeamMatch } from '../api';
 //import { ConsoleLogger } from '@aws-amplify/core';
 //import { ChargeStationType, RankingPtsOpts } from '../api/builder';
 import buildMatchEntry, { ChargeStationType, PenaltyKinds, RankingPtsOpts, PriorityOpts } from '../api/builder'
-import { getTeamsInRegional, getMatchesForRegional } from '../api/bluealliance';
+import { getMatchesForRegional } from '../api/bluealliance';
 
 class Form extends React.Component {
   constructor(props) {
@@ -137,9 +137,9 @@ class Form extends React.Component {
         matchType: this.matchData.matchType,
         elmNum: this.matchData.elmNum,
         matchNumber: this.matchData.matchNumber,
-        matchData: this.matchData.matchData,
+        matchData: [],
         teamNumber: this.matchData.teamNumber,
-        teams: this.matchData.teams,
+        teams: [],
         matchOverride: this.matchData.matchOverride,
         override: this.matchData.override,
         endGameVal: this.matchData.endGameVal,
@@ -223,17 +223,17 @@ class Form extends React.Component {
   }
 
   async getMatchTeams() {
-    this.regional = '2022hiho'  /* change event_key */
+    //this.regional = '2022hiho'  /* change event_key */
     let matchKey =  /*put this years event*//*/*/ this.regional  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
     const teams = async () => {
-       
+       /*
       await fetch('https://www.thebluealliance.com/api/v3/event/' + this.regional  + '/matches', {
         mode: 'cors',
         headers: {
           'X-TBA-Auth-Key': 'TKWj89sH9nu6hwIza0zK91UQBRUaW5ETVJrZ7KhHOolwmuKxKqD3UkQMAoqHahsn'
-        }
-      })
-        .then(response => response.json())
+        } */
+        getMatchesForRegional(this.regional)
+        //.then(response => response.json())
         .then(data => {
           data.map((matches) => {
             console.log(matches.key)
@@ -246,8 +246,7 @@ class Form extends React.Component {
           })
         })
         .catch(err => console.log(err))
-        
-      
+       
     }
     console.log(this.matchKey);
     console.log(this.matchData)
