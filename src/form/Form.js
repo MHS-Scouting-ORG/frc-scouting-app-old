@@ -1002,7 +1002,7 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.MID);
       }
       else if(strategy === "High Node "){
-        stratFinal.push("Upper")//PriorityOpts.HIGH);
+        stratFinal.push(PriorityOpts.HIGH);
       }
       else if(strategy === "Cubes "){
         stratFinal.push(PriorityOpts.CUBES);
@@ -1014,10 +1014,10 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.CHARGESTATION);
       }
       else if(strategy === "Single Substation "){
-        stratFinal.push(PriorityOpts.SINGLE_SUBSTATION)//PriorityOpts.SINGLE_SUBSTATION);
+        stratFinal.push(PriorityOpts.SINGLE_SUBSTATION);
       }
       else if(strategy === "Double Substation "){
-        stratFinal.push(PriorityOpts.DOUBLE_STATION)//PriorityOpts.DOUBLE_STATION_SHUTE);
+        stratFinal.push(PriorityOpts.DOUBLE_STATION);
       }
       else if(strategy === "Defense "){
         stratFinal.push(PriorityOpts.DEFENSE);
