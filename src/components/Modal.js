@@ -6,9 +6,9 @@ class Modal extends React.Component{
         super(props);
     }
     render(){
-        let data = this.props.data[0]
-        console.log(data)
         if(this.props.onOff){
+            const data = this.props.data[0]
+            console.log(data)
             return(
                 <div>
                     <Form regional={this.props.regional} matchData={data}></Form>
