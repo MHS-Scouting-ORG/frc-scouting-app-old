@@ -235,7 +235,7 @@ class Form extends React.Component {
           /*25*/m.Penalties.Tech
         ],
         //smartPlacementVal: false,
-        strategyVal: m.Priorities,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        strategyVal: priorityStates,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         //mobilityVal: false,
         booleans: [
           /*0 - MobilityVal*/m.Autonomous.LeftCommunity,
