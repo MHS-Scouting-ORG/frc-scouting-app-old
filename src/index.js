@@ -3,11 +3,30 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import MainTable from './components/MainTable'
+import Form from './form/Form'
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const regional = "2022hiho"
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "/table",
+        element: <MainTable regional={regional} />
+      },
+      {
+        path: "/form",
+        element: <Form regional={regional}/>
+      }
+    ]
+  }
+])
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router}/>
   </React.StrictMode>
 );
 
