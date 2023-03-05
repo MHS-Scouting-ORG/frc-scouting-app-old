@@ -126,21 +126,27 @@ class Form extends React.Component {
       let m = this.matchData;
 
       let rankingStates = m.RankingPts;
+      let rankingPoints = 0;
       if (rankingStates[0] === "Win") {
         rankingStates[0] = "Team Won ";
+        rankingPoints = 2;
       }
       else if (rankingStates[0] === "Tie") {
         rankingStates[0] = "Team Tied ";
+        rankingPoints = 1;
       }
       else if (rankingStates[0] === "Loss") {
         rankingStates[0] = "Team Lost ";
+        rankingPoints = 0;
       }
 
       if (rankingStates[1] === "ActivationBonus") {
         rankingStates[1] = "Activation ";
+        rankingPoints++;
       }
       if (rankingStates[2] === "SustainabilityBonus") {
         rankingStates[2] = "Sustainability ";
+        rankingPoints++;
       }
 
       let priorityStates = m.Priorities;
@@ -194,7 +200,7 @@ class Form extends React.Component {
         chargeStationValAuto: m.Autonomous.ChargeStation,
         whoWon: '', //UNUSED
         checkedWhoWon: ['',''], //UNUSED
-        rankingPts: 0, //UNUSED
+        rankingPts: rankingPoints, //UNUSED
         rankingState: rankingStates, //RANKING PTS STATES
         bonusVal: '', //UNUSED
         bonusState: ["",""], //UNUSED
@@ -235,7 +241,7 @@ class Form extends React.Component {
           /*25*/m.Penalties.Tech
         ],
         //smartPlacementVal: false,
-        strategyVal: m.Priorities,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        strategyVal: priorityStates,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         //mobilityVal: false,
         booleans: [
           /*0 - MobilityVal*/m.Autonomous.LeftCommunity,
@@ -677,7 +683,7 @@ class Form extends React.Component {
       <div>
         <ChargeStation
           changeChargeStationUsed={this.changeChargeStation}
-          value={chargeStationState[i]}
+          value={chargeStationState}
         />
       </div>
     )
