@@ -623,10 +623,12 @@ class Form extends React.Component {
   }
 
   makeChargeStationAuto() {
+    let chargeStationState = this.state.chargeStationValAuto;
     return (
       <div>
         <ChargeStation
           changeChargeStationUsed={this.changeChargeStation}
+          value={chargeStationState[i]}
         />
       </div>
     )
