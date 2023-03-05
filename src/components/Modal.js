@@ -10,7 +10,7 @@ class Modal extends React.Component{
             const data = this.props.data[0]
             console.log(data)
             return(
-                <div>
+                <div className="modal">
                     <Form regional={this.props.regional} matchData={data}></Form>
                     <button onClick={() => this.props.offFunction()}> FINISH EDIT </button>
                 </div>
