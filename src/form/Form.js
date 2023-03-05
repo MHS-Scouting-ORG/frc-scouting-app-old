@@ -5,7 +5,6 @@ import MatchDropDown from './MatchDropDown';
 import EndGame from './EndGame';
 import ChargeStation from './ChargeStation';
 import CounterBox from './CounterBox';
-//import { getRegionals, getTeamsInRegional, } from "../api/bluealliance";
 import TextBox from './TextBox';
 import Headers from './Header';
 //import StationTimer from './StationTimer';
@@ -13,6 +12,7 @@ import { apiCreateTeamMatchEntry, apiUpdateTeamMatch } from '../api';
 //import { ConsoleLogger } from '@aws-amplify/core';
 //import { ChargeStationType, RankingPtsOpts } from '../api/builder';
 import buildMatchEntry, { ChargeStationType, PenaltyKinds, RankingPtsOpts, PriorityOpts } from '../api/builder'
+import { getTeamsInRegional, getMatchesForRegional } from '../api/bluealliance';
 
 class Form extends React.Component {
   constructor(props) {
@@ -91,41 +91,44 @@ class Form extends React.Component {
     this.setComment = this.setComment.bind(this);
 
     this.submitState = this.submitState.bind(this);
+    
+    if (!this.matchData) {
+      this.state = { 
 
-    this.state = { 
-      comments: '',
-      //summaryComments: '',
-      stationComments: '',
-      matchType: '',
-      elmNum: '',
-      matchNumber: '',
-      matchData: 'not found',
-      teamNumber: ' ',
-      teams: ['team1', 'team2', 'team3', 'team4', 'team5', 'team6'],
-      matchOverride: false,
-      override: false,
-      endGameVal: ['', '', ''],
-      chargeStationValAuto: '',
-      whoWon: '',
-      checkedWhoWon: [' ', ' '],
-      rankingPts: 0,
-      rankingState: ["", "", ""],
-      bonusVal: [' ', ' '],
-      bonusState: '',
-      penaltyVal: [' ', ' ', ' ', ' ', ' ',' '],
-      dropDownVal: ['', '', '', '', ''],
-      autoPlacement: 0,
-      counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      //smartPlacementVal: false,
-      strategyVal: [null, null, null, null, null, null, null, null, null],//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-      //mobilityVal: false,
-      booleans: [false, false],
-      totalPoints: 0,
-      totalGrid: 0,
-      cubesAccuracy: 0,
-      conesAccuracy: 0,
-      cubesPts: 0,
-      conesPts: 0,
+        comments: '',
+        //summaryComments: '',
+        stationComments: '',
+        matchType: '',
+        elmNum: '',
+        matchNumber: '',
+        matchData: 'not found',
+        teamNumber: ' ',
+        teams: ['team1', 'team2', 'team3', 'team4', 'team5', 'team6'],
+        matchOverride: false,
+        override: false,
+        endGameVal: ['', '', ''],
+        chargeStationValAuto: '',
+        whoWon: '',
+        checkedWhoWon: [' ', ' '],
+        rankingPts: 0,
+        rankingState: ["", "", ""],
+        bonusVal: [' ', ' '],
+        bonusState: '',
+        penaltyVal: [' ', ' ', ' ', ' ', ' ',' '],
+        dropDownVal: ['', '', '', '', ''],
+        autoPlacement: 0,
+        counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        //smartPlacementVal: false,
+        strategyVal: [null, null, null, null, null, null, null, null, null],//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        //mobilityVal: false,
+        booleans: [false, false],
+        totalPoints: 0,
+        totalGrid: 0,
+        cubesAccuracy: 0,
+        conesAccuracy: 0,
+        cubesPts: 0,
+        conesPts: 0,
+      }
     }
   }
 
@@ -187,6 +190,7 @@ class Form extends React.Component {
     this.regional = '2022hiho'  /* change event_key */
     let matchKey =  /*put this years event*//*/*/ this.regional  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
     const teams = async () => {
+       
       await fetch('https://www.thebluealliance.com/api/v3/event/' + this.regional  + '/matches', {
         mode: 'cors',
         headers: {
@@ -206,6 +210,8 @@ class Form extends React.Component {
           })
         })
         .catch(err => console.log(err))
+        
+      
     }
     console.log(this.matchKey);
     console.log(this.matchData)
