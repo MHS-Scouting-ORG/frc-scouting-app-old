@@ -7,7 +7,11 @@ import TeamInnerTable from "./TeamInnerTable";
 import GridInnerTable from './GridInnerTable';
 import GlobalFilter from "./GlobalFilter";
 import List from "./List";
-import Modal from ".Modal";
+import Modal from "./Modal";
+import ConeAccTable from "./ConeAccTable"
+import ConePtsTable from "./ConePtsTable"
+import CubeAccTable from "./CubeAccTable"
+import CubePtsTable from "./CubePtsTable"
 
 function MainTable(props) {
   const regional = props.regional
@@ -23,6 +27,9 @@ function MainTable(props) {
   const [coneAccState,setConeAccState] = useState(false); 
   const [cubePtsState,setCubePtsState] = useState(false); 
   const [cubeAccState,setCubeAccState] = useState(false);  
+
+  const [modalState, setModalState] = useState(false);
+  const [modalData, setModalData] = useState();
   //states for innerTables ^
 
   const [oprList,setOprList] = useState([]);
@@ -251,6 +258,21 @@ const handleDelete = (row) => {
   //console.log("CLICKED")
 }
 
+//EDIT
+
+const handleEdit = (row) => {
+  setModalState(true);
+  //console.log(row);
+  let setModal = apiData;
+  setModal = setModal.filter(x => x.Team === row.original.Team).filter(team => team.id === regional + "_" + row.original.Match)
+  setModalData(setModal);
+  //console.log(modalData)
+}
+
+const modalClose = () => {
+  setModalState(false);
+}
+
 // ================================= !MINI/INNER TABLES! ===========
 const renderRowSubComponent = ({ row }) => {
   let t = apiData.filter(x => x.Team === `frc${row.values.TeamNumber}`)
@@ -301,7 +323,7 @@ const renderRowSubComponent = ({ row }) => {
 
   return disp.length > 0 ?
   (<pre>
-    <div style={{maxWidth: "100rem", overflowX: "scroll", borderCollapse: "collapse", }}>{<TeamInnerTable delete={handleDelete} information = {disp}/>} </div>
+    <div style={{maxWidth: "100rem", overflowX: "scroll", borderCollapse: "collapse", }}>{<TeamInnerTable setModal={handleEdit} delete={handleDelete} information = {disp}/>} </div>
   </pre>)
   : (
     <div style={{
@@ -1005,6 +1027,8 @@ const data = React.useMemo(
   
   return (
     <div>
+      <Modal regional={regional} onOff={modalState} offFunction={modalClose} data={modalData}></Modal>
+
       <h1>CHARGED UP STATISTICS  <img src={"./images/bluethundalogo.png"} width="75px" height= "75px"></img>
       </h1>
             <table style={{ width:'1250px'}} >

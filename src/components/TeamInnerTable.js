@@ -5,6 +5,7 @@ const TeamInnerTable = (props) => {
 
     const data = props.information;
     const deleteHandler = props.delete;
+    const editHandler = props.setModal;
 
     const columns = React.useMemo(
         () => [
@@ -188,7 +189,7 @@ const TeamInnerTable = (props) => {
                       Header: 'Edit',
                       Cell: ({row}) => {
                         return <div>
-                          <button> EDIT </button>
+                          <button onClick={() => editHandler(row)}> EDIT </button>
                         </div>
                       }
                     }

@@ -16,7 +16,9 @@ import buildMatchEntry, { ChargeStationType, PenaltyKinds, RankingPtsOpts, Prior
 
 class Form extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+
+    this.matchData = props.matchData;
 
     this.regional = props.regional;
 
@@ -1153,19 +1155,19 @@ class Form extends React.Component {
     for(let i = 0; i < rankingState.length; i++){
       let rankOp = rankingState[i];
       if(rankOp === "Team Won "){
-        rankFinal[i] = RankingPtsOpts.WIN;
+        rankFinal.push(RankingPtsOpts.WIN);
       }
       else if(rankOp === "Team Tied "){
-        rankFinal[i] = RankingPtsOpts.TIE;
+        rankFinal.push(RankingPtsOpts.TIE);
       }
       else if(rankOp === "Team Lost "){
-        rankFinal[i] = RankingPtsOpts.LOSS;
+        rankFinal.push(RankingPtsOpts.LOSS);
       }
       else if(rankOp === "Sustainability "){
-        rankFinal[i] = RankingPtsOpts.SUSTAINABILITY_BONUS;
+        rankFinal.push(RankingPtsOpts.SUSTAINABILITY_BONUS);
       }
       else if(rankOp === "Activation "){
-        rankFinal[i] = RankingPtsOpts.ACTIVATION_BONUS;
+        rankFinal.push(RankingPtsOpts.ACTIVATION_BONUS);
       }
     }
 
@@ -1293,7 +1295,10 @@ class Form extends React.Component {
       window.alert(windowAlertMsg);
     } else if (incompleteForm === false || override === true) {
       //console.log(penalties);
-      await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey)
+      if (this.matchData) {
+        await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey)
+      }
+
       const matchEntry = buildMatchEntry(this.regional,teamNum,matchKey)
         //matchEntry.name=''
         //matchEntry.description=''
