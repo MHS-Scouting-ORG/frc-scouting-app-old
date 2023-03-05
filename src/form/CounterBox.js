@@ -7,7 +7,7 @@ class CounterBox extends React.Component{
         this.buttonPlus = this.buttonPlus.bind(this);
         this.counterChanged = this.counterChanged.bind(this)
         this.state = {
-            count: 0
+            count: props.state
         }
     }
 
@@ -53,7 +53,7 @@ class CounterBox extends React.Component{
             <div> 
                 <label>{this.props.label}</label>
                 <button value={this.props.state} onClick={this.buttonMinus}>-</button>
-                <input value={this.state.count} style={{width: '10%', textAlign: 'center'}} type='number' min='0' id={this.props.place} onChange={this.counterChanged} readOnly='true'/>
+                <input style={{width: '10%', textAlign: 'center'}} type='number' min='0' id={this.props.place} onChange={this.counterChanged} readOnly='true' value={this.state.count}/>
                 <button value={this.props.state} onClick={this.buttonPlus}>+</button>
                 
                 
