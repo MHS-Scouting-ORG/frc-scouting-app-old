@@ -22,7 +22,7 @@ class ChargeStation extends React.Component{
             <div>
                 <label> {"⚡Charge Station: "}
                     <select onChange={this.changeChargeStation}>
-                        <option value={this.props.value}></option>
+                        <option value={this.props.value}> {this.props.value} </option>
                         <option value='None'>None</option>
                         <option value='DockedEngaged'>Docked & Engaged</option>
                         <option value='Docked'>Docked & Not Enaged</option>
