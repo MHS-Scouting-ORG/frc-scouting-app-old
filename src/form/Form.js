@@ -1357,9 +1357,8 @@ class Form extends React.Component {
         if (this.matchData === undefined) {
           await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey,matchEntry);
         }
-        else{
-          await apiUpdateTeamMatch(this.regional, teamNum, matchKey, matchEntry);
-        }
+        
+        await apiUpdateTeamMatch(this.regional, teamNum, matchKey, matchEntry);
   
       /*await *///
     //console.log(this.state);
