@@ -209,7 +209,7 @@ class Form extends React.Component {
         //summaryComments: '',
         stationComments: "", //UNUSED
         matchType: matchType, 
-        elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : 0 ), //MATCH ELM NUMBER
+        elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : '' ), //MATCH ELM NUMBER
         matchNumber: matchNumber,
         matchData: [],
         teamNumber: m.Team,
@@ -1264,10 +1264,6 @@ class Form extends React.Component {
       window.alert(windowAlertMsg);
     } else if (incompleteForm === false || override === true) {
       //console.log(penalties);
-      if (this.matchData) {
-        await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey)
-      }
-
       const matchEntry = buildMatchEntry(this.regional,teamNum,matchKey)
         //matchEntry.name=''
         //matchEntry.description=''
@@ -1358,7 +1354,14 @@ class Form extends React.Component {
         // console.log(PriorityOpts.DOUBLE_STATION_SHUTE)
         matchEntry.Priorities=stratFinal;
 
-      /*await */apiUpdateTeamMatch(this.regional, teamNum, matchKey, matchEntry)
+        if (this.matchData === undefined) {
+
+          await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey);
+        }
+        
+        await apiUpdateTeamMatch(this.regional, teamNum, matchKey, matchEntry);
+  
+      /*await *///
     //console.log(this.state);
 
     // console.log(this.regional,teamNum,matchKey,matchEntry)
