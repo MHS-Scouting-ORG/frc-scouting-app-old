@@ -295,6 +295,7 @@ class Form extends React.Component {
   }
 
   makeMatchDropDown() {
+    let matchTypeState = this.state.matchType
     return (
       <div>
         <MatchDropDown
@@ -302,6 +303,7 @@ class Form extends React.Component {
           setElmNum={this.changeElmNum}
           generateMatchTypeNum={this.makeMatchTypeDropDown}
           setMatchNumber={this.changeMatchNumber}
+          value={matchTypeState}
 
         />
       </div>
