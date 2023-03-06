@@ -149,34 +149,56 @@ class Form extends React.Component {
         rankingPoints++;
       }
 
-      let priorityStates = [...m.Prioritie];
+      let priorityStates = [...m.Priorities];
         for(let i = 0; i < priorityStates.length(); i++){
-        if (priorityStates[i] === "Low") {
-          priorityStates[0] = "Low Node ";
+          if (priorityStates[i] === "Low") {
+            priorityStates[0] = "Low Node ";
+          }
+          if (priorityStates[i] === "Mid") {
+            priorityStates[1] = "Mid Node ";
+          }
+          if (priorityStates[i] === "High") {
+            priorityStates[2] = "High Node ";
+          }
+          if (priorityStates[i] === "Cubes") {
+            priorityStates[3] = "Cubes ";
+          }
+          if (priorityStates[i] === "Cones") {
+            priorityStates[4] = "Cones ";
+          }
+          if (priorityStates[i] === "ChargeStation") {
+            priorityStates[5] = "Charge Station ";
+          }
+          if (priorityStates[i] === "SingleSubstation") {
+            priorityStates[6] = "Single Substation ";
+          }
+          if (priorityStates[i] === "DoubleStation") {
+            priorityStates[7] = "Double Substation ";
+          }
+          if (priorityStates[i] === "Defense") {
+            priorityStates[8] = "Defense ";
+          }
+      }
+
+      let penaltyStates = [...m.penaltyVal];
+      for (let i = 0; i < m.penaltyStates.length(); i++) {
+        if (penaltyStates[i] === "YellowCard") {
+          penaltyStates[0] = "Yellow Card ";
         }
-        if (priorityStates[i] === "Mid") {
-          priorityStates[1] = "Mid Node ";
+        if (penaltyStates[i] === "RedCard") {
+          penaltyStates[1] = "Red Card ";
         }
-        if (priorityStates[i] === "High") {
-          priorityStates[2] = "High Node ";
+        if (penaltyStates[i] === "Disabled") {
+          penaltyStates[2] = "Disable ";
         }
-        if (priorityStates[i] === "Cubes") {
-          priorityStates[3] = "Cubes ";
+        if (penaltyStates[i] === "DQ") {
+          penaltyStates[3] = "Disqualified ";
         }
-        if (priorityStates[i] === "Cones") {
-          priorityStates[4] = "Cones ";
+        if (penaltyStates[i] === "BrokenBot") {
+          penaltyStates[4] = "Bot Broke ";
         }
-        if (priorityStates[i] === "ChargeStation") {
-          priorityStates[5] = "Charge Station ";
-        }
-        if (priorityStates[i] === "SingleSubstation") {
-          priorityStates[6] = "Single Substation ";
-        }
-        if (priorityStates[i] === "DoubleStation") {
-          priorityStates[7] = "Double Substation ";
-        }
-        if (priorityStates[i] === "Defense") {
-          priorityStates[8] = "Defense ";
+        if (penaltyStates[i] === "NoShow") {
+          penaltyStates[5] = "No Show ";
         }
       }
 
@@ -206,7 +228,7 @@ class Form extends React.Component {
         rankingState: rankingStates, //RANKING PTS STATES
         bonusVal: '', //UNUSED
         bonusState: ["",""], //UNUSED
-        penaltyVal: m.Penalties.Penalties, 
+        penaltyVal: penaltyStates, 
         dropDownVal: [
           /*0 - AutoPlacement*/m.Autonomous.AutonomousPlacement,
           /*1 - driveStrength*/m.Teleop.DriveStrength,
@@ -295,6 +317,7 @@ class Form extends React.Component {
   }
 
   makeMatchDropDown() {
+    let matchTypeState = this.state.matchType
     return (
       <div>
         <MatchDropDown
@@ -302,6 +325,7 @@ class Form extends React.Component {
           setElmNum={this.changeElmNum}
           generateMatchTypeNum={this.makeMatchTypeDropDown}
           setMatchNumber={this.changeMatchNumber}
+          value={matchTypeState}
 
         />
       </div>
