@@ -208,9 +208,9 @@ class Form extends React.Component {
         comments: m.Comments,
         //summaryComments: '',
         stationComments: "", //UNUSED
-        matchType, 
+        matchType: matchType, 
         elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : 0 ), //MATCH ELM NUMBER
-        matchNumber,
+        matchNumber: matchNumber,
         matchData: [],
         teamNumber: m.Team,
         teams: [],
@@ -317,7 +317,7 @@ class Form extends React.Component {
   }
 
   makeMatchDropDown() {
-    let matchTypeState = this.state.matchType
+    let matchTypeState = this.state.matchType;
     return (
       <div>
         <MatchDropDown
