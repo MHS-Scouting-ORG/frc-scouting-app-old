@@ -149,33 +149,35 @@ class Form extends React.Component {
         rankingPoints++;
       }
 
-      let priorityStates = m.Priorities;
-      if (priorityStates[0] === "Low") {
-        priorityStates[0] = "Low Node ";
-      }
-      if (priorityStates[1] === "Mid") {
-        priorityStates[1] = "Mid Node ";
-      }
-      if (priorityStates[2] === "High") {
-        priorityStates[2] = "High Node ";
-      }
-      if (priorityStates[3] === "Cubes") {
-        priorityStates[3] = "Cubes ";
-      }
-      if (priorityStates[4] === "Cones") {
-        priorityStates[4] = "Cones ";
-      }
-      if (priorityStates[5] === "ChargeStation") {
-        priorityStates[5] = "Charge Station ";
-      }
-      if (priorityStates[6] === "SingleSubstation") {
-        priorityStates[6] = "Single Substation ";
-      }
-      if (priorityStates[7] === "DoubleStation") {
-        priorityStates[7] = "Double Substation ";
-      }
-      if (priorityStates[8] === "Defense") {
-        priorityStates[8] = "Defense ";
+      let priorityStates = [...m.Prioritie];
+        for(let i = 0; i < priorityStates.length(); i++){
+        if (priorityStates[i] === "Low") {
+          priorityStates[0] = "Low Node ";
+        }
+        if (priorityStates[i] === "Mid") {
+          priorityStates[1] = "Mid Node ";
+        }
+        if (priorityStates[i] === "High") {
+          priorityStates[2] = "High Node ";
+        }
+        if (priorityStates[i] === "Cubes") {
+          priorityStates[3] = "Cubes ";
+        }
+        if (priorityStates[i] === "Cones") {
+          priorityStates[4] = "Cones ";
+        }
+        if (priorityStates[i] === "ChargeStation") {
+          priorityStates[5] = "Charge Station ";
+        }
+        if (priorityStates[i] === "SingleSubstation") {
+          priorityStates[6] = "Single Substation ";
+        }
+        if (priorityStates[i] === "DoubleStation") {
+          priorityStates[7] = "Double Substation ";
+        }
+        if (priorityStates[i] === "Defense") {
+          priorityStates[8] = "Defense ";
+        }
       }
 
       const [a, r, matchType, matchNumber] = m.id.match(/(.+)_([a-z]{1,2}[0-9]?)m([0-9+]{1,2})/)
@@ -571,14 +573,15 @@ class Form extends React.Component {
     dropDownStates[i] = event.target.value;
   }
 
-  makeDropDownBox(title, i) {
-    let dropDownState = this.state.dropDownVal;
+  makeDropDownBox(title, option ,i) {
+    let dropDownStates = this.state.dropDownVal;
     return (
       <div>
         <DropDown
           title={title}
-          choices={dropDownState}
+          choices={option}
           place={i}
+          value={dropDownStates[i]}
           setState={this.dropDownChanged}
         />
       </div>
