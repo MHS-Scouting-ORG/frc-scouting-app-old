@@ -4,10 +4,6 @@ class DropDown extends React.Component{
     constructor(props){
         super(props);
         this.dropDownChange = this.dropDownChange.bind(this);
-        
-        this.state={
-            choices: props.choices
-        }
     }
 
     dropDownChange(event){
@@ -19,8 +15,8 @@ class DropDown extends React.Component{
             <div>
                 <label>{this.props.title}</label>
                 <select onChange={this.dropDownChange}>
-                    <option key={"empty"}></option>
-                    {this.state.choices.map((choice) => <option key={choice}>{choice}</option>)}
+                    <option key={"empty"} value={this.props.value}> {this.props.value} </option>
+                    {this.props.choices.map((choice) => <option key={choice}>{choice}</option>)}
                 </select>
             </div>
         )
