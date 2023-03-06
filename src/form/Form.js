@@ -125,14 +125,15 @@ class Form extends React.Component {
     else {
       let m = this.matchData;
 
+      const [a, r, matchType, matchNumber] = m.id.match(/(.+)_([a-z]{1,2}[0-9]?)m([0-9+]{1,2})/)
 
       this.state = {
         comments: m.Comments,
         //summaryComments: '',
         stationComments: "", //UNUSED
-        matchType: "q" + (!isNan(Number(m.id.indexOf("_")+2)) ? m.id.indexOf("_"+2) : ''),
+        matchType, 
         elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : 0 ), //MATCH ELM NUMBER
-        matchNumber: m.id,
+        matchNumber,
         matchData: [],
         teamNumber: m.Team,
         teams: [],
@@ -147,10 +148,10 @@ class Form extends React.Component {
         whoWon: '', //UNUSED
         checkedWhoWon: ['',''], //UNUSED
         rankingPts: 0, //UNUSED
-        rankingState: m.rankingState, //RANKING PTS STATES
+        rankingState: m.RankingPts, //RANKING PTS STATES
         bonusVal: '', //UNUSED
         bonusState: ["",""], //UNUSED
-        penaltyVal: m.Priorities, 
+        penaltyVal: m.Penalties.Penalties, 
         dropDownVal: [
           /*0 - AutoPlacement*/m.Autonomous.AutonomousPlacement,
           /*1 - driveStrength*/m.Teleop.DriveStrength,
@@ -187,7 +188,7 @@ class Form extends React.Component {
           /*25*/m.Penalties.Tech
         ],
         //smartPlacementVal: false,
-        strategyVal: m.strategyVal,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        strategyVal: m.Priorities,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         //mobilityVal: false,
         booleans: [
           /*0 - MobilityVal*/m.Autonomous.LeftCommunity,
