@@ -125,7 +125,7 @@ class Form extends React.Component {
     else {
       let m = this.matchData;
 
-      let rankingStates = m.RankingPts;
+      let rankingStates = [...m.RankingPts];
       let rankingPoints = 0;
       if (rankingStates[0] === "Win") {
         rankingStates[0] = "Team Won ";
@@ -380,7 +380,7 @@ class Form extends React.Component {
     }
 
     let rankingStates = this.state.rankingState;
-
+    
     if (teamColor === whoWon) {
       this.setState({ rankingPts: 2 });
       rankingStates[0] = "Team Won ";
