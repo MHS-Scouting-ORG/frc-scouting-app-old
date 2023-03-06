@@ -209,7 +209,7 @@ class Form extends React.Component {
         //summaryComments: '',
         stationComments: "", //UNUSED
         matchType: matchType, 
-        elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : 0 ), //MATCH ELM NUMBER
+        elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : '' ), //MATCH ELM NUMBER
         matchNumber: matchNumber,
         matchData: [],
         teamNumber: m.Team,
@@ -1355,7 +1355,8 @@ class Form extends React.Component {
         matchEntry.Priorities=stratFinal;
 
         if (this.matchData === undefined) {
-          await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey,matchEntry);
+
+          await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey);
         }
         
         await apiUpdateTeamMatch(this.regional, teamNum, matchKey, matchEntry);
