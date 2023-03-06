@@ -34,7 +34,7 @@ class Form extends React.Component {
     this.strategyBox = this.strategyBox.bind(this);
     this.makeStrategyBox = this.makeStrategyBox.bind(this);
 
-    this.makeMatchDropDown = this.makeMatchDropDown(this);
+    this.makeMatchDropDown = this.makeMatchDropDown.bind(this);
     this.changeTeam = this.changeTeam.bind(this);
 
     this.dropDownChanged = this.dropDownChanged.bind(this);
