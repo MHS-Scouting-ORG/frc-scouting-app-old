@@ -5,8 +5,8 @@ class MatchDropDown extends React.Component{
         super(props);
         this.changeMatchType = this.changeMatchType.bind(this);
         this.generateMatchTypeNum = this.generateMatchTypeNum.bind(this);
-        this.state ={
-            matchType: ' ',
+        this.state = {
+            matchType: props.matchTypeValue,
         };
     }
     
@@ -37,8 +37,7 @@ class MatchDropDown extends React.Component{
     render(){
         return(
             <div>
-                <select onChange={this.changeMatchType}>
-                    <option></option>
+                <select value={this.props.matchTypeValue} onChange={this.changeMatchType}>
                     <option> Qualification </option>
                     <option> QuarterFinal </option>
                     <option> SemiFinal </option>
@@ -46,7 +45,7 @@ class MatchDropDown extends React.Component{
                 </select>
                 {this.generateMatchTypeNum()}
                 <label> Match: </label>
-                <input style={{width: '10%'}} onChange={this.props.setMatchNumber}></input>
+                <input value={this.props.matchNumber} style={{width: '10%'}} onChange={this.props.setMatchNumber}></input>
             </div>
         )
     }

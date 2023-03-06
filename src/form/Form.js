@@ -34,7 +34,7 @@ class Form extends React.Component {
     this.strategyBox = this.strategyBox.bind(this);
     this.makeStrategyBox = this.makeStrategyBox.bind(this);
 
-    this.makeMatchDropDown = this.makeMatchDropDown(this);
+    this.makeMatchDropDown = this.makeMatchDropDown.bind(this);
     this.changeTeam = this.changeTeam.bind(this);
 
     this.dropDownChanged = this.dropDownChanged.bind(this);
@@ -125,33 +125,110 @@ class Form extends React.Component {
     else {
       let m = this.matchData;
 
+      let rankingStates = [...m.RankingPts];
+      let rankingPoints = 0;
+      if (rankingStates[0] === "Win") {
+        rankingStates[0] = "Team Won ";
+        rankingPoints = 2;
+      }
+      else if (rankingStates[0] === "Tie") {
+        rankingStates[0] = "Team Tied ";
+        rankingPoints = 1;
+      }
+      else if (rankingStates[0] === "Loss") {
+        rankingStates[0] = "Team Lost ";
+        rankingPoints = 0;
+      }
+
+      if (rankingStates[1] === "ActivationBonus") {
+        rankingStates[1] = "Activation ";
+        rankingPoints++;
+      }
+      if (rankingStates[2] === "SustainabilityBonus") {
+        rankingStates[2] = "Sustainability ";
+        rankingPoints++;
+      }
+
+      let priorityStates = [...m.Priorities];
+        for(let i = 0; i < priorityStates.length; i++){
+          if (priorityStates[i] === "Low") {
+            priorityStates[0] = "Low Node ";
+          }
+          if (priorityStates[i] === "Mid") {
+            priorityStates[1] = "Mid Node ";
+          }
+          if (priorityStates[i] === "High") {
+            priorityStates[2] = "High Node ";
+          }
+          if (priorityStates[i] === "Cubes") {
+            priorityStates[3] = "Cubes ";
+          }
+          if (priorityStates[i] === "Cones") {
+            priorityStates[4] = "Cones ";
+          }
+          if (priorityStates[i] === "ChargeStation") {
+            priorityStates[5] = "Charge Station ";
+          }
+          if (priorityStates[i] === "SingleSubstation") {
+            priorityStates[6] = "Single Substation ";
+          }
+          if (priorityStates[i] === "DoubleStation") {
+            priorityStates[7] = "Double Substation ";
+          }
+          if (priorityStates[i] === "Defense") {
+            priorityStates[8] = "Defense ";
+          }
+      }
+
+      let penaltyStates = [...m.Penalties.Penalties];
+      for (let i = 0; i < penaltyStates.length; i++) {
+        if (penaltyStates[i] === "YellowCard") {
+          penaltyStates[0] = "Yellow Card ";
+        }
+        if (penaltyStates[i] === "RedCard") {
+          penaltyStates[1] = "Red Card ";
+        }
+        if (penaltyStates[i] === "Disabled") {
+          penaltyStates[2] = "Disable ";
+        }
+        if (penaltyStates[i] === "DQ") {
+          penaltyStates[3] = "Disqualified ";
+        }
+        if (penaltyStates[i] === "BrokenBot") {
+          penaltyStates[4] = "Bot Broke ";
+        }
+        if (penaltyStates[i] === "NoShow") {
+          penaltyStates[5] = "No Show ";
+        }
+      }
+
       const [a, r, matchType, matchNumber] = m.id.match(/(.+)_([a-z]{1,2}[0-9]?)m([0-9+]{1,2})/)
 
       this.state = {
         comments: m.Comments,
         //summaryComments: '',
         stationComments: "", //UNUSED
-        matchType, 
+        matchType: matchType, 
         elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : 0 ), //MATCH ELM NUMBER
-        matchNumber,
+        matchNumber: matchNumber,
         matchData: [],
         teamNumber: m.Team,
         teams: [],
         matchOverride: false, //UNUSED
         override: true, //OVERRIDE
         endGameVal: [
-          /*0 - Tele Charge Station*/m.Teleop.ChargeStation,
+          /*0 - Tele Charge Station*/m.Teleop.EndGame,
           /*1 - Endgame Start Time*/m.Teleop.EndGameTally.Start,
           /*2 - Engame End Time*/m.Teleop.EndGameTally.End
         ],
         chargeStationValAuto: m.Autonomous.ChargeStation,
         whoWon: '', //UNUSED
         checkedWhoWon: ['',''], //UNUSED
-        rankingPts: 0, //UNUSED
-        rankingState: m.RankingPts, //RANKING PTS STATES
+        rankingPts: rankingPoints, //USED
+        rankingState: rankingStates, //RANKING PTS STATES
         bonusVal: '', //UNUSED
         bonusState: ["",""], //UNUSED
-        penaltyVal: m.Penalties.Penalties, 
+        penaltyVal: penaltyStates, 
         dropDownVal: [
           /*0 - AutoPlacement*/m.Autonomous.AutonomousPlacement,
           /*1 - driveStrength*/m.Teleop.DriveStrength,
@@ -188,7 +265,7 @@ class Form extends React.Component {
           /*25*/m.Penalties.Tech
         ],
         //smartPlacementVal: false,
-        strategyVal: m.Priorities,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        strategyVal: priorityStates,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
         //mobilityVal: false,
         booleans: [
           /*0 - MobilityVal*/m.Autonomous.LeftCommunity,
@@ -234,12 +311,23 @@ class Form extends React.Component {
   makeMatchTypeDropDown(matchType) {
     if (matchType === 'qf' || matchType === 'sf' || matchType === 'f') {
       return (
-        <input onChange={this.changeElmNum} />
+        <input value={this.state.elmNum} onChange={this.changeElmNum} />
       )
     }
   }
 
   makeMatchDropDown() {
+    let matchTypeState = this.state.matchType;
+    let matchState = '';
+    if(matchTypeState === 'q'){
+      matchState = "Qualification";
+    } else if(matchTypeState === 'qf'){
+      matchState = "QuarterFinals";
+    } else if(matchTypeState === 'sf'){
+      matchState = "SemiFinal";
+    } else if(matchTypeState === 'f'){
+      matchState = "Final";
+    }
     return (
       <div>
         <MatchDropDown
@@ -247,7 +335,8 @@ class Form extends React.Component {
           setElmNum={this.changeElmNum}
           generateMatchTypeNum={this.makeMatchTypeDropDown}
           setMatchNumber={this.changeMatchNumber}
-
+          matchTypeValue={matchState}
+          matchNumber={this.state.matchNumber}
         />
       </div>
     )
@@ -327,14 +416,14 @@ class Form extends React.Component {
     }
 
     let rankingStates = this.state.rankingState;
-
+    
     if (teamColor === whoWon) {
       this.setState({ rankingPts: 2 });
       rankingStates[0] = "Team Won ";
     } else if (whoWon === 'Tie') {
       this.setState({ rankingPts: 1 });
       rankingStates[0] = "Team Tied ";
-    } else {
+    } else if ((whoWon === 'blue' || whoWon === 'red') && teamColor !== whoWon) {
       this.setState({ rankingPts: 0 });
       rankingStates[0] = "Team Lost ";
     }
@@ -351,7 +440,7 @@ class Form extends React.Component {
     return parseInt(this.state.matchNumber) !== 0 ? (
       <div>
         <select onChange={this.changeTeam}>
-          <option></option>
+          <option value={this.state.teamNumber}> {this.state.teamNumber} </option>
           {alliances.map((alliances) => <option key={alliances}> {alliances} </option>)}
         </select>
       </div>
@@ -404,21 +493,23 @@ class Form extends React.Component {
         window.alert("PICK A TEAM FIRST");
     }
     else{
-        if(label === "Team Won "){
-            this.setState({ rankingPts: 2})
-        }
-        else if(label === "Team Tied "){
-            this.setState({ rankingPts: 1})
-        }
-        else if(label === "Team Lost "){
-            this.setState({ rankingPts: 0})
-        }
         
         if(rankingStates[0] ===  label){
           rankingStates[0] = '';
+          this.setState({ rankingPts: 0 })
         }
         else if(rankingStates[0] === ''){
           rankingStates[0] = label;
+
+          if(label === "Team Won "){
+            this.setState({ rankingPts: 2})
+          }
+          else if(label === "Team Tied "){
+              this.setState({ rankingPts: 1})
+          }
+          else if(label === "Team Lost "){
+              this.setState({ rankingPts: 0})
+          }
         }
 
         rankingStates[1] = '';
@@ -516,15 +607,15 @@ class Form extends React.Component {
     dropDownStates[i] = event.target.value;
   }
 
-
-
-  makeDropDownBox(title, options, i) {
+  makeDropDownBox(title, option ,i) {
+    let dropDownStates = this.state.dropDownVal;
     return (
       <div>
         <DropDown
           title={title}
-          choices={options}
+          choices={option}
           place={i}
+          value={dropDownStates[i]}
           setState={this.dropDownChanged}
         />
       </div>
@@ -577,7 +668,7 @@ class Form extends React.Component {
           <div>
             <p>Match Timer EX:125 (1:25)</p>
             <label> {"End Game Start: "}
-              <input style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
+              <input value={this.state.endGameVal[1]} style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
             </label>
           </div>
         )
@@ -589,12 +680,12 @@ class Form extends React.Component {
             <div>
             <p>Match Timer EX:125 (1:25) </p>
               <label> {"End Game Start: "}
-                <input style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
+                <input value={this.state.endGameVal[1]} style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
               </label>
             </div>
             <div>
               <label> {"End Game End: "}
-                <input style={{width: '10%'}} type="number" onChange={this.changeEndGameEndBox}></input>
+                <input value={this.state.endGameVal[2]} style={{width: '10%'}} type="number" onChange={this.changeEndGameEndBox}></input>
               </label>
             </div>
           </div>
@@ -606,11 +697,13 @@ class Form extends React.Component {
   }
 
   makeEndGameDropDown() {
+    let endGameState = this.state.endGameVal
     return (
       <div>
         <EndGame
           changeEndGameUsed={this.changeEndGame}
           makeEndGameStartEndBox={this.makeEndGameStartEndBox}
+          value={endGameState[0]}
         />
       </div>
     )
@@ -623,10 +716,12 @@ class Form extends React.Component {
   }
 
   makeChargeStationAuto() {
+    let chargeStationState = this.state.chargeStationValAuto;
     return (
       <div>
         <ChargeStation
           changeChargeStationUsed={this.changeChargeStation}
+          value={chargeStationState}
         />
       </div>
     )
@@ -1277,7 +1372,7 @@ class Form extends React.Component {
       <div>
         <h2> CHARGED UP FORM  <img alt="" src={'./images/BLUETHUNDERLOGO_WHITE.png'} width="50px" height="50px"></img> </h2>
         <button onClick={this.logState}> Check State </button>
-        {this.makeMatchDropDown}
+        {this.makeMatchDropDown()}
         <button onClick={this.getMatchTeams}>GET MATCH TEAM</button>
         <br></br>
         {this.makeTeamDropdown()}
