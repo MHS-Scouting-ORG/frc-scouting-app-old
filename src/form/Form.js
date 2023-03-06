@@ -573,13 +573,12 @@ class Form extends React.Component {
     dropDownStates[i] = event.target.value;
   }
 
-  makeDropDownBox(title, i) {
-    let dropDownState = this.state.dropDownVal;
+  makeDropDownBox(title, option ,i) {
     return (
       <div>
         <DropDown
           title={title}
-          choices={dropDownState}
+          choices={option}
           place={i}
           setState={this.dropDownChanged}
         />
