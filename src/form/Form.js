@@ -193,14 +193,14 @@ class Form extends React.Component {
         matchOverride: false, //UNUSED
         override: true, //OVERRIDE
         endGameVal: [
-          /*0 - Tele Charge Station*/m.Teleop.ChargeStation,
+          /*0 - Tele Charge Station*/m.Teleop.EndGame,
           /*1 - Endgame Start Time*/m.Teleop.EndGameTally.Start,
           /*2 - Engame End Time*/m.Teleop.EndGameTally.End
         ],
         chargeStationValAuto: m.Autonomous.ChargeStation,
         whoWon: '', //UNUSED
         checkedWhoWon: ['',''], //UNUSED
-        rankingPts: rankingPoints, //UNUSED
+        rankingPts: rankingPoints, //USED
         rankingState: rankingStates, //RANKING PTS STATES
         bonusVal: '', //UNUSED
         bonusState: ["",""], //UNUSED
@@ -387,7 +387,7 @@ class Form extends React.Component {
     } else if (whoWon === 'Tie') {
       this.setState({ rankingPts: 1 });
       rankingStates[0] = "Team Tied ";
-    } else {
+    } else if ((whoWon === 'blue' || whoWon === 'red') && teamColor !== whoWon) {
       this.setState({ rankingPts: 0 });
       rankingStates[0] = "Team Lost ";
     }
@@ -457,21 +457,23 @@ class Form extends React.Component {
         window.alert("PICK A TEAM FIRST");
     }
     else{
-        if(label === "Team Won "){
-            this.setState({ rankingPts: 2})
-        }
-        else if(label === "Team Tied "){
-            this.setState({ rankingPts: 1})
-        }
-        else if(label === "Team Lost "){
-            this.setState({ rankingPts: 0})
-        }
         
         if(rankingStates[0] ===  label){
           rankingStates[0] = '';
+          this.setState({ rankingPts: 0 })
         }
         else if(rankingStates[0] === ''){
           rankingStates[0] = label;
+
+          if(label === "Team Won "){
+            this.setState({ rankingPts: 2})
+          }
+          else if(label === "Team Tied "){
+              this.setState({ rankingPts: 1})
+          }
+          else if(label === "Team Lost "){
+              this.setState({ rankingPts: 0})
+          }
         }
 
         rankingStates[1] = '';
@@ -569,14 +571,13 @@ class Form extends React.Component {
     dropDownStates[i] = event.target.value;
   }
 
-
-
-  makeDropDownBox(title, options, i) {
+  makeDropDownBox(title, i) {
+    let dropDownState = this.state.dropDownVal;
     return (
       <div>
         <DropDown
           title={title}
-          choices={options}
+          choices={dropDownState}
           place={i}
           setState={this.dropDownChanged}
         />
@@ -665,7 +666,7 @@ class Form extends React.Component {
         <EndGame
           changeEndGameUsed={this.changeEndGame}
           makeEndGameStartEndBox={this.makeEndGameStartEndBox}
-          value={endGameState}
+          value={endGameState[0]}
         />
       </div>
     )
