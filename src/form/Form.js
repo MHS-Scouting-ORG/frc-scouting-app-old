@@ -150,7 +150,7 @@ class Form extends React.Component {
       }
 
       let priorityStates = [...m.Priorities];
-        for(let i = 0; i < priorityStates.length(); i++){
+        for(let i = 0; i < priorityStates.length; i++){
           if (priorityStates[i] === "Low") {
             priorityStates[0] = "Low Node ";
           }
@@ -180,8 +180,8 @@ class Form extends React.Component {
           }
       }
 
-      let penaltyStates = [...m.penaltyVal];
-      for (let i = 0; i < m.penaltyStates.length(); i++) {
+      let penaltyStates = [...m.Penalties.Penalties];
+      for (let i = 0; i < penaltyStates.length; i++) {
         if (penaltyStates[i] === "YellowCard") {
           penaltyStates[0] = "Yellow Card ";
         }
