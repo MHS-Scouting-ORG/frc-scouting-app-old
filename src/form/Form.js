@@ -440,7 +440,7 @@ class Form extends React.Component {
     return parseInt(this.state.matchNumber) !== 0 ? (
       <div>
         <select onChange={this.changeTeam}>
-          <option></option>
+          <option value={this.state.teamNumber}> {this.state.teamNumber} </option>
           {alliances.map((alliances) => <option key={alliances}> {alliances} </option>)}
         </select>
       </div>
