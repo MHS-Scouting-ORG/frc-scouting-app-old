@@ -1372,7 +1372,7 @@ class Form extends React.Component {
       <div>
         <h2> CHARGED UP FORM  <img alt="" src={'./images/BLUETHUNDERLOGO_WHITE.png'} width="50px" height="50px"></img> </h2>
         <button onClick={this.logState}> Check State </button>
-        {this.makeMatchDropDown}
+        {this.makeMatchDropDown()}
         <button onClick={this.getMatchTeams}>GET MATCH TEAM</button>
         <br></br>
         {this.makeTeamDropdown()}
