@@ -187,7 +187,7 @@ class Form extends React.Component {
         matchOverride: false, //UNUSED
         override: true, //OVERRIDE
         endGameVal: [
-          /*0 - Tele Charge Station*/m.Teleop.ChargeStation,
+          /*0 - Tele Charge Station*/m.Teleop.EndGame,
           /*1 - Endgame Start Time*/m.Teleop.EndGameTally.Start,
           /*2 - Engame End Time*/m.Teleop.EndGameTally.End
         ],
@@ -563,8 +563,6 @@ class Form extends React.Component {
     dropDownStates[i] = event.target.value;
   }
 
-
-
   makeDropDownBox(title, options, i) {
     return (
       <div>
@@ -659,7 +657,7 @@ class Form extends React.Component {
         <EndGame
           changeEndGameUsed={this.changeEndGame}
           makeEndGameStartEndBox={this.makeEndGameStartEndBox}
-          value={endGameState}
+          value={endGameState[0]}
         />
       </div>
     )

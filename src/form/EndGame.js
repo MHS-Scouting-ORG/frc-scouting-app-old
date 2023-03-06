@@ -6,7 +6,7 @@ class EndGame extends React.Component{
         this.changeEndGame = this.changeEndGame.bind(this);
         this.makeEndGameStartEndBox = this.makeEndGameStartEndBox.bind(this);
         this.state = {
-            changeEndGameUsed: '',
+            changeEndGameUsed: props.value,
         }
     }
 
@@ -26,7 +26,7 @@ class EndGame extends React.Component{
             <div>
                 <label> {"End Game: "}
                     <select onChange={this.changeEndGame}>
-                        <option></option>
+                        <option value={this.props.value}> {this.props.value} </option>
                         <option value='None'>None</option>
                         <option value='DockedEngaged'>Docked & Engaged</option>
                         <option value='Docked'>Docked & Not Enaged</option>
