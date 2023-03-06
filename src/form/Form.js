@@ -150,7 +150,7 @@ class Form extends React.Component {
       }
 
       let priorityStates = [...m.Priorities];
-        for(let i = 0; i < priorityStates.length(); i++){
+        for(let i = 0; i < priorityStates.length; i++){
           if (priorityStates[i] === "Low") {
             priorityStates[0] = "Low Node ";
           }
@@ -180,8 +180,8 @@ class Form extends React.Component {
           }
       }
 
-      let penaltyStates = [...m.penaltyVal];
-      for (let i = 0; i < m.penaltyStates.length(); i++) {
+      let penaltyStates = [...m.Penalties.Penalties];
+      for (let i = 0; i < penaltyStates.length; i++) {
         if (penaltyStates[i] === "YellowCard") {
           penaltyStates[0] = "Yellow Card ";
         }
@@ -311,13 +311,23 @@ class Form extends React.Component {
   makeMatchTypeDropDown(matchType) {
     if (matchType === 'qf' || matchType === 'sf' || matchType === 'f') {
       return (
-        <input onChange={this.changeElmNum} />
+        <input value={this.state.elmNum} onChange={this.changeElmNum} />
       )
     }
   }
 
   makeMatchDropDown() {
     let matchTypeState = this.state.matchType;
+    let matchState = '';
+    if(matchTypeState === 'q'){
+      matchState = "Qualification";
+    } else if(matchTypeState === 'qf'){
+      matchState = "QuarterFinals";
+    } else if(matchTypeState === 'sf'){
+      matchState = "SemiFinal";
+    } else if(matchTypeState === 'f'){
+      matchState = "Final";
+    }
     return (
       <div>
         <MatchDropDown
@@ -325,8 +335,8 @@ class Form extends React.Component {
           setElmNum={this.changeElmNum}
           generateMatchTypeNum={this.makeMatchTypeDropDown}
           setMatchNumber={this.changeMatchNumber}
-          value={matchTypeState}
-
+          matchTypeValue={matchState}
+          matchNumber={this.state.matchNumber}
         />
       </div>
     )
