@@ -627,9 +627,9 @@ function tableHandler(row){ //handles which state and inner table should be show
     const indivTeleCSDocked = arr.filter(val => val.Teleop.EndGame === "Docked")
     const indivTeleCSDockedPts = indivTeleCSDocked.length * 6
     const indivTeleCSDockedEng = arr.filter(val => val.Teleop.EndGame === "DockedEngaged")
-    const indivTeleCSDockedEngPts = indivTeleCSDockedEng.length * 8
+    const indivTeleCSDockedEngPts = indivTeleCSDockedEng.length * 10
     const indivAutoCSDocked = arr.filter(val => val.Autonomous.ChargeStation === "Docked")
-    const indivAutoCSDockedPts = indivAutoCSDocked.length * 10
+    const indivAutoCSDockedPts = indivAutoCSDocked.length * 8
     const indivAutoCSDockedEng = arr.filter(val => val.Autonomous.ChargeStation === "DockedEngaged")
     const indivAutoCSDockedEngPts = indivAutoCSDockedEng.length * 12
 
