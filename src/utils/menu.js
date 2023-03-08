@@ -8,8 +8,8 @@ function Menu() {
                 <div className='menu-button'></div>
             </label>
             <ul className="menu">
-                <li><Link to="/table">Table</Link></li>
-                <li><Link to="/form">Form</Link></li>
+                <li><Link to="/table">TABLE</Link></li>
+                <li><Link to="/form">FORM</Link></li>
             </ul>
         </section>
     )
