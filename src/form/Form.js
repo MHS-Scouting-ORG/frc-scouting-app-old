@@ -678,7 +678,7 @@ class Form extends React.Component {
         return (
           <div>
             <div>
-            <p>Match Timer EX:125 (1:25) </p>
+            <p style={{fontSize:'14px'}}>Match Timer | EX Start: 25 (0:25), EX End: 3 (0:03)</p>
               <label> {"End Game Start: "}
                 <input value={this.state.endGameVal[1]} style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
               </label>
