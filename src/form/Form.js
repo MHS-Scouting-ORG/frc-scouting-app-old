@@ -1025,7 +1025,7 @@ class Form extends React.Component {
     let override = this.state.override;
 
     if (endGameUsed === 'DockedEngaged') {
-      endGamePts = 8;
+      endGamePts = 10;
     } else if (endGameUsed === "Docked") {
       endGamePts = 6;
     } else if (endGameUsed === 'Parked') {
@@ -1059,7 +1059,7 @@ class Form extends React.Component {
     if (chargeStationAuto === 'DockedEngaged') {
       chargeStationPts = 12;
     } else if (chargeStationAuto === "Docked") {
-      chargeStationPts = 10;
+      chargeStationPts = 8;
     } else {
       chargeStationPts = 0;
     }

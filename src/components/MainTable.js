@@ -627,15 +627,15 @@ function tableHandler(row){ //handles which state and inner table should be show
     const indivTeleCSDocked = arr.filter(val => val.Teleop.EndGame === "Docked")
     const indivTeleCSDockedPts = indivTeleCSDocked.length * 6
     const indivTeleCSDockedEng = arr.filter(val => val.Teleop.EndGame === "DockedEngaged")
-    const indivTeleCSDockedEngPts = indivTeleCSDockedEng.length * 8
+    const indivTeleCSDockedEngPts = indivTeleCSDockedEng.length * 10
     const indivAutoCSDocked = arr.filter(val => val.Autonomous.ChargeStation === "Docked")
-    const indivAutoCSDockedPts = indivAutoCSDocked.length * 10
+    const indivAutoCSDockedPts = indivAutoCSDocked.length * 8
     const indivAutoCSDockedEng = arr.filter(val => val.Autonomous.ChargeStation === "DockedEngaged")
     const indivAutoCSDockedEngPts = indivAutoCSDockedEng.length * 12
 
     const totalCSPts = indivTeleCSDockedPts + indivTeleCSDockedEngPts + indivAutoCSDockedPts + indivAutoCSDockedEngPts 
     const avgCSPts = totalCSPts / (arr.length)
-    return avgCSPts
+    return avgCSPts.toFixed(2)
   }
 
   const calcUpperGrid = (arr) => {
@@ -969,10 +969,6 @@ const data = React.useMemo(
         accessor: "DPR",
       },
       {
-        Header: "Defense",
-        accessor: "Defense",
-      },
-      {
         Header: "Penalties",
         accessor: "Penalties",
         Cell: ({ row }) => (
@@ -985,23 +981,6 @@ const data = React.useMemo(
             {row.original.Penalties}
           </div>
         )
-      },
-      {
-        Header: "Comments",
-        accessor: "Comments",
-        Cell: ({row}) => {
-          return <div
-              style = {{
-                  minWidth: '300px',
-                  maxWidth: '300px',
-                  textAlign: 'left',
-                  padding: '5px',
-                  whiteSpace: 'break-spaces'
-              }}
-          >
-              {row.original.Comments}
-          </div>
-      }
       },
       {
         Header: "Grade",
