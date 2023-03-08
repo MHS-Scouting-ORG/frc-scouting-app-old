@@ -635,7 +635,7 @@ function tableHandler(row){ //handles which state and inner table should be show
 
     const totalCSPts = indivTeleCSDockedPts + indivTeleCSDockedEngPts + indivAutoCSDockedPts + indivAutoCSDockedEngPts 
     const avgCSPts = totalCSPts / (arr.length)
-    return avgCSPts
+    return avgCSPts.toFixed(2)
   }
 
   const calcUpperGrid = (arr) => {
@@ -969,10 +969,6 @@ const data = React.useMemo(
         accessor: "DPR",
       },
       {
-        Header: "Defense",
-        accessor: "Defense",
-      },
-      {
         Header: "Penalties",
         accessor: "Penalties",
         Cell: ({ row }) => (
@@ -985,23 +981,6 @@ const data = React.useMemo(
             {row.original.Penalties}
           </div>
         )
-      },
-      {
-        Header: "Comments",
-        accessor: "Comments",
-        Cell: ({row}) => {
-          return <div
-              style = {{
-                  minWidth: '300px',
-                  maxWidth: '300px',
-                  textAlign: 'left',
-                  padding: '5px',
-                  whiteSpace: 'break-spaces'
-              }}
-          >
-              {row.original.Comments}
-          </div>
-      }
       },
       {
         Header: "Grade",
