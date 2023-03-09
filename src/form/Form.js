@@ -322,7 +322,7 @@ class Form extends React.Component {
     if(matchTypeState === 'q'){
       matchState = "Qualification";
     } else if(matchTypeState === 'qf'){
-      matchState = "QuarterFinals";
+      matchState = "QuarterFinal";
     } else if(matchTypeState === 'sf'){
       matchState = "SemiFinal";
     } else if(matchTypeState === 'f'){
@@ -678,7 +678,7 @@ class Form extends React.Component {
         return (
           <div>
             <div>
-            <p>Match Timer EX:125 (1:25) </p>
+            <p style={{fontSize:'14px'}}>Match Timer | EX Start: 25 (0:25), EX End: 3 (0:03)</p>
               <label> {"End Game Start: "}
                 <input value={this.state.endGameVal[1]} style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
               </label>
@@ -1025,7 +1025,7 @@ class Form extends React.Component {
     let override = this.state.override;
 
     if (endGameUsed === 'DockedEngaged') {
-      endGamePts = 8;
+      endGamePts = 10;
     } else if (endGameUsed === "Docked") {
       endGamePts = 6;
     } else if (endGameUsed === 'Parked') {
@@ -1059,7 +1059,7 @@ class Form extends React.Component {
     if (chargeStationAuto === 'DockedEngaged') {
       chargeStationPts = 12;
     } else if (chargeStationAuto === "Docked") {
-      chargeStationPts = 10;
+      chargeStationPts = 8;
     } else {
       chargeStationPts = 0;
     }
@@ -1106,7 +1106,7 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.MID);
       }
       else if(strategy === "High Node "){
-        stratFinal.push("High");
+        stratFinal.push("Upper");
       }
       else if(strategy === "Cubes "){
         stratFinal.push(PriorityOpts.CUBES);
@@ -1450,7 +1450,7 @@ class Form extends React.Component {
         {this.makeBonusBox("Sustainability ", 2)}
         <Headers display={this.state.rankingPts} />
         <br></br>
-        <h3>STRATEGY & PRIORITIES:</h3>
+        <h3>📝STRATEGY & PRIORITIES:</h3>
         {this.makeStrategyBox("Low Node ", 0)}
         {this.makeStrategyBox("Mid Node ", 1)}
         {this.makeStrategyBox("High Node ", 2)}
