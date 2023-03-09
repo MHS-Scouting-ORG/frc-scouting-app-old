@@ -24,7 +24,7 @@ class EndGame extends React.Component{
     render(){
         return(
             <div>
-                <label> {"End Game: "}
+                <label> {"⚡End Game: "}
                     <select onChange={this.changeEndGame}>
                         <option value={this.props.value}> {this.props.value} </option>
                         <option value='None'>None</option>

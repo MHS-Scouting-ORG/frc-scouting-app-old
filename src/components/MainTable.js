@@ -448,7 +448,12 @@ const renderRowSubComponentConeAccTable = ({row}) => {
         }
 
 function gridStateHandler(bool, bool2, bool3, bool4, bool5, bool6){
-  setGridState(bool)
+  setGridState(bool);
+  setConePtsState(bool2);
+  setConeAccState(bool3);
+  setCubeAccState(bool4);
+  setCubePtsState(bool5);
+  setTeamState(bool6);
 }
 
 function tableHandler(row){ //handles which state and inner table should be shown
@@ -951,18 +956,34 @@ const data = React.useMemo(
       {
         Header: "Avg Cone Points",
         accessor: "AvgConePts",
+        Cell: ({ row }) => (
+          <span {...row.getToggleRowExpandedProps()}>
+              {row.values.AvgConePts}
+          </span>) 
       },
       {
         Header: "Avg Cone Acc",
         accessor: "AvgConeAcc",
+        Cell: ({ row }) => (
+          <span {...row.getToggleRowExpandedProps()}>
+              {row.values.AvgConeAcc}
+          </span>) 
       },
       {
         Header: "Avg Cube Points",
-        accessor: "AvgCubePts"
+        accessor: "AvgCubePts",
+        Cell: ({ row }) => (
+          <span {...row.getToggleRowExpandedProps()}>
+              {row.values.AvgCubePts}
+          </span>) 
       },
       {
         Header: "Avg Cube Acc",
         accessor: "AvgCubeAcc",
+        Cell: ({ row }) => (
+          <span {...row.getToggleRowExpandedProps()}>
+              {row.values.AvgCubeAcc}
+          </span>) 
       },
       {
         Header: "DPR",
@@ -974,7 +995,7 @@ const data = React.useMemo(
         Cell: ({ row }) => (
           <div
               style = {{
-                minWidth:'50px',
+                minWidth:'20px',
                 whiteSpace: 'normal',
               }}
           >
@@ -1082,25 +1103,24 @@ const data = React.useMemo(
                 {row.cells.map(cell => {
                   return (   
                     <td
-                      
                       onClick={() => { //calls and returns parameters for inner tables
                         if(cell.column.Header === "Avg Grid Points"){
-                          gridStateHandler(true, false, false, false, false, false)
+                          gridStateHandler(!false, false, false, false, false, false ) //AVG GRID POINTS [0]
                           }
                         else if(cell.column.Header === "Team #"){
-                          gridStateHandler(false, false, false, false, false, true)
+                          gridStateHandler(false, false, false, false, false, !false ) //TEAM NUMBER [5]
                           }
                         else if(cell.column.Header === "Avg Cone Points"){
-                          gridStateHandler(false, false, true, false, false, false )
+                          gridStateHandler(false, !false, false, false, false, false ) //AVG CONE POINTS [1]
                           }
                         else if(cell.column.Header === "Avg Cone Acc"){
-                            gridStateHandler(false, true, true, false, false, false )
+                            gridStateHandler(false, false, !false, false, false, false ) //AVG CONE ACC [2]
                             }
                         else if(cell.column.Header === "Avg Cube Points"){
-                            gridStateHandler(false, false, false, true, false, false )
+                            gridStateHandler(false, false, false, false, !false, false ) //AVG CUBE POINTS [3]
                             }
                         else if(cell.column.Header === "Avg Cube Acc"){
-                            gridStateHandler(false, false, false, false, true, false )
+                            gridStateHandler(false, false, false, !false, false, false ) //AVG CUBE ACC [4]
                             }
                         else {
                           console.log('wrong cell or fail')
@@ -1121,28 +1141,9 @@ const data = React.useMemo(
                 })}
               </tr>
 
-              {row.isExpanded ? (
-                  gridState === true ? (
-                  <tr>
-                    <td colSpan={visibleColumns.length}
-                    style = {{
-                      maxWidth: "1200px"
-                    }}
-                    >
-                      {renderRowSubComponentGrid ()}
-                    </td>
-                  </tr>
-                  ) : (
-                  <tr>
-                    <td colSpan={visibleColumns.length}
-                    style = {{
-                      maxWidth: "1200px"
-                    }}
-                    >
-                      {renderRowSubComponent ({row})}
-                    </td>
-                  </tr>
-                  )) : null}
+              {row.isExpanded ? tableHandler(row) : null}
+
+
 
                   </React.Fragment>
             )

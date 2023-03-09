@@ -322,7 +322,7 @@ class Form extends React.Component {
     if(matchTypeState === 'q'){
       matchState = "Qualification";
     } else if(matchTypeState === 'qf'){
-      matchState = "QuarterFinals";
+      matchState = "QuarterFinal";
     } else if(matchTypeState === 'sf'){
       matchState = "SemiFinal";
     } else if(matchTypeState === 'f'){
@@ -1106,7 +1106,7 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.MID);
       }
       else if(strategy === "High Node "){
-        stratFinal.push("High");
+        stratFinal.push("Upper");
       }
       else if(strategy === "Cubes "){
         stratFinal.push(PriorityOpts.CUBES);
@@ -1450,7 +1450,7 @@ class Form extends React.Component {
         {this.makeBonusBox("Sustainability ", 2)}
         <Headers display={this.state.rankingPts} />
         <br></br>
-        <h3>STRATEGY & PRIORITIES:</h3>
+        <h3>📝STRATEGY & PRIORITIES:</h3>
         {this.makeStrategyBox("Low Node ", 0)}
         {this.makeStrategyBox("Mid Node ", 1)}
         {this.makeStrategyBox("High Node ", 2)}
