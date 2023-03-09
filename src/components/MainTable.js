@@ -995,7 +995,7 @@ const data = React.useMemo(
         Cell: ({ row }) => (
           <div
               style = {{
-                minWidth:'50px',
+                minWidth:'20px',
                 whiteSpace: 'normal',
               }}
           >
@@ -1117,10 +1117,10 @@ const data = React.useMemo(
                             gridStateHandler(false, false, !false, false, false, false ) //AVG CONE ACC [2]
                             }
                         else if(cell.column.Header === "Avg Cube Points"){
-                            gridStateHandler(false, false, false, !false, false, false ) //AVG CUBE POINTS [3]
+                            gridStateHandler(false, false, false, false, !false, false ) //AVG CUBE POINTS [3]
                             }
                         else if(cell.column.Header === "Avg Cube Acc"){
-                            gridStateHandler(false, false, false, false, !false, false ) //AVG CUBE ACC [4]
+                            gridStateHandler(false, false, false, !false, false, false ) //AVG CUBE ACC [4]
                             }
                         else {
                           console.log('wrong cell or fail')
