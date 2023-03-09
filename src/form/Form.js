@@ -1106,7 +1106,7 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.MID);
       }
       else if(strategy === "High Node "){
-        stratFinal.push("High");
+        stratFinal.push("Upper");
       }
       else if(strategy === "Cubes "){
         stratFinal.push(PriorityOpts.CUBES);
