@@ -126,7 +126,7 @@ const TeamInnerTable = (props) => {
                       accessor: 'CSEnd',
                     },
                     {
-                      Header: 'Smart Placement (creates links)',
+                      Header: 'Creates Links',
                       accessor: 'SmartPlacement',
                     },
                     {
