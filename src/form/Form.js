@@ -1273,10 +1273,10 @@ class Form extends React.Component {
         
         matchEntry.Autonomous.Attempted.Cones.Upper=highConesAutoAttempted
         matchEntry.Autonomous.Attempted.Cones.Mid=midConesAutoAttempted
-        matchEntry.Autonomous.Attempted.Cones.Lower=lowConesAttempted
+        matchEntry.Autonomous.Attempted.Cones.Lower=lowConesAutoAttempted
         matchEntry.Autonomous.Attempted.Cubes.Upper=highCubesAutoAttempted
         matchEntry.Autonomous.Attempted.Cubes.Mid=midCubesAutoAttempted
-        matchEntry.Autonomous.Attempted.Cubes.Lower=lowCubesAttempted
+        matchEntry.Autonomous.Attempted.Cubes.Lower=lowCubesAutoAttempted
 
         matchEntry.Autonomous.Scored.Cones.Upper=highAutoCones
         matchEntry.Autonomous.Scored.Cones.Mid=midAutoCones
