@@ -157,7 +157,7 @@ class Form extends React.Component {
           if (priorityStates[i] === "Mid") {
             priorityStates[1] = "Mid Node ";
           }
-          if (priorityStates[i] === "High") {
+          if (priorityStates[i] === "Upper") {
             priorityStates[2] = "High Node ";
           }
           if (priorityStates[i] === "Cubes") {
@@ -202,7 +202,7 @@ class Form extends React.Component {
         }
       }
 
-      const [a, r, matchType, matchNumber] = m.id.match(/(.+)_([a-z]{1,2}[0-9]?)m([0-9+]{1,2})/)
+      const [a, r, matchType, matchNumber] = m.id.match(/(s.+)_([a-z]{1,2}[0-9]?)m([0-9+]{1,2})/)
 
       this.state = {
         comments: m.Comments,
