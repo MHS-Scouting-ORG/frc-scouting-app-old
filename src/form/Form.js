@@ -157,7 +157,7 @@ class Form extends React.Component {
           if (priorityStates[i] === "Mid") {
             priorityStates[1] = "Mid Node ";
           }
-          if (priorityStates[i] === "High") {
+          if (priorityStates[i] === "Upper") {
             priorityStates[2] = "High Node ";
           }
           if (priorityStates[i] === "Cubes") {
