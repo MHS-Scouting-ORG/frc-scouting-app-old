@@ -1271,12 +1271,12 @@ class Form extends React.Component {
         //AUTONOMOUS MATCH ENTREES
         matchEntry.Autonomous.AutonomousPlacement=autoPlacement
         
-        matchEntry.Autonomous.Attempted.Cones.Upper=highConesAttempted
-        matchEntry.Autonomous.Attempted.Cones.Mid=midConesAttempted
-        matchEntry.Autonomous.Attempted.Cones.Lower=lowConesAttempted
-        matchEntry.Autonomous.Attempted.Cubes.Upper=highCubesAutoAttempted
-        matchEntry.Autonomous.Attempted.Cubes.Mid=midCubesAttempted
-        matchEntry.Autonomous.Attempted.Cubes.Lower=lowCubesAttempted
+        matchEntry.Autonomous.Attempted.Cones.Upper=highConesAutoAttempted //DEBUGGING
+        matchEntry.Autonomous.Attempted.Cones.Mid=midConesAutoAttempted //DEBUGGING
+        matchEntry.Autonomous.Attempted.Cones.Lower=lowConesAutoAttempted //DEBUGGING
+        matchEntry.Autonomous.Attempted.Cubes.Upper=highCubesAutoAttempted //DEBUGGING 
+        matchEntry.Autonomous.Attempted.Cubes.Mid=midCubesAutoAttempted //DEBUGGING
+        matchEntry.Autonomous.Attempted.Cubes.Lower=lowCubesAutoAttempted //DEBUGGING
 
         matchEntry.Autonomous.Scored.Cones.Upper=highAutoCones
         matchEntry.Autonomous.Scored.Cones.Mid=midAutoCones
@@ -1296,17 +1296,17 @@ class Form extends React.Component {
         matchEntry.Teleop.Scored.Cubes.Mid=midTeleCubes
         matchEntry.Teleop.Scored.Cubes.Lower=lowTeleCubes
 
-        matchEntry.Teleop.Attempted.Cones.Upper=highConesTeleAttempted
-        matchEntry.Teleop.Attempted.Cones.Mid=midConesTeleAttempted
-        matchEntry.Teleop.Attempted.Cones.Lower=lowConesTeleAttempted
-        matchEntry.Teleop.Attempted.Cubes.Upper=highCubesTeleAttempted
-        matchEntry.Teleop.Attempted.Cubes.Mid=midCubesTeleAttempted
-        matchEntry.Teleop.Attempted.Cubes.Lower=lowCubesTeleAttempted
+        matchEntry.Teleop.Attempted.Cones.Upper=highConesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cones.Mid=midConesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cones.Lower=lowConesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cubes.Upper=highCubesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cubes.Mid=midCubesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cubes.Lower=lowCubesAttempted //DEBUGGING
 
         //matchEntry.Teleop.ChargeStation=chargeTeleFinal
         matchEntry.Teleop.EndGame=chargeTeleFinal
-        matchEntry.Teleop.EndGameTally.Start=endGameStart//
-        matchEntry.Teleop.EndGameTally.End=endGameEnd//
+        matchEntry.Teleop.EndGameTally.Start=endGameStart
+        matchEntry.Teleop.EndGameTally.End=endGameEnd
 
         //SCORING TOTAL
         matchEntry.Teleop.ScoringTotal.Total=points
