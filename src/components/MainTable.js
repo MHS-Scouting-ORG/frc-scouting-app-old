@@ -314,7 +314,7 @@ const renderRowSubComponent = ({ row }) => {
             DriveStrength: x.Teleop.DriveStrength !== undefined ? x.Teleop.DriveStrength : '',
             DriveSpeed: x.Teleop.DriveSpeed !== "0" ? x.Teleop.DriveSpeed : '',
             SmartPlacement: x.Teleop.SmartPlacement === true ? `yes` : `no`,
-            NumberOfFoulAndTech: x.Penalties.Fouls !== 0 && x.Penalties.Tech !== 0 ? `${x.Penalties.Fouls} | ${x.Penalties.Tech}` : ``,
+            NumberOfFoulAndTech: x.Penalties.Fouls !== 0 || x.Penalties.Tech !== 0 ? `${x.Penalties.Fouls} | ${x.Penalties.Tech}` : ``,
             Penalties: penalties.join(', '),
             NumberOfRankingPoints: rankingPts.join(', '),
             Comments: x.Comments !== undefined ? x.Comments.trim() : '',
