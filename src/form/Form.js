@@ -1274,7 +1274,7 @@ class Form extends React.Component {
         matchEntry.Autonomous.Attempted.Cones.Upper=highConesAttempted
         matchEntry.Autonomous.Attempted.Cones.Mid=midConesAttempted
         matchEntry.Autonomous.Attempted.Cones.Lower=lowConesAttempted
-        matchEntry.Autonomous.Attempted.Cubes.Upper=highCubesAttempted
+        matchEntry.Autonomous.Attempted.Cubes.Upper=highCubesAutoAttempted
         matchEntry.Autonomous.Attempted.Cubes.Mid=midCubesAttempted
         matchEntry.Autonomous.Attempted.Cubes.Lower=lowCubesAttempted
 
