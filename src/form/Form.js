@@ -1271,12 +1271,12 @@ class Form extends React.Component {
         //AUTONOMOUS MATCH ENTREES
         matchEntry.Autonomous.AutonomousPlacement=autoPlacement
         
-        matchEntry.Autonomous.Attempted.Cones.Upper=highConesAutoAttempted
-        matchEntry.Autonomous.Attempted.Cones.Mid=midConesAutoAttempted
-        matchEntry.Autonomous.Attempted.Cones.Lower=lowConesAutoAttempted
-        matchEntry.Autonomous.Attempted.Cubes.Upper=highCubesAutoAttempted
-        matchEntry.Autonomous.Attempted.Cubes.Mid=midCubesAutoAttempted
-        matchEntry.Autonomous.Attempted.Cubes.Lower=lowCubesAutoAttempted
+        matchEntry.Autonomous.Attempted.Cones.Upper=highConesAttempted
+        matchEntry.Autonomous.Attempted.Cones.Mid=midConesAttempted
+        matchEntry.Autonomous.Attempted.Cones.Lower=lowConesAttempted
+        matchEntry.Autonomous.Attempted.Cubes.Upper=highCubesAttempted
+        matchEntry.Autonomous.Attempted.Cubes.Mid=midCubesAttempted
+        matchEntry.Autonomous.Attempted.Cubes.Lower=lowCubesAttempted
 
         matchEntry.Autonomous.Scored.Cones.Upper=highAutoCones
         matchEntry.Autonomous.Scored.Cones.Mid=midAutoCones
