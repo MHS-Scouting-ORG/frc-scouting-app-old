@@ -66,7 +66,7 @@ const TeamInnerTable = (props) => {
                         accessor: 'AutoUpperCubePts'
                     },
                     {
-                        Header: 'Mid 🔺 Pts',
+                        Header: 'Mid 🔺 ',
                         accessor: 'AutoMidConePts'
                     },
                     {
