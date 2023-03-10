@@ -3,14 +3,9 @@ import './App.css';
 import { Amplify, Auth } from 'aws-amplify'
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 import awsconfig from './aws-exports'
-import MainTable from './components/MainTable';
-
-
+import Menu from './utils/menu'
 import { useEffect, useState } from 'react'
-//import ExampleUI from './example'
-//import { getRegionals, getTeamInfo } from './api/bluealliance'
-//import { ChargeStationType } from './api/builder';
-
+import { Outlet } from 'react-router-dom'
 
 const redirectSignInUri = awsconfig.oauth.redirectSignIn.split(',')
 awsconfig.oauth.redirectSignIn = redirectSignInUri[parseInt(process.env.REACT_APP_REDIRECT_INDEX)]
@@ -19,49 +14,14 @@ awsconfig.oauth.redirectSignOut = redirectSignOutUri[parseInt(process.env.REACT_
 
 Amplify.configure(awsconfig)
 
-
 function AuthenticatedUI({ user }) {
-  //const [regional, setRegional] = useState()
-  //console.log(user)
-  /*useEffect(() => {
-    getRegionals() 
-    .then(data => {
-      setRegional(data[0].key)
-    })
-  }) */
-  /*const [teamInfo, setTeamInfo] = useState({})
-  useEffect(() => {
-    getTeamInfo()
-      .then(data => {
-        setTeamInfo(data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }, []) */
-
-
-  return (
+ return (
     <div>
-      {/*<img src={logo} className="App-logo" alt="logo" />/*}
-      <p>
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
 
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
+      <Menu></Menu>
       <div>
-        {user.username}
-        <br />
-      </div>*/}
-      <MainTable regional = {'2022hiho'} />
-      
+        <Outlet />
+      </div>
     </div>
     )
 
