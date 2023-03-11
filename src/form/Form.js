@@ -1473,7 +1473,7 @@ class Form extends React.Component {
           }
           }>SUBMIT</button>
         </div>
-        <p> ONLY CLICK IF NOTHING ELSE CAN BE FILLED </p>
+        <p> ONLY CLICK IF NOTHING ELSE CAN BE FILLED! </p>
         {this.makeOverrideBox()}
         <br></br>
       </div>
