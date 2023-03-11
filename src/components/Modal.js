@@ -11,7 +11,10 @@ class Modal extends React.Component {
             formProps.matchData =  this.props.data[0]
         return (
             <div className="modal" style={{ display: this.props.onOff ? "block" : "none" }}>
-                <Form {...formProps}></Form>
+                {(() => { 
+                    if(this.props.onOff)
+                        return <Form {...formProps}></Form> 
+                })()}
                 <button onClick={() => this.props.offFunction()}> FINISH EDIT </button>
             </div>
         )
