@@ -965,7 +965,7 @@ class Form extends React.Component {
     //AUTONOMOUS-----------------------------------------
 
     //Auto Cubes & Cones Scoring
-    let highAutoCubes = parseInt(counterVal[0]);
+    let highAutoCubes = parseInt(counterVal[0]); 
     let midAutoCubes = parseInt(counterVal[1]);
     let lowAutoCubes = parseInt(counterVal[2]);
     let highAutoCones = parseInt(counterVal[6]);
@@ -1299,7 +1299,7 @@ class Form extends React.Component {
         matchEntry.Teleop.Attempted.Cones.Upper=highConesTeleAttempted //DEBUGGING
         matchEntry.Teleop.Attempted.Cones.Mid=midConesTeleAttempted //DEBUGGING
         matchEntry.Teleop.Attempted.Cones.Lower=lowConesTeleAttempted //DEBUGGING
-        matchEntry.Teleop.Attempted.Cubes.Upper=highCubesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cubes.Upper=highCubesTeleAttempted //DEBUGGING
         matchEntry.Teleop.Attempted.Cubes.Mid=midCubesTeleAttempted //DEBUGGING
         matchEntry.Teleop.Attempted.Cubes.Lower=lowCubesTeleAttempted //DEBUGGING
 
