@@ -1296,12 +1296,12 @@ class Form extends React.Component {
         matchEntry.Teleop.Scored.Cubes.Mid=midTeleCubes
         matchEntry.Teleop.Scored.Cubes.Lower=lowTeleCubes
 
-        matchEntry.Teleop.Attempted.Cones.Upper=highConesAttempted //DEBUGGING
-        matchEntry.Teleop.Attempted.Cones.Mid=midConesAttempted //DEBUGGING
-        matchEntry.Teleop.Attempted.Cones.Lower=lowConesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cones.Upper=highConesTeleAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cones.Mid=midConesTeleAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cones.Lower=lowConesTeleAttempted //DEBUGGING
         matchEntry.Teleop.Attempted.Cubes.Upper=highCubesAttempted //DEBUGGING
-        matchEntry.Teleop.Attempted.Cubes.Mid=midCubesAttempted //DEBUGGING
-        matchEntry.Teleop.Attempted.Cubes.Lower=lowCubesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cubes.Mid=midCubesTeleAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cubes.Lower=lowCubesTeleAttempted //DEBUGGING
 
         //matchEntry.Teleop.ChargeStation=chargeTeleFinal
         matchEntry.Teleop.EndGame=chargeTeleFinal
