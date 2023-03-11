@@ -18,8 +18,8 @@ function MainTable(props) {
 
   const [tableData,setTableData] = useState([]); //data on table
   const [teamsData,setTeamsData] = useState([]); //data of teams
-  const [apiData, setApiData] = useState([]) //data retrieved 
-  const [deletedData, setDeletedData] = useState([]); //stores deleted data
+  const [apiData,setApiData] = useState([]) //data retrieved 
+  const [deletedData,setDeletedData] = useState([]); //stores deleted data
 
   const [gridState,setGridState] = useState(false); 
   const [teamState,setTeamState] = useState(false); 
