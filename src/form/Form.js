@@ -157,7 +157,7 @@ class Form extends React.Component {
           if (priorityStates[i] === "Mid") {
             priorityStates[1] = "Mid Node ";
           }
-          if (priorityStates[i] === "High") {
+          if (priorityStates[i] === "Upper") {
             priorityStates[2] = "High Node ";
           }
           if (priorityStates[i] === "Cubes") {
@@ -202,7 +202,7 @@ class Form extends React.Component {
         }
       }
 
-      const [a, r, matchType, matchNumber] = m.id.match(/(.+)_([a-z]{1,2}[0-9]?)m([0-9+]{1,2})/)
+      const [a, r, matchType, matchNumber] = m.id.match(/(s.+)_([a-z]{1,2}[0-9]?)m([0-9+]{1,2})/)
 
       this.state = {
         comments: m.Comments,
@@ -1186,22 +1186,22 @@ class Form extends React.Component {
     let cubePts = (highAutoCubes * 6) + (highTeleCubes * 5) + (midAutoCubes * 4) + (midTeleCubes * 3) + (lowAutoCubes * 3) + (lowTeleCubes * 2);
     let conePts = (highAutoCones * 6) + (highTeleCones * 5) + (midAutoCones * 4) + (midTeleCones * 3) + (lowAutoCones * 3) + (lowTeleCones * 2);
 
-    let cubesHighTeleAutoAccuracy = 100 * ((highAutoCubes + highTeleCubes) / (highCubesAttempted ));
-    let conesHighTeleAutoAccuracy = 100 * ((highAutoCones + highTeleCones) / (highConesAttempted));
+    let cubesHighTeleAutoAccuracy = 100 * ((highAutoCubes + highTeleCubes) / (highCubesAttempted + highAutoCubes + highTeleCubes));
+    let conesHighTeleAutoAccuracy = 100 * ((highAutoCones + highTeleCones) / (highConesAttempted + highAutoCones + highTeleCones));
     //let highAccuracy = 100 * ((conesHighTeleAutoAccuracy + cubesHighTeleAutoAccuracy) / (highCubesAttempted + highConesAttempted));
 
-    let cubesMidTeleAutoAccuracy = 100 * ((midAutoCubes + midTeleCubes) / (midCubesAttempted));
-    let conesMidTeleAutoAccuracy = 100 * ((midAutoCones + midTeleCones) / (midConesAttempted));
+    let cubesMidTeleAutoAccuracy = 100 * ((midAutoCubes + midTeleCubes) / (midCubesAttempted + midAutoCubes + midTeleCubes));
+    let conesMidTeleAutoAccuracy = 100 * ((midAutoCones + midTeleCones) / (midConesAttempted + midAutoCones + midTeleCones));
     //let midAccuracy = 100 * ((cubesMidTeleAutoAccuracy + conesMidTeleAutoAccuracy) / (midCubesAttempted + midConesAttempted));
 
-    let cubesLowTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes) / (lowCubesAttempted));
-    let conesLowTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones) / (lowConesAttempted));
+    let cubesLowTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes) / (lowCubesAttempted + lowAutoCubes + lowTeleCubes));
+    let conesLowTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones) / (lowConesAttempted + lowAutoCones + lowTeleCones));
     //let lowAccuracy = 100 * ((cubesLowTeleAutoAccuracy + conesLowTeleAutoAccuracy) / (lowCubesAttempted + lowConesAttempted));
 
     let totalGridPts = highGridPoints + midGridPoints + lowGridPoints;
 
-    let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesAttempted));
-    let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesAttempted));
+    let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesAttempted + lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes));
+    let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesAttempted + lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones));
 //*/
 
     this.setState({
@@ -1271,12 +1271,12 @@ class Form extends React.Component {
         //AUTONOMOUS MATCH ENTREES
         matchEntry.Autonomous.AutonomousPlacement=autoPlacement
         
-        matchEntry.Autonomous.Attempted.Cones.Upper=highConesAttempted
-        matchEntry.Autonomous.Attempted.Cones.Mid=midConesAttempted
-        matchEntry.Autonomous.Attempted.Cones.Lower=lowConesAttempted
-        matchEntry.Autonomous.Attempted.Cubes.Upper=highCubesAttempted
-        matchEntry.Autonomous.Attempted.Cubes.Mid=midCubesAttempted
-        matchEntry.Autonomous.Attempted.Cubes.Lower=lowCubesAttempted
+        matchEntry.Autonomous.Attempted.Cones.Upper=highConesAutoAttempted //DEBUGGING
+        matchEntry.Autonomous.Attempted.Cones.Mid=midConesAutoAttempted //DEBUGGING
+        matchEntry.Autonomous.Attempted.Cones.Lower=lowConesAutoAttempted //DEBUGGING
+        matchEntry.Autonomous.Attempted.Cubes.Upper=highCubesAutoAttempted //DEBUGGING 
+        matchEntry.Autonomous.Attempted.Cubes.Mid=midCubesAutoAttempted //DEBUGGING
+        matchEntry.Autonomous.Attempted.Cubes.Lower=lowCubesAutoAttempted //DEBUGGING
 
         matchEntry.Autonomous.Scored.Cones.Upper=highAutoCones
         matchEntry.Autonomous.Scored.Cones.Mid=midAutoCones
@@ -1296,17 +1296,17 @@ class Form extends React.Component {
         matchEntry.Teleop.Scored.Cubes.Mid=midTeleCubes
         matchEntry.Teleop.Scored.Cubes.Lower=lowTeleCubes
 
-        matchEntry.Teleop.Attempted.Cones.Upper=highConesTeleAttempted
-        matchEntry.Teleop.Attempted.Cones.Mid=midConesTeleAttempted
-        matchEntry.Teleop.Attempted.Cones.Lower=lowConesTeleAttempted
-        matchEntry.Teleop.Attempted.Cubes.Upper=highCubesTeleAttempted
-        matchEntry.Teleop.Attempted.Cubes.Mid=midCubesTeleAttempted
-        matchEntry.Teleop.Attempted.Cubes.Lower=lowCubesTeleAttempted
+        matchEntry.Teleop.Attempted.Cones.Upper=highConesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cones.Mid=midConesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cones.Lower=lowConesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cubes.Upper=highCubesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cubes.Mid=midCubesAttempted //DEBUGGING
+        matchEntry.Teleop.Attempted.Cubes.Lower=lowCubesAttempted //DEBUGGING
 
         //matchEntry.Teleop.ChargeStation=chargeTeleFinal
         matchEntry.Teleop.EndGame=chargeTeleFinal
-        matchEntry.Teleop.EndGameTally.Start=endGameStart//
-        matchEntry.Teleop.EndGameTally.End=endGameEnd//
+        matchEntry.Teleop.EndGameTally.Start=endGameStart
+        matchEntry.Teleop.EndGameTally.End=endGameEnd
 
         //SCORING TOTAL
         matchEntry.Teleop.ScoringTotal.Total=points
