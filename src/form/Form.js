@@ -23,67 +23,55 @@ class Form extends React.Component {
     this.regional = props.regional;
 
     this.changeMatchType = this.changeMatchType.bind(this);
+    this.changeElmNum = this.changeElmNum.bind(this);
     this.changeMatchNumber = this.changeMatchNumber.bind(this);
     this.makeMatchTypeDropDown = this.makeMatchTypeDropDown.bind(this);
-    this.changeElmNum = this.changeElmNum.bind(this);
+    this.makeMatchDropDown = this.makeMatchDropDown.bind(this);
+
+    this.logState = this.logState.bind(this);
+
     this.getMatchTeams = this.getMatchTeams.bind(this);
+    this.changeTeam = this.changeTeam.bind(this);
+    this.makeTeamDropdown = this.makeTeamDropdown.bind(this);
 
     this.whoWonClicked = this.whoWonClicked.bind(this);
     this.makeWhoWonBox = this.makeWhoWonBox.bind(this);
 
+    this.copyArray = this.copyArray.bind(this);
+
     this.strategyBox = this.strategyBox.bind(this);
     this.makeStrategyBox = this.makeStrategyBox.bind(this);
 
-    this.makeMatchDropDown = this.makeMatchDropDown.bind(this);
-    this.changeTeam = this.changeTeam.bind(this);
+    this.changeBooleanCheckBox = this.changeBooleanCheckBox.bind(this);
+    this.makeBooleanCheckBox = this.makeBooleanCheckBox.bind(this);
 
     this.dropDownChanged = this.dropDownChanged.bind(this);
     this.makeDropDownBox = this.makeDropDownBox.bind(this);
 
-    //this.autoPlacmentChanged = this.autoPlacmentChanged(this);
-    //this.makeAutoPlacement = this.makeAutoPlacement(this);
-
     this.changeEndGame = this.changeEndGame.bind(this);
-    this.makeEndGameDropDown = this.makeEndGameDropDown.bind(this);
     this.changeEndGameStartBox = this.changeEndGameStartBox.bind(this);
     this.changeEndGameEndBox = this.changeEndGameEndBox.bind(this);
     this.makeEndGameStartEndBox = this.makeEndGameStartEndBox.bind(this);
-
+    this.makeEndGameDropDown = this.makeEndGameDropDown.bind(this);
     this.changeChargeStation = this.changeChargeStation.bind(this);
     this.makeChargeStationAuto = this.makeChargeStationAuto.bind(this);
 
-    this.buttonMinus = this.buttonMinus.bind(this);
-    this.buttonPlus = this.buttonPlus.bind(this);
-    this.counterBoxChanged = this.counterBoxChanged.bind(this);
-    this.makeCounterBox = this.makeCounterBox.bind(this);
+    this.setComment = this.setComment.bind(this);
 
     this.penaltyBoxChecked = this.penaltyBoxChecked.bind(this);
     this.makePenaltyBox = this.makePenaltyBox.bind(this);
-
-    /*
-    this.smartPlacementChecked = this.smartPlacementChecked.bind(this);
-    this.makeSmartPlacementBox = this.makeSmartPlacementBox.bind(this);
-    */
-
-    // TESTING this out
-    this.changeBooleanCheckBox = this.changeBooleanCheckBox.bind(this);
-    this.makeBooleanCheckBox = this.makeBooleanCheckBox.bind(this);
-
     this.bonusBoxChecked = this.bonusBoxChecked.bind(this);
     this.makeBonusBox = this.makeBonusBox.bind(this);
-
-    /*
-    this.mobilityBoxClick = this.mobilityBoxClick.bind(this);
-    this.makeMobilityBox = this.makeMobilityBox.bind(this);
-    */
-
     this.overrideChange = this.overrideChange.bind(this);
     this.makeOverrideBox = this.makeOverrideBox.bind(this);
 
-    this.logState = this.logState.bind(this);
-    this.setComment = this.setComment.bind(this);
+    this.counterBoxChanged = this.counterBoxChanged.bind(this);
+    this.buttonMinus = this.buttonMinus.bind(this);
+    this.buttonPlus = this.buttonPlus.bind(this);
+    this.makeCounterBox = this.makeCounterBox.bind(this);
 
     this.submitState = this.submitState.bind(this);
+
 
     if (this.matchData === undefined) {
       console.log(`initializing form`)
