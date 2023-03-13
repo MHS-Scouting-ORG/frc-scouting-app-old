@@ -73,7 +73,6 @@ class Form extends React.Component {
     this.submitState = this.submitState.bind(this);
 
 
-    if (this.matchData === undefined) {
       console.log(`initializing form`)
       this.state = {
         comments: '',
@@ -110,7 +109,7 @@ class Form extends React.Component {
         cubesPts: 0,
         conesPts: 0,
       }
-    }
+    
   }
 
   componentDidMount() {
