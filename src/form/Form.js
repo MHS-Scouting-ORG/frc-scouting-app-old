@@ -74,7 +74,8 @@ class Form extends React.Component {
 
 
     if (this.matchData === undefined) {
-      this.state = { 
+      console.log(`initializing form`)
+      this.state = {
         comments: '',
         //summaryComments: '',
         stationComments: '',
@@ -94,7 +95,7 @@ class Form extends React.Component {
         rankingState: ["", "", ""],
         bonusVal: [' ', ' '],
         bonusState: '',
-        penaltyVal: [' ', ' ', ' ', ' ', ' ',' '],
+        penaltyVal: [' ', ' ', ' ', ' ', ' ', ' '],
         dropDownVal: ['', '', ''],
         //autoPlacement: 0,
         counterBoxVals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -110,126 +111,132 @@ class Form extends React.Component {
         conesPts: 0,
       }
     }
-    else {
-      let m = this.matchData;
+  }
 
-      let rankingStates = [...m.RankingPts];
-      let rankingPoints = 0;
-      if (rankingStates[0] === "Win") {
-        rankingStates[0] = "Team Won ";
-        rankingPoints = 2;
-      }
-      else if (rankingStates[0] === "Tie") {
-        rankingStates[0] = "Team Tied ";
-        rankingPoints = 1;
-      }
-      else if (rankingStates[0] === "Loss") {
-        rankingStates[0] = "Team Lost ";
-        rankingPoints = 0;
-      }
+  componentDidMount() {
+    console.log(`fill form`)
+    if (!this.props.matchData)
+      return
+    let m = this.props.matchData;
 
-      if (rankingStates[1] === "ActivationBonus") {
-        rankingStates[1] = "Activation ";
-        rankingPoints++;
-      }
-      if (rankingStates[2] === "SustainabilityBonus") {
-        rankingStates[2] = "Sustainability ";
-        rankingPoints++;
-      }
+    let rankingStates = [...m.RankingPts];
+    let rankingPoints = 0;
+    if (rankingStates[0] === "Win") {
+      rankingStates[0] = "Team Won ";
+      rankingPoints = 2;
+    }
+    else if (rankingStates[0] === "Tie") {
+      rankingStates[0] = "Team Tied ";
+      rankingPoints = 1;
+    }
+    else if (rankingStates[0] === "Loss") {
+      rankingStates[0] = "Team Lost ";
+      rankingPoints = 0;
+    }
 
-      let priorityStates = [...m.Priorities];
-        for(let i = 0; i < priorityStates.length; i++){
-          if (priorityStates[i] === "Low") {
-            priorityStates[0] = "Low Node ";
-          }
-          if (priorityStates[i] === "Mid") {
-            priorityStates[1] = "Mid Node ";
-          }
-          if (priorityStates[i] === "High") {
-            priorityStates[2] = "High Node ";
-          }
-          if (priorityStates[i] === "Cubes") {
-            priorityStates[3] = "Cubes ";
-          }
-          if (priorityStates[i] === "Cones") {
-            priorityStates[4] = "Cones ";
-          }
-          if (priorityStates[i] === "ChargeStation") {
-            priorityStates[5] = "Charge Station ";
-          }
-          if (priorityStates[i] === "SingleSubstation") {
-            priorityStates[6] = "Single Substation ";
-          }
-          if (priorityStates[i] === "DoubleStation") {
-            priorityStates[7] = "Double Substation ";
-          }
-          if (priorityStates[i] === "Defense") {
-            priorityStates[8] = "Defense ";
-          }
+    if (rankingStates[1] === "ActivationBonus") {
+      rankingStates[1] = "Activation ";
+      rankingPoints++;
+    }
+    if (rankingStates[2] === "SustainabilityBonus") {
+      rankingStates[2] = "Sustainability ";
+      rankingPoints++;
+    }
+
+    let priorityStates = [...m.Priorities];
+    for (let i = 0; i < priorityStates.length; i++) {
+      if (priorityStates[i] === "Low") {
+        priorityStates[0] = "Low Node ";
       }
-
-      let penaltyStates = [...m.Penalties.Penalties];
-      for (let i = 0; i < penaltyStates.length; i++) {
-        if (penaltyStates[i] === "YellowCard") {
-          penaltyStates[0] = "Yellow Card ";
-        }
-        if (penaltyStates[i] === "RedCard") {
-          penaltyStates[1] = "Red Card ";
-        }
-        if (penaltyStates[i] === "Disabled") {
-          penaltyStates[2] = "Disable ";
-        }
-        if (penaltyStates[i] === "DQ") {
-          penaltyStates[3] = "Disqualified ";
-        }
-        if (penaltyStates[i] === "BrokenBot") {
-          penaltyStates[4] = "Bot Broke ";
-        }
-        if (penaltyStates[i] === "NoShow") {
-          penaltyStates[5] = "No Show ";
-        }
+      if (priorityStates[i] === "Mid") {
+        priorityStates[1] = "Mid Node ";
       }
+      if (priorityStates[i] === "High") {
+        priorityStates[2] = "High Node ";
+      }
+      if (priorityStates[i] === "Cubes") {
+        priorityStates[3] = "Cubes ";
+      }
+      if (priorityStates[i] === "Cones") {
+        priorityStates[4] = "Cones ";
+      }
+      if (priorityStates[i] === "ChargeStation") {
+        priorityStates[5] = "Charge Station ";
+      }
+      if (priorityStates[i] === "SingleSubstation") {
+        priorityStates[6] = "Single Substation ";
+      }
+      if (priorityStates[i] === "DoubleStation") {
+        priorityStates[7] = "Double Substation ";
+      }
+      if (priorityStates[i] === "Defense") {
+        priorityStates[8] = "Defense ";
+      }
+    }
 
-      const [a, r, matchType, matchNumber] = m.id.match(/(s.+)_([a-z]{1,2}[0-9]?)m([0-9+]{1,2})/)
+    let penaltyStates = [...m.Penalties.Penalties];
+    for (let i = 0; i < penaltyStates.length; i++) {
+      if (penaltyStates[i] === "YellowCard") {
+        penaltyStates[0] = "Yellow Card ";
+      }
+      if (penaltyStates[i] === "RedCard") {
+        penaltyStates[1] = "Red Card ";
+      }
+      if (penaltyStates[i] === "Disabled") {
+        penaltyStates[2] = "Disable ";
+      }
+      if (penaltyStates[i] === "DQ") {
+        penaltyStates[3] = "Disqualified ";
+      }
+      if (penaltyStates[i] === "BrokenBot") {
+        penaltyStates[4] = "Bot Broke ";
+      }
+      if (penaltyStates[i] === "NoShow") {
+        penaltyStates[5] = "No Show ";
+      }
+    }
 
-      this.state = {
-        comments: m.Comments,
-        //summaryComments: '',
-        stationComments: "", //UNUSED
-        matchType: matchType, 
-        elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : '' ), //MATCH ELM NUMBER
-        matchNumber: matchNumber,
-        matchData: [],
-        teamNumber: m.Team,
-        teams: [],
-        matchOverride: false, //UNUSED
-        override: true, //OVERRIDE
-        endGameVal: [
+    const [a, r, matchType, matchNumber] = m.id.match(/(.+)_([a-z]{1,2}[0-9]?)m([0-9+]{1,2})/)
+
+    //this.state = {
+    this.setState({
+      comments: m.Comments,
+      //summaryComments: '',
+      stationComments: "", //UNUSED
+      matchType: matchType,
+      elmNum: (((m.id.substring(8)).indexOf("f") >= 0) ? (m.id.substring(m.id.length())) : ''), //MATCH ELM NUMBER
+      matchNumber: matchNumber,
+      matchData: [],
+      teamNumber: m.Team,
+      teams: [],
+      matchOverride: false, //UNUSED
+      override: true, //OVERRIDE
+      endGameVal: [
           /*0 - Tele Charge Station*/m.Teleop.EndGame,
           /*1 - Endgame Start Time*/m.Teleop.EndGameTally.Start,
           /*2 - Engame End Time*/m.Teleop.EndGameTally.End
-        ],
-        chargeStationValAuto: m.Autonomous.ChargeStation,
-        whoWon: '', //UNUSED
-        checkedWhoWon: ['',''], //UNUSED
-        rankingPts: rankingPoints, //USED
-        rankingState: rankingStates, //RANKING PTS STATES
-        bonusVal: '', //UNUSED
-        bonusState: ["",""], //UNUSED
-        penaltyVal: penaltyStates, 
-        dropDownVal: [
+      ],
+      chargeStationValAuto: m.Autonomous.ChargeStation,
+      whoWon: '', //UNUSED
+      checkedWhoWon: ['', ''], //UNUSED
+      rankingPts: rankingPoints, //USED
+      rankingState: rankingStates, //RANKING PTS STATES
+      bonusVal: '', //UNUSED
+      bonusState: ["", ""], //UNUSED
+      penaltyVal: penaltyStates,
+      dropDownVal: [
           /*0 - AutoPlacement*/m.Autonomous.AutonomousPlacement,
           /*1 - driveStrength*/m.Teleop.DriveStrength,
           /*2 - driveSpeed*/m.Teleop.DriveSpeed
-        ],
-        counterBoxVals: [
+      ],
+      counterBoxVals: [
           //AUTONOMOUS SCORING
-          /*0*/m.Autonomous.Scored.Cubes.Upper, 
-          /*1*/m.Autonomous.Scored.Cubes.Mid, 
-          /*2*/m.Autonomous.Scored.Cubes.Lower, 
-          /*3*/m.Autonomous.Attempted.Cubes.Upper, 
-          /*4*/m.Autonomous.Attempted.Cubes.Mid, 
-          /*5*/m.Autonomous.Attempted.Cubes.Lower, 
+          /*0*/m.Autonomous.Scored.Cubes.Upper,
+          /*1*/m.Autonomous.Scored.Cubes.Mid,
+          /*2*/m.Autonomous.Scored.Cubes.Lower,
+          /*3*/m.Autonomous.Attempted.Cubes.Upper,
+          /*4*/m.Autonomous.Attempted.Cubes.Mid,
+          /*5*/m.Autonomous.Attempted.Cubes.Lower,
           /*6*/m.Autonomous.Scored.Cones.Upper,
           /*7*/m.Autonomous.Scored.Cones.Mid,
           /*8*/m.Autonomous.Scored.Cones.Lower,
@@ -237,12 +244,12 @@ class Form extends React.Component {
           /*10*/m.Autonomous.Attempted.Cones.Mid,
           /*11*/m.Autonomous.Attempted.Cones.Lower,
           //TELEOP SCORING
-          /*12*/m.Teleop.Scored.Cubes.Upper, 
-          /*13*/m.Teleop.Scored.Cubes.Mid, 
-          /*14*/m.Teleop.Scored.Cubes.Lower, 
-          /*15*/m.Teleop.Attempted.Cubes.Upper, 
-          /*16*/m.Teleop.Attempted.Cubes.Mid, 
-          /*17*/m.Teleop.Attempted.Cubes.Lower, 
+          /*12*/m.Teleop.Scored.Cubes.Upper,
+          /*13*/m.Teleop.Scored.Cubes.Mid,
+          /*14*/m.Teleop.Scored.Cubes.Lower,
+          /*15*/m.Teleop.Attempted.Cubes.Upper,
+          /*16*/m.Teleop.Attempted.Cubes.Mid,
+          /*17*/m.Teleop.Attempted.Cubes.Lower,
           /*18*/m.Teleop.Scored.Cones.Upper,
           /*19*/m.Teleop.Scored.Cones.Mid,
           /*20*/m.Teleop.Scored.Cones.Lower,
@@ -251,22 +258,21 @@ class Form extends React.Component {
           /*23*/m.Teleop.Attempted.Cones.Lower,
           /*24*/m.Penalties.Fouls,
           /*25*/m.Penalties.Tech
-        ],
-        //smartPlacementVal: false,
-        strategyVal: priorityStates,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-        //mobilityVal: false,
-        booleans: [
+      ],
+      //smartPlacementVal: false,
+      strategyVal: priorityStates,//[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+      //mobilityVal: false,
+      booleans: [
           /*0 - MobilityVal*/m.Autonomous.LeftCommunity,
           /*1 - SmartPlacement*/m.Teleop.SmartPlacement
-        ],
-        totalPoints: m.Teleop.ScoringTotal.Total,
-        totalGrid: m.Teleop.ScoringTotal.GridPoints,
-        cubesAccuracy: m.Teleop.CubesAccuracy.Overall,
-        conesAccuracy: m.Teleop.ConesAccuracy.Overall,
-        cubesPts: m.Teleop.ScoringTotal.Cubes,
-        conesPts: m.Teleop.ScoringTotal.Cones,
-      }
-    }
+      ],
+      totalPoints: m.Teleop.ScoringTotal.Total,
+      totalGrid: m.Teleop.ScoringTotal.GridPoints,
+      cubesAccuracy: m.Teleop.CubesAccuracy.Overall,
+      conesAccuracy: m.Teleop.ConesAccuracy.Overall,
+      cubesPts: m.Teleop.ScoringTotal.Cubes,
+      conesPts: m.Teleop.ScoringTotal.Cones,
+    })
   }
 
   //------------------------------------------------------------------------------------------------------------------------//
@@ -307,13 +313,13 @@ class Form extends React.Component {
   makeMatchDropDown() {
     let matchTypeState = this.state.matchType;
     let matchState = '';
-    if(matchTypeState === 'q'){
+    if (matchTypeState === 'q') {
       matchState = "Qualification";
-    } else if(matchTypeState === 'qf'){
-      matchState = "QuarterFinal";
-    } else if(matchTypeState === 'sf'){
+    } else if (matchTypeState === 'qf') {
+      matchState = "QuarterFinals";
+    } else if (matchTypeState === 'sf') {
       matchState = "SemiFinal";
-    } else if(matchTypeState === 'f'){
+    } else if (matchTypeState === 'f') {
       matchState = "Final";
     }
     return (
@@ -339,13 +345,13 @@ class Form extends React.Component {
     //this.regional = '2022hiho'  /* change event_key */
     let matchKey =  /*put this years event*//*/*/ this.regional  /* */ /*await getRegionals() /* */ + "_" + this.state.matchType + this.state.elmNum + "m" + this.state.matchNumber;
     const teams = async () => {
-       /*
-      await fetch('https://www.thebluealliance.com/api/v3/event/' + this.regional  + '/matches', {
-        mode: 'cors',
-        headers: {
-          'X-TBA-Auth-Key': 'TKWj89sH9nu6hwIza0zK91UQBRUaW5ETVJrZ7KhHOolwmuKxKqD3UkQMAoqHahsn'
-        } */
-        getMatchesForRegional(this.regional)
+      /*
+     await fetch('https://www.thebluealliance.com/api/v3/event/' + this.regional  + '/matches', {
+       mode: 'cors',
+       headers: {
+         'X-TBA-Auth-Key': 'TKWj89sH9nu6hwIza0zK91UQBRUaW5ETVJrZ7KhHOolwmuKxKqD3UkQMAoqHahsn'
+       } */
+      getMatchesForRegional(this.regional)
         //.then(response => response.json())
         .then(data => {
           data.map((matches) => {
@@ -359,7 +365,7 @@ class Form extends React.Component {
           })
         })
         .catch(err => console.log(err))
-       
+
     }
     console.log(this.matchKey);
     console.log(this.matchData)
@@ -395,16 +401,16 @@ class Form extends React.Component {
       whoWon = 'Tie';
     }*/
 
-    if(data.alliances.blue.score > data.alliances.red.score) {
-        whoWon = 'blue';
+    if (data.alliances.blue.score > data.alliances.red.score) {
+      whoWon = 'blue';
     } else if (data.alliances.blue.score < data.alliances.red.score) {
-        whoWon = 'red';
+      whoWon = 'red';
     } else {
-        whoWon = 'Tie';
+      whoWon = 'Tie';
     }
 
     let rankingStates = this.state.rankingState;
-    
+
     if (teamColor === whoWon) {
       this.setState({ rankingPts: 2 });
       rankingStates[0] = "Team Won ";
@@ -418,7 +424,7 @@ class Form extends React.Component {
 
     rankingStates[1] = '';
     rankingStates[2] = '';
-    this.setState({ whoWon: whoWon});
+    this.setState({ whoWon: whoWon });
     //this.setState({ checkedWhoWon: [' ', ' '] });
     //this.setState({ bonusVal: [' ', ' '] });
   }
@@ -477,33 +483,33 @@ class Form extends React.Component {
 
     let data = this.state.matchData;
     let rankingStates = /*this.copyArray*/(this.state.rankingState);
-    if(data === "not found"){
-        window.alert("PICK A TEAM FIRST");
+    if (data === "not found") {
+      window.alert("PICK A TEAM FIRST");
     }
-    else{
-        
-        if(rankingStates[0] ===  label){
-          rankingStates[0] = '';
+    else {
+
+      if (rankingStates[0] === label) {
+        rankingStates[0] = '';
+        this.setState({ rankingPts: 0 })
+      }
+      else if (rankingStates[0] === '') {
+        rankingStates[0] = label;
+
+        if (label === "Team Won ") {
+          this.setState({ rankingPts: 2 })
+        }
+        else if (label === "Team Tied ") {
+          this.setState({ rankingPts: 1 })
+        }
+        else if (label === "Team Lost ") {
           this.setState({ rankingPts: 0 })
         }
-        else if(rankingStates[0] === ''){
-          rankingStates[0] = label;
+      }
 
-          if(label === "Team Won "){
-            this.setState({ rankingPts: 2})
-          }
-          else if(label === "Team Tied "){
-              this.setState({ rankingPts: 1})
-          }
-          else if(label === "Team Lost "){
-              this.setState({ rankingPts: 0})
-          }
-        }
+      rankingStates[1] = '';
+      rankingStates[2] = '';
 
-        rankingStates[1] = '';
-        rankingStates[2] = '';
-
-        this.setState({rankingState: rankingStates})
+      this.setState({ rankingState: rankingStates })
     }
   }
 
@@ -527,10 +533,10 @@ class Form extends React.Component {
     )
   }
 
-  copyArray(Array){
+  copyArray(Array) {
     let arrayCopy = [];
-    for(let i = 0; i < Array.length; i++){
-        arrayCopy.push(Array[i]);
+    for (let i = 0; i < Array.length; i++) {
+      arrayCopy.push(Array[i]);
     }
 
     return arrayCopy
@@ -545,16 +551,16 @@ class Form extends React.Component {
       strategyStates[i] = label;
     }
 
-    this.setState({strategyVal: strategyStates})
+    this.setState({ strategyVal: strategyStates })
   }
 
   makeStrategyBox(name, i) {
     let strategyState = this.state.strategyVal;
     let checkedVal;
-    if(strategyState[i] === name){
-        checkedVal = true;
+    if (strategyState[i] === name) {
+      checkedVal = true;
     } else {
-        checkedVal = false;
+      checkedVal = false;
     }
     return (
       <div>
@@ -562,7 +568,7 @@ class Form extends React.Component {
           label={name}
           changeCheckBoxState={this.strategyBox}
           place={i}
-         checked={checkedVal}
+          checked={checkedVal}
         />
       </div>
     )
@@ -571,7 +577,7 @@ class Form extends React.Component {
   changeBooleanCheckBox(i) {
     let booleanStates = this.copyArray(this.state.booleans)
     booleanStates[i] = !booleanStates[i]
-    this.setState({booleans: booleanStates})
+    this.setState({ booleans: booleanStates })
   }
 
   makeBooleanCheckBox(name, i) {
@@ -595,7 +601,7 @@ class Form extends React.Component {
     dropDownStates[i] = event.target.value;
   }
 
-  makeDropDownBox(title, option ,i) {
+  makeDropDownBox(title, option, i) {
     let dropDownStates = this.state.dropDownVal;
     return (
       <div>
@@ -656,7 +662,7 @@ class Form extends React.Component {
           <div>
             <p>Match Timer EX:125 (1:25)</p>
             <label> {"End Game Start: "}
-              <input value={this.state.endGameVal[1]} style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
+              <input value={this.state.endGameVal[1]} style={{ width: '10%' }} type="number" onChange={this.changeEndGameStartBox}></input>
             </label>
           </div>
         )
@@ -666,14 +672,14 @@ class Form extends React.Component {
         return (
           <div>
             <div>
-            <p style={{fontSize:'14px'}}>Match Timer | EX Start: 25 (0:25), EX End: 3 (0:03)</p>
+              <p style={{ fontSize: '14px' }}>Match Timer | EX Start: 25 (0:25), EX End: 3 (0:03)</p>
               <label> {"End Game Start: "}
-                <input value={this.state.endGameVal[1]} style={{width: '10%'}} type="number" onChange={this.changeEndGameStartBox}></input>
+                <input value={this.state.endGameVal[1]} style={{ width: '10%' }} type="number" onChange={this.changeEndGameStartBox}></input>
               </label>
             </div>
             <div>
               <label> {"End Game End: "}
-                <input value={this.state.endGameVal[2]} style={{width: '10%'}} type="number" onChange={this.changeEndGameEndBox}></input>
+                <input value={this.state.endGameVal[2]} style={{ width: '10%' }} type="number" onChange={this.changeEndGameEndBox}></input>
               </label>
             </div>
           </div>
@@ -730,16 +736,16 @@ class Form extends React.Component {
     } else {
       penaltyStates[i] = label;
     }
-    this.setState({penaltyVal: penaltyStates})
+    this.setState({ penaltyVal: penaltyStates })
   }
 
   makePenaltyBox(name, i) {
     let penaltyStates = this.state.penaltyVal;
     let checkedVal;
-    if(penaltyStates[i] === name){
-        checkedVal = true;
+    if (penaltyStates[i] === name) {
+      checkedVal = true;
     } else {
-        checkedVal = false
+      checkedVal = false
     }
     return (
       <div>
@@ -783,23 +789,23 @@ class Form extends React.Component {
       this.setState({ rankingPts: this.state.rankingPts + 1 });
     }
 
-    
+
     if (ranking[i] === label) {
       ranking[i] = ' ';
     } else {
       ranking[i] = label;
     }
-    
-    this.setState({rankingState: ranking})
+
+    this.setState({ rankingState: ranking })
   }
 
   makeBonusBox(name, i) {
     let rankingState = this.state.rankingState;
     let checkedVal;
-    if(rankingState[i] === name){
+    if (rankingState[i] === name) {
       checkedVal = true;
     }
-    else{
+    else {
       checkedVal = false;
     }
     return (
@@ -953,7 +959,7 @@ class Form extends React.Component {
     //AUTONOMOUS-----------------------------------------
 
     //Auto Cubes & Cones Scoring
-    let highAutoCubes = parseInt(counterVal[0]); 
+    let highAutoCubes = parseInt(counterVal[0]);
     let midAutoCubes = parseInt(counterVal[1]);
     let lowAutoCubes = parseInt(counterVal[2]);
     let highAutoCones = parseInt(counterVal[6]);
@@ -1064,88 +1070,88 @@ class Form extends React.Component {
     }
 
     let penFinal = [];
-    for(let i = 0; i < penalties.length; i++){
-        let arr = penalties[i];
-        if(arr === 'Yellow Card '){
-            penFinal[i] = PenaltyKinds.YELLOW_CARD;
-        } else if(arr === 'Red Card '){
-            penFinal[i] = PenaltyKinds.RED_CARD;
-        } else if (arr === 'Disable '){
-            penFinal[i] = PenaltyKinds.DISABLED
-        } else if (arr === 'Disqualifed '){
-            penFinal[i] = PenaltyKinds.DQ
-        } else if(arr === 'Bot Broke '){
-            penFinal[i] = PenaltyKinds.BROKEN_BOT
-        } else if (arr === 'No Show '){
-            penFinal[i] = PenaltyKinds.NO_SHOW
-        } else {
-            penFinal[i] = PenaltyKinds.NONE;
-        }
+    for (let i = 0; i < penalties.length; i++) {
+      let arr = penalties[i];
+      if (arr === 'Yellow Card ') {
+        penFinal[i] = PenaltyKinds.YELLOW_CARD;
+      } else if (arr === 'Red Card ') {
+        penFinal[i] = PenaltyKinds.RED_CARD;
+      } else if (arr === 'Disable ') {
+        penFinal[i] = PenaltyKinds.DISABLED
+      } else if (arr === 'Disqualifed ') {
+        penFinal[i] = PenaltyKinds.DQ
+      } else if (arr === 'Bot Broke ') {
+        penFinal[i] = PenaltyKinds.BROKEN_BOT
+      } else if (arr === 'No Show ') {
+        penFinal[i] = PenaltyKinds.NO_SHOW
+      } else {
+        penFinal[i] = PenaltyKinds.NONE;
+      }
     }
 
-//JASON NEEDS TO FIX THE GRAPHQL
+    //JASON NEEDS TO FIX THE GRAPHQL
     let stratFinal = [];
-    for(let i = 0; i < strategies.length; i++){
+    for (let i = 0; i < strategies.length; i++) {
       let strategy = strategies[i];
-      if(strategy === "Low Node "){
+      if (strategy === "Low Node ") {
         stratFinal.push(PriorityOpts.LOW);
       }
-      else if(strategy === "Mid Node "){
+      else if (strategy === "Mid Node ") {
         stratFinal.push(PriorityOpts.MID);
       }
-      else if(strategy === "High Node "){
+      else if (strategy === "High Node ") {
         stratFinal.push("High");
       }
-      else if(strategy === "Cubes "){
+      else if (strategy === "Cubes ") {
         stratFinal.push(PriorityOpts.CUBES);
       }
-      else if(strategy === "Cones "){
+      else if (strategy === "Cones ") {
         stratFinal.push(PriorityOpts.CONES);
       }
-      else if(strategy === "Charge Station "){
+      else if (strategy === "Charge Station ") {
         stratFinal.push(PriorityOpts.CHARGESTATION);
       }
-      else if(strategy === "Single Substation "){
+      else if (strategy === "Single Substation ") {
         stratFinal.push(PriorityOpts.SINGLE_SUBSTATION);
       }
-      else if(strategy === "Double Substation "){
+      else if (strategy === "Double Substation ") {
         stratFinal.push(PriorityOpts.DOUBLE_STATION);
       }
-      else if(strategy === "Defense "){
+      else if (strategy === "Defense ") {
         stratFinal.push(PriorityOpts.DEFENSE);
       }
     }
 
     let rankFinal = [];
-    for(let i = 0; i < rankingState.length; i++){
+    for (let i = 0; i < rankingState.length; i++) {
       let rankOp = rankingState[i];
-      if(rankOp === "Team Won "){
+      if (rankOp === "Team Won ") {
         rankFinal.push(RankingPtsOpts.WIN);
       }
-      else if(rankOp === "Team Tied "){
+      else if (rankOp === "Team Tied ") {
         rankFinal.push(RankingPtsOpts.TIE);
       }
-      else if(rankOp === "Team Lost "){
+      else if (rankOp === "Team Lost ") {
         rankFinal.push(RankingPtsOpts.LOSS);
       }
-      else if(rankOp === "Sustainability "){
+      else if (rankOp === "Sustainability ") {
         rankFinal.push(RankingPtsOpts.SUSTAINABILITY_BONUS);
       }
-      else if(rankOp === "Activation "){
+      else if (rankOp === "Activation ") {
         rankFinal.push(RankingPtsOpts.ACTIVATION_BONUS);
       }
     }
 
-    function setChargeStationType(chargeStation){
-      if(chargeStation === 'None'){
+    function setChargeStationType(chargeStation) {
+      if (chargeStation === 'None') {
         return ChargeStationType.NONE;
-      } else if(chargeStation === 'DockedEngaged'){
+      } else if (chargeStation === 'DockedEngaged') {
         return ChargeStationType.DOCKED_ENGAGED;
-      } else if(chargeStation === 'Docked'){
+      } else if (chargeStation === 'Docked') {
         return ChargeStationType.DOCKED;
-      } else if(chargeStation === 'Parked'){
+      } else if (chargeStation === 'Parked') {
         return ChargeStationType.Parked;
-      } else if(chargeStation === 'Attempted'){
+      } else if (chargeStation === 'Attempted') {
         return ChargeStationType.ATTEMPTED;
       }
     }
@@ -1162,7 +1168,7 @@ class Form extends React.Component {
     <option value='Attempted'>Attempted</option>
     */
 
-    
+
     //POINT CALCULATIONS
 
     let highGridPoints = 6 * (highAutoCones + highAutoCubes) + 5 * (highTeleCones + highTeleCubes);
@@ -1190,7 +1196,7 @@ class Form extends React.Component {
 
     let cubesTeleAutoAccuracy = 100 * ((lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes) / (cubesAttempted + lowAutoCubes + lowTeleCubes + midAutoCubes + midTeleCubes + highAutoCubes + highTeleCubes));
     let conesTeleAutoAccuracy = 100 * ((lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones) / (conesAttempted + lowAutoCones + lowTeleCones + midAutoCones + midTeleCones + highAutoCones + highTeleCones));
-//*/
+    //*/
 
     this.setState({
       totalPoints: points,
@@ -1252,107 +1258,107 @@ class Form extends React.Component {
       window.alert(windowAlertMsg);
     } else if (incompleteForm === false || override === true) {
       //console.log(penalties);
-      const matchEntry = buildMatchEntry(this.regional,teamNum,matchKey)
-        //matchEntry.name=''
-        //matchEntry.description=''
+      const matchEntry = buildMatchEntry(this.regional, teamNum, matchKey)
+      //matchEntry.name=''
+      //matchEntry.description=''
 
-        //AUTONOMOUS MATCH ENTREES
-        matchEntry.Autonomous.AutonomousPlacement=autoPlacement
-        
-        matchEntry.Autonomous.Attempted.Cones.Upper=highConesAutoAttempted //DEBUGGING
-        matchEntry.Autonomous.Attempted.Cones.Mid=midConesAutoAttempted //DEBUGGING
-        matchEntry.Autonomous.Attempted.Cones.Lower=lowConesAutoAttempted //DEBUGGING
-        matchEntry.Autonomous.Attempted.Cubes.Upper=highCubesAutoAttempted //DEBUGGING 
-        matchEntry.Autonomous.Attempted.Cubes.Mid=midCubesAutoAttempted //DEBUGGING
-        matchEntry.Autonomous.Attempted.Cubes.Lower=lowCubesAutoAttempted //DEBUGGING
+      //AUTONOMOUS MATCH ENTREES
+      matchEntry.Autonomous.AutonomousPlacement = autoPlacement
 
-        matchEntry.Autonomous.Scored.Cones.Upper=highAutoCones
-        matchEntry.Autonomous.Scored.Cones.Mid=midAutoCones
-        matchEntry.Autonomous.Scored.Cones.Lower=lowAutoCones
-        matchEntry.Autonomous.Scored.Cubes.Upper=highAutoCubes
-        matchEntry.Autonomous.Scored.Cubes.Mid=midAutoCubes
-        matchEntry.Autonomous.Scored.Cubes.Lower=lowAutoCubes
+      matchEntry.Autonomous.Attempted.Cones.Upper = highConesAutoAttempted //DEBUGGING
+      matchEntry.Autonomous.Attempted.Cones.Mid = midConesAutoAttempted //DEBUGGING
+      matchEntry.Autonomous.Attempted.Cones.Lower = lowConesAutoAttempted //DEBUGGING
+      matchEntry.Autonomous.Attempted.Cubes.Upper = highCubesAutoAttempted //DEBUGGING 
+      matchEntry.Autonomous.Attempted.Cubes.Mid = midCubesAutoAttempted //DEBUGGING
+      matchEntry.Autonomous.Attempted.Cubes.Lower = lowCubesAutoAttempted //DEBUGGING
 
-        matchEntry.Autonomous.LeftCommunity=mobility
-        matchEntry.Autonomous.ChargeStation=chargeAutoFinal
+      matchEntry.Autonomous.Scored.Cones.Upper = highAutoCones
+      matchEntry.Autonomous.Scored.Cones.Mid = midAutoCones
+      matchEntry.Autonomous.Scored.Cones.Lower = lowAutoCones
+      matchEntry.Autonomous.Scored.Cubes.Upper = highAutoCubes
+      matchEntry.Autonomous.Scored.Cubes.Mid = midAutoCubes
+      matchEntry.Autonomous.Scored.Cubes.Lower = lowAutoCubes
 
-        //TELEOP MATCH ENTREES
-        matchEntry.Teleop.Scored.Cones.Upper=highTeleCones
-        matchEntry.Teleop.Scored.Cones.Mid=midTeleCones
-        matchEntry.Teleop.Scored.Cones.Lower=lowTeleCones
-        matchEntry.Teleop.Scored.Cubes.Upper=highTeleCubes
-        matchEntry.Teleop.Scored.Cubes.Mid=midTeleCubes
-        matchEntry.Teleop.Scored.Cubes.Lower=lowTeleCubes
+      matchEntry.Autonomous.LeftCommunity = mobility
+      matchEntry.Autonomous.ChargeStation = chargeAutoFinal
 
-        matchEntry.Teleop.Attempted.Cones.Upper=highConesTeleAttempted //DEBUGGING
-        matchEntry.Teleop.Attempted.Cones.Mid=midConesTeleAttempted //DEBUGGING
-        matchEntry.Teleop.Attempted.Cones.Lower=lowConesTeleAttempted //DEBUGGING
-        matchEntry.Teleop.Attempted.Cubes.Upper=highCubesTeleAttempted //DEBUGGING
-        matchEntry.Teleop.Attempted.Cubes.Mid=midCubesTeleAttempted //DEBUGGING
-        matchEntry.Teleop.Attempted.Cubes.Lower=lowCubesTeleAttempted //DEBUGGING
+      //TELEOP MATCH ENTREES
+      matchEntry.Teleop.Scored.Cones.Upper = highTeleCones
+      matchEntry.Teleop.Scored.Cones.Mid = midTeleCones
+      matchEntry.Teleop.Scored.Cones.Lower = lowTeleCones
+      matchEntry.Teleop.Scored.Cubes.Upper = highTeleCubes
+      matchEntry.Teleop.Scored.Cubes.Mid = midTeleCubes
+      matchEntry.Teleop.Scored.Cubes.Lower = lowTeleCubes
 
-        //matchEntry.Teleop.ChargeStation=chargeTeleFinal
-        matchEntry.Teleop.EndGame=chargeTeleFinal
-        matchEntry.Teleop.EndGameTally.Start=endGameStart
-        matchEntry.Teleop.EndGameTally.End=endGameEnd
+      matchEntry.Teleop.Attempted.Cones.Upper = highConesTeleAttempted //DEBUGGING
+      matchEntry.Teleop.Attempted.Cones.Mid = midConesTeleAttempted //DEBUGGING
+      matchEntry.Teleop.Attempted.Cones.Lower = lowConesTeleAttempted //DEBUGGING
+      matchEntry.Teleop.Attempted.Cubes.Upper = highCubesTeleAttempted //DEBUGGING
+      matchEntry.Teleop.Attempted.Cubes.Mid = midCubesTeleAttempted //DEBUGGING
+      matchEntry.Teleop.Attempted.Cubes.Lower = lowCubesTeleAttempted //DEBUGGING
 
-        //SCORING TOTAL
-        matchEntry.Teleop.ScoringTotal.Total=points
-        matchEntry.Teleop.ScoringTotal.GridPoints=totalGridPts
+      //matchEntry.Teleop.ChargeStation=chargeTeleFinal
+      matchEntry.Teleop.EndGame = chargeTeleFinal
+      matchEntry.Teleop.EndGameTally.Start = endGameStart
+      matchEntry.Teleop.EndGameTally.End = endGameEnd
 
-        matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.High=highGridPoints
-        matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.Mid=midGridPoints
-        matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.Low=lowGridPoints
+      //SCORING TOTAL
+      matchEntry.Teleop.ScoringTotal.Total = points
+      matchEntry.Teleop.ScoringTotal.GridPoints = totalGridPts
 
-        matchEntry.Teleop.ScoringTotal.Cones=conePts
-        matchEntry.Teleop.ScoringTotal.Cubes=cubePts
+      matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.High = highGridPoints
+      matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.Mid = midGridPoints
+      matchEntry.Teleop.ScoringTotal.GridScoringByPlacement.Low = lowGridPoints
 
-        //DRIVE
-        matchEntry.Teleop.DriveStrength=driveStrength
-        matchEntry.Teleop.DriveSpeed=driveSpeed
+      matchEntry.Teleop.ScoringTotal.Cones = conePts
+      matchEntry.Teleop.ScoringTotal.Cubes = cubePts
 
-        matchEntry.Teleop.SmartPlacement=smartPlacement
+      //DRIVE
+      matchEntry.Teleop.DriveStrength = driveStrength
+      matchEntry.Teleop.DriveSpeed = driveSpeed
 
-        //CONE ACCURACIES
-        matchEntry.Teleop.ConesAccuracy.High=conesHighTeleAutoAccuracy
-        matchEntry.Teleop.ConesAccuracy.Mid=conesMidTeleAutoAccuracy
-        matchEntry.Teleop.ConesAccuracy.Low=conesLowTeleAutoAccuracy
-        matchEntry.Teleop.ConesAccuracy.Overall=conesTeleAutoAccuracy
+      matchEntry.Teleop.SmartPlacement = smartPlacement
 
-        //CUBE ACCURACIES
-        matchEntry.Teleop.CubesAccuracy.High=cubesHighTeleAutoAccuracy
-        matchEntry.Teleop.CubesAccuracy.Mid=cubesMidTeleAutoAccuracy
-        matchEntry.Teleop.CubesAccuracy.Low=cubesLowTeleAutoAccuracy
-        matchEntry.Teleop.CubesAccuracy.Overall=cubesTeleAutoAccuracy
+      //CONE ACCURACIES
+      matchEntry.Teleop.ConesAccuracy.High = conesHighTeleAutoAccuracy
+      matchEntry.Teleop.ConesAccuracy.Mid = conesMidTeleAutoAccuracy
+      matchEntry.Teleop.ConesAccuracy.Low = conesLowTeleAutoAccuracy
+      matchEntry.Teleop.ConesAccuracy.Overall = conesTeleAutoAccuracy
 
-        //TOTAL ACCURACIES
+      //CUBE ACCURACIES
+      matchEntry.Teleop.CubesAccuracy.High = cubesHighTeleAutoAccuracy
+      matchEntry.Teleop.CubesAccuracy.Mid = cubesMidTeleAutoAccuracy
+      matchEntry.Teleop.CubesAccuracy.Low = cubesLowTeleAutoAccuracy
+      matchEntry.Teleop.CubesAccuracy.Overall = cubesTeleAutoAccuracy
 
-        //MATCH DETAILS
-        matchEntry.RankingPts=rankFinal;
+      //TOTAL ACCURACIES
 
-        matchEntry.Comments=comments
+      //MATCH DETAILS
+      matchEntry.RankingPts = rankFinal;
 
-        matchEntry.Penalties.Fouls=fouls
-        matchEntry.Penalties.Tech=techFouls
-        matchEntry.Penalties.Penalties=penFinal;
+      matchEntry.Comments = comments
 
-        // console.log(stratFinal);
-        // console.log(PriorityOpts.HIGH)
-        // console.log(PriorityOpts.SINGLE_SUBSTATION)
-        // console.log(PriorityOpts.DOUBLE_STATION_SHUTE)
-        matchEntry.Priorities=stratFinal;
+      matchEntry.Penalties.Fouls = fouls
+      matchEntry.Penalties.Tech = techFouls
+      matchEntry.Penalties.Penalties = penFinal;
 
-        if (this.matchData === undefined) {
+      // console.log(stratFinal);
+      // console.log(PriorityOpts.HIGH)
+      // console.log(PriorityOpts.SINGLE_SUBSTATION)
+      // console.log(PriorityOpts.DOUBLE_STATION_SHUTE)
+      matchEntry.Priorities = stratFinal;
 
-          await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey);
-        }
-        
-        await apiUpdateTeamMatch(this.regional, teamNum, matchKey, matchEntry);
-  
+      if (this.matchData === undefined) {
+
+        await apiCreateTeamMatchEntry(this.regional, teamNum, matchKey);
+      }
+
+      await apiUpdateTeamMatch(this.regional, teamNum, matchKey, matchEntry);
+
       /*await *///
-    //console.log(this.state);
+      //console.log(this.state);
 
-    // console.log(this.regional,teamNum,matchKey,matchEntry)
+      // console.log(this.regional,teamNum,matchKey,matchEntry)
     }
   }
 
@@ -1450,14 +1456,14 @@ class Form extends React.Component {
         {this.makeStrategyBox("Defense ", 8)}
         <br></br>
         <TextBox title={"💬Comments: "} commentState={this.setComment} value={this.state.comments}></TextBox>
-        
+
         <div>
           <br></br>
-          <button onClick={(evt) => { 
+          <button onClick={(evt) => {
             evt.preventDefault()
             this.submitState()
               .then(console.log.bind(console))
-                .catch(console.log.bind(console))
+              .catch(console.log.bind(console))
           }
           }>SUBMIT</button>
         </div>
