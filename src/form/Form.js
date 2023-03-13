@@ -310,7 +310,7 @@ class Form extends React.Component {
     if(matchTypeState === 'q'){
       matchState = "Qualification";
     } else if(matchTypeState === 'qf'){
-      matchState = "QuarterFinals";
+      matchState = "QuarterFinal";
     } else if(matchTypeState === 'sf'){
       matchState = "SemiFinal";
     } else if(matchTypeState === 'f'){
