@@ -1461,8 +1461,18 @@ class Form extends React.Component {
           <button onClick={(evt) => {
             evt.preventDefault()
             this.submitState()
-              .then(console.log.bind(console))
-              .catch(console.log.bind(console))
+              .then(() => {
+                alert("Data succesfully submitted")
+              })
+              .catch(err => {
+                console.log(err)
+                try {
+                  alert(`Error occurred when submitting data ${err?.message}`)
+                }
+                catch(e) {
+
+                }
+              })
           }
           }>SUBMIT</button>
         </div>
