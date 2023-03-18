@@ -151,7 +151,7 @@ class Form extends React.Component {
       if (priorityStates[i] === "Mid") {
         priorityStates[1] = "Mid Node ";
       }
-      if (priorityStates[i] === "High") {
+      if (priorityStates[i] === "Upper") {
         priorityStates[2] = "High Node ";
       }
       if (priorityStates[i] === "Cubes") {
@@ -1100,7 +1100,7 @@ class Form extends React.Component {
         stratFinal.push(PriorityOpts.MID);
       }
       else if (strategy === "High Node ") {
-        stratFinal.push("High");
+        stratFinal.push("Upper");
       }
       else if (strategy === "Cubes ") {
         stratFinal.push(PriorityOpts.CUBES);
