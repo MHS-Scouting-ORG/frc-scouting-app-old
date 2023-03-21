@@ -7,7 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import MainTable from './components/MainTable'
 import Form from './form/Form'
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const regional = "2023azva"
+const regional = "2023bcvi"
 const router = createBrowserRouter([
   {
     path: "/",
