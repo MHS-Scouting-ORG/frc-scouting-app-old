@@ -177,14 +177,14 @@ const TeamInnerTable = (props) => {
                         >{row.original.Comments}</div>
                       }
                     },
-                    {
+                    /*{
                       Header: 'Delete',
                       Cell: ({row}) => {
                         return <div>
                           <button onClick={() => deleteHandler(row)}> DELETE </button>
                         </div>
                       }
-                    },
+                    },*/
                     {
                       Header: 'Edit',
                       Cell: ({row}) => {

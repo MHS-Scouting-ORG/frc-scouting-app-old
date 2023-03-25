@@ -59,16 +59,16 @@ function MainTable(props) {
     getMatchesForRegional(regional)
     .then(data => {
       let setApi = data.data.teamMatchesByRegional.items;
-      deletedData.map(deletedRow => {
+      /*deletedData.map(deletedRow => {
         setApi = setApi.filter(x => x.id.substring(x.id.indexOf('_')+1) !== deletedData.original.Match)
-      })
+      })*/
 
       setApiData(setApi)//data.data.teamMatchesByRegional.items)
       //console.log(data.data)       
 
     })
     .catch(console.log.bind(console))
-  }, [teamsData, deletedData]) 
+  }, [teamsData/*, deletedData*/]) 
 
    useEffect(() => {     //set opr data
     getOprs(regional)
@@ -92,9 +92,9 @@ function MainTable(props) {
       console.log(del)
       del.original.Match
     }))//*/
-    deletedData.map(deletedRow => {
+    /*deletedData.map(deletedRow => {
       teamStats = teamStats.filter(x => x.id !== regional + "_" + deletedRow.original.Match)
-    });
+    });*/
 
     console.log(teamStats)
     //console.log(apiData);
@@ -207,7 +207,7 @@ function MainTable(props) {
       NCubeAccuracy: isNaN(rCubeAcc) !== true ? rCubeAcc : 0,
       NChargeStation: isNaN(rCSPoints) !== true ? rCSPoints : 0,
     }
-  })), [teamsData, oprList, dprList, ccwmList, deletedData])
+  })), [teamsData, oprList, dprList, ccwmList/*deletedData*/])
 
 const getTeams = async () => {
    return await (getTeamsInRegional(regional))
@@ -277,9 +277,9 @@ const modalClose = () => {
 const renderRowSubComponent = ({ row }) => {
   let t = apiData.filter(x => x.Team === `frc${row.values.TeamNumber}`)
   
-  deletedData.map(deletedRow => {
+  /*deletedData.map(deletedRow => {
     t = t.filter(x => x.id.substring(x.id.indexOf('_')+1) !== deletedRow.original.Match) 
-  })
+  })*/
 
   const disp = t.map(x => {
 
