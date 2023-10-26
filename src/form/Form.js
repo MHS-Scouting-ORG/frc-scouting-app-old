@@ -72,7 +72,7 @@ class Form extends React.Component {
 
     this.submitState = this.submitState.bind(this);
 
-
+      // initializing form by making array of data
       console.log(`initializing form`)
       this.state = {
         comments: '',
@@ -195,6 +195,7 @@ class Form extends React.Component {
       }
     }
 
+    // creating variable to get match type (quals, elims), and match number
     const [a, r, matchType, matchNumber] = m.id.match(/(.+)_([a-z]{1,2}[0-9]?)m([0-9+]{1,2})/)
 
     //this.state = {
@@ -1363,6 +1364,7 @@ class Form extends React.Component {
 
   //-------------------------------------------------------------------------------------------------------------//
 
+  // rendering physical and visible website components
   render() {
     return (
       <div>
